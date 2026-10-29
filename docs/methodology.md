@@ -202,20 +202,28 @@ Two model weaknesses surfaced. The structural-uncertainty term pushes very-low-r
 
 ## What drives the uncertainty
 
-To see which assumptions matter, 48,000 worlds were simulated with every assumption drawn from its range, and a gradient-boosted surrogate of each 2065 outcome was fitted on the assumptions (cross-validated). Together the assumptions explain 52% of the spread in world GDP per person in 2065 (12% in 2045). The rest is luck inside the simulator: replayed shocks, wars, coups and pandemics. Interactions between assumptions are negligible. For wars, the assumptions explain only 1–7% of the outcome variance, but they still move the probabilities by up to 33 points:
+To see which assumptions matter, 48,000 headline worlds were simulated with every assumption drawn from its range (rerun on 29 October 2026 with climate damage, structural uncertainty and the climate update), and a gradient-boosted surrogate of each outcome was fitted on the assumptions (cross-validated). Correlated assumptions are credited as groups: a group's share is what the surrogate loses when the whole group is left out. Together the assumptions explain 67% of the spread in world GDP per person in 2065 and 27% in 2045. The rest is luck inside the simulator: replayed shocks, wars, coups and pandemics. For wars they explain only 2–6% of the variance, but they still move the probabilities by up to 33 points.
 
-Rerun on 29 October 2026 with climate damage, structural uncertainty and the climate update, crediting correlated assumptions as groups: the assumptions explain 67% of the spread of 2065 world GDP per person. AI and robot timing explain 49%, the climate assumptions 9% (12% in 2045, more than AI then), the damage estimate alone 7%. For the share of countries at war they explain 2%. The table below is from the earlier runs.
+| Outcome | All assumptions | AI and robot timing | Climate | Nuclear |
+| --- | --- | --- | --- | --- |
+| World GDP per person, 2065 | 67% | 49% | 9% | 0% |
+| World GDP per person, 2045 | 27% | 11% | 12% | 0% |
+| Countries in civil conflict, 2065 | 2% | 1% | 0% | 0% |
+| Great-power war by 2065 | 3% | 1% | 0% | 3% |
+| India–Pakistan war | 6% | 1% | 0% | 6% |
 
 | Outcome | Assumption | Lowest fifth of its range | Highest fifth |
 | --- | --- | --- | --- |
-| World GDP per person, 2065 | AI growth dividend | $35k | $47k |
-| World GDP per person, 2065 | AI arrival year (early vs late) | $63k | $29k |
-| Great-power war by 2065 | Nuclear-pair war factor | 34% | 55% |
-| China–India war | Nuclear-pair war factor | 14% | 37% |
-| India–Pakistan war | Nuclear-pair war factor | 23% | 55% |
-| Nuclear use | Chance of use once at war | 8% | 20% |
+| World GDP per person, 2065 | AI arrival year (early vs late) | $56.6k | $25.2k |
+| World GDP per person, 2065 | AI growth dividend | $30.3k | $40.5k |
+| World GDP per person, 2045 | Climate damage estimate (level vs global) | $23.8k | $20.2k |
+| Great-power war by 2065 | Nuclear-pair war factor | 36% | 58% |
+| China–India war | Nuclear-pair war factor | 14% | 38% |
+| India–Pakistan war | Nuclear-pair war factor | 22% | 55% |
+| Nuclear use | Use against a non-nuclear state | 8% | 20% |
+| Countries in civil conflict, 2065 | Rebel drones and war length | 20% | 23% |
 
-The table uses the current nuclear-pair range, 0.1–0.55 (0.1–0.7 until 28 October 2026). An earlier run with the wider 0.25–1.0 range showed this assumption to be the most valuable to pin down, and the crisis evidence above then narrowed it; it remains the largest driver of the war outcomes. China–Taiwan (9%) and Russia–Poland (3%) hardly depend on any assumption. The great-power rule matters as a definition rather than a dynamic. Moving the output threshold from 3% to 10% took great-power war by 2065 from 71% to 54% (33% for the traditional majors alone; measured before the interstate scaling was dropped), while nuclear use and world GDP do not move.
+The nuclear-pair factor (0.1–0.55) remains the largest driver of the war outcomes; China–Taiwan and Russia–Poland hardly depend on any assumption.
 
 ## Prospective scoring
 
