@@ -1,0 +1,149 @@
+{
+ "civil_conflict_5y:ladder": {
+  "coef": -0.456,
+  "se": 0.354,
+  "p": 0.198,
+  "n": 1236,
+  "events": 123
+ },
+ "civil_conflict_5y:ladder_change_3y": {
+  "coef": 0.007,
+  "se": 0.197,
+  "p": 0.9714,
+  "n": 830,
+  "events": 69
+ },
+ "civil_conflict_5y:ladder_vs_growth_3y": {
+  "coef": -0.119,
+  "se": 0.181,
+  "p": 0.51,
+  "n": 825,
+  "events": 69
+ },
+ "econ_collapse_5y:ladder": {
+  "coef": -0.297,
+  "se": 0.169,
+  "p": 0.0778,
+  "n": 1506,
+  "events": 156
+ },
+ "econ_collapse_5y:ladder_change_3y": {
+  "coef": -0.398,
+  "se": 0.128,
+  "p": 0.0018,
+  "n": 1038,
+  "events": 124
+ },
+ "econ_collapse_5y:ladder_vs_growth_3y": {
+  "coef": -0.26,
+  "se": 0.128,
+  "p": 0.0415,
+  "n": 1038,
+  "events": 124
+ },
+ "autocratization_5y:ladder": {
+  "coef": -0.051,
+  "se": 0.16,
+  "p": 0.7492,
+  "n": 1503,
+  "events": 205
+ },
+ "autocratization_5y:ladder_change_3y": {
+  "coef": 0.365,
+  "se": 0.125,
+  "p": 0.0035,
+  "n": 1031,
+  "events": 155
+ },
+ "autocratization_5y:ladder_vs_growth_3y": {
+  "coef": 0.198,
+  "se": 0.115,
+  "p": 0.0853,
+  "n": 1016,
+  "events": 155
+ },
+ "coup_5y:ladder": {
+  "coef": -0.066,
+  "se": 0.197,
+  "p": 0.7364,
+  "n": 1525,
+  "events": 77
+ },
+ "coup_5y:ladder_change_3y": {
+  "coef": 0.371,
+  "se": 0.17,
+  "p": 0.0294,
+  "n": 1044,
+  "events": 53
+ },
+ "coup_5y:ladder_vs_growth_3y": {
+  "coef": 0.208,
+  "se": 0.16,
+  "p": 0.1951,
+  "n": 1029,
+  "events": 48
+ },
+ "onset_1y:ladder": {
+  "coef": -0.289,
+  "se": 0.312,
+  "p": 0.3554,
+  "n": 1707,
+  "events": 49
+ },
+ "onset_1y:ladder_change_3y": {
+  "coef": -0.034,
+  "se": 0.147,
+  "p": 0.817,
+  "n": 1298,
+  "events": 36
+ },
+ "onset_1y:ladder_vs_growth_3y": {
+  "coef": -0.153,
+  "se": 0.157,
+  "p": 0.3291,
+  "n": 1289,
+  "events": 36
+ },
+ "termination_1y:ladder": {
+  "coef": 0.298,
+  "se": 0.166,
+  "p": 0.073,
+  "n": 417,
+  "events": 47
+ },
+ "termination_1y:ladder_change_3y": {
+  "coef": -0.07,
+  "se": 0.185,
+  "p": 0.704,
+  "n": 334,
+  "events": 36
+ },
+ "termination_1y:ladder_vs_growth_3y": {
+  "coef": 0.178,
+  "se": 0.207,
+  "p": 0.3904,
+  "n": 322,
+  "events": 35
+ },
+ "coup_1y:ladder": {
+  "coef": -0.216,
+  "se": 0.207,
+  "p": 0.2963,
+  "n": 2096,
+  "events": 25
+ },
+ "coup_1y:ladder_change_3y": {
+  "coef": 0.054,
+  "se": 0.205,
+  "p": 0.7933,
+  "n": 1610,
+  "events": 18
+ },
+ "coup_1y:ladder_vs_growth_3y": {
+  "coef": -0.089,
+  "se": 0.221,
+  "p": 0.6871,
+  "n": 1589,
+  "events": 17
+ }
+}

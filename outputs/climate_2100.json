@@ -1,0 +1,203 @@
+{
+ "n": 2000,
+ "years": [
+  2050,
+  2065,
+  2075,
+  2100
+ ],
+ "scenarios": {
+  "ssp126": {
+   "loss_pct": {
+    "2050": {
+     "median": -6.0,
+     "p5": -21.5,
+     "p95": -0.2,
+     "by_family": {
+      "level": -0.4,
+      "bhm_growth": -5.8,
+      "global_temp": -15.4
+     }
+    },
+    "2065": {
+     "median": -10.1,
+     "p5": -26.2,
+     "p95": 0.2,
+     "by_family": {
+      "level": -0.6,
+      "bhm_growth": -10.9,
+      "global_temp": -18.0
+     }
+    },
+    "2075": {
+     "median": -11.9,
+     "p5": -28.0,
+     "p95": 0.5,
+     "by_family": {
+      "level": -0.6,
+      "bhm_growth": -13.8,
+      "global_temp": -18.8
+     }
+    },
+    "2100": {
+     "median": -13.1,
+     "p5": -32.6,
+     "p95": 1.9,
+     "by_family": {
+      "level": -0.7,
+      "bhm_growth": -19.7,
+      "global_temp": -17.3
+     }
+    }
+   },
+   "conflict_2100": {
+    "damage": 0.2171,
+    "no_damage": 0.2171
+   }
+  },
+  "ssp245": {
+   "loss_pct": {
+    "2050": {
+     "median": -6.8,
+     "p5": -25.8,
+     "p95": -0.3,
+     "by_family": {
+      "level": -0.6,
+      "bhm_growth": -6.6,
+      "global_temp": -19.2
+     }
+    },
+    "2065": {
+     "median": -14.2,
+     "p5": -36.2,
+     "p95": -0.3,
+     "by_family": {
+      "level": -0.9,
+      "bhm_growth": -14.3,
+      "global_temp": -27.3
+     }
+    },
+    "2075": {
+     "median": -18.3,
+     "p5": -41.8,
+     "p95": 0.0,
+     "by_family": {
+      "level": -1.1,
+      "bhm_growth": -19.2,
+      "global_temp": -31.3
+     }
+    },
+    "2100": {
+     "median": -26.0,
+     "p5": -50.9,
+     "p95": 0.4,
+     "by_family": {
+      "level": -1.4,
+      "bhm_growth": -29.1,
+      "global_temp": -38.2
+     }
+    }
+   },
+   "conflict_2100": {
+    "damage": 0.2229,
+    "no_damage": 0.2229
+   }
+  },
+  "ssp370": {
+   "loss_pct": {
+    "2050": {
+     "median": -7.8,
+     "p5": -28.7,
+     "p95": -0.4,
+     "by_family": {
+      "level": -0.7,
+      "bhm_growth": -7.6,
+      "global_temp": -21.3
+     }
+    },
+    "2065": {
+     "median": -17.1,
+     "p5": -43.8,
+     "p95": -0.5,
+     "by_family": {
+      "level": -1.1,
+      "bhm_growth": -16.9,
+      "global_temp": -33.4
+     }
+    },
+    "2075": {
+     "median": -23.4,
+     "p5": -52.5,
+     "p95": -0.6,
+     "by_family": {
+      "level": -1.5,
+      "bhm_growth": -23.4,
+      "global_temp": -41.0
+     }
+    },
+    "2100": {
+     "median": -36.7,
+     "p5": -69.8,
+     "p95": -0.5,
+     "by_family": {
+      "level": -2.5,
+      "bhm_growth": -38.0,
+      "global_temp": -56.5
+     }
+    }
+   },
+   "conflict_2100": {
+    "damage": 0.2229,
+    "no_damage": 0.2286
+   }
+  },
+  "ssp585": {
+   "loss_pct": {
+    "2050": {
+     "median": -9.6,
+     "p5": -34.9,
+     "p95": -0.5,
+     "by_family": {
+      "level": -0.9,
+      "bhm_growth": -9.3,
+      "global_temp": -25.6
+     }
+    },
+    "2065": {
+     "median": -20.9,
+     "p5": -52.1,
+     "p95": -0.8,
+     "by_family": {
+      "level": -1.5,
+      "bhm_growth": -20.7,
+      "global_temp": -39.9
+     }
+    },
+    "2075": {
+     "median": -28.5,
+     "p5": -62.3,
+     "p95": -0.9,
+     "by_family": {
+      "level": -2.0,
+      "bhm_growth": -28.5,
+      "global_temp": -49.0
+     }
+    },
+    "2100": {
+     "median": -43.4,
+     "p5": -80.1,
+     "p95": -1.4,
+     "by_family": {
+      "level": -3.5,
+      "bhm_growth": -44.3,
+      "global_temp": -66.6
+     }
+    }
+   },
+   "conflict_2100": {
+    "damage": 0.2286,
+    "no_damage": 0.2343
+   }
+  }
+ }
+}

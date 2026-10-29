@@ -1,0 +1,1216 @@
+{
+ "by_origin": {
+  "1970": {
+   "conflict_share_by_country": {
+    "dims": 144,
+    "es_sim": 1.9609030485153198,
+    "es_shuffled": 1.953220009803772,
+    "vs_sim": 911.3723754882812,
+    "vs_shuffled": 909.2916259765625
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.06523779779672623,
+    "es_shuffled": 0.06659416109323502,
+    "vs_sim": 0.4126582145690918,
+    "vs_shuffled": 0.6637580394744873
+   },
+   "gdp_change_by_country": {
+    "dims": 146,
+    "es_sim": 3.335749626159668,
+    "es_shuffled": 3.3434858322143555,
+    "vs_sim": 734.7003173828125,
+    "vs_shuffled": 739.5341796875
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.8052405714988708,
+    "es_shuffled": 0.8102617263793945,
+    "vs_sim": 92.93544006347656,
+    "vs_shuffled": 96.1591796875
+   }
+  },
+  "1971": {
+   "conflict_share_by_country": {
+    "dims": 144,
+    "es_sim": 1.8331290483474731,
+    "es_shuffled": 1.825166940689087,
+    "vs_sim": 799.4816284179688,
+    "vs_shuffled": 800.6130981445312
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.07075604051351547,
+    "es_shuffled": 0.07191464304924011,
+    "vs_sim": 0.430839866399765,
+    "vs_shuffled": 0.8904085159301758
+   },
+   "gdp_change_by_country": {
+    "dims": 146,
+    "es_sim": 3.500469923019409,
+    "es_shuffled": 3.5175795555114746,
+    "vs_sim": 757.9259033203125,
+    "vs_shuffled": 762.5399169921875
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.9079540967941284,
+    "es_shuffled": 0.918217658996582,
+    "vs_sim": 102.16449737548828,
+    "vs_shuffled": 105.92619323730469
+   }
+  },
+  "1972": {
+   "conflict_share_by_country": {
+    "dims": 144,
+    "es_sim": 1.946738600730896,
+    "es_shuffled": 1.9461452960968018,
+    "vs_sim": 890.1243896484375,
+    "vs_shuffled": 888.3057861328125
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.0746077224612236,
+    "es_shuffled": 0.07717461884021759,
+    "vs_sim": 0.41305696964263916,
+    "vs_shuffled": 0.9210441708564758
+   },
+   "gdp_change_by_country": {
+    "dims": 146,
+    "es_sim": 3.7056045532226562,
+    "es_shuffled": 3.722712993621826,
+    "vs_sim": 775.8546752929688,
+    "vs_shuffled": 782.0428466796875
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.0977458953857422,
+    "es_shuffled": 1.1135073900222778,
+    "vs_sim": 120.05567932128906,
+    "vs_shuffled": 123.83110809326172
+   }
+  },
+  "1973": {
+   "conflict_share_by_country": {
+    "dims": 145,
+    "es_sim": 2.0112314224243164,
+    "es_shuffled": 2.010352611541748,
+    "vs_sim": 949.461669921875,
+    "vs_shuffled": 949.0584106445312
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.08697051554918289,
+    "es_shuffled": 0.09227234125137329,
+    "vs_sim": 0.34694215655326843,
+    "vs_shuffled": 0.7465050220489502
+   },
+   "gdp_change_by_country": {
+    "dims": 160,
+    "es_sim": 4.133755683898926,
+    "es_shuffled": 4.142104148864746,
+    "vs_sim": 932.9063110351562,
+    "vs_shuffled": 940.76611328125
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.4034059047698975,
+    "es_shuffled": 1.4067387580871582,
+    "vs_sim": 147.92453002929688,
+    "vs_shuffled": 151.5120849609375
+   }
+  },
+  "1974": {
+   "conflict_share_by_country": {
+    "dims": 151,
+    "es_sim": 2.1499338150024414,
+    "es_shuffled": 2.151232957839966,
+    "vs_sim": 1029.032958984375,
+    "vs_shuffled": 1023.4327392578125
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.09926978498697281,
+    "es_shuffled": 0.10150258243083954,
+    "vs_sim": 0.3362632989883423,
+    "vs_shuffled": 0.8348116278648376
+   },
+   "gdp_change_by_country": {
+    "dims": 146,
+    "es_sim": 4.209708213806152,
+    "es_shuffled": 4.213927268981934,
+    "vs_sim": 837.0308227539062,
+    "vs_shuffled": 839.44921875
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.5288589000701904,
+    "es_shuffled": 1.5253586769104004,
+    "vs_sim": 153.76419067382812,
+    "vs_shuffled": 156.3702850341797
+   }
+  },
+  "1975": {
+   "conflict_share_by_country": {
+    "dims": 152,
+    "es_sim": 2.0231103897094727,
+    "es_shuffled": 2.0236358642578125,
+    "vs_sim": 915.86962890625,
+    "vs_shuffled": 915.59765625
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.08426728844642639,
+    "es_shuffled": 0.08524303138256073,
+    "vs_sim": 0.3521597683429718,
+    "vs_shuffled": 0.9815900325775146
+   },
+   "gdp_change_by_country": {
+    "dims": 146,
+    "es_sim": 4.013607025146484,
+    "es_shuffled": 4.029759407043457,
+    "vs_sim": 820.2115478515625,
+    "vs_shuffled": 824.0859985351562
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.2003231048583984,
+    "es_shuffled": 1.1836333274841309,
+    "vs_sim": 143.611328125,
+    "vs_shuffled": 148.6768798828125
+   }
+  },
+  "1976": {
+   "conflict_share_by_country": {
+    "dims": 153,
+    "es_sim": 2.1588568687438965,
+    "es_shuffled": 2.1483418941497803,
+    "vs_sim": 983.9652099609375,
+    "vs_shuffled": 981.0831298828125
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.11065108329057693,
+    "es_shuffled": 0.11733518540859222,
+    "vs_sim": 0.35902050137519836,
+    "vs_shuffled": 0.8536145687103271
+   },
+   "gdp_change_by_country": {
+    "dims": 145,
+    "es_sim": 4.729114055633545,
+    "es_shuffled": 4.7441840171813965,
+    "vs_sim": 911.7235107421875,
+    "vs_shuffled": 915.012939453125
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.6837258338928223,
+    "es_shuffled": 1.6918740272521973,
+    "vs_sim": 171.77264404296875,
+    "vs_shuffled": 175.85414123535156
+   }
+  },
+  "1977": {
+   "conflict_share_by_country": {
+    "dims": 154,
+    "es_sim": 2.2132554054260254,
+    "es_shuffled": 2.2035326957702637,
+    "vs_sim": 1068.837890625,
+    "vs_shuffled": 1061.9632568359375
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.14949855208396912,
+    "es_shuffled": 0.16171963512897491,
+    "vs_sim": 0.38524556159973145,
+    "vs_shuffled": 0.8744005560874939
+   },
+   "gdp_change_by_country": {
+    "dims": 145,
+    "es_sim": 4.737578392028809,
+    "es_shuffled": 4.742334365844727,
+    "vs_sim": 814.6053466796875,
+    "vs_shuffled": 815.932373046875
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.7639983892440796,
+    "es_shuffled": 1.7575392723083496,
+    "vs_sim": 164.33935546875,
+    "vs_shuffled": 166.66769409179688
+   }
+  },
+  "1978": {
+   "conflict_share_by_country": {
+    "dims": 154,
+    "es_sim": 1.9796946048736572,
+    "es_shuffled": 1.9808642864227295,
+    "vs_sim": 909.41796875,
+    "vs_shuffled": 905.1268310546875
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.12827691435813904,
+    "es_shuffled": 0.13277018070220947,
+    "vs_sim": 0.48284465074539185,
+    "vs_shuffled": 0.9286855459213257
+   },
+   "gdp_change_by_country": {
+    "dims": 146,
+    "es_sim": 5.172792434692383,
+    "es_shuffled": 5.191777229309082,
+    "vs_sim": 848.1944580078125,
+    "vs_shuffled": 848.1380615234375
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 2.0219364166259766,
+    "es_shuffled": 2.0192818641662598,
+    "vs_sim": 170.13607788085938,
+    "vs_shuffled": 171.86981201171875
+   }
+  },
+  "1979": {
+   "conflict_share_by_country": {
+    "dims": 155,
+    "es_sim": 1.7708032131195068,
+    "es_shuffled": 1.769200325012207,
+    "vs_sim": 820.6922607421875,
+    "vs_shuffled": 819.2135009765625
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.07480736076831818,
+    "es_shuffled": 0.07733926177024841,
+    "vs_sim": 0.5260012149810791,
+    "vs_shuffled": 0.9979806542396545
+   },
+   "gdp_change_by_country": {
+    "dims": 146,
+    "es_sim": 5.195755958557129,
+    "es_shuffled": 5.208215236663818,
+    "vs_sim": 906.7078247070312,
+    "vs_shuffled": 906.3817138671875
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 2.045480728149414,
+    "es_shuffled": 2.053118944168091,
+    "vs_sim": 170.46356201171875,
+    "vs_shuffled": 172.13092041015625
+   }
+  },
+  "1980": {
+   "conflict_share_by_country": {
+    "dims": 155,
+    "es_sim": 1.71010160446167,
+    "es_shuffled": 1.7142581939697266,
+    "vs_sim": 787.4012451171875,
+    "vs_shuffled": 785.3137817382812
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.08432278037071228,
+    "es_shuffled": 0.08762682974338531,
+    "vs_sim": 0.515887975692749,
+    "vs_shuffled": 1.0476356744766235
+   },
+   "gdp_change_by_country": {
+    "dims": 160,
+    "es_sim": 6.016153335571289,
+    "es_shuffled": 6.01190710067749,
+    "vs_sim": 1166.615966796875,
+    "vs_shuffled": 1162.179443359375
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 2.0202066898345947,
+    "es_shuffled": 2.0201334953308105,
+    "vs_sim": 176.2223663330078,
+    "vs_shuffled": 179.38113403320312
+   }
+  },
+  "1981": {
+   "conflict_share_by_country": {
+    "dims": 155,
+    "es_sim": 1.8310041427612305,
+    "es_shuffled": 1.8289107084274292,
+    "vs_sim": 852.853515625,
+    "vs_shuffled": 849.1468505859375
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.09482686221599579,
+    "es_shuffled": 0.09204962849617004,
+    "vs_sim": 0.6038768291473389,
+    "vs_shuffled": 1.3330498933792114
+   },
+   "gdp_change_by_country": {
+    "dims": 160,
+    "es_sim": 5.5164475440979,
+    "es_shuffled": 5.546917915344238,
+    "vs_sim": 1143.413330078125,
+    "vs_shuffled": 1135.5894775390625
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.826810359954834,
+    "es_shuffled": 1.8203470706939697,
+    "vs_sim": 164.4929656982422,
+    "vs_shuffled": 171.64830017089844
+   }
+  },
+  "1982": {
+   "conflict_share_by_country": {
+    "dims": 155,
+    "es_sim": 1.8324954509735107,
+    "es_shuffled": 1.8276993036270142,
+    "vs_sim": 886.22900390625,
+    "vs_shuffled": 886.4779052734375
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.07671395689249039,
+    "es_shuffled": 0.08392420411109924,
+    "vs_sim": 0.5749759674072266,
+    "vs_shuffled": 1.0008584260940552
+   },
+   "gdp_change_by_country": {
+    "dims": 160,
+    "es_sim": 4.8874101638793945,
+    "es_shuffled": 4.902436256408691,
+    "vs_sim": 1157.4862060546875,
+    "vs_shuffled": 1149.357177734375
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.0866620540618896,
+    "es_shuffled": 1.0950958728790283,
+    "vs_sim": 139.73638916015625,
+    "vs_shuffled": 159.99649047851562
+   }
+  },
+  "1983": {
+   "conflict_share_by_country": {
+    "dims": 155,
+    "es_sim": 1.7089893817901611,
+    "es_shuffled": 1.7132468223571777,
+    "vs_sim": 799.254150390625,
+    "vs_shuffled": 795.1336669921875
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.07435399293899536,
+    "es_shuffled": 0.07906830310821533,
+    "vs_sim": 0.5382997393608093,
+    "vs_shuffled": 1.3274983167648315
+   },
+   "gdp_change_by_country": {
+    "dims": 160,
+    "es_sim": 4.636125087738037,
+    "es_shuffled": 4.609386444091797,
+    "vs_sim": 1151.839599609375,
+    "vs_shuffled": 1151.7589111328125
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.9989155530929565,
+    "es_shuffled": 0.9677278995513916,
+    "vs_sim": 153.498779296875,
+    "vs_shuffled": 176.85006713867188
+   }
+  },
+  "1984": {
+   "conflict_share_by_country": {
+    "dims": 155,
+    "es_sim": 1.6506831645965576,
+    "es_shuffled": 1.649558424949646,
+    "vs_sim": 773.4326782226562,
+    "vs_shuffled": 773.3857421875
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.0710650384426117,
+    "es_shuffled": 0.07493121922016144,
+    "vs_sim": 0.539827823638916,
+    "vs_shuffled": 1.0525509119033813
+   },
+   "gdp_change_by_country": {
+    "dims": 160,
+    "es_sim": 4.621472358703613,
+    "es_shuffled": 4.636125564575195,
+    "vs_sim": 1178.31689453125,
+    "vs_shuffled": 1177.23974609375
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.1184349060058594,
+    "es_shuffled": 1.1328022480010986,
+    "vs_sim": 141.61378479003906,
+    "vs_shuffled": 158.5386199951172
+   }
+  },
+  "1985": {
+   "conflict_share_by_country": {
+    "dims": 155,
+    "es_sim": 1.6901510953903198,
+    "es_shuffled": 1.6795637607574463,
+    "vs_sim": 783.1392822265625,
+    "vs_shuffled": 781.5174560546875
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.06890261173248291,
+    "es_shuffled": 0.0692552700638771,
+    "vs_sim": 0.4134872555732727,
+    "vs_shuffled": 0.8434349298477173
+   },
+   "gdp_change_by_country": {
+    "dims": 161,
+    "es_sim": 4.264485836029053,
+    "es_shuffled": 4.274407863616943,
+    "vs_sim": 1136.396240234375,
+    "vs_shuffled": 1145.642578125
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.8463987708091736,
+    "es_shuffled": 0.8612241744995117,
+    "vs_sim": 99.25425720214844,
+    "vs_shuffled": 117.23992919921875
+   }
+  },
+  "1986": {
+   "conflict_share_by_country": {
+    "dims": 155,
+    "es_sim": 1.8115708827972412,
+    "es_shuffled": 1.8233124017715454,
+    "vs_sim": 826.6287841796875,
+    "vs_shuffled": 827.7705078125
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.0905744880437851,
+    "es_shuffled": 0.10209701955318451,
+    "vs_sim": 0.4761875569820404,
+    "vs_shuffled": 1.0352290868759155
+   },
+   "gdp_change_by_country": {
+    "dims": 161,
+    "es_sim": 4.300662517547607,
+    "es_shuffled": 4.327700138092041,
+    "vs_sim": 1158.300537109375,
+    "vs_shuffled": 1166.513671875
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.8365622758865356,
+    "es_shuffled": 0.8407741189002991,
+    "vs_sim": 79.76113891601562,
+    "vs_shuffled": 95.47030639648438
+   }
+  },
+  "1987": {
+   "conflict_share_by_country": {
+    "dims": 155,
+    "es_sim": 1.854219913482666,
+    "es_shuffled": 1.8591338396072388,
+    "vs_sim": 873.6510009765625,
+    "vs_shuffled": 869.8363037109375
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.07242786884307861,
+    "es_shuffled": 0.08166554570198059,
+    "vs_sim": 0.450865775346756,
+    "vs_shuffled": 1.1974543333053589
+   },
+   "gdp_change_by_country": {
+    "dims": 161,
+    "es_sim": 4.122692584991455,
+    "es_shuffled": 4.125613212585449,
+    "vs_sim": 1105.185791015625,
+    "vs_shuffled": 1117.353271484375
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.8444731831550598,
+    "es_shuffled": 0.84715336561203,
+    "vs_sim": 78.62220764160156,
+    "vs_shuffled": 91.63858032226562
+   }
+  },
+  "1988": {
+   "conflict_share_by_country": {
+    "dims": 155,
+    "es_sim": 1.9679114818572998,
+    "es_shuffled": 1.9662353992462158,
+    "vs_sim": 931.8215942382812,
+    "vs_shuffled": 918.4219970703125
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.08318044245243073,
+    "es_shuffled": 0.08636991679668427,
+    "vs_sim": 0.3309299051761627,
+    "vs_shuffled": 0.9938662648200989
+   },
+   "gdp_change_by_country": {
+    "dims": 161,
+    "es_sim": 4.224811553955078,
+    "es_shuffled": 4.234503269195557,
+    "vs_sim": 1131.00244140625,
+    "vs_shuffled": 1139.3251953125
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.7887241244316101,
+    "es_shuffled": 0.7978601455688477,
+    "vs_sim": 66.45430755615234,
+    "vs_shuffled": 77.1144027709961
+   }
+  },
+  "1989": {
+   "conflict_share_by_country": {
+    "dims": 155,
+    "es_sim": 2.342127799987793,
+    "es_shuffled": 2.3289201259613037,
+    "vs_sim": 1174.6026611328125,
+    "vs_shuffled": 1183.427978515625
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.1719498485326767,
+    "es_shuffled": 0.2073027640581131,
+    "vs_sim": 0.32339009642601013,
+    "vs_shuffled": 1.7865321636199951
+   },
+   "gdp_change_by_country": {
+    "dims": 161,
+    "es_sim": 4.410822868347168,
+    "es_shuffled": 4.41132116317749,
+    "vs_sim": 1196.5994873046875,
+    "vs_shuffled": 1206.525634765625
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.7348615527153015,
+    "es_shuffled": 0.7264617681503296,
+    "vs_sim": 78.06008911132812,
+    "vs_shuffled": 83.71516418457031
+   }
+  },
+  "1990": {
+   "conflict_share_by_country": {
+    "dims": 167,
+    "es_sim": 2.0801289081573486,
+    "es_shuffled": 2.0791015625,
+    "vs_sim": 1117.050537109375,
+    "vs_shuffled": 1116.5240478515625
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.10571108758449554,
+    "es_shuffled": 0.11500410735607147,
+    "vs_sim": 0.30973103642463684,
+    "vs_shuffled": 0.7025449275970459
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 4.28070592880249,
+    "es_shuffled": 4.3029913902282715,
+    "vs_sim": 1187.8453369140625,
+    "vs_shuffled": 1202.185302734375
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.6171690821647644,
+    "es_shuffled": 0.6240100860595703,
+    "vs_sim": 73.41014099121094,
+    "vs_shuffled": 79.19816589355469
+   }
+  },
+  "1991": {
+   "conflict_share_by_country": {
+    "dims": 170,
+    "es_sim": 1.8636785745620728,
+    "es_shuffled": 1.863734245300293,
+    "vs_sim": 989.0216674804688,
+    "vs_shuffled": 1004.775146484375
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.1389455646276474,
+    "es_shuffled": 0.16711552441120148,
+    "vs_sim": 0.23556455969810486,
+    "vs_shuffled": 0.9344522356987
+   },
+   "gdp_change_by_country": {
+    "dims": 161,
+    "es_sim": 4.646409511566162,
+    "es_shuffled": 4.684606552124023,
+    "vs_sim": 1221.992431640625,
+    "vs_shuffled": 1255.704345703125
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.6943974494934082,
+    "es_shuffled": 0.7767888307571411,
+    "vs_sim": 73.07478332519531,
+    "vs_shuffled": 84.9737319946289
+   }
+  },
+  "1992": {
+   "conflict_share_by_country": {
+    "dims": 172,
+    "es_sim": 1.7840335369110107,
+    "es_shuffled": 1.7897169589996338,
+    "vs_sim": 907.072509765625,
+    "vs_shuffled": 915.0853271484375
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.12128935754299164,
+    "es_shuffled": 0.14617608487606049,
+    "vs_sim": 0.2459256947040558,
+    "vs_shuffled": 1.655726671218872
+   },
+   "gdp_change_by_country": {
+    "dims": 161,
+    "es_sim": 4.572886943817139,
+    "es_shuffled": 4.626443386077881,
+    "vs_sim": 1203.5115966796875,
+    "vs_shuffled": 1264.6529541015625
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.8986856937408447,
+    "es_shuffled": 0.9537128210067749,
+    "vs_sim": 102.86160278320312,
+    "vs_shuffled": 115.4616470336914
+   }
+  },
+  "1993": {
+   "conflict_share_by_country": {
+    "dims": 172,
+    "es_sim": 1.771451473236084,
+    "es_shuffled": 1.7767254114151,
+    "vs_sim": 883.20703125,
+    "vs_shuffled": 891.216552734375
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.09171462059020996,
+    "es_shuffled": 0.1029728353023529,
+    "vs_sim": 0.3530201017856598,
+    "vs_shuffled": 1.3484588861465454
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 5.9742937088012695,
+    "es_shuffled": 5.995889663696289,
+    "vs_sim": 1377.3076171875,
+    "vs_shuffled": 1426.6968994140625
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.232559084892273,
+    "es_shuffled": 1.2530394792556763,
+    "vs_sim": 126.15751647949219,
+    "vs_shuffled": 131.27801513671875
+   }
+  },
+  "1994": {
+   "conflict_share_by_country": {
+    "dims": 172,
+    "es_sim": 1.843832015991211,
+    "es_shuffled": 1.838801622390747,
+    "vs_sim": 894.546630859375,
+    "vs_shuffled": 895.649169921875
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.11871576309204102,
+    "es_shuffled": 0.12747034430503845,
+    "vs_sim": 0.3950529992580414,
+    "vs_shuffled": 1.7015738487243652
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 6.723551273345947,
+    "es_shuffled": 6.728886604309082,
+    "vs_sim": 1618.1849365234375,
+    "vs_shuffled": 1651.990234375
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.452263355255127,
+    "es_shuffled": 1.4577924013137817,
+    "vs_sim": 141.564208984375,
+    "vs_shuffled": 141.21755981445312
+   }
+  },
+  "1995": {
+   "conflict_share_by_country": {
+    "dims": 172,
+    "es_sim": 1.7421199083328247,
+    "es_shuffled": 1.741154432296753,
+    "vs_sim": 929.1976318359375,
+    "vs_shuffled": 932.122314453125
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.06717680394649506,
+    "es_shuffled": 0.07356689870357513,
+    "vs_sim": 0.43038952350616455,
+    "vs_shuffled": 1.3323062658309937
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 5.108161926269531,
+    "es_shuffled": 5.09145975112915,
+    "vs_sim": 1282.114013671875,
+    "vs_shuffled": 1313.407470703125
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.1152961254119873,
+    "es_shuffled": 1.1111863851547241,
+    "vs_sim": 126.29443359375,
+    "vs_shuffled": 127.68507385253906
+   }
+  },
+  "1996": {
+   "conflict_share_by_country": {
+    "dims": 172,
+    "es_sim": 1.572198510169983,
+    "es_shuffled": 1.5701767206192017,
+    "vs_sim": 784.673828125,
+    "vs_shuffled": 793.6307373046875
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.05626147985458374,
+    "es_shuffled": 0.061181940138339996,
+    "vs_sim": 0.46229833364486694,
+    "vs_shuffled": 1.3004101514816284
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 4.841911315917969,
+    "es_shuffled": 4.826688766479492,
+    "vs_sim": 1354.411865234375,
+    "vs_shuffled": 1390.3892822265625
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.0467406511306763,
+    "es_shuffled": 1.0478309392929077,
+    "vs_sim": 114.93169403076172,
+    "vs_shuffled": 117.1321792602539
+   }
+  },
+  "1997": {
+   "conflict_share_by_country": {
+    "dims": 172,
+    "es_sim": 1.5829206705093384,
+    "es_shuffled": 1.5896247625350952,
+    "vs_sim": 795.7064208984375,
+    "vs_shuffled": 807.7023315429688
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.07271945476531982,
+    "es_shuffled": 0.08389444649219513,
+    "vs_sim": 0.5382013320922852,
+    "vs_shuffled": 1.7383021116256714
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 4.497708320617676,
+    "es_shuffled": 4.511491775512695,
+    "vs_sim": 1260.775390625,
+    "vs_shuffled": 1296.4583740234375
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.997998833656311,
+    "es_shuffled": 0.9986612796783447,
+    "vs_sim": 122.10130310058594,
+    "vs_shuffled": 124.02484130859375
+   }
+  },
+  "1998": {
+   "conflict_share_by_country": {
+    "dims": 172,
+    "es_sim": 1.6701836585998535,
+    "es_shuffled": 1.664979100227356,
+    "vs_sim": 906.550537109375,
+    "vs_shuffled": 914.4837036132812
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.08260199427604675,
+    "es_shuffled": 0.09074357151985168,
+    "vs_sim": 0.6140636205673218,
+    "vs_shuffled": 1.6525263786315918
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 4.375720500946045,
+    "es_shuffled": 4.370680332183838,
+    "vs_sim": 1207.644775390625,
+    "vs_shuffled": 1240.66259765625
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.004551649093628,
+    "es_shuffled": 0.9910925626754761,
+    "vs_sim": 127.04011535644531,
+    "vs_shuffled": 129.2821502685547
+   }
+  },
+  "1999": {
+   "conflict_share_by_country": {
+    "dims": 172,
+    "es_sim": 1.5692366361618042,
+    "es_shuffled": 1.5703741312026978,
+    "vs_sim": 802.6820068359375,
+    "vs_shuffled": 814.435546875
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.06649915128946304,
+    "es_shuffled": 0.07192927598953247,
+    "vs_sim": 0.5642375349998474,
+    "vs_shuffled": 1.5404987335205078
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 4.176583766937256,
+    "es_shuffled": 4.179956436157227,
+    "vs_sim": 1106.3485107421875,
+    "vs_shuffled": 1138.6558837890625
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.891126275062561,
+    "es_shuffled": 0.898547351360321,
+    "vs_sim": 110.53498840332031,
+    "vs_shuffled": 114.99497985839844
+   }
+  },
+  "2000": {
+   "conflict_share_by_country": {
+    "dims": 172,
+    "es_sim": 1.7333797216415405,
+    "es_shuffled": 1.737296462059021,
+    "vs_sim": 829.293212890625,
+    "vs_shuffled": 833.4915771484375
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.06726490706205368,
+    "es_shuffled": 0.06686445325613022,
+    "vs_sim": 0.5186339616775513,
+    "vs_shuffled": 0.9624168872833252
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 3.9085841178894043,
+    "es_shuffled": 3.911067008972168,
+    "vs_sim": 1106.46826171875,
+    "vs_shuffled": 1142.019775390625
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.8714240193367004,
+    "es_shuffled": 0.8668935894966125,
+    "vs_sim": 115.30208587646484,
+    "vs_shuffled": 121.88861846923828
+   }
+  },
+  "2001": {
+   "conflict_share_by_country": {
+    "dims": 173,
+    "es_sim": 1.7608155012130737,
+    "es_shuffled": 1.7632042169570923,
+    "vs_sim": 937.666015625,
+    "vs_shuffled": 940.5757446289062
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.07036028802394867,
+    "es_shuffled": 0.07174504548311234,
+    "vs_sim": 0.5206948518753052,
+    "vs_shuffled": 0.8555229306221008
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 3.584319591522217,
+    "es_shuffled": 3.5670762062072754,
+    "vs_sim": 1073.2235107421875,
+    "vs_shuffled": 1119.396728515625
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.7682828903198242,
+    "es_shuffled": 0.7734756469726562,
+    "vs_sim": 100.66578674316406,
+    "vs_shuffled": 112.20599365234375
+   }
+  },
+  "2002": {
+   "conflict_share_by_country": {
+    "dims": 173,
+    "es_sim": 1.870098352432251,
+    "es_shuffled": 1.8647427558898926,
+    "vs_sim": 1007.0582275390625,
+    "vs_shuffled": 1011.758056640625
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.09407857060432434,
+    "es_shuffled": 0.09315064549446106,
+    "vs_sim": 0.4379013776779175,
+    "vs_shuffled": 0.7617929577827454
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 3.2417240142822266,
+    "es_shuffled": 3.255730152130127,
+    "vs_sim": 1095.8709716796875,
+    "vs_shuffled": 1155.6787109375
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.7595101594924927,
+    "es_shuffled": 0.7654726505279541,
+    "vs_sim": 93.49555969238281,
+    "vs_shuffled": 110.5682373046875
+   }
+  },
+  "2003": {
+   "conflict_share_by_country": {
+    "dims": 173,
+    "es_sim": 1.8860328197479248,
+    "es_shuffled": 1.8880420923233032,
+    "vs_sim": 1065.1142578125,
+    "vs_shuffled": 1070.756591796875
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.08690512180328369,
+    "es_shuffled": 0.09086857736110687,
+    "vs_sim": 0.3929741382598877,
+    "vs_shuffled": 0.641350507736206
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 3.1841750144958496,
+    "es_shuffled": 3.176748752593994,
+    "vs_sim": 1092.589111328125,
+    "vs_shuffled": 1151.46337890625
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.7325902581214905,
+    "es_shuffled": 0.7433862686157227,
+    "vs_sim": 97.67819213867188,
+    "vs_shuffled": 113.63771057128906
+   }
+  },
+  "2004": {
+   "conflict_share_by_country": {
+    "dims": 173,
+    "es_sim": 1.7774641513824463,
+    "es_shuffled": 1.7789325714111328,
+    "vs_sim": 1011.9816284179688,
+    "vs_shuffled": 1012.716796875
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.07373257726430893,
+    "es_shuffled": 0.07560256123542786,
+    "vs_sim": 0.3413877785205841,
+    "vs_shuffled": 0.49802571535110474
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 3.180140972137451,
+    "es_shuffled": 3.1573424339294434,
+    "vs_sim": 1138.62158203125,
+    "vs_shuffled": 1205.92236328125
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.7243821620941162,
+    "es_shuffled": 0.7413821220397949,
+    "vs_sim": 104.69102478027344,
+    "vs_shuffled": 124.40374755859375
+   }
+  },
+  "2005": {
+   "conflict_share_by_country": {
+    "dims": 174,
+    "es_sim": 1.868658423423767,
+    "es_shuffled": 1.8676600456237793,
+    "vs_sim": 1029.4112548828125,
+    "vs_shuffled": 1029.775390625
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.10336989909410477,
+    "es_shuffled": 0.10774970799684525,
+    "vs_sim": 0.3632493019104004,
+    "vs_shuffled": 0.4440568685531616
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 3.591655731201172,
+    "es_shuffled": 3.6063742637634277,
+    "vs_sim": 1201.526611328125,
+    "vs_shuffled": 1269.93310546875
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 0.9046761393547058,
+    "es_shuffled": 0.9217960834503174,
+    "vs_sim": 130.42739868164062,
+    "vs_shuffled": 150.55276489257812
+   }
+  },
+  "2006": {
+   "conflict_share_by_country": {
+    "dims": 174,
+    "es_sim": 1.853399634361267,
+    "es_shuffled": 1.8476533889770508,
+    "vs_sim": 1091.4306640625,
+    "vs_shuffled": 1092.91650390625
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.075352244079113,
+    "es_shuffled": 0.07769333571195602,
+    "vs_sim": 0.30613356828689575,
+    "vs_shuffled": 0.5243775844573975
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 3.6795196533203125,
+    "es_shuffled": 3.70432186126709,
+    "vs_sim": 1320.884765625,
+    "vs_shuffled": 1397.12939453125
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.1588467359542847,
+    "es_shuffled": 1.1923149824142456,
+    "vs_sim": 161.4161376953125,
+    "vs_shuffled": 182.93736267089844
+   }
+  },
+  "2007": {
+   "conflict_share_by_country": {
+    "dims": 174,
+    "es_sim": 1.7983731031417847,
+    "es_shuffled": 1.7934813499450684,
+    "vs_sim": 989.6871337890625,
+    "vs_shuffled": 984.9453735351562
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.10937663167715073,
+    "es_shuffled": 0.11483032256364822,
+    "vs_sim": 0.31270888447761536,
+    "vs_shuffled": 0.5245019197463989
+   },
+   "gdp_change_by_country": {
+    "dims": 162,
+    "es_sim": 3.9772167205810547,
+    "es_shuffled": 4.018007278442383,
+    "vs_sim": 1413.28662109375,
+    "vs_shuffled": 1499.850341796875
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.4383347034454346,
+    "es_shuffled": 1.4994206428527832,
+    "vs_sim": 182.44448852539062,
+    "vs_shuffled": 206.2925262451172
+   }
+  },
+  "2008": {
+   "conflict_share_by_country": {
+    "dims": 174,
+    "es_sim": 1.8144744634628296,
+    "es_shuffled": 1.8147221803665161,
+    "vs_sim": 1063.92724609375,
+    "vs_shuffled": 1066.894287109375
+   },
+   "world_conflict_by_year": {
+    "dims": 15,
+    "es_sim": 0.07234535366296768,
+    "es_shuffled": 0.0753287523984909,
+    "vs_sim": 0.34111127257347107,
+    "vs_shuffled": 0.5444502830505371
+   },
+   "gdp_change_by_country": {
+    "dims": 156,
+    "es_sim": 3.4063940048217773,
+    "es_shuffled": 3.4259419441223145,
+    "vs_sim": 1285.403076171875,
+    "vs_shuffled": 1368.740966796875
+   },
+   "gdp_path_by_region_year": {
+    "dims": 90,
+    "es_sim": 1.1762940883636475,
+    "es_shuffled": 1.224919080734253,
+    "vs_sim": 156.59326171875,
+    "vs_shuffled": 180.59303283691406
+   }
+  }
+ },
+ "summary": {
+  "conflict_share_by_country:es": {
+   "mean_rel_change_vs_shuffled": 0.0006,
+   "origins_sim_better": 17,
+   "n": 39
+  },
+  "conflict_share_by_country:vs": {
+   "mean_rel_change_vs_shuffled": -0.0014,
+   "origins_sim_better": 21,
+   "n": 39
+  },
+  "world_conflict_by_year:es": {
+   "mean_rel_change_vs_shuffled": -0.0589,
+   "origins_sim_better": 36,
+   "n": 39
+  },
+  "world_conflict_by_year:vs": {
+   "mean_rel_change_vs_shuffled": -0.5468,
+   "origins_sim_better": 39,
+   "n": 39
+  },
+  "gdp_change_by_country:es": {
+   "mean_rel_change_vs_shuffled": -0.0023,
+   "origins_sim_better": 31,
+   "n": 39
+  },
+  "gdp_change_by_country:vs": {
+   "mean_rel_change_vs_shuffled": -0.0204,
+   "origins_sim_better": 32,
+   "n": 39
+  },
+  "gdp_path_by_region_year:es": {
+   "mean_rel_change_vs_shuffled": -0.0101,
+   "origins_sim_better": 28,
+   "n": 39
+  },
+  "gdp_path_by_region_year:vs": {
+   "mean_rel_change_vs_shuffled": -0.0741,
+   "origins_sim_better": 38,
+   "n": 39
+  }
+ }
+}

@@ -1,0 +1,110 @@
+{
+ "base": {
+  "time_split_2016_2020": {
+   "mass_shooting": {
+    "n": 765,
+    "events": 336,
+    "auc": 0.7581,
+    "bss": 0.1503
+   },
+   "overdose_surge": {
+    "n": 510,
+    "events": 319,
+    "auc": 0.5294,
+    "bss": -0.6533
+   },
+   "unemployment_surge": {
+    "n": 510,
+    "events": 380,
+    "auc": 0.6719,
+    "bss": 0.4098
+   }
+  },
+  "state_cv_2010_2020": {
+   "housing_bust": {
+    "n": 510,
+    "events": 2,
+    "auc": 0.9144,
+    "bss": 0.7269
+   },
+   "income_shock": {
+    "n": 510,
+    "events": 28,
+    "auc": 0.8363,
+    "bss": 0.1952
+   },
+   "mass_shooting": {
+    "n": 561,
+    "events": 204,
+    "auc": 0.8138,
+    "bss": 0.3369
+   },
+   "overdose_surge": {
+    "n": 510,
+    "events": 265,
+    "auc": 0.6603,
+    "bss": 0.0976
+   },
+   "unemployment_surge": {
+    "n": 510,
+    "events": 158,
+    "auc": 0.9412,
+    "bss": 0.5885
+   }
+  }
+ },
+ "datacommons": {
+  "time_split_2016_2020": {
+   "mass_shooting": {
+    "n": 765,
+    "events": 336,
+    "auc": 0.7378,
+    "bss": 0.0807
+   },
+   "overdose_surge": {
+    "n": 510,
+    "events": 319,
+    "auc": 0.4095,
+    "bss": -0.4818
+   },
+   "unemployment_surge": {
+    "n": 510,
+    "events": 380,
+    "auc": 0.6802,
+    "bss": 0.3847
+   }
+  },
+  "state_cv_2010_2020": {
+   "housing_bust": {
+    "n": 510,
+    "events": 2,
+    "auc": 0.9488,
+    "bss": 0.7737
+   },
+   "income_shock": {
+    "n": 510,
+    "events": 28,
+    "auc": 0.8642,
+    "bss": 0.2403
+   },
+   "mass_shooting": {
+    "n": 561,
+    "events": 204,
+    "auc": 0.8136,
+    "bss": 0.3373
+   },
+   "overdose_surge": {
+    "n": 510,
+    "events": 265,
+    "auc": 0.7114,
+    "bss": 0.1437
+   },
+   "unemployment_surge": {
+    "n": 510,
+    "events": 158,
+    "auc": 0.943,
+    "bss": 0.5892
+   }
+  }
+ }
+}

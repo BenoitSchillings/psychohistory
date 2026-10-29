@@ -1,0 +1,240 @@
+{
+ "coverage": {
+  "milex_change_1y": 0.178,
+  "milex_cut_10pct": 1.0,
+  "milex_change_3y": 0.169
+ },
+ "logit": {
+  "onset_1y:milex_change_1y": {
+   "coef_sd": 0.05,
+   "se": 0.059,
+   "p": 0.395,
+   "n": 6106,
+   "events": 188
+  },
+  "onset_1y:milex_cut_10pct": {
+   "coef_sd": -0.026,
+   "se": 0.057,
+   "p": 0.654,
+   "n": 8905,
+   "events": 264
+  },
+  "onset_1y:milex_change_3y": {
+   "coef_sd": 0.054,
+   "se": 0.074,
+   "p": 0.466,
+   "n": 5791,
+   "events": 177
+  },
+  "civil_conflict_5y:milex_change_1y": {
+   "coef_sd": 0.074,
+   "se": 0.051,
+   "p": 0.143,
+   "n": 5654,
+   "events": 614
+  },
+  "civil_conflict_5y:milex_cut_10pct": {
+   "coef_sd": -0.025,
+   "se": 0.041,
+   "p": 0.548,
+   "n": 8389,
+   "events": 936
+  },
+  "civil_conflict_5y:milex_change_3y": {
+   "coef_sd": 0.099,
+   "se": 0.074,
+   "p": 0.179,
+   "n": 5341,
+   "events": 580
+  },
+  "coup_1y:milex_change_1y": {
+   "coef_sd": -0.081,
+   "se": 0.05,
+   "p": 0.11,
+   "n": 7409,
+   "events": 231
+  },
+  "coup_1y:milex_cut_10pct": {
+   "coef_sd": 0.028,
+   "se": 0.064,
+   "p": 0.662,
+   "n": 10187,
+   "events": 386
+  },
+  "coup_1y:milex_change_3y": {
+   "coef_sd": -0.117,
+   "se": 0.07,
+   "p": 0.094,
+   "n": 7042,
+   "events": 207
+  },
+  "econ_collapse_5y:milex_change_1y": {
+   "coef_sd": -0.102,
+   "se": 0.052,
+   "p": 0.05,
+   "n": 6842,
+   "events": 591
+  },
+  "econ_collapse_5y:milex_cut_10pct": {
+   "coef_sd": 0.124,
+   "se": 0.038,
+   "p": 0.001,
+   "n": 9883,
+   "events": 1108
+  },
+  "econ_collapse_5y:milex_change_3y": {
+   "coef_sd": -0.119,
+   "se": 0.068,
+   "p": 0.079,
+   "n": 6477,
+   "events": 540
+  },
+  "autocratization_5y:milex_change_1y": {
+   "coef_sd": 0.012,
+   "se": 0.052,
+   "p": 0.812,
+   "n": 6369,
+   "events": 473
+  },
+  "autocratization_5y:milex_cut_10pct": {
+   "coef_sd": -0.055,
+   "se": 0.048,
+   "p": 0.251,
+   "n": 8729,
+   "events": 673
+  },
+  "autocratization_5y:milex_change_3y": {
+   "coef_sd": -0.02,
+   "se": 0.082,
+   "p": 0.803,
+   "n": 6052,
+   "events": 432
+  }
+ },
+ "gbm_backtest": {
+  "base:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8128,
+    "bss": 0.1284
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6479,
+    "bss": 0.0705
+   },
+   "autocratization_5y": {
+    "auc": 0.8393,
+    "bss": 0.0933
+   },
+   "coup_5y": {
+    "auc": 0.8282,
+    "bss": 0.1919
+   },
+   "onset_1y": {
+    "auc": 0.8383,
+    "bss": 0.0557
+   },
+   "termination_1y": {
+    "auc": 0.7327,
+    "bss": 0.1007
+   },
+   "coup_1y": {
+    "auc": 0.8481,
+    "bss": 0.0832
+   },
+   "score": 0.9031
+  },
+  "base:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9104,
+    "bss": 0.25
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7917,
+    "bss": 0.096
+   },
+   "autocratization_5y": {
+    "auc": 0.7295,
+    "bss": 0.0699
+   },
+   "coup_5y": {
+    "auc": 0.8446,
+    "bss": 0.2577
+   },
+   "onset_1y": {
+    "auc": 0.9158,
+    "bss": 0.0951
+   },
+   "termination_1y": {
+    "auc": 0.7388,
+    "bss": 0.1292
+   },
+   "coup_1y": {
+    "auc": 0.8366,
+    "bss": 0.0925
+   },
+   "score": 0.9875
+  },
+  "milex:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.814,
+    "bss": 0.1316
+   },
+   "econ_collapse_5y": {
+    "auc": 0.65,
+    "bss": 0.0727
+   },
+   "autocratization_5y": {
+    "auc": 0.8354,
+    "bss": 0.0929
+   },
+   "coup_5y": {
+    "auc": 0.8311,
+    "bss": 0.1948
+   },
+   "onset_1y": {
+    "auc": 0.8409,
+    "bss": 0.0557
+   },
+   "termination_1y": {
+    "auc": 0.7372,
+    "bss": 0.1014
+   },
+   "coup_1y": {
+    "auc": 0.8454,
+    "bss": 0.083
+   },
+   "score": 0.9056
+  },
+  "milex:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9118,
+    "bss": 0.2511
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7941,
+    "bss": 0.0957
+   },
+   "autocratization_5y": {
+    "auc": 0.7296,
+    "bss": 0.0713
+   },
+   "coup_5y": {
+    "auc": 0.839,
+    "bss": 0.2562
+   },
+   "onset_1y": {
+    "auc": 0.9145,
+    "bss": 0.0927
+   },
+   "termination_1y": {
+    "auc": 0.7391,
+    "bss": 0.1348
+   },
+   "coup_1y": {
+    "auc": 0.8288,
+    "bss": 0.0927
+   },
+   "score": 0.9872
+  }
+ }
+}

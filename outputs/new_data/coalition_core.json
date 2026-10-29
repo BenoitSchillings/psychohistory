@@ -1,0 +1,348 @@
+{
+ "coverage": {
+  "opp_military": 0.434,
+  "opp_business_elites": 0.434,
+  "sup_religious": 0.509,
+  "sup_civil_servants": 0.509,
+  "sup_rural_workers": 0.509,
+  "sup_agrarian_elites": 0.509
+ },
+ "logit": {
+  "onset_1y:opp_military": {
+   "coef_sd": 0.306,
+   "se": 0.071,
+   "p": 0.0,
+   "n": 8847,
+   "events": 261
+  },
+  "onset_1y:opp_business_elites": {
+   "coef_sd": 0.042,
+   "se": 0.076,
+   "p": 0.584,
+   "n": 8847,
+   "events": 261
+  },
+  "onset_1y:sup_religious": {
+   "coef_sd": 0.192,
+   "se": 0.063,
+   "p": 0.002,
+   "n": 8849,
+   "events": 261
+  },
+  "onset_1y:sup_civil_servants": {
+   "coef_sd": -0.174,
+   "se": 0.08,
+   "p": 0.029,
+   "n": 8849,
+   "events": 261
+  },
+  "onset_1y:sup_rural_workers": {
+   "coef_sd": -0.193,
+   "se": 0.098,
+   "p": 0.049,
+   "n": 8849,
+   "events": 261
+  },
+  "onset_1y:sup_agrarian_elites": {
+   "coef_sd": -0.009,
+   "se": 0.065,
+   "p": 0.89,
+   "n": 8849,
+   "events": 261
+  },
+  "civil_conflict_5y:opp_military": {
+   "coef_sd": 0.358,
+   "se": 0.09,
+   "p": 0.0,
+   "n": 8341,
+   "events": 928
+  },
+  "civil_conflict_5y:opp_business_elites": {
+   "coef_sd": 0.071,
+   "se": 0.083,
+   "p": 0.393,
+   "n": 8341,
+   "events": 928
+  },
+  "civil_conflict_5y:sup_religious": {
+   "coef_sd": 0.265,
+   "se": 0.063,
+   "p": 0.0,
+   "n": 8343,
+   "events": 928
+  },
+  "civil_conflict_5y:sup_civil_servants": {
+   "coef_sd": -0.197,
+   "se": 0.085,
+   "p": 0.02,
+   "n": 8343,
+   "events": 928
+  },
+  "civil_conflict_5y:sup_rural_workers": {
+   "coef_sd": -0.293,
+   "se": 0.113,
+   "p": 0.009,
+   "n": 8343,
+   "events": 928
+  },
+  "civil_conflict_5y:sup_agrarian_elites": {
+   "coef_sd": 0.056,
+   "se": 0.071,
+   "p": 0.429,
+   "n": 8343,
+   "events": 928
+  },
+  "coup_1y:opp_military": {
+   "coef_sd": 0.797,
+   "se": 0.105,
+   "p": 0.0,
+   "n": 10132,
+   "events": 385
+  },
+  "coup_1y:opp_business_elites": {
+   "coef_sd": 0.22,
+   "se": 0.062,
+   "p": 0.0,
+   "n": 10132,
+   "events": 385
+  },
+  "coup_1y:sup_religious": {
+   "coef_sd": -0.219,
+   "se": 0.1,
+   "p": 0.029,
+   "n": 10134,
+   "events": 385
+  },
+  "coup_1y:sup_civil_servants": {
+   "coef_sd": -0.383,
+   "se": 0.087,
+   "p": 0.0,
+   "n": 10134,
+   "events": 385
+  },
+  "coup_1y:sup_rural_workers": {
+   "coef_sd": -0.336,
+   "se": 0.103,
+   "p": 0.001,
+   "n": 10134,
+   "events": 385
+  },
+  "coup_1y:sup_agrarian_elites": {
+   "coef_sd": 0.216,
+   "se": 0.077,
+   "p": 0.005,
+   "n": 10134,
+   "events": 385
+  },
+  "econ_collapse_5y:opp_military": {
+   "coef_sd": 0.333,
+   "se": 0.081,
+   "p": 0.0,
+   "n": 9811,
+   "events": 1070
+  },
+  "econ_collapse_5y:opp_business_elites": {
+   "coef_sd": 0.263,
+   "se": 0.073,
+   "p": 0.0,
+   "n": 9811,
+   "events": 1070
+  },
+  "econ_collapse_5y:sup_religious": {
+   "coef_sd": -0.115,
+   "se": 0.086,
+   "p": 0.179,
+   "n": 9813,
+   "events": 1072
+  },
+  "econ_collapse_5y:sup_civil_servants": {
+   "coef_sd": -0.093,
+   "se": 0.071,
+   "p": 0.191,
+   "n": 9813,
+   "events": 1072
+  },
+  "econ_collapse_5y:sup_rural_workers": {
+   "coef_sd": -0.031,
+   "se": 0.1,
+   "p": 0.759,
+   "n": 9813,
+   "events": 1072
+  },
+  "econ_collapse_5y:sup_agrarian_elites": {
+   "coef_sd": -0.279,
+   "se": 0.082,
+   "p": 0.001,
+   "n": 9813,
+   "events": 1072
+  },
+  "autocratization_5y:opp_military": {
+   "coef_sd": 0.488,
+   "se": 0.091,
+   "p": 0.0,
+   "n": 8656,
+   "events": 669
+  },
+  "autocratization_5y:opp_business_elites": {
+   "coef_sd": 0.298,
+   "se": 0.073,
+   "p": 0.0,
+   "n": 8656,
+   "events": 669
+  },
+  "autocratization_5y:sup_religious": {
+   "coef_sd": 0.001,
+   "se": 0.106,
+   "p": 0.992,
+   "n": 8658,
+   "events": 670
+  },
+  "autocratization_5y:sup_civil_servants": {
+   "coef_sd": -0.186,
+   "se": 0.093,
+   "p": 0.046,
+   "n": 8658,
+   "events": 670
+  },
+  "autocratization_5y:sup_rural_workers": {
+   "coef_sd": -0.082,
+   "se": 0.109,
+   "p": 0.452,
+   "n": 8658,
+   "events": 670
+  },
+  "autocratization_5y:sup_agrarian_elites": {
+   "coef_sd": 0.03,
+   "se": 0.092,
+   "p": 0.746,
+   "n": 8658,
+   "events": 670
+  }
+ },
+ "gbm_backtest": {
+  "base:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8151,
+    "bss": 0.1282
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6526,
+    "bss": 0.0742
+   },
+   "autocratization_5y": {
+    "auc": 0.8394,
+    "bss": 0.0964
+   },
+   "coup_5y": {
+    "auc": 0.8302,
+    "bss": 0.1931
+   },
+   "onset_1y": {
+    "auc": 0.8393,
+    "bss": 0.0554
+   },
+   "termination_1y": {
+    "auc": 0.7356,
+    "bss": 0.0987
+   },
+   "coup_1y": {
+    "auc": 0.848,
+    "bss": 0.0819
+   },
+   "score": 0.9073
+  },
+  "base:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9165,
+    "bss": 0.2568
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7929,
+    "bss": 0.0912
+   },
+   "autocratization_5y": {
+    "auc": 0.7313,
+    "bss": 0.0729
+   },
+   "coup_5y": {
+    "auc": 0.849,
+    "bss": 0.2641
+   },
+   "onset_1y": {
+    "auc": 0.9132,
+    "bss": 0.0925
+   },
+   "termination_1y": {
+    "auc": 0.7375,
+    "bss": 0.1264
+   },
+   "coup_1y": {
+    "auc": 0.8296,
+    "bss": 0.0913
+   },
+   "score": 0.9937
+  },
+  "coalition_core:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8149,
+    "bss": 0.1289
+   },
+   "econ_collapse_5y": {
+    "auc": 0.655,
+    "bss": 0.0759
+   },
+   "autocratization_5y": {
+    "auc": 0.845,
+    "bss": 0.111
+   },
+   "coup_5y": {
+    "auc": 0.8452,
+    "bss": 0.2037
+   },
+   "onset_1y": {
+    "auc": 0.8408,
+    "bss": 0.0564
+   },
+   "termination_1y": {
+    "auc": 0.732,
+    "bss": 0.1006
+   },
+   "coup_1y": {
+    "auc": 0.8531,
+    "bss": 0.085
+   },
+   "score": 0.9199
+  },
+  "coalition_core:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9121,
+    "bss": 0.2453
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7918,
+    "bss": 0.0962
+   },
+   "autocratization_5y": {
+    "auc": 0.7423,
+    "bss": 0.0721
+   },
+   "coup_5y": {
+    "auc": 0.8683,
+    "bss": 0.2742
+   },
+   "onset_1y": {
+    "auc": 0.9146,
+    "bss": 0.0907
+   },
+   "termination_1y": {
+    "auc": 0.7496,
+    "bss": 0.1219
+   },
+   "coup_1y": {
+    "auc": 0.8391,
+    "bss": 0.0963
+   },
+   "score": 1.0006
+  }
+ }
+}

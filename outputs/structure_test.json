@@ -1,0 +1,181 @@
+{
+ "sanctions": {
+  "growth": {
+   "sanct": [
+    0.0004,
+    0.0015
+   ],
+   "sanct_comp": [
+    -0.0006,
+    0.0035
+   ],
+   "n": 9068
+  },
+  "collapse2": {
+   "sanct": [
+    0.038,
+    0.1403
+   ],
+   "sanct_comp": [
+    -0.1488,
+    0.2397
+   ],
+   "n": 9067,
+   "events": 1021
+  },
+  "autoc2": {
+   "sanct": [
+    -0.6209,
+    0.2802
+   ],
+   "sanct_comp": [
+    0.1619,
+    0.591
+   ],
+   "n": 8634,
+   "events": 196
+  },
+  "onset2": {
+   "sanct": [
+    0.2834,
+    0.1979
+   ],
+   "n": 7655,
+   "events": 444
+  }
+ },
+ "rebels": {
+  "fragmentation": {
+   "lrebels": [
+    -1.9301,
+    0.4138
+   ],
+   "n": 1551,
+   "events": 247
+  },
+  "external_support": {
+   "ext_sup": [
+    -0.6463,
+    0.251
+   ],
+   "n": 1104,
+   "events": 167
+  },
+  "both": {
+   "lrebels": [
+    -2.1269,
+    0.3709
+   ],
+   "ext_sup": [
+    -0.5139,
+    0.2671
+   ],
+   "n": 1104,
+   "events": 167
+  }
+ },
+ "term_limit_evasion": {
+  "coup2": {
+   "evasion3": [
+    -0.3877,
+    0.2599
+   ],
+   "n": 8510,
+   "events": 627
+  },
+  "autoc2": {
+   "evasion3": [
+    -0.2622,
+    0.3746
+   ],
+   "n": 8028,
+   "events": 167
+  },
+  "mob_up": {
+   "evasion3": [
+    0.1012,
+    0.196
+   ],
+   "n": 8102,
+   "events": 572
+  },
+  "onset2": {
+   "evasion3": [
+    -0.0378,
+    0.2238
+   ],
+   "n": 7386,
+   "events": 376
+  }
+ },
+ "eci": {
+  "eci": [
+   0.0041,
+   0.0016
+  ],
+  "n": 7844,
+  "oos_rmse_without": 0.02692,
+  "oos_rmse_with": 0.0269
+ },
+ "coup_proofing": {
+  "coup_attempt": {
+   "counterweights": [
+    0.0179,
+    0.2057
+   ],
+   "n": 4347,
+   "events": 216
+  },
+  "coup_success_given_attempt": "LinAlgError('Singular matrix')",
+  "onset2": {
+   "counterweights": [
+    0.1952,
+    0.2449
+   ],
+   "n": 3788,
+   "events": 263
+  }
+ },
+ "external_debt": {
+  "fin_start": {
+   "st_res": [
+    0.5958,
+    0.1121
+   ],
+   "ds_exp": [
+    1.1245,
+    0.6
+   ],
+   "st_x_rate": [
+    0.7759,
+    0.5249
+   ],
+   "n": 2974,
+   "events": 261
+  },
+  "collapse2": {
+   "st_res": [
+    0.3077,
+    0.1311
+   ],
+   "ds_exp": [
+    0.6294,
+    0.7587
+   ],
+   "st_x_rate": [
+    -0.1515,
+    0.5266
+   ],
+   "n": 3144,
+   "events": 401
+  }
+ },
+ "peer_coups": {
+  "peer_coups": [
+   2.645,
+   0.8636
+  ],
+  "n": 9879,
+  "events": 377
+ }
+}

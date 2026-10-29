@@ -1,0 +1,68 @@
+[
+ {
+  "origin": 1995,
+  "end": 2015,
+  "migration": false,
+  "conflict_incidence_auc": 0.9077,
+  "onset_auc_peace": 0.9088,
+  "world_conflict_in_90": 1.0,
+  "gdp_in_90": 0.8889,
+  "gdp_in_50": 0.4877,
+  "dem_in_90": 0.9483,
+  "dem_in_50": 0.4885
+ },
+ {
+  "origin": 1995,
+  "end": 2015,
+  "migration": true,
+  "conflict_incidence_auc": 0.9087,
+  "onset_auc_peace": 0.9085,
+  "world_conflict_in_90": 1.0,
+  "gdp_in_90": 0.8889,
+  "gdp_in_50": 0.4877,
+  "dem_in_90": 0.9483,
+  "dem_in_50": 0.4885,
+  "refugees_world_m": {
+   "actual_end": 15.8,
+   "sim_end_q": [
+    4.6,
+    15.1,
+    35.8
+   ],
+   "years_actual_in_90": 0.95
+  }
+ },
+ {
+  "origin": 2005,
+  "end": 2025,
+  "migration": false,
+  "conflict_incidence_auc": 0.9135,
+  "onset_auc_peace": 0.8506,
+  "world_conflict_in_90": 1.0,
+  "gdp_in_90": 0.9936,
+  "gdp_in_50": 0.5833,
+  "dem_in_90": 0.9486,
+  "dem_in_50": 0.4457
+ },
+ {
+  "origin": 2005,
+  "end": 2025,
+  "migration": true,
+  "conflict_incidence_auc": 0.9136,
+  "onset_auc_peace": 0.8499,
+  "world_conflict_in_90": 1.0,
+  "gdp_in_90": 0.9936,
+  "gdp_in_50": 0.5769,
+  "dem_in_90": 0.9486,
+  "dem_in_50": 0.4457,
+  "refugees_world_m": {
+   "actual_end": 30.5,
+   "sim_end_q": [
+    6.5,
+    13.6,
+    29.4
+   ],
+   "years_actual_in_90": 0.7
+  }
+ }
+]

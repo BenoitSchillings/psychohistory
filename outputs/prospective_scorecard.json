@@ -1,0 +1,24 @@
+{
+ "run": "2026-10-28T15:04:13",
+ "monthly": {
+  "data_to": "2026-09",
+  "ledgers": {
+   "monthly_2026-09.csv": "no matured months yet"
+  }
+ },
+ "crowd": {
+  "questions": 55,
+  "resolved": 0
+ },
+ "annual": {
+  "issue": "not issued (score only)",
+  "score": {
+   "complete_through": 2025,
+   "versions": {
+    "3662807baf6a": "first year (2026) not complete yet (data through 2025)",
+    "ec3717bd4879": "first year (2026) not complete yet (data through 2025)"
+   }
+  }
+ },
+ "llm_panel": "window 2025-2029: resolves in 2030"
+}

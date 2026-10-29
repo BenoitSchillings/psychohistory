@@ -1,0 +1,95 @@
+{
+ "n_crises": 169,
+ "n_polities": 153,
+ "span": [
+  -2200,
+  1918
+ ],
+ "gaps": {
+  "n": 96,
+  "mean": 309.0833333333333,
+  "median": 222.5,
+  "q10": 63.0,
+  "q90": 606.0,
+  "cv": 0.9924406308469208,
+  "cv_random_mean": 1.0669155635550138,
+  "p_periodic": 0.2345
+ },
+ "hazard_by_age": [
+  {
+   "age": "0-50",
+   "crises": 42,
+   "polity_years": 7410.0,
+   "per_century": 0.5668016194331984
+  },
+  {
+   "age": "50-100",
+   "crises": 40,
+   "polity_years": 6751.0,
+   "per_century": 0.5925048141016146
+  },
+  {
+   "age": "100-150",
+   "crises": 29,
+   "polity_years": 5317.0,
+   "per_century": 0.5454203498213278
+  },
+  {
+   "age": "150-200",
+   "crises": 21,
+   "polity_years": 3640.0,
+   "per_century": 0.5769230769230769
+  },
+  {
+   "age": "200-300",
+   "crises": 22,
+   "polity_years": 3416.0,
+   "per_century": 0.6440281030444965
+  },
+  {
+   "age": "300-500",
+   "crises": 10,
+   "polity_years": 1412.0,
+   "per_century": 0.7082152974504249
+  },
+  {
+   "age": "500-2000",
+   "crises": 1,
+   "polity_years": 1167.0,
+   "per_century": 0.0856898029134533
+  }
+ ],
+ "pop_growth": {
+  "n": 52,
+  "crisis_rate_high_growth": 0.5769230769230769,
+  "crisis_rate_low_growth": 0.4230769230769231,
+  "corr": 0.17768127215591484
+ },
+ "consequences": {
+  "decline": 0.4330708661417323,
+  "collapse": 0.05357142857142857,
+  "epidemic": 0.22784810126582278,
+  "downward_mobility": 0.4394904458598726,
+  "extermination": 0.1337579617834395,
+  "uprising": 0.4875,
+  "revolution": 0.14285714285714285,
+  "successful_revolution": 0.08695652173913043,
+  "civil_war": 0.5341614906832298,
+  "century_plus": 0.06626506024096386,
+  "fragmentation": 0.3609467455621302,
+  "capital": 0.1895424836601307,
+  "conquest": 0.4024390243902439,
+  "assassination": 0.375,
+  "depose": 0.48299319727891155,
+  "constitution": 0.2838709677419355,
+  "labor": 0.02564102564102564,
+  "unfree_labor": 0.019230769230769232,
+  "suffrage": 0.02564102564102564,
+  "public_goods": 0.03205128205128205,
+  "religion": 0.038461538461538464
+ },
+ "ends_polity": 0.3609467455621302,
+ "median_duration": 20.0,
+ "severity_mean": 3.8402366863905324,
+ "crises_per_polity_century": 0.5667571188129015
+}

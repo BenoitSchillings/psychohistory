@@ -1,0 +1,32 @@
+{
+ "base": {
+  "g1:dev": 0.0022421378457843405,
+  "g1:test": 0.0011655333204963227,
+  "g10:dev": 0.00025465375149507545,
+  "g10:test": 0.0001293890249753286
+ },
+ "freexp_change_5y+neopatrimonialism": {
+  "g1:dev": -2.64,
+  "g1:test": -7.48,
+  "g10:dev": -1.91,
+  "g10:test": -5.94
+ },
+ "freexp_change_5y+csrepress_change_5y": {
+  "g1:dev": -1.98,
+  "g1:test": -6.57,
+  "g10:dev": -1.02,
+  "g10:test": -2.82
+ },
+ "freexp_change_5y+neopatrimonialism+csrepress_change_5y+cso_participation": {
+  "g1:dev": -2.69,
+  "g1:test": -7.91,
+  "g10:dev": -0.7,
+  "g10:test": -7.1
+ },
+ "freexp_change_5y+neopatrimonialism+csrepress_change_5y+cso_participation+diag_acc+civil_liberties+legit_personalist+religious_repression": {
+  "g1:dev": -2.86,
+  "g1:test": -8.13,
+  "g10:dev": -1.67,
+  "g10:test": -7.71
+ }
+}

@@ -1,0 +1,370 @@
+{
+ "coverage": {
+  "log_rebel_groups": 0.319,
+  "war_intensity": 0.319,
+  "territorial_conflict": 1.0,
+  "internationalized": 0.319,
+  "rebels_state_support": 0.203,
+  "govt_foreign_troops": 0.203,
+  "log_peacekeepers": 0.147
+ },
+ "logit": {
+  "onset_1y:log_rebel_groups": {
+   "coef_sd": -0.262,
+   "se": 0.038,
+   "p": 0.0,
+   "n": 8905,
+   "events": 264
+  },
+  "onset_1y:war_intensity": {
+   "coef_sd": -0.262,
+   "se": NaN,
+   "p": NaN,
+   "n": 8905,
+   "events": 264
+  },
+  "onset_1y:territorial_conflict": {
+   "coef_sd": -0.262,
+   "se": NaN,
+   "p": NaN,
+   "n": 8905,
+   "events": 264
+  },
+  "onset_1y:rebels_state_support": {
+   "coef_sd": 0.004,
+   "se": 0.03,
+   "p": 0.889,
+   "n": 6377,
+   "events": 192
+  },
+  "onset_1y:govt_foreign_troops": {
+   "coef_sd": -0.018,
+   "se": 0.023,
+   "p": 0.426,
+   "n": 6377,
+   "events": 192
+  },
+  "onset_1y:log_peacekeepers": {
+   "coef_sd": -0.032,
+   "se": 0.066,
+   "p": 0.635,
+   "n": 4630,
+   "events": 142
+  },
+  "civil_conflict_5y:log_rebel_groups": {
+   "coef_sd": 0.293,
+   "se": NaN,
+   "p": NaN,
+   "n": 8389,
+   "events": 936
+  },
+  "civil_conflict_5y:war_intensity": {
+   "coef_sd": 0.293,
+   "se": 0.217,
+   "p": 0.177,
+   "n": 8389,
+   "events": 936
+  },
+  "civil_conflict_5y:territorial_conflict": {
+   "coef_sd": 0.293,
+   "se": 0.217,
+   "p": 0.177,
+   "n": 8389,
+   "events": 936
+  },
+  "civil_conflict_5y:rebels_state_support": {
+   "coef_sd": 0.053,
+   "se": 0.026,
+   "p": 0.043,
+   "n": 5861,
+   "events": 642
+  },
+  "civil_conflict_5y:govt_foreign_troops": {
+   "coef_sd": 0.047,
+   "se": 0.023,
+   "p": 0.041,
+   "n": 5861,
+   "events": 642
+  },
+  "civil_conflict_5y:log_peacekeepers": {
+   "coef_sd": 0.056,
+   "se": 0.085,
+   "p": 0.509,
+   "n": 4114,
+   "events": 416
+  },
+  "coup_1y:log_rebel_groups": {
+   "coef_sd": 0.03,
+   "se": 0.078,
+   "p": 0.698,
+   "n": 10187,
+   "events": 386
+  },
+  "coup_1y:war_intensity": {
+   "coef_sd": 0.01,
+   "se": 0.095,
+   "p": 0.918,
+   "n": 10187,
+   "events": 386
+  },
+  "coup_1y:territorial_conflict": {
+   "coef_sd": 0.045,
+   "se": 0.073,
+   "p": 0.536,
+   "n": 10187,
+   "events": 386
+  },
+  "coup_1y:internationalized": {
+   "coef_sd": -0.076,
+   "se": 0.067,
+   "p": 0.257,
+   "n": 10187,
+   "events": 386
+  },
+  "coup_1y:rebels_state_support": {
+   "coef_sd": -0.062,
+   "se": 0.084,
+   "p": 0.46,
+   "n": 7593,
+   "events": 202
+  },
+  "coup_1y:govt_foreign_troops": {
+   "coef_sd": -0.06,
+   "se": 0.079,
+   "p": 0.448,
+   "n": 7593,
+   "events": 202
+  },
+  "coup_1y:log_peacekeepers": {
+   "coef_sd": -0.197,
+   "se": 0.114,
+   "p": 0.084,
+   "n": 5532,
+   "events": 105
+  },
+  "econ_collapse_5y:log_rebel_groups": {
+   "coef_sd": 0.136,
+   "se": 0.094,
+   "p": 0.145,
+   "n": 9883,
+   "events": 1108
+  },
+  "econ_collapse_5y:war_intensity": {
+   "coef_sd": 0.231,
+   "se": 0.082,
+   "p": 0.005,
+   "n": 9883,
+   "events": 1108
+  },
+  "econ_collapse_5y:territorial_conflict": {
+   "coef_sd": -0.063,
+   "se": 0.059,
+   "p": 0.282,
+   "n": 9883,
+   "events": 1108
+  },
+  "econ_collapse_5y:internationalized": {
+   "coef_sd": 0.133,
+   "se": 0.04,
+   "p": 0.001,
+   "n": 9883,
+   "events": 1108
+  },
+  "econ_collapse_5y:rebels_state_support": {
+   "coef_sd": 0.168,
+   "se": 0.057,
+   "p": 0.003,
+   "n": 7087,
+   "events": 928
+  },
+  "econ_collapse_5y:govt_foreign_troops": {
+   "coef_sd": 0.144,
+   "se": 0.043,
+   "p": 0.001,
+   "n": 7087,
+   "events": 928
+  },
+  "econ_collapse_5y:log_peacekeepers": {
+   "coef_sd": 0.121,
+   "se": 0.102,
+   "p": 0.234,
+   "n": 4956,
+   "events": 453
+  },
+  "autocratization_5y:log_rebel_groups": {
+   "coef_sd": -0.002,
+   "se": 0.079,
+   "p": 0.981,
+   "n": 8729,
+   "events": 673
+  },
+  "autocratization_5y:war_intensity": {
+   "coef_sd": -0.029,
+   "se": 0.077,
+   "p": 0.708,
+   "n": 8729,
+   "events": 673
+  },
+  "autocratization_5y:territorial_conflict": {
+   "coef_sd": 0.049,
+   "se": 0.075,
+   "p": 0.511,
+   "n": 8729,
+   "events": 673
+  },
+  "autocratization_5y:internationalized": {
+   "coef_sd": 0.018,
+   "se": 0.056,
+   "p": 0.745,
+   "n": 8729,
+   "events": 673
+  },
+  "autocratization_5y:rebels_state_support": {
+   "coef_sd": -0.088,
+   "se": 0.108,
+   "p": 0.415,
+   "n": 6437,
+   "events": 441
+  },
+  "autocratization_5y:govt_foreign_troops": {
+   "coef_sd": 0.013,
+   "se": 0.075,
+   "p": 0.863,
+   "n": 6437,
+   "events": 441
+  },
+  "autocratization_5y:log_peacekeepers": {
+   "coef_sd": -0.128,
+   "se": 0.112,
+   "p": 0.254,
+   "n": 4703,
+   "events": 388
+  }
+ },
+ "gbm_backtest": {
+  "base:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8128,
+    "bss": 0.1284
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6479,
+    "bss": 0.0705
+   },
+   "autocratization_5y": {
+    "auc": 0.8393,
+    "bss": 0.0933
+   },
+   "coup_5y": {
+    "auc": 0.8282,
+    "bss": 0.1919
+   },
+   "onset_1y": {
+    "auc": 0.8383,
+    "bss": 0.0557
+   },
+   "termination_1y": {
+    "auc": 0.7327,
+    "bss": 0.1007
+   },
+   "coup_1y": {
+    "auc": 0.8481,
+    "bss": 0.0832
+   },
+   "score": 0.9031
+  },
+  "base:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9104,
+    "bss": 0.25
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7917,
+    "bss": 0.096
+   },
+   "autocratization_5y": {
+    "auc": 0.7295,
+    "bss": 0.0699
+   },
+   "coup_5y": {
+    "auc": 0.8446,
+    "bss": 0.2577
+   },
+   "onset_1y": {
+    "auc": 0.9158,
+    "bss": 0.0951
+   },
+   "termination_1y": {
+    "auc": 0.7388,
+    "bss": 0.1292
+   },
+   "coup_1y": {
+    "auc": 0.8366,
+    "bss": 0.0925
+   },
+   "score": 0.9875
+  },
+  "warstructure:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8123,
+    "bss": 0.1303
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6477,
+    "bss": 0.0741
+   },
+   "autocratization_5y": {
+    "auc": 0.8365,
+    "bss": 0.0943
+   },
+   "coup_5y": {
+    "auc": 0.8287,
+    "bss": 0.1914
+   },
+   "onset_1y": {
+    "auc": 0.8395,
+    "bss": 0.0548
+   },
+   "termination_1y": {
+    "auc": 0.7512,
+    "bss": 0.1068
+   },
+   "coup_1y": {
+    "auc": 0.848,
+    "bss": 0.0832
+   },
+   "score": 0.9038
+  },
+  "warstructure:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9118,
+    "bss": 0.2511
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7915,
+    "bss": 0.096
+   },
+   "autocratization_5y": {
+    "auc": 0.7284,
+    "bss": 0.0684
+   },
+   "coup_5y": {
+    "auc": 0.8464,
+    "bss": 0.2602
+   },
+   "onset_1y": {
+    "auc": 0.9143,
+    "bss": 0.0929
+   },
+   "termination_1y": {
+    "auc": 0.7531,
+    "bss": 0.1386
+   },
+   "coup_1y": {
+    "auc": 0.8245,
+    "bss": 0.0918
+   },
+   "score": 0.9885
+  }
+ }
+}

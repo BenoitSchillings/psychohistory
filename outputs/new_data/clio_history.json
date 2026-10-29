@@ -1,0 +1,478 @@
+{
+ "civil_conflict_5y:real_wage_change_10y:1850-2005": {
+  "coef_sd": -0.063,
+  "se": 0.101,
+  "p": 0.531,
+  "n": 3736,
+  "events": 365
+ },
+ "civil_conflict_5y:real_wage_change_10y:1850-1945": {
+  "coef_sd": 0.321,
+  "se": 0.359,
+  "p": 0.3717,
+  "n": 811,
+  "events": 24
+ },
+ "civil_conflict_5y:real_wage_change_10y:1946-2005": {
+  "coef_sd": -0.111,
+  "se": 0.092,
+  "p": 0.2257,
+  "n": 2925,
+  "events": 341
+ },
+ "civil_conflict_5y:real_wage_drawdown:1850-2005": {
+  "coef_sd": -0.168,
+  "se": 0.068,
+  "p": 0.0133,
+  "n": 4354,
+  "events": 433
+ },
+ "civil_conflict_5y:real_wage_drawdown:1850-1945": {
+  "coef_sd": -0.203,
+  "se": 0.23,
+  "p": 0.3774,
+  "n": 943,
+  "events": 26
+ },
+ "civil_conflict_5y:real_wage_drawdown:1946-2005": {
+  "coef_sd": -0.14,
+  "se": 0.077,
+  "p": 0.0705,
+  "n": 3411,
+  "events": 407
+ },
+ "civil_conflict_5y:height_change:1850-2005": {
+  "coef_sd": -0.37,
+  "se": 0.17,
+  "p": 0.0296,
+  "n": 4253,
+  "events": 447
+ },
+ "civil_conflict_5y:height_change:1850-1945": {
+  "coef_sd": -0.433,
+  "se": 0.284,
+  "p": 0.1275,
+  "n": 1595,
+  "events": 79
+ },
+ "civil_conflict_5y:height_change:1946-2005": {
+  "coef_sd": -0.341,
+  "se": 0.195,
+  "p": 0.0795,
+  "n": 2658,
+  "events": 368
+ },
+ "civil_conflict_5y:strikers_per_1000:1850-2005": {
+  "coef_sd": 0.116,
+  "se": 0.152,
+  "p": 0.445,
+  "n": 3429,
+  "events": 303
+ },
+ "civil_conflict_5y:strikers_per_1000:1946-2005": {
+  "coef_sd": 0.102,
+  "se": 0.145,
+  "p": 0.48,
+  "n": 2995,
+  "events": 292
+ },
+ "civil_conflict_5y:strikers_change_5y:1850-2005": {
+  "coef_sd": 0.061,
+  "se": 0.095,
+  "p": 0.5196,
+  "n": 2982,
+  "events": 267
+ },
+ "civil_conflict_5y:strikers_change_5y:1946-2005": {
+  "coef_sd": 0.093,
+  "se": 0.1,
+  "p": 0.3495,
+  "n": 2670,
+  "events": 262
+ },
+ "onset_1y:real_wage_change_10y:1850-2005": {
+  "coef_sd": 0.005,
+  "se": 0.104,
+  "p": 0.9629,
+  "n": 3745,
+  "events": 87
+ },
+ "onset_1y:real_wage_change_10y:1946-2005": {
+  "coef_sd": -0.032,
+  "se": 0.101,
+  "p": 0.7555,
+  "n": 2925,
+  "events": 81
+ },
+ "onset_1y:real_wage_drawdown:1850-2005": {
+  "coef_sd": -0.065,
+  "se": 0.078,
+  "p": 0.4047,
+  "n": 4364,
+  "events": 106
+ },
+ "onset_1y:real_wage_drawdown:1946-2005": {
+  "coef_sd": -0.04,
+  "se": 0.089,
+  "p": 0.6522,
+  "n": 3411,
+  "events": 100
+ },
+ "onset_1y:height_change:1850-2005": {
+  "coef_sd": -0.337,
+  "se": 0.15,
+  "p": 0.0242,
+  "n": 4264,
+  "events": 121
+ },
+ "onset_1y:height_change:1850-1945": {
+  "coef_sd": -0.5,
+  "se": 0.225,
+  "p": 0.0263,
+  "n": 1606,
+  "events": 20
+ },
+ "onset_1y:height_change:1946-2005": {
+  "coef_sd": -0.311,
+  "se": 0.183,
+  "p": 0.0894,
+  "n": 2658,
+  "events": 101
+ },
+ "onset_1y:strikers_per_1000:1850-2005": {
+  "coef_sd": 0.107,
+  "se": 0.132,
+  "p": 0.415,
+  "n": 3436,
+  "events": 79
+ },
+ "onset_1y:strikers_per_1000:1946-2005": {
+  "coef_sd": 0.088,
+  "se": 0.129,
+  "p": 0.4934,
+  "n": 2995,
+  "events": 76
+ },
+ "onset_1y:strikers_change_5y:1850-2005": {
+  "coef_sd": 0.218,
+  "se": 0.089,
+  "p": 0.014,
+  "n": 2989,
+  "events": 69
+ },
+ "onset_1y:strikers_change_5y:1946-2005": {
+  "coef_sd": 0.269,
+  "se": 0.092,
+  "p": 0.0035,
+  "n": 2670,
+  "events": 66
+ },
+ "coup_5y:real_wage_change_10y:1850-2005": {
+  "coef_sd": 0.083,
+  "se": 0.095,
+  "p": 0.3779,
+  "n": 4074,
+  "events": 553
+ },
+ "coup_5y:real_wage_change_10y:1850-1945": {
+  "coef_sd": 0.34,
+  "se": 0.414,
+  "p": 0.4113,
+  "n": 760,
+  "events": 57
+ },
+ "coup_5y:real_wage_change_10y:1946-2005": {
+  "coef_sd": 0.058,
+  "se": 0.1,
+  "p": 0.5614,
+  "n": 3314,
+  "events": 496
+ },
+ "coup_5y:real_wage_drawdown:1850-2005": {
+  "coef_sd": -0.029,
+  "se": 0.114,
+  "p": 0.798,
+  "n": 4750,
+  "events": 729
+ },
+ "coup_5y:real_wage_drawdown:1850-1945": {
+  "coef_sd": -0.133,
+  "se": 0.116,
+  "p": 0.2511,
+  "n": 890,
+  "events": 78
+ },
+ "coup_5y:real_wage_drawdown:1946-2005": {
+  "coef_sd": -0.002,
+  "se": 0.124,
+  "p": 0.984,
+  "n": 3860,
+  "events": 651
+ },
+ "coup_5y:height_change:1850-2005": {
+  "coef_sd": -0.068,
+  "se": 0.098,
+  "p": 0.4866,
+  "n": 4761,
+  "events": 813
+ },
+ "coup_5y:height_change:1850-1945": {
+  "coef_sd": -0.419,
+  "se": 0.231,
+  "p": 0.0693,
+  "n": 1569,
+  "events": 191
+ },
+ "coup_5y:height_change:1946-2005": {
+  "coef_sd": 0.03,
+  "se": 0.121,
+  "p": 0.8043,
+  "n": 3192,
+  "events": 622
+ },
+ "coup_5y:strikers_per_1000:1850-2005": {
+  "coef_sd": 0.088,
+  "se": 0.145,
+  "p": 0.5468,
+  "n": 3923,
+  "events": 514
+ },
+ "coup_5y:strikers_per_1000:1850-1945": {
+  "coef_sd": 0.096,
+  "se": 0.416,
+  "p": 0.8178,
+  "n": 425,
+  "events": 48
+ },
+ "coup_5y:strikers_per_1000:1946-2005": {
+  "coef_sd": 0.081,
+  "se": 0.169,
+  "p": 0.6321,
+  "n": 3498,
+  "events": 466
+ },
+ "coup_5y:strikers_change_5y:1850-2005": {
+  "coef_sd": 0.079,
+  "se": 0.09,
+  "p": 0.3782,
+  "n": 3419,
+  "events": 430
+ },
+ "coup_5y:strikers_change_5y:1850-1945": {
+  "coef_sd": -0.007,
+  "se": 0.383,
+  "p": 0.9855,
+  "n": 301,
+  "events": 37
+ },
+ "coup_5y:strikers_change_5y:1946-2005": {
+  "coef_sd": 0.116,
+  "se": 0.107,
+  "p": 0.2794,
+  "n": 3118,
+  "events": 393
+ },
+ "autocratization_5y:real_wage_change_10y:1850-2005": {
+  "coef_sd": -0.01,
+  "se": 0.099,
+  "p": 0.9161,
+  "n": 3910,
+  "events": 235
+ },
+ "autocratization_5y:real_wage_change_10y:1850-1945": {
+  "coef_sd": 0.247,
+  "se": 0.228,
+  "p": 0.279,
+  "n": 777,
+  "events": 73
+ },
+ "autocratization_5y:real_wage_change_10y:1946-2005": {
+  "coef_sd": -0.072,
+  "se": 0.105,
+  "p": 0.4956,
+  "n": 3133,
+  "events": 162
+ },
+ "autocratization_5y:real_wage_drawdown:1850-2005": {
+  "coef_sd": -0.048,
+  "se": 0.073,
+  "p": 0.509,
+  "n": 4519,
+  "events": 295
+ },
+ "autocratization_5y:real_wage_drawdown:1850-1945": {
+  "coef_sd": -0.187,
+  "se": 0.173,
+  "p": 0.28,
+  "n": 903,
+  "events": 79
+ },
+ "autocratization_5y:real_wage_drawdown:1946-2005": {
+  "coef_sd": -0.072,
+  "se": 0.084,
+  "p": 0.3881,
+  "n": 3616,
+  "events": 216
+ },
+ "autocratization_5y:height_change:1850-2005": {
+  "coef_sd": 0.103,
+  "se": 0.104,
+  "p": 0.3211,
+  "n": 4353,
+  "events": 322
+ },
+ "autocratization_5y:height_change:1850-1945": {
+  "coef_sd": 0.018,
+  "se": 0.232,
+  "p": 0.9374,
+  "n": 1518,
+  "events": 106
+ },
+ "autocratization_5y:height_change:1946-2005": {
+  "coef_sd": 0.12,
+  "se": 0.159,
+  "p": 0.4494,
+  "n": 2835,
+  "events": 216
+ },
+ "autocratization_5y:strikers_per_1000:1850-2005": {
+  "coef_sd": -0.028,
+  "se": 0.174,
+  "p": 0.8724,
+  "n": 3817,
+  "events": 262
+ },
+ "autocratization_5y:strikers_per_1000:1850-1945": {
+  "coef_sd": 0.119,
+  "se": 0.326,
+  "p": 0.7156,
+  "n": 410,
+  "events": 74
+ },
+ "autocratization_5y:strikers_per_1000:1946-2005": {
+  "coef_sd": -0.047,
+  "se": 0.239,
+  "p": 0.8442,
+  "n": 3407,
+  "events": 188
+ },
+ "autocratization_5y:strikers_change_5y:1850-2005": {
+  "coef_sd": 0.05,
+  "se": 0.093,
+  "p": 0.5892,
+  "n": 3350,
+  "events": 231
+ },
+ "autocratization_5y:strikers_change_5y:1946-2005": {
+  "coef_sd": 0.078,
+  "se": 0.084,
+  "p": 0.3513,
+  "n": 3055,
+  "events": 173
+ },
+ "econ_collapse_5y:real_wage_change_10y:1850-2005": {
+  "coef_sd": -0.009,
+  "se": 0.094,
+  "p": 0.9197,
+  "n": 4161,
+  "events": 489
+ },
+ "econ_collapse_5y:real_wage_change_10y:1850-1945": {
+  "coef_sd": -0.088,
+  "se": 0.255,
+  "p": 0.7288,
+  "n": 827,
+  "events": 135
+ },
+ "econ_collapse_5y:real_wage_change_10y:1946-2005": {
+  "coef_sd": 0.047,
+  "se": 0.112,
+  "p": 0.6762,
+  "n": 3334,
+  "events": 354
+ },
+ "econ_collapse_5y:real_wage_drawdown:1850-2005": {
+  "coef_sd": -0.141,
+  "se": 0.055,
+  "p": 0.0099,
+  "n": 4856,
+  "events": 599
+ },
+ "econ_collapse_5y:real_wage_drawdown:1850-1945": {
+  "coef_sd": -0.371,
+  "se": 0.139,
+  "p": 0.0075,
+  "n": 956,
+  "events": 159
+ },
+ "econ_collapse_5y:real_wage_drawdown:1946-2005": {
+  "coef_sd": -0.155,
+  "se": 0.08,
+  "p": 0.0526,
+  "n": 3900,
+  "events": 440
+ },
+ "econ_collapse_5y:height_change:1850-2005": {
+  "coef_sd": -0.268,
+  "se": 0.098,
+  "p": 0.0063,
+  "n": 4919,
+  "events": 670
+ },
+ "econ_collapse_5y:height_change:1850-1945": {
+  "coef_sd": 0.116,
+  "se": 0.151,
+  "p": 0.4424,
+  "n": 1659,
+  "events": 294
+ },
+ "econ_collapse_5y:height_change:1946-2005": {
+  "coef_sd": -0.649,
+  "se": 0.128,
+  "p": 0.0,
+  "n": 3260,
+  "events": 376
+ },
+ "econ_collapse_5y:strikers_per_1000:1850-2005": {
+  "coef_sd": 0.353,
+  "se": 0.097,
+  "p": 0.0003,
+  "n": 3988,
+  "events": 327
+ },
+ "econ_collapse_5y:strikers_per_1000:1850-1945": {
+  "coef_sd": 0.251,
+  "se": 0.229,
+  "p": 0.2732,
+  "n": 440,
+  "events": 117
+ },
+ "econ_collapse_5y:strikers_per_1000:1946-2005": {
+  "coef_sd": 0.432,
+  "se": 0.129,
+  "p": 0.0008,
+  "n": 3548,
+  "events": 210
+ },
+ "econ_collapse_5y:strikers_change_5y:1850-2005": {
+  "coef_sd": 0.218,
+  "se": 0.086,
+  "p": 0.0116,
+  "n": 3474,
+  "events": 235
+ },
+ "econ_collapse_5y:strikers_change_5y:1850-1945": {
+  "coef_sd": 0.271,
+  "se": 0.225,
+  "p": 0.2289,
+  "n": 316,
+  "events": 69
+ },
+ "econ_collapse_5y:strikers_change_5y:1946-2005": {
+  "coef_sd": 0.136,
+  "se": 0.081,
+  "p": 0.0929,
+  "n": 3158,
+  "events": 166
+ }
+}

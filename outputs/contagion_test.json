@@ -1,0 +1,89 @@
+{
+ "n": 5850,
+ "years": [
+  1985,
+  2024
+ ],
+ "crisis_start": {
+  "lend+trade": {
+   "lend": [
+    -0.793,
+    0.596
+   ],
+   "trade": [
+    4.485,
+    0.595
+   ],
+   "lclaims": [
+    0.029,
+    0.023
+   ],
+   "g_prev": [
+    -1.286,
+    0.867
+   ]
+  },
+  "lend+trade oos_brier": 0.03303,
+  "trade only": {
+   "trade": [
+    4.263,
+    0.563
+   ],
+   "lclaims": [
+    0.026,
+    0.023
+   ],
+   "g_prev": [
+    -1.309,
+    0.868
+   ]
+  },
+  "trade only oos_brier": 0.0335,
+  "events": 353,
+  "n": 5441
+ },
+ "growth_collapse": {
+  "lend+trade": {
+   "lend": [
+    -0.398,
+    0.76
+   ],
+   "trade": [
+    0.334,
+    0.865
+   ],
+   "lclaims": [
+    -0.037,
+    0.026
+   ],
+   "g_prev": [
+    -12.493,
+    1.639
+   ]
+  },
+  "lend+trade oos_brier": 0.04975,
+  "trade only": {
+   "trade": [
+    0.236,
+    0.843
+   ],
+   "lclaims": [
+    -0.037,
+    0.026
+   ],
+   "g_prev": [
+    -12.507,
+    1.639
+   ]
+  },
+  "trade only oos_brier": 0.04973,
+  "events": 387,
+  "n": 5850
+ },
+ "trade_exposure": {
+  "mean": 0.05174948642705547,
+  "p90": 0.1350574389359089,
+  "max": 0.8899587307314212,
+  "mean_exp_beta_e": 1.4676975097819496
+ }
+}

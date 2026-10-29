@@ -1,0 +1,2272 @@
+{
+ "historical_mean": [
+  {
+   "model": "ShapeFinder",
+   "crps": 45.1008,
+   "ign": 0.6852,
+   "mis": 812.5492
+  },
+  {
+   "model": "submission_final_omm",
+   "crps": 46.29,
+   "ign": 0.587,
+   "mis": 874.1214
+  },
+  {
+   "model": "OURS_seldon_v7",
+   "crps": 46.3306,
+   "ign": 0.5697,
+   "mis": 773.0527
+  },
+  {
+   "model": "OURS_seldon_v8",
+   "crps": 47.2518,
+   "ign": 0.5744,
+   "mis": 792.3958
+  },
+  {
+   "model": "OURS_seldon_v4",
+   "crps": 47.3472,
+   "ign": 0.5802,
+   "mis": 795.088
+  },
+  {
+   "model": "OURS_seldon_v1",
+   "crps": 47.4951,
+   "ign": 0.5847,
+   "mis": 760.5949
+  },
+  {
+   "model": "OURS_seldon_v3",
+   "crps": 47.5736,
+   "ign": 0.5853,
+   "mis": 764.4376
+  },
+  {
+   "model": "OURS_seldon_v2",
+   "crps": 47.5736,
+   "ign": 0.5853,
+   "mis": 764.4376
+  },
+  {
+   "model": "conflictforecast_v2",
+   "crps": 47.886,
+   "ign": 0.6229,
+   "mis": 774.7368
+  },
+  {
+   "model": "tft",
+   "crps": 48.5183,
+   "ign": 0.7426,
+   "mis": 848.4391
+  },
+  {
+   "model": "submission_muchlinski_thornhill",
+   "crps": 48.7753,
+   "ign": 1.7052,
+   "mis": 946.8758
+  },
+  {
+   "model": "OURS_seldon_v6",
+   "crps": 49.508,
+   "ign": 0.5863,
+   "mis": 954.5669
+  },
+  {
+   "model": "unito_transformer",
+   "crps": 49.5155,
+   "ign": 0.9696,
+   "mis": 873.5312
+  },
+  {
+   "model": "submission_final_hpmm",
+   "crps": 50.1016,
+   "ign": 0.7044,
+   "mis": 859.2362
+  },
+  {
+   "model": "bm_conflictology",
+   "crps": 51.824,
+   "ign": 0.6527,
+   "mis": 845.7254
+  },
+  {
+   "model": "quantile_forecast",
+   "crps": 55.0227,
+   "ign": 0.6577,
+   "mis": 947.843
+  },
+  {
+   "model": "submission_final_gpcmm",
+   "crps": 55.6276,
+   "ign": 8.8909,
+   "mis": 987.9538
+  },
+  {
+   "model": "bodentien_rueter_negbin",
+   "crps": 56.419,
+   "ign": 0.6262,
+   "mis": 904.5205
+  },
+  {
+   "model": "bm_boot_240",
+   "crps": 56.8091,
+   "ign": 1.1419,
+   "mis": 1113.3211
+  },
+  {
+   "model": "bm_zero",
+   "crps": 57.4808,
+   "ign": 1.5994,
+   "mis": 1149.6161
+  },
+  {
+   "model": "P_GLMM",
+   "crps": 112.2172,
+   "ign": 1.1075,
+   "mis": 2223.001
+  },
+  {
+   "model": "Neg_Bin_GLMM",
+   "crps": 132.4659,
+   "ign": 1.0821,
+   "mis": 2284.9283
+  },
+  {
+   "model": "TW_GLMM",
+   "crps": 142.1561,
+   "ign": 0.9231,
+   "mis": 2752.0841
+  },
+  {
+   "model": "bm_last",
+   "crps": 158.5101,
+   "ign": 1.1469,
+   "mis": 3144.2238
+  },
+  {
+   "model": "TW_GAM",
+   "crps": 1585645.0545,
+   "ign": 1.0622,
+   "mis": 31320346.6558
+  },
+  {
+   "model": "Neg_Bin_GAM",
+   "crps": 9460460.0742,
+   "ign": 0.7256,
+   "mis": 186598020.5437
+  },
+  {
+   "model": "P_GAM",
+   "crps": 44311832.8332,
+   "ign": 2.0225,
+   "mis": 886236551.8473
+  }
+ ],
+ "live": [
+  {
+   "model": "Neg_Bin_GAM",
+   "Y2024": 15642609.386,
+   "Y2025": 60.569
+  },
+  {
+   "model": "Neg_Bin_GLMM",
+   "Y2024": 26.438,
+   "Y2025": 26.876
+  },
+  {
+   "model": "OURS_seldon_v2",
+   "Y2024": 34.832,
+   "Y2025": 33.814
+  },
+  {
+   "model": "OURS_seldon_v3",
+   "Y2024": 31.596,
+   "Y2025": 31.112
+  },
+  {
+   "model": "OURS_seldon_v4",
+   "Y2024": 34.222,
+   "Y2025": 33.767
+  },
+  {
+   "model": "OURS_seldon_v5",
+   "Y2024": 32.004,
+   "Y2025": 31.889
+  },
+  {
+   "model": "OURS_seldon_v5w0",
+   "Y2024": 34.222,
+   "Y2025": 33.767
+  },
+  {
+   "model": "OURS_seldon_v6",
+   "Y2024": 28.267,
+   "Y2025": 29.312
+  },
+  {
+   "model": "OURS_seldon_v7",
+   "Y2024": 28.878,
+   "Y2025": 29.601
+  },
+  {
+   "model": "OURS_seldon_v8",
+   "Y2024": 33.07,
+   "Y2025": 32.773
+  },
+  {
+   "model": "P_GAM",
+   "Y2024": 274.615,
+   "Y2025": 983138.354
+  },
+  {
+   "model": "P_GLMM",
+   "Y2024": 34.8,
+   "Y2025": 34.347
+  },
+  {
+   "model": "ShapeFinder",
+   "Y2024": 32.035,
+   "Y2025": 35.314
+  },
+  {
+   "model": "TW_GAM",
+   "Y2024": 437.72,
+   "Y2025": 4327302.793
+  },
+  {
+   "model": "TW_GLMM",
+   "Y2024": 28.031,
+   "Y2025": 28.43
+  },
+  {
+   "model": "bm_boot_240",
+   "Y2024": 55.763,
+   "Y2025": 54.855
+  },
+  {
+   "model": "bm_conflictology",
+   "Y2024": 23.833,
+   "Y2025": 27.161
+  },
+  {
+   "model": "bm_last",
+   "Y2024": 27.838,
+   "Y2025": 28.513
+  },
+  {
+   "model": "bm_zero",
+   "Y2024": 57.023,
+   "Y2025": 56.123
+  },
+  {
+   "model": "bodentien_rueter_negbin",
+   "Y2024": 24.968,
+   "Y2025": 30.029
+  },
+  {
+   "model": "conflictforecast_v2",
+   "Y2024": 25.499,
+   "Y2025": 28.07
+  },
+  {
+   "model": "quantile_forecast",
+   "Y2024": 26.408,
+   "Y2025": 29.268
+  },
+  {
+   "model": "submission_final_gpcmm",
+   "Y2024": 49.421,
+   "Y2025": 47.859
+  },
+  {
+   "model": "submission_final_hpmm",
+   "Y2024": 42.354,
+   "Y2025": 41.642
+  },
+  {
+   "model": "submission_final_omm",
+   "Y2024": 24.546,
+   "Y2025": 27.194
+  },
+  {
+   "model": "submission_muchlinski_thornhill",
+   "Y2024": 61.535,
+   "Y2025": 61.869
+  },
+  {
+   "model": "tft",
+   "Y2024": 26.459,
+   "Y2025": 26.636
+  },
+  {
+   "model": "unito_transformer",
+   "Y2024": 65.629,
+   "Y2025": 63.559
+  }
+ ],
+ "by_window": [
+  {
+   "model": "TW_GAM",
+   "window": "Y2018",
+   "crps": 21.5618,
+   "ign": 1.1443,
+   "mis": 293.5336,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "unito_transformer",
+   "window": "Y2018",
+   "crps": 12.1967,
+   "ign": 0.8554,
+   "mis": 121.7745,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GLMM",
+   "window": "Y2018",
+   "crps": 16.7141,
+   "ign": 1.1375,
+   "mis": 245.4274,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "P_GLMM",
+   "window": "Y2018",
+   "crps": 16.3375,
+   "ign": 1.1207,
+   "mis": 307.7858,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "ShapeFinder",
+   "window": "Y2018",
+   "crps": 13.0003,
+   "ign": 0.7103,
+   "mis": 141.9093,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GAM",
+   "window": "Y2018",
+   "crps": 7546550.4686,
+   "ign": 0.746,
+   "mis": 149215384.4309,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_omm",
+   "window": "Y2018",
+   "crps": 12.1028,
+   "ign": 0.5854,
+   "mis": 82.3714,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "P_GAM",
+   "window": "Y2018",
+   "crps": 38832015.8602,
+   "ign": 1.7955,
+   "mis": 776640267.5574,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "quantile_forecast",
+   "window": "Y2018",
+   "crps": 13.181,
+   "ign": 0.6368,
+   "mis": 159.9356,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2018",
+   "crps": 12.8442,
+   "ign": 0.5862,
+   "mis": 108.8546,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "tft",
+   "window": "Y2018",
+   "crps": 12.8964,
+   "ign": 0.6679,
+   "mis": 102.7786,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bodentien_rueter_negbin",
+   "window": "Y2018",
+   "crps": 14.1029,
+   "ign": 0.6114,
+   "mis": 145.5242,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_gpcmm",
+   "window": "Y2018",
+   "crps": 17.6948,
+   "ign": 8.8956,
+   "mis": 169.2626,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_hpmm",
+   "window": "Y2018",
+   "crps": 15.3923,
+   "ign": 0.6866,
+   "mis": 207.4141,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_muchlinski_thornhill",
+   "window": "Y2018",
+   "crps": 8.1454,
+   "ign": 1.5556,
+   "mis": 138.0705,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GLMM",
+   "window": "Y2018",
+   "crps": 17.0923,
+   "ign": 0.9592,
+   "mis": 280.3323,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2018",
+   "crps": 14.0249,
+   "ign": 0.6513,
+   "mis": 158.3767,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2018",
+   "crps": 20.1999,
+   "ign": 1.2051,
+   "mis": 381.1815,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2018",
+   "crps": 23.6107,
+   "ign": 1.1344,
+   "mis": 454.3684,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2018",
+   "crps": 24.1684,
+   "ign": 1.5755,
+   "mis": 483.3682,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v1",
+   "window": "Y2018",
+   "crps": 11.3137,
+   "ign": 0.5643,
+   "mis": 71.5245,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v2",
+   "window": "Y2018",
+   "crps": 11.3216,
+   "ign": 0.568,
+   "mis": 79.5039,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v3",
+   "window": "Y2018",
+   "crps": 11.3216,
+   "ign": 0.568,
+   "mis": 79.5039,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v4",
+   "window": "Y2018",
+   "crps": 11.8667,
+   "ign": 0.576,
+   "mis": 121.9456,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v6",
+   "window": "Y2018",
+   "crps": 12.0971,
+   "ign": 0.582,
+   "mis": 135.8096,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v7",
+   "window": "Y2018",
+   "crps": 11.7372,
+   "ign": 0.5654,
+   "mis": 91.0963,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v8",
+   "window": "Y2018",
+   "crps": 11.9416,
+   "ign": 0.5681,
+   "mis": 119.6805,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GAM",
+   "window": "Y2019",
+   "crps": 11.6395,
+   "ign": 0.8469,
+   "mis": 146.7315,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "unito_transformer",
+   "window": "Y2019",
+   "crps": 10.4868,
+   "ign": 0.8977,
+   "mis": 102.7893,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GLMM",
+   "window": "Y2019",
+   "crps": 8.6141,
+   "ign": 0.988,
+   "mis": 122.7499,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "P_GLMM",
+   "window": "Y2019",
+   "crps": 12.3169,
+   "ign": 0.9845,
+   "mis": 232.0601,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "ShapeFinder",
+   "window": "Y2019",
+   "crps": 8.482,
+   "ign": 0.6403,
+   "mis": 82.3331,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GAM",
+   "window": "Y2019",
+   "crps": 7360561.7382,
+   "ign": 0.6476,
+   "mis": 140503051.277,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_omm",
+   "window": "Y2019",
+   "crps": 8.1385,
+   "ign": 0.5526,
+   "mis": 88.0688,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "P_GAM",
+   "window": "Y2019",
+   "crps": 54104307.0929,
+   "ign": 2.5286,
+   "mis": 1082086067.8954,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "quantile_forecast",
+   "window": "Y2019",
+   "crps": 7.3266,
+   "ign": 0.6003,
+   "mis": 72.9863,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2019",
+   "crps": 8.8994,
+   "ign": 0.5732,
+   "mis": 87.9941,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "tft",
+   "window": "Y2019",
+   "crps": 9.2074,
+   "ign": 0.696,
+   "mis": 81.2177,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bodentien_rueter_negbin",
+   "window": "Y2019",
+   "crps": 11.1405,
+   "ign": 0.5729,
+   "mis": 113.981,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_gpcmm",
+   "window": "Y2019",
+   "crps": 17.3986,
+   "ign": 8.8741,
+   "mis": 269.0662,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_hpmm",
+   "window": "Y2019",
+   "crps": 15.1585,
+   "ign": 0.6902,
+   "mis": 178.7154,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_muchlinski_thornhill",
+   "window": "Y2019",
+   "crps": 8.9368,
+   "ign": 1.4723,
+   "mis": 155.1767,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GLMM",
+   "window": "Y2019",
+   "crps": 8.7769,
+   "ign": 0.8032,
+   "mis": 137.0255,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2019",
+   "crps": 9.0584,
+   "ign": 0.6275,
+   "mis": 82.6424,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2019",
+   "crps": 9.4909,
+   "ign": 1.0636,
+   "mis": 172.9043,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2019",
+   "crps": 22.5024,
+   "ign": 1.1206,
+   "mis": 426.2223,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2019",
+   "crps": 23.0716,
+   "ign": 1.5755,
+   "mis": 461.4311,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v1",
+   "window": "Y2019",
+   "crps": 9.319,
+   "ign": 0.5505,
+   "mis": 83.3188,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v2",
+   "window": "Y2019",
+   "crps": 9.2941,
+   "ign": 0.5471,
+   "mis": 84.9222,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v3",
+   "window": "Y2019",
+   "crps": 9.2941,
+   "ign": 0.5471,
+   "mis": 84.9222,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v4",
+   "window": "Y2019",
+   "crps": 7.0411,
+   "ign": 0.5461,
+   "mis": 67.1851,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v6",
+   "window": "Y2019",
+   "crps": 6.7716,
+   "ign": 0.5457,
+   "mis": 67.0246,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v7",
+   "window": "Y2019",
+   "crps": 7.2384,
+   "ign": 0.54,
+   "mis": 67.6688,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v8",
+   "window": "Y2019",
+   "crps": 7.3939,
+   "ign": 0.5273,
+   "mis": 62.3232,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GAM",
+   "window": "Y2020",
+   "crps": 25.2958,
+   "ign": 0.879,
+   "mis": 413.6451,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "unito_transformer",
+   "window": "Y2020",
+   "crps": 23.7717,
+   "ign": 0.851,
+   "mis": 381.9504,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GLMM",
+   "window": "Y2020",
+   "crps": 21.5006,
+   "ign": 0.9926,
+   "mis": 376.9695,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "P_GLMM",
+   "window": "Y2020",
+   "crps": 22.2622,
+   "ign": 1.1208,
+   "mis": 430.294,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "ShapeFinder",
+   "window": "Y2020",
+   "crps": 21.1706,
+   "ign": 0.5918,
+   "mis": 325.4956,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GAM",
+   "window": "Y2020",
+   "crps": 6736348.2983,
+   "ign": 0.6481,
+   "mis": 131329949.6606,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_omm",
+   "window": "Y2020",
+   "crps": 20.7227,
+   "ign": 0.5267,
+   "mis": 320.9732,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "P_GAM",
+   "window": "Y2020",
+   "crps": 33228633.5522,
+   "ign": 1.5025,
+   "mis": 664572510.1429,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "quantile_forecast",
+   "window": "Y2020",
+   "crps": 22.4133,
+   "ign": 0.5845,
+   "mis": 360.3396,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2020",
+   "crps": 21.8382,
+   "ign": 0.5447,
+   "mis": 332.4793,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "tft",
+   "window": "Y2020",
+   "crps": 20.8957,
+   "ign": 0.7482,
+   "mis": 318.7112,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bodentien_rueter_negbin",
+   "window": "Y2020",
+   "crps": 20.6411,
+   "ign": 0.5454,
+   "mis": 317.5511,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_gpcmm",
+   "window": "Y2020",
+   "crps": 29.0646,
+   "ign": 8.936,
+   "mis": 522.3393,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_hpmm",
+   "window": "Y2020",
+   "crps": 24.3381,
+   "ign": 0.6743,
+   "mis": 412.3216,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_muchlinski_thornhill",
+   "window": "Y2020",
+   "crps": 13.7239,
+   "ign": 1.4824,
+   "mis": 249.6244,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GLMM",
+   "window": "Y2020",
+   "crps": 21.9814,
+   "ign": 0.8364,
+   "mis": 401.2741,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2020",
+   "crps": 21.3286,
+   "ign": 0.5674,
+   "mis": 337.1399,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2020",
+   "crps": 23.7094,
+   "ign": 1.1047,
+   "mis": 455.9984,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2020",
+   "crps": 31.4406,
+   "ign": 1.1232,
+   "mis": 606.1773,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2020",
+   "crps": 32.0672,
+   "ign": 1.5625,
+   "mis": 641.3438,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v1",
+   "window": "Y2020",
+   "crps": 19.9429,
+   "ign": 0.521,
+   "mis": 312.6358,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v2",
+   "window": "Y2020",
+   "crps": 19.9682,
+   "ign": 0.5275,
+   "mis": 317.6577,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v3",
+   "window": "Y2020",
+   "crps": 19.9682,
+   "ign": 0.5275,
+   "mis": 317.6577,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v4",
+   "window": "Y2020",
+   "crps": 21.5232,
+   "ign": 0.5171,
+   "mis": 331.2731,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v6",
+   "window": "Y2020",
+   "crps": 23.1931,
+   "ign": 0.5167,
+   "mis": 368.3908,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v7",
+   "window": "Y2020",
+   "crps": 20.7673,
+   "ign": 0.513,
+   "mis": 319.7862,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v8",
+   "window": "Y2020",
+   "crps": 20.4877,
+   "ign": 0.5242,
+   "mis": 314.9719,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GAM",
+   "window": "Y2021",
+   "crps": 82.5105,
+   "ign": 1.0563,
+   "mis": 1543.9188,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "unito_transformer",
+   "window": "Y2021",
+   "crps": 76.8884,
+   "ign": 0.8077,
+   "mis": 1436.1313,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GLMM",
+   "window": "Y2021",
+   "crps": 82.4554,
+   "ign": 1.2067,
+   "mis": 1567.4695,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "P_GLMM",
+   "window": "Y2021",
+   "crps": 84.0995,
+   "ign": 1.2197,
+   "mis": 1663.9246,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "ShapeFinder",
+   "window": "Y2021",
+   "crps": 77.6124,
+   "ign": 0.7423,
+   "mis": 1434.859,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GAM",
+   "window": "Y2021",
+   "crps": 4800238.9558,
+   "ign": 0.7224,
+   "mis": 96003093.917,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_omm",
+   "window": "Y2021",
+   "crps": 76.1899,
+   "ign": 0.6107,
+   "mis": 1389.9374,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "P_GAM",
+   "window": "Y2021",
+   "crps": 38394555.1768,
+   "ign": 1.7777,
+   "mis": 767891069.4166,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "quantile_forecast",
+   "window": "Y2021",
+   "crps": 77.7024,
+   "ign": 0.6998,
+   "mis": 1449.6038,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2021",
+   "crps": 76.3451,
+   "ign": 0.6707,
+   "mis": 1338.7988,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "tft",
+   "window": "Y2021",
+   "crps": 75.9403,
+   "ign": 0.7211,
+   "mis": 1381.9299,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bodentien_rueter_negbin",
+   "window": "Y2021",
+   "crps": 76.5757,
+   "ign": 0.6333,
+   "mis": 1405.3282,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_gpcmm",
+   "window": "Y2021",
+   "crps": 83.8592,
+   "ign": 8.9169,
+   "mis": 1616.2844,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_hpmm",
+   "window": "Y2021",
+   "crps": 78.1399,
+   "ign": 0.7188,
+   "mis": 1298.6724,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_muchlinski_thornhill",
+   "window": "Y2021",
+   "crps": 71.0437,
+   "ign": 1.6401,
+   "mis": 1392.5879,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GLMM",
+   "window": "Y2021",
+   "crps": 83.0637,
+   "ign": 1.0497,
+   "mis": 1609.0992,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2021",
+   "crps": 76.728,
+   "ign": 0.6927,
+   "mis": 1421.3126,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2021",
+   "crps": 85.6109,
+   "ign": 1.2398,
+   "mis": 1690.8767,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2021",
+   "crps": 86.6314,
+   "ign": 1.1566,
+   "mis": 1708.2867,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2021",
+   "crps": 87.346,
+   "ign": 1.6234,
+   "mis": 1746.9197,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v1",
+   "window": "Y2021",
+   "crps": 76.2586,
+   "ign": 0.6099,
+   "mis": 1402.2518,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v2",
+   "window": "Y2021",
+   "crps": 76.056,
+   "ign": 0.6092,
+   "mis": 1391.8595,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v3",
+   "window": "Y2021",
+   "crps": 76.056,
+   "ign": 0.6092,
+   "mis": 1391.8595,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v4",
+   "window": "Y2021",
+   "crps": 75.8571,
+   "ign": 0.6185,
+   "mis": 1401.4527,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v6",
+   "window": "Y2021",
+   "crps": 76.3971,
+   "ign": 0.6237,
+   "mis": 1429.8288,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v7",
+   "window": "Y2021",
+   "crps": 75.6383,
+   "ign": 0.6019,
+   "mis": 1387.9999,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v8",
+   "window": "Y2021",
+   "crps": 76.061,
+   "ign": 0.6076,
+   "mis": 1400.507,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GAM",
+   "window": "Y2022",
+   "crps": 3459661.8083,
+   "ign": 1.1819,
+   "mis": 68394714.6621,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "unito_transformer",
+   "window": "Y2022",
+   "crps": 118.9787,
+   "ign": 1.3412,
+   "mis": 2283.4748,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GLMM",
+   "window": "Y2022",
+   "crps": 126.9771,
+   "ign": 1.0698,
+   "mis": 2459.0642,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "P_GLMM",
+   "window": "Y2022",
+   "crps": 124.7331,
+   "ign": 1.1173,
+   "mis": 2477.3839,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "ShapeFinder",
+   "window": "Y2022",
+   "crps": 116.8245,
+   "ign": 0.7401,
+   "mis": 2194.753,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GAM",
+   "window": "Y2022",
+   "crps": 15706903.4428,
+   "ign": 0.8223,
+   "mis": 314137688.763,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_omm",
+   "window": "Y2022",
+   "crps": 123.4367,
+   "ign": 0.6386,
+   "mis": 2249.424,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "P_GAM",
+   "window": "Y2022",
+   "crps": 41901335.6086,
+   "ign": 2.555,
+   "mis": 838026625.8317,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "quantile_forecast",
+   "window": "Y2022",
+   "crps": 124.6031,
+   "ign": 0.7079,
+   "mis": 2339.0195,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2022",
+   "crps": 125.5233,
+   "ign": 0.7036,
+   "mis": 2292.0128,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "tft",
+   "window": "Y2022",
+   "crps": 122.1411,
+   "ign": 0.7432,
+   "mis": 2295.4989,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bodentien_rueter_negbin",
+   "window": "Y2022",
+   "crps": 125.5682,
+   "ign": 0.69,
+   "mis": 2176.4844,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_gpcmm",
+   "window": "Y2022",
+   "crps": 115.8023,
+   "ign": 8.8337,
+   "mis": 2258.9022,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_hpmm",
+   "window": "Y2022",
+   "crps": 117.2372,
+   "ign": 0.7237,
+   "mis": 2273.4155,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_muchlinski_thornhill",
+   "window": "Y2022",
+   "crps": 160.408,
+   "ign": 2.0335,
+   "mis": 3172.5814,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GLMM",
+   "window": "Y2022",
+   "crps": 127.6231,
+   "ign": 0.9081,
+   "mis": 2502.0128,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2022",
+   "crps": 124.079,
+   "ign": 0.6979,
+   "mis": 1988.8638,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2022",
+   "crps": 130.9823,
+   "ign": 1.1399,
+   "mis": 2598.5104,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2022",
+   "crps": 120.2289,
+   "ign": 1.1572,
+   "mis": 2380.0193,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2022",
+   "crps": 120.9564,
+   "ign": 1.6364,
+   "mis": 2419.1274,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v1",
+   "window": "Y2022",
+   "crps": 123.0679,
+   "ign": 0.6327,
+   "mis": 2255.7767,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v2",
+   "window": "Y2022",
+   "crps": 123.1353,
+   "ign": 0.6391,
+   "mis": 2255.863,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v3",
+   "window": "Y2022",
+   "crps": 123.1353,
+   "ign": 0.6391,
+   "mis": 2255.863,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v4",
+   "window": "Y2022",
+   "crps": 121.5647,
+   "ign": 0.6303,
+   "mis": 2282.1621,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v6",
+   "window": "Y2022",
+   "crps": 124.5303,
+   "ign": 0.6475,
+   "mis": 2298.7796,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v7",
+   "window": "Y2022",
+   "crps": 119.2772,
+   "ign": 0.6177,
+   "mis": 2227.8417,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v8",
+   "window": "Y2022",
+   "crps": 120.6723,
+   "ign": 0.6295,
+   "mis": 2283.6173,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GAM",
+   "window": "Y2023",
+   "crps": 6054067.5113,
+   "ign": 1.2648,
+   "mis": 119524967.444,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "unito_transformer",
+   "window": "Y2023",
+   "crps": 54.7707,
+   "ign": 1.0644,
+   "mis": 915.0671,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GLMM",
+   "window": "Y2023",
+   "crps": 538.5338,
+   "ign": 1.0982,
+   "mis": 8937.8895,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "P_GLMM",
+   "window": "Y2023",
+   "crps": 413.5541,
+   "ign": 1.0817,
+   "mis": 8226.5575,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "ShapeFinder",
+   "window": "Y2023",
+   "crps": 33.5148,
+   "ign": 0.6863,
+   "mis": 695.9454,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GAM",
+   "window": "Y2023",
+   "crps": 14612157.5415,
+   "ign": 0.7673,
+   "mis": 288398955.2138,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_omm",
+   "window": "Y2023",
+   "crps": 37.1491,
+   "ign": 0.6081,
+   "mis": 1113.9538,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "P_GAM",
+   "window": "Y2023",
+   "crps": 59410149.7084,
+   "ign": 1.976,
+   "mis": 1188202770.2395,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "quantile_forecast",
+   "window": "Y2023",
+   "crps": 84.9096,
+   "ign": 0.7171,
+   "mis": 1305.1735,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2023",
+   "crps": 41.8657,
+   "ign": 0.6592,
+   "mis": 488.2815,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "tft",
+   "window": "Y2023",
+   "crps": 50.0292,
+   "ign": 0.8794,
+   "mis": 910.4985,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bodentien_rueter_negbin",
+   "window": "Y2023",
+   "crps": 90.4854,
+   "ign": 0.7044,
+   "mis": 1268.2538,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_gpcmm",
+   "window": "Y2023",
+   "crps": 69.9459,
+   "ign": 8.8888,
+   "mis": 1091.8678,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_hpmm",
+   "window": "Y2023",
+   "crps": 50.3436,
+   "ign": 0.7326,
+   "mis": 784.8783,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "submission_muchlinski_thornhill",
+   "window": "Y2023",
+   "crps": 30.3942,
+   "ign": 2.0471,
+   "mis": 573.2137,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GLMM",
+   "window": "Y2023",
+   "crps": 594.3994,
+   "ign": 0.9823,
+   "mis": 11582.7608,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2023",
+   "crps": 65.7251,
+   "ign": 0.6791,
+   "mis": 1086.0172,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2023",
+   "crps": 681.0674,
+   "ign": 1.1283,
+   "mis": 13565.8716,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2023",
+   "crps": 56.4408,
+   "ign": 1.1592,
+   "mis": 1104.8525,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2023",
+   "crps": 57.2753,
+   "ign": 1.6234,
+   "mis": 1145.5061,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v1",
+   "window": "Y2023",
+   "crps": 45.0684,
+   "ign": 0.6298,
+   "mis": 438.0621,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v2",
+   "window": "Y2023",
+   "crps": 45.6665,
+   "ign": 0.6211,
+   "mis": 456.819,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v3",
+   "window": "Y2023",
+   "crps": 45.6665,
+   "ign": 0.6211,
+   "mis": 456.819,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v4",
+   "window": "Y2023",
+   "crps": 46.2307,
+   "ign": 0.5936,
+   "mis": 566.5097,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v6",
+   "window": "Y2023",
+   "crps": 54.0587,
+   "ign": 0.6023,
+   "mis": 1427.5681,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v7",
+   "window": "Y2023",
+   "crps": 43.325,
+   "ign": 0.5804,
+   "mis": 543.9236,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v8",
+   "window": "Y2023",
+   "crps": 46.9544,
+   "ign": 0.5896,
+   "mis": 573.275,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GAM",
+   "window": "Y2024",
+   "crps": 437.7199,
+   "ign": 1.0691,
+   "mis": 7706.3939,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "unito_transformer",
+   "window": "Y2024",
+   "crps": 65.6288,
+   "ign": 0.9277,
+   "mis": 1061.7126,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GLMM",
+   "window": "Y2024",
+   "crps": 26.4383,
+   "ign": 1.1862,
+   "mis": 412.2196,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "P_GLMM",
+   "window": "Y2024",
+   "crps": 34.7999,
+   "ign": 1.1271,
+   "mis": 673.3126,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "ShapeFinder",
+   "window": "Y2024",
+   "crps": 32.0348,
+   "ign": 0.6105,
+   "mis": 346.6783,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GAM",
+   "window": "Y2024",
+   "crps": 15642609.3862,
+   "ign": 0.8207,
+   "mis": 188889088.3505,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_omm",
+   "window": "Y2024",
+   "crps": 24.5457,
+   "ign": 0.561,
+   "mis": 382.9976,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "P_GAM",
+   "window": "Y2024",
+   "crps": 274.6149,
+   "ign": 1.4181,
+   "mis": 5437.2444,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "quantile_forecast",
+   "window": "Y2024",
+   "crps": 26.4076,
+   "ign": 0.6142,
+   "mis": 409.7523,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2024",
+   "crps": 25.4991,
+   "ign": 0.5622,
+   "mis": 320.6987,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "tft",
+   "window": "Y2024",
+   "crps": 26.4587,
+   "ign": 1.0279,
+   "mis": 361.5314,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "bodentien_rueter_negbin",
+   "window": "Y2024",
+   "crps": 24.9679,
+   "ign": 0.5564,
+   "mis": 436.1305,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_gpcmm",
+   "window": "Y2024",
+   "crps": 49.4206,
+   "ign": 8.8617,
+   "mis": 847.703,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_hpmm",
+   "window": "Y2024",
+   "crps": 42.3541,
+   "ign": 0.7145,
+   "mis": 376.3781,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "submission_muchlinski_thornhill",
+   "window": "Y2024",
+   "crps": 61.5349,
+   "ign": 2.3677,
+   "mis": 1191.1558,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GLMM",
+   "window": "Y2024",
+   "crps": 28.031,
+   "ign": 0.8486,
+   "mis": 492.4161,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2024",
+   "crps": 23.8329,
+   "ign": 0.5627,
+   "mis": 355.1068,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2024",
+   "crps": 27.8375,
+   "ign": 1.0984,
+   "mis": 529.9013,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2024",
+   "crps": 55.7629,
+   "ign": 1.1868,
+   "mis": 1088.9031,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2024",
+   "crps": 57.0227,
+   "ign": 1.6495,
+   "mis": 1140.4538,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v2",
+   "window": "Y2024",
+   "crps": 34.8325,
+   "ign": 0.5854,
+   "mis": 345.2869,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v3",
+   "window": "Y2024",
+   "crps": 31.5961,
+   "ign": 0.5748,
+   "mis": 382.0132,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v4",
+   "window": "Y2024",
+   "crps": 34.2215,
+   "ign": 0.5532,
+   "mis": 364.9196,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v5",
+   "window": "Y2024",
+   "crps": 32.0043,
+   "ign": 0.5563,
+   "mis": 351.9454,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v5w0",
+   "window": "Y2024",
+   "crps": 34.2215,
+   "ign": 0.5532,
+   "mis": 364.9196,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v6",
+   "window": "Y2024",
+   "crps": 28.2667,
+   "ign": 0.5509,
+   "mis": 355.4965,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v7",
+   "window": "Y2024",
+   "crps": 28.8782,
+   "ign": 0.5468,
+   "mis": 326.3251,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v8",
+   "window": "Y2024",
+   "crps": 33.0695,
+   "ign": 0.5611,
+   "mis": 328.4205,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GAM",
+   "window": "Y2025",
+   "crps": 4327302.793,
+   "ign": 1.4832,
+   "mis": 85315477.4717,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "unito_transformer",
+   "window": "Y2025",
+   "crps": 63.5592,
+   "ign": 1.1928,
+   "mis": 1001.1463,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GLMM",
+   "window": "Y2025",
+   "crps": 26.8757,
+   "ign": 1.2148,
+   "mis": 426.6243,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "P_GLMM",
+   "window": "Y2025",
+   "crps": 34.3467,
+   "ign": 1.255,
+   "mis": 664.4091,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "ShapeFinder",
+   "window": "Y2025",
+   "crps": 35.314,
+   "ign": 0.9295,
+   "mis": 424.6029,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "Neg_Bin_GAM",
+   "window": "Y2025",
+   "crps": 60.569,
+   "ign": 1.0091,
+   "mis": 1130.7821,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_omm",
+   "window": "Y2025",
+   "crps": 27.1936,
+   "ign": 0.7378,
+   "mis": 407.0865,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "P_GAM",
+   "window": "Y2025",
+   "crps": 983138.354,
+   "ign": 1.7105,
+   "mis": 19662116.9224,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "quantile_forecast",
+   "window": "Y2025",
+   "crps": 29.2682,
+   "ign": 0.8654,
+   "mis": 543.5738,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2025",
+   "crps": 28.0697,
+   "ign": 0.7461,
+   "mis": 350.7098,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "tft",
+   "window": "Y2025",
+   "crps": 26.6356,
+   "ign": 1.1782,
+   "mis": 402.1671,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "bodentien_rueter_negbin",
+   "window": "Y2025",
+   "crps": 30.0285,
+   "ign": 0.8032,
+   "mis": 514.706,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_gpcmm",
+   "window": "Y2025",
+   "crps": 47.8594,
+   "ign": 8.7217,
+   "mis": 773.0828,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "submission_final_hpmm",
+   "window": "Y2025",
+   "crps": 41.6419,
+   "ign": 0.853,
+   "mis": 358.9436,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "submission_muchlinski_thornhill",
+   "window": "Y2025",
+   "crps": 61.8689,
+   "ign": 2.4059,
+   "mis": 1197.8558,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "TW_GLMM",
+   "window": "Y2025",
+   "crps": 28.4301,
+   "ign": 1.009,
+   "mis": 502.8098,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2025",
+   "crps": 27.1613,
+   "ign": 0.8499,
+   "mis": 410.6198,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2025",
+   "crps": 28.5127,
+   "ign": 1.2231,
+   "mis": 544.5172,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2025",
+   "crps": 54.8554,
+   "ign": 1.3364,
+   "mis": 1065.6818,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2025",
+   "crps": 56.123,
+   "ign": 1.8843,
+   "mis": 1122.4607,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v2",
+   "window": "Y2025",
+   "crps": 33.814,
+   "ign": 0.715,
+   "mis": 362.7083,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v3",
+   "window": "Y2025",
+   "crps": 31.1121,
+   "ign": 0.7332,
+   "mis": 423.0229,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v4",
+   "window": "Y2025",
+   "crps": 33.7666,
+   "ign": 0.7067,
+   "mis": 407.529,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v5",
+   "window": "Y2025",
+   "crps": 31.889,
+   "ign": 0.7215,
+   "mis": 394.6103,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v5w0",
+   "window": "Y2025",
+   "crps": 33.7666,
+   "ign": 0.7067,
+   "mis": 407.529,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v6",
+   "window": "Y2025",
+   "crps": 29.3116,
+   "ign": 0.7167,
+   "mis": 397.1047,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v7",
+   "window": "Y2025",
+   "crps": 29.6014,
+   "ign": 0.702,
+   "mis": 372.3713,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v8",
+   "window": "Y2025",
+   "crps": 32.7733,
+   "ign": 0.7213,
+   "mis": 343.7364,
+   "n": 1146,
+   "draws": 1000
+  }
+ ]
+}

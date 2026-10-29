@@ -1,0 +1,58 @@
+{
+ "0.03": {
+  "great_power_war": 0.7117,
+  "great_power_war_cow": 0.3458,
+  "nuclear_use": 0.1807,
+  "battle_deaths_median": 1094953.0,
+  "battle_deaths_mean": 1989954.0,
+  "world_gdp_2065_median": 43033.0
+ },
+ "0.04": {
+  "great_power_war": 0.7007,
+  "great_power_war_cow": 0.3458,
+  "nuclear_use": 0.1807,
+  "battle_deaths_median": 1083288.0,
+  "battle_deaths_mean": 1942225.0,
+  "world_gdp_2065_median": 43033.0
+ },
+ "0.05": {
+  "great_power_war": 0.6883,
+  "great_power_war_cow": 0.3458,
+  "nuclear_use": 0.1807,
+  "battle_deaths_median": 1077111.0,
+  "battle_deaths_mean": 1904424.0,
+  "world_gdp_2065_median": 43033.0
+ },
+ "0.065": {
+  "great_power_war": 0.6655,
+  "great_power_war_cow": 0.3458,
+  "nuclear_use": 0.1807,
+  "battle_deaths_median": 1059307.0,
+  "battle_deaths_mean": 1851182.0,
+  "world_gdp_2065_median": 43033.0
+ },
+ "0.08": {
+  "great_power_war": 0.6355,
+  "great_power_war_cow": 0.3458,
+  "nuclear_use": 0.1807,
+  "battle_deaths_median": 1031924.0,
+  "battle_deaths_mean": 1764894.0,
+  "world_gdp_2065_median": 43026.0
+ },
+ "0.1": {
+  "great_power_war": 0.5445,
+  "great_power_war_cow": 0.3338,
+  "nuclear_use": 0.179,
+  "battle_deaths_median": 987152.0,
+  "battle_deaths_mean": 1616517.0,
+  "world_gdp_2065_median": 43148.0
+ },
+ "none (COW majors only)": {
+  "great_power_war": 0.3338,
+  "great_power_war_cow": 0.3338,
+  "nuclear_use": 0.179,
+  "battle_deaths_median": 910029.0,
+  "battle_deaths_mean": 1280912.0,
+  "world_gdp_2065_median": 43148.0
+ }
+}

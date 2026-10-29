@@ -1,0 +1,380 @@
+{
+ "public_debt": {
+  "n_improving": 2,
+  "top": {
+   "leader_elected": [
+    -0.05,
+    -0.1
+   ],
+   "rel_polarization": [
+    -0.04,
+    -0.04
+   ]
+  }
+ },
+ "polarization": {
+  "n_improving": 16,
+  "top": {
+   "log_regime_duration": [
+    -0.67,
+    -0.17
+   ],
+   "leader_log_tenure": [
+    -0.74,
+    -0.05
+   ],
+   "election_year": [
+    -0.27,
+    -0.34
+   ],
+   "navco_nonviolent_ongoing": [
+    -0.44,
+    -0.1
+   ],
+   "opposition_group_size": [
+    -0.32,
+    -0.1
+   ],
+   "top1_share": [
+    -0.07,
+    -0.3
+   ]
+  }
+ },
+ "mass_mobilization": {
+  "n_improving": 27,
+  "top": {
+   "log_regime_duration": [
+    -1.62,
+    -1.04
+   ],
+   "log_pop": [
+    -0.7,
+    -0.86
+   ],
+   "leader_log_tenure": [
+    -0.77,
+    -0.29
+   ],
+   "election_year": [
+    -0.24,
+    -0.72
+   ],
+   "corruption": [
+    -0.35,
+    -0.33
+   ],
+   "regime_corruption": [
+    -0.38,
+    -0.29
+   ]
+  }
+ },
+ "mob_democracy": {
+  "n_improving": 22,
+  "top": {
+   "log_regime_duration": [
+    -1.77,
+    -1.52
+   ],
+   "election_year": [
+    -0.35,
+    -1.47
+   ],
+   "leader_log_tenure": [
+    -0.79,
+    -0.65
+   ],
+   "opposition_group_size": [
+    -0.56,
+    -0.74
+   ],
+   "regime_corruption": [
+    -0.53,
+    -0.48
+   ],
+   "corruption": [
+    -0.5,
+    -0.5
+   ]
+  }
+ },
+ "mob_autocracy": {
+  "n_improving": 60,
+  "top": {
+   "navco_nonviolent_ongoing": [
+    -0.35,
+    -1.16
+   ],
+   "election_year": [
+    -0.21,
+    -0.93
+   ],
+   "leader_log_tenure": [
+    -0.26,
+    -0.59
+   ],
+   "log_regime_duration": [
+    -0.19,
+    -0.63
+   ],
+   "neopatrimonialism": [
+    -0.42,
+    -0.27
+   ],
+   "corruption": [
+    -0.34,
+    -0.22
+   ]
+  }
+ },
+ "political_violence": {
+  "n_improving": 68,
+  "top": {
+   "youth_share": [
+    -0.53,
+    -0.46
+   ],
+   "median_age": [
+    -0.5,
+    -0.4
+   ],
+   "corruption": [
+    -0.44,
+    -0.46
+   ],
+   "regime_corruption": [
+    -0.47,
+    -0.42
+   ],
+   "fertility": [
+    -0.5,
+    -0.37
+   ],
+   "log_child_mort": [
+    -0.45,
+    -0.38
+   ]
+  }
+ },
+ "gini": {
+  "n_improving": 34,
+  "top": {
+   "median_age": [
+    -0.33,
+    -0.37
+   ],
+   "log_homicide": [
+    -0.56,
+    -0.13
+   ],
+   "youth_share": [
+    -0.25,
+    -0.38
+   ],
+   "political_violence": [
+    -0.45,
+    -0.07
+   ],
+   "log_child_mort": [
+    -0.24,
+    -0.22
+   ],
+   "conflict_past_10y": [
+    -0.31,
+    -0.15
+   ]
+  }
+ },
+ "top1": {
+  "n_improving": 3,
+  "top": {
+   "power_by_wealth": [
+    -0.45,
+    -0.48
+   ],
+   "life_exp": [
+    -0.43,
+    -0.03
+   ],
+   "legit_socialist": [
+    -0.06,
+    -0.03
+   ]
+  }
+ },
+ "extreme_poverty": {
+  "n_improving": 15,
+  "top": {
+   "life_exp": [
+    -1.48,
+    -1.46
+   ],
+   "log_child_mort": [
+    -1.98,
+    -0.69
+   ],
+   "log_gdp": [
+    -1.6,
+    -0.12
+   ],
+   "log_calories": [
+    -0.3,
+    -0.51
+   ],
+   "territorial_control": [
+    -0.42,
+    -0.16
+   ],
+   "conflict_past_10y": [
+    -0.33,
+    -0.04
+   ]
+  }
+ },
+ "military": {
+  "n_improving": 21,
+  "top": {
+   "regime_hereditary": [
+    -0.39,
+    -0.3
+   ],
+   "religious_freedom": [
+    -0.07,
+    -0.56
+   ],
+   "cso_participation": [
+    -0.09,
+    -0.47
+   ],
+   "nb_coups": [
+    -0.05,
+    -0.43
+   ],
+   "free_expression": [
+    -0.03,
+    -0.43
+   ],
+   "diag_acc": [
+    -0.03,
+    -0.42
+   ]
+  }
+ },
+ "nonstate_3y_pc": {
+  "n_improving": 35,
+  "top": {
+   "territorial_control": [
+    -0.71,
+    -1.57
+   ],
+   "political_violence": [
+    -0.73,
+    -0.56
+   ],
+   "corruption": [
+    -0.65,
+    -0.0
+   ],
+   "physical_integrity": [
+    -0.46,
+    -0.15
+   ],
+   "gdp_drawdown": [
+    -0.46,
+    -0.12
+   ],
+   "political_killings": [
+    -0.37,
+    -0.17
+   ]
+  }
+ },
+ "onesided_3y_pc": {
+  "n_improving": 60,
+  "top": {
+   "political_violence": [
+    -0.97,
+    -1.61
+   ],
+   "territorial_control": [
+    -0.99,
+    -1.49
+   ],
+   "war_now": [
+    -0.96,
+    -0.37
+   ],
+   "life_exp": [
+    -0.79,
+    -0.52
+   ],
+   "log_regime_duration": [
+    -0.39,
+    -0.88
+   ],
+   "political_killings": [
+    -0.37,
+    -0.88
+   ]
+  }
+ },
+ "territorial_control": {
+  "n_improving": 51,
+  "top": {
+   "physical_integrity": [
+    -0.4,
+    -0.08
+   ],
+   "torture": [
+    -0.36,
+    -0.11
+   ],
+   "regime_military": [
+    -0.37,
+    -0.09
+   ],
+   "political_killings": [
+    -0.4,
+    -0.02
+   ],
+   "tax_rev": [
+    -0.15,
+    -0.25
+   ],
+   "median_age": [
+    -0.34,
+    -0.05
+   ]
+  }
+ },
+ "fiscal_capacity": {
+  "n_improving": 48,
+  "top": {
+   "pop_growth_5y": [
+    -0.39,
+    -0.49
+   ],
+   "party_inst": [
+    -0.55,
+    -0.32
+   ],
+   "median_age": [
+    -0.43,
+    -0.29
+   ],
+   "fertility": [
+    -0.71,
+    -0.0
+   ],
+   "youth_share": [
+    -0.46,
+    -0.18
+   ],
+   "democracy": [
+    -0.11,
+    -0.39
+   ]
+  }
+ }
+}

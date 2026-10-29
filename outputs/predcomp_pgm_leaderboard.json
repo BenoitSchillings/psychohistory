@@ -1,0 +1,1208 @@
+{
+ "historical_mean": [
+  {
+   "model": "unibw_trees_global",
+   "crps": 0.43698,
+   "ign": 0.07749,
+   "mis": 8.32386
+  },
+  {
+   "model": "unibw_trees_global-local",
+   "crps": 0.4377,
+   "ign": 0.07774,
+   "mis": 8.3595
+  },
+  {
+   "model": "unibw_trees_local",
+   "crps": 0.44143,
+   "ign": 0.09038,
+   "mis": 8.61429
+  },
+  {
+   "model": "dorazio_log",
+   "crps": 0.44297,
+   "ign": 0.08885,
+   "mis": 8.54681
+  },
+  {
+   "model": "OURS_seldon_pgm_nn025",
+   "crps": 0.44377,
+   "ign": 0.08153,
+   "mis": 8.41487
+  },
+  {
+   "model": "OURS_seldon_pgm_nn0",
+   "crps": 0.44507,
+   "ign": 0.08207,
+   "mis": 8.41898
+  },
+  {
+   "model": "OURS_seldon_pgm_v1",
+   "crps": 0.44507,
+   "ign": 0.08207,
+   "mis": 8.41898
+  },
+  {
+   "model": "tft",
+   "crps": 0.44788,
+   "ign": 0.09548,
+   "mis": 8.63237
+  },
+  {
+   "model": "dorazio_ensemble",
+   "crps": 0.44806,
+   "ign": 0.09337,
+   "mis": 8.66457
+  },
+  {
+   "model": "conflictforecast_v2",
+   "crps": 0.44878,
+   "ign": 0.0791,
+   "mis": 9.23915
+  },
+  {
+   "model": "bm_boot_240",
+   "crps": 0.4497,
+   "ign": 0.10889,
+   "mis": 8.99682
+  },
+  {
+   "model": "bm_zero",
+   "crps": 0.44984,
+   "ign": 0.10951,
+   "mis": 8.99682
+  },
+  {
+   "model": "double_hurdle_model",
+   "crps": 0.47493,
+   "ign": 0.09686,
+   "mis": 8.77472
+  },
+  {
+   "model": "bm_conflictology_n",
+   "crps": 0.48781,
+   "ign": 0.0899,
+   "mis": 9.885
+  },
+  {
+   "model": "bm_conflictology",
+   "crps": 0.54666,
+   "ign": 0.08989,
+   "mis": 10.12413
+  },
+  {
+   "model": "bm_last",
+   "crps": 2.14618,
+   "ign": 0.12763,
+   "mis": 42.40802
+  }
+ ],
+ "live": [
+  {
+   "model": "OURS_seldon_pgm_nn0",
+   "Y2024": 0.22707,
+   "Y2025": 0.31791
+  },
+  {
+   "model": "OURS_seldon_pgm_nn025",
+   "Y2024": 0.23136,
+   "Y2025": 0.32121
+  },
+  {
+   "model": "OURS_seldon_pgm_v1",
+   "Y2024": 0.22666,
+   "Y2025": 0.31768
+  },
+  {
+   "model": "bm_boot_240",
+   "Y2024": 0.28349,
+   "Y2025": 0.35961
+  },
+  {
+   "model": "bm_conflictology",
+   "Y2024": 0.22514,
+   "Y2025": 0.33026
+  },
+  {
+   "model": "bm_conflictology_n",
+   "Y2024": 0.26466,
+   "Y2025": 0.34785
+  },
+  {
+   "model": "bm_last",
+   "Y2024": 0.27886,
+   "Y2025": 0.37589
+  },
+  {
+   "model": "bm_zero",
+   "Y2024": 0.28369,
+   "Y2025": 0.35989
+  },
+  {
+   "model": "conflictforecast_v2",
+   "Y2024": 0.33345,
+   "Y2025": 0.34217
+  },
+  {
+   "model": "dorazio_ensemble",
+   "Y2024": 0.39017,
+   "Y2025": 0.57874
+  },
+  {
+   "model": "dorazio_log",
+   "Y2024": 0.37106,
+   "Y2025": 0.67025
+  },
+  {
+   "model": "double_hurdle_model",
+   "Y2024": 0.35501,
+   "Y2025": 0.4142
+  },
+  {
+   "model": "tft",
+   "Y2024": 0.29187,
+   "Y2025": 0.37171
+  },
+  {
+   "model": "unibw_trees_global",
+   "Y2024": 0.24653,
+   "Y2025": 0.33892
+  },
+  {
+   "model": "unibw_trees_global-local",
+   "Y2024": 0.24998,
+   "Y2025": 0.33317
+  },
+  {
+   "model": "unibw_trees_local",
+   "Y2024": 0.24995,
+   "Y2025": 0.33266
+  }
+ ],
+ "by_window": [
+  {
+   "model": "unibw_trees_global",
+   "window": "Y2018",
+   "crps": 0.13014,
+   "ign": 0.06853,
+   "mis": 2.16598,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_local",
+   "window": "Y2018",
+   "crps": 0.13767,
+   "ign": 0.08274,
+   "mis": 2.45587,
+   "n": 157320
+  },
+  {
+   "model": "dorazio_ensemble",
+   "window": "Y2018",
+   "crps": 0.14404,
+   "ign": 0.08095,
+   "mis": 2.42236,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_global-local",
+   "window": "Y2018",
+   "crps": 0.13247,
+   "ign": 0.06952,
+   "mis": 2.22792,
+   "n": 157320
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2018",
+   "crps": 0.14627,
+   "ign": 0.07059,
+   "mis": 2.30205,
+   "n": 157320
+  },
+  {
+   "model": "dorazio_log",
+   "window": "Y2018",
+   "crps": 0.14404,
+   "ign": 0.08095,
+   "mis": 2.42236,
+   "n": 157320
+  },
+  {
+   "model": "tft",
+   "window": "Y2018",
+   "crps": 0.14526,
+   "ign": 0.08386,
+   "mis": 2.53635,
+   "n": 157320
+  },
+  {
+   "model": "double_hurdle_model",
+   "window": "Y2018",
+   "crps": 0.17364,
+   "ign": 0.08522,
+   "mis": 2.38027,
+   "n": 157320
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2018",
+   "crps": 0.20208,
+   "ign": 0.083,
+   "mis": 2.92447,
+   "n": 157320
+  },
+  {
+   "model": "bm_conflictology_n",
+   "window": "Y2018",
+   "crps": 0.15852,
+   "ign": 0.08449,
+   "mis": 3.25574,
+   "n": 157320
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2018",
+   "crps": 0.38613,
+   "ign": 0.11836,
+   "mis": 7.15073,
+   "n": 157320
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2018",
+   "crps": 0.14449,
+   "ign": 0.09326,
+   "mis": 2.89118,
+   "n": 157320
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2018",
+   "crps": 0.14456,
+   "ign": 0.09246,
+   "mis": 2.89118,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_nn025",
+   "window": "Y2018",
+   "crps": 0.1617,
+   "ign": 0.08053,
+   "mis": 2.57721,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_nn0",
+   "window": "Y2018",
+   "crps": 0.16808,
+   "ign": 0.08151,
+   "mis": 2.59883,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_v1",
+   "window": "Y2018",
+   "crps": 0.16808,
+   "ign": 0.08151,
+   "mis": 2.59883,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_global",
+   "window": "Y2019",
+   "crps": 0.10119,
+   "ign": 0.06675,
+   "mis": 1.56056,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_local",
+   "window": "Y2019",
+   "crps": 0.10416,
+   "ign": 0.08083,
+   "mis": 1.82413,
+   "n": 157320
+  },
+  {
+   "model": "dorazio_ensemble",
+   "window": "Y2019",
+   "crps": 0.11537,
+   "ign": 0.07971,
+   "mis": 2.03649,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_global-local",
+   "window": "Y2019",
+   "crps": 0.10141,
+   "ign": 0.06714,
+   "mis": 1.6026,
+   "n": 157320
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2019",
+   "crps": 0.10637,
+   "ign": 0.06781,
+   "mis": 1.67096,
+   "n": 157320
+  },
+  {
+   "model": "dorazio_log",
+   "window": "Y2019",
+   "crps": 0.10701,
+   "ign": 0.07561,
+   "mis": 1.89278,
+   "n": 157320
+  },
+  {
+   "model": "tft",
+   "window": "Y2019",
+   "crps": 0.11691,
+   "ign": 0.08563,
+   "mis": 1.98079,
+   "n": 157320
+  },
+  {
+   "model": "double_hurdle_model",
+   "window": "Y2019",
+   "crps": 0.10708,
+   "ign": 0.08254,
+   "mis": 1.82611,
+   "n": 157320
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2019",
+   "crps": 0.12521,
+   "ign": 0.07717,
+   "mis": 2.0464,
+   "n": 157320
+  },
+  {
+   "model": "bm_conflictology_n",
+   "window": "Y2019",
+   "crps": 0.11393,
+   "ign": 0.07852,
+   "mis": 2.02024,
+   "n": 157320
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2019",
+   "crps": 0.14425,
+   "ign": 0.10522,
+   "mis": 2.61846,
+   "n": 157320
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2019",
+   "crps": 0.11571,
+   "ign": 0.09582,
+   "mis": 2.31503,
+   "n": 157320
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2019",
+   "crps": 0.11575,
+   "ign": 0.09518,
+   "mis": 2.31503,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_nn025",
+   "window": "Y2019",
+   "crps": 0.10477,
+   "ign": 0.07109,
+   "mis": 1.64027,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_nn0",
+   "window": "Y2019",
+   "crps": 0.10535,
+   "ign": 0.07163,
+   "mis": 1.65301,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_v1",
+   "window": "Y2019",
+   "crps": 0.10535,
+   "ign": 0.07163,
+   "mis": 1.65301,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_global",
+   "window": "Y2020",
+   "crps": 0.11816,
+   "ign": 0.07457,
+   "mis": 1.90125,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_local",
+   "window": "Y2020",
+   "crps": 0.12223,
+   "ign": 0.08742,
+   "mis": 2.2058,
+   "n": 157320
+  },
+  {
+   "model": "dorazio_ensemble",
+   "window": "Y2020",
+   "crps": 0.12492,
+   "ign": 0.08572,
+   "mis": 2.25392,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_global-local",
+   "window": "Y2020",
+   "crps": 0.11832,
+   "ign": 0.07447,
+   "mis": 1.90024,
+   "n": 157320
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2020",
+   "crps": 0.12097,
+   "ign": 0.07502,
+   "mis": 2.0295,
+   "n": 157320
+  },
+  {
+   "model": "dorazio_log",
+   "window": "Y2020",
+   "crps": 0.12224,
+   "ign": 0.08263,
+   "mis": 2.15234,
+   "n": 157320
+  },
+  {
+   "model": "tft",
+   "window": "Y2020",
+   "crps": 0.12483,
+   "ign": 0.08843,
+   "mis": 2.21148,
+   "n": 157320
+  },
+  {
+   "model": "double_hurdle_model",
+   "window": "Y2020",
+   "crps": 0.12524,
+   "ign": 0.09051,
+   "mis": 2.15449,
+   "n": 157320
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2020",
+   "crps": 0.13147,
+   "ign": 0.08387,
+   "mis": 2.11034,
+   "n": 157320
+  },
+  {
+   "model": "bm_conflictology_n",
+   "window": "Y2020",
+   "crps": 0.12581,
+   "ign": 0.08229,
+   "mis": 2.14738,
+   "n": 157320
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2020",
+   "crps": 0.16481,
+   "ign": 0.1167,
+   "mis": 2.99608,
+   "n": 157320
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2020",
+   "crps": 0.13195,
+   "ign": 0.10752,
+   "mis": 2.64188,
+   "n": 157320
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2020",
+   "crps": 0.13209,
+   "ign": 0.10805,
+   "mis": 2.64188,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_nn025",
+   "window": "Y2020",
+   "crps": 0.11841,
+   "ign": 0.07751,
+   "mis": 1.94795,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_nn0",
+   "window": "Y2020",
+   "crps": 0.11853,
+   "ign": 0.07818,
+   "mis": 1.95185,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_v1",
+   "window": "Y2020",
+   "crps": 0.11853,
+   "ign": 0.07818,
+   "mis": 1.95185,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_global",
+   "window": "Y2021",
+   "crps": 0.92459,
+   "ign": 0.08463,
+   "mis": 17.97818,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_local",
+   "window": "Y2021",
+   "crps": 0.92933,
+   "ign": 0.09674,
+   "mis": 18.34896,
+   "n": 157320
+  },
+  {
+   "model": "dorazio_ensemble",
+   "window": "Y2021",
+   "crps": 0.93189,
+   "ign": 0.09578,
+   "mis": 18.33342,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_global-local",
+   "window": "Y2021",
+   "crps": 0.92445,
+   "ign": 0.08464,
+   "mis": 17.97788,
+   "n": 157320
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2021",
+   "crps": 0.92533,
+   "ign": 0.08652,
+   "mis": 17.99357,
+   "n": 157320
+  },
+  {
+   "model": "dorazio_log",
+   "window": "Y2021",
+   "crps": 0.92886,
+   "ign": 0.09351,
+   "mis": 18.27979,
+   "n": 157320
+  },
+  {
+   "model": "tft",
+   "window": "Y2021",
+   "crps": 0.93213,
+   "ign": 0.1019,
+   "mis": 18.3567,
+   "n": 157320
+  },
+  {
+   "model": "double_hurdle_model",
+   "window": "Y2021",
+   "crps": 0.94063,
+   "ign": 0.10135,
+   "mis": 18.33449,
+   "n": 157320
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2021",
+   "crps": 0.93269,
+   "ign": 0.09528,
+   "mis": 17.87332,
+   "n": 157320
+  },
+  {
+   "model": "bm_conflictology_n",
+   "window": "Y2021",
+   "crps": 0.93116,
+   "ign": 0.09672,
+   "mis": 18.14973,
+   "n": 157320
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2021",
+   "crps": 0.9704,
+   "ign": 0.12912,
+   "mis": 19.08172,
+   "n": 157320
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2021",
+   "crps": 0.93961,
+   "ign": 0.11795,
+   "mis": 18.79685,
+   "n": 157320
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2021",
+   "crps": 0.93984,
+   "ign": 0.11932,
+   "mis": 18.79685,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_nn025",
+   "window": "Y2021",
+   "crps": 0.92044,
+   "ign": 0.08636,
+   "mis": 17.82468,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_nn0",
+   "window": "Y2021",
+   "crps": 0.91907,
+   "ign": 0.08659,
+   "mis": 17.80919,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_v1",
+   "window": "Y2021",
+   "crps": 0.91907,
+   "ign": 0.08659,
+   "mis": 17.80919,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_global",
+   "window": "Y2022",
+   "crps": 1.12826,
+   "ign": 0.08378,
+   "mis": 22.26267,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_local",
+   "window": "Y2022",
+   "crps": 1.12969,
+   "ign": 0.09544,
+   "mis": 22.47002,
+   "n": 157320
+  },
+  {
+   "model": "dorazio_ensemble",
+   "window": "Y2022",
+   "crps": 1.1342,
+   "ign": 0.09718,
+   "mis": 22.44727,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_global-local",
+   "window": "Y2022",
+   "crps": 1.12718,
+   "ign": 0.0836,
+   "mis": 22.25134,
+   "n": 157320
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2022",
+   "crps": 1.10013,
+   "ign": 0.08585,
+   "mis": 21.83958,
+   "n": 157320
+  },
+  {
+   "model": "dorazio_log",
+   "window": "Y2022",
+   "crps": 1.13115,
+   "ign": 0.09424,
+   "mis": 22.34217,
+   "n": 157320
+  },
+  {
+   "model": "tft",
+   "window": "Y2022",
+   "crps": 1.13612,
+   "ign": 0.10203,
+   "mis": 22.42443,
+   "n": 157320
+  },
+  {
+   "model": "double_hurdle_model",
+   "window": "Y2022",
+   "crps": 1.17201,
+   "ign": 0.1044,
+   "mis": 22.5478,
+   "n": 157320
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2022",
+   "crps": 1.15622,
+   "ign": 0.09823,
+   "mis": 22.37278,
+   "n": 157320
+  },
+  {
+   "model": "bm_conflictology_n",
+   "window": "Y2022",
+   "crps": 1.1469,
+   "ign": 0.09586,
+   "mis": 22.7151,
+   "n": 157320
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2022",
+   "crps": 1.45673,
+   "ign": 0.14533,
+   "mis": 28.53121,
+   "n": 157320
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2022",
+   "crps": 1.13821,
+   "ign": 0.1188,
+   "mis": 22.76786,
+   "n": 157320
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2022",
+   "crps": 1.13839,
+   "ign": 0.12065,
+   "mis": 22.76786,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_nn025",
+   "window": "Y2022",
+   "crps": 1.13678,
+   "ign": 0.08553,
+   "mis": 22.39353,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_nn0",
+   "window": "Y2022",
+   "crps": 1.1391,
+   "ign": 0.08604,
+   "mis": 22.40354,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_v1",
+   "window": "Y2022",
+   "crps": 1.1391,
+   "ign": 0.08604,
+   "mis": 22.40354,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_global",
+   "window": "Y2023",
+   "crps": 0.2195,
+   "ign": 0.08666,
+   "mis": 4.07448,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_local",
+   "window": "Y2023",
+   "crps": 0.22549,
+   "ign": 0.09914,
+   "mis": 4.38098,
+   "n": 157320
+  },
+  {
+   "model": "dorazio_ensemble",
+   "window": "Y2023",
+   "crps": 0.23795,
+   "ign": 0.12087,
+   "mis": 4.49397,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_global-local",
+   "window": "Y2023",
+   "crps": 0.22236,
+   "ign": 0.08706,
+   "mis": 4.19703,
+   "n": 157320
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2023",
+   "crps": 0.29361,
+   "ign": 0.08881,
+   "mis": 9.59923,
+   "n": 157320
+  },
+  {
+   "model": "dorazio_log",
+   "window": "Y2023",
+   "crps": 0.2245,
+   "ign": 0.10618,
+   "mis": 4.19143,
+   "n": 157320
+  },
+  {
+   "model": "tft",
+   "window": "Y2023",
+   "crps": 0.23204,
+   "ign": 0.11105,
+   "mis": 4.28449,
+   "n": 157320
+  },
+  {
+   "model": "double_hurdle_model",
+   "window": "Y2023",
+   "crps": 0.33098,
+   "ign": 0.11712,
+   "mis": 5.40513,
+   "n": 157320
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2023",
+   "crps": 0.73227,
+   "ign": 0.10181,
+   "mis": 13.41748,
+   "n": 157320
+  },
+  {
+   "model": "bm_conflictology_n",
+   "window": "Y2023",
+   "crps": 0.45056,
+   "ign": 0.10154,
+   "mis": 11.02183,
+   "n": 157320
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2023",
+   "crps": 9.75477,
+   "ign": 0.15107,
+   "mis": 194.06993,
+   "n": 157320
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2023",
+   "crps": 0.22822,
+   "ign": 0.11998,
+   "mis": 4.56814,
+   "n": 157320
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2023",
+   "crps": 0.22841,
+   "ign": 0.12141,
+   "mis": 4.56814,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_nn025",
+   "window": "Y2023",
+   "crps": 0.22051,
+   "ign": 0.08813,
+   "mis": 4.10558,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_nn0",
+   "window": "Y2023",
+   "crps": 0.22027,
+   "ign": 0.08848,
+   "mis": 4.09746,
+   "n": 157320
+  },
+  {
+   "model": "OURS_seldon_pgm_v1",
+   "window": "Y2023",
+   "crps": 0.22027,
+   "ign": 0.08848,
+   "mis": 4.09746,
+   "n": 157320
+  },
+  {
+   "model": "unibw_trees_global",
+   "window": "Y2024",
+   "crps": 0.24653,
+   "ign": 0.0833,
+   "mis": 3.36287,
+   "n": 78660
+  },
+  {
+   "model": "unibw_trees_local",
+   "window": "Y2024",
+   "crps": 0.24995,
+   "ign": 0.09993,
+   "mis": 3.71018,
+   "n": 78660
+  },
+  {
+   "model": "dorazio_ensemble",
+   "window": "Y2024",
+   "crps": 0.39017,
+   "ign": 0.41239,
+   "mis": 6.16458,
+   "n": 78660
+  },
+  {
+   "model": "unibw_trees_global-local",
+   "window": "Y2024",
+   "crps": 0.24998,
+   "ign": 0.08357,
+   "mis": 3.45528,
+   "n": 78660
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2024",
+   "crps": 0.33345,
+   "ign": 0.08825,
+   "mis": 10.26722,
+   "n": 78660
+  },
+  {
+   "model": "dorazio_log",
+   "window": "Y2024",
+   "crps": 0.37106,
+   "ign": 0.48049,
+   "mis": 5.7536,
+   "n": 78660
+  },
+  {
+   "model": "tft",
+   "window": "Y2024",
+   "crps": 0.29187,
+   "ign": 0.11597,
+   "mis": 5.34048,
+   "n": 78660
+  },
+  {
+   "model": "double_hurdle_model",
+   "window": "Y2024",
+   "crps": 0.35501,
+   "ign": 0.11345,
+   "mis": 5.87791,
+   "n": 78660
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2024",
+   "crps": 0.22514,
+   "ign": 0.09872,
+   "mis": 3.57188,
+   "n": 78660
+  },
+  {
+   "model": "bm_conflictology_n",
+   "window": "Y2024",
+   "crps": 0.26466,
+   "ign": 0.10254,
+   "mis": 3.97996,
+   "n": 78660
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2024",
+   "crps": 0.27886,
+   "ign": 0.14169,
+   "mis": 5.10035,
+   "n": 78660
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2024",
+   "crps": 0.28349,
+   "ign": 0.11573,
+   "mis": 5.67379,
+   "n": 78660
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2024",
+   "crps": 0.28369,
+   "ign": 0.11647,
+   "mis": 5.67379,
+   "n": 78660
+  },
+  {
+   "model": "OURS_seldon_pgm_nn025",
+   "window": "Y2024",
+   "crps": 0.23136,
+   "ign": 0.08613,
+   "mis": 3.11203,
+   "n": 78660
+  },
+  {
+   "model": "OURS_seldon_pgm_nn0",
+   "window": "Y2024",
+   "crps": 0.22707,
+   "ign": 0.08641,
+   "mis": 3.09668,
+   "n": 78660
+  },
+  {
+   "model": "OURS_seldon_pgm_v1",
+   "window": "Y2024",
+   "crps": 0.22666,
+   "ign": 0.08439,
+   "mis": 3.0736,
+   "n": 78660
+  },
+  {
+   "model": "unibw_trees_global",
+   "window": "Y2025",
+   "crps": 0.33892,
+   "ign": 0.09546,
+   "mis": 5.89577,
+   "n": 78660
+  },
+  {
+   "model": "unibw_trees_local",
+   "window": "Y2025",
+   "crps": 0.33266,
+   "ign": 0.10619,
+   "mis": 5.62267,
+   "n": 78660
+  },
+  {
+   "model": "dorazio_ensemble",
+   "window": "Y2025",
+   "crps": 0.57874,
+   "ign": 1.04783,
+   "mis": 8.27022,
+   "n": 78660
+  },
+  {
+   "model": "unibw_trees_global-local",
+   "window": "Y2025",
+   "crps": 0.33317,
+   "ign": 0.09519,
+   "mis": 5.5189,
+   "n": 78660
+  },
+  {
+   "model": "conflictforecast_v2",
+   "window": "Y2025",
+   "crps": 0.34217,
+   "ign": 0.1006,
+   "mis": 5.65807,
+   "n": 78660
+  },
+  {
+   "model": "dorazio_log",
+   "window": "Y2025",
+   "crps": 0.67025,
+   "ign": 1.425,
+   "mis": 8.61928,
+   "n": 78660
+  },
+  {
+   "model": "tft",
+   "window": "Y2025",
+   "crps": 0.37171,
+   "ign": 0.13116,
+   "mis": 6.92775,
+   "n": 78660
+  },
+  {
+   "model": "double_hurdle_model",
+   "window": "Y2025",
+   "crps": 0.4142,
+   "ign": 0.12178,
+   "mis": 7.28534,
+   "n": 78660
+  },
+  {
+   "model": "bm_conflictology",
+   "window": "Y2025",
+   "crps": 0.33026,
+   "ign": 0.11398,
+   "mis": 5.65547,
+   "n": 78660
+  },
+  {
+   "model": "bm_conflictology_n",
+   "window": "Y2025",
+   "crps": 0.34785,
+   "ign": 0.11336,
+   "mis": 6.04197,
+   "n": 78660
+  },
+  {
+   "model": "bm_last",
+   "window": "Y2025",
+   "crps": 0.37589,
+   "ign": 0.15736,
+   "mis": 7.0461,
+   "n": 78660
+  },
+  {
+   "model": "bm_boot_240",
+   "window": "Y2025",
+   "crps": 0.35961,
+   "ign": 0.12966,
+   "mis": 7.19781,
+   "n": 78660
+  },
+  {
+   "model": "bm_zero",
+   "window": "Y2025",
+   "crps": 0.35989,
+   "ign": 0.13282,
+   "mis": 7.19781,
+   "n": 78660
+  },
+  {
+   "model": "OURS_seldon_pgm_nn025",
+   "window": "Y2025",
+   "crps": 0.32121,
+   "ign": 0.09776,
+   "mis": 5.22637,
+   "n": 78660
+  },
+  {
+   "model": "OURS_seldon_pgm_nn0",
+   "window": "Y2025",
+   "crps": 0.31791,
+   "ign": 0.09803,
+   "mis": 5.21326,
+   "n": 78660
+  },
+  {
+   "model": "OURS_seldon_pgm_v1",
+   "window": "Y2025",
+   "crps": 0.31768,
+   "ign": 0.09664,
+   "mis": 5.19508,
+   "n": 78660
+  }
+ ]
+}

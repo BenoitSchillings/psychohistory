@@ -1,0 +1,276 @@
+{
+ "coverage": {
+  "gp_rivalry": 0.327,
+  "gp_rivalry_change_5y": 0.307,
+  "contested": 0.257,
+  "rivalry_x_contested": 0.257
+ },
+ "logit": {
+  "onset_1y:gp_rivalry": {
+   "coef_sd": -0.085,
+   "se": 0.077,
+   "p": 0.271,
+   "n": 8905,
+   "events": 264
+  },
+  "onset_1y:gp_rivalry_change_5y": {
+   "coef_sd": 0.024,
+   "se": 0.062,
+   "p": 0.691,
+   "n": 8821,
+   "events": 263
+  },
+  "onset_1y:contested": {
+   "coef_sd": -0.079,
+   "se": 0.07,
+   "p": 0.262,
+   "n": 8187,
+   "events": 256
+  },
+  "onset_1y:rivalry_x_contested": {
+   "coef_sd": -0.038,
+   "se": 0.065,
+   "p": 0.563,
+   "n": 8187,
+   "events": 256
+  },
+  "civil_conflict_5y:gp_rivalry": {
+   "coef_sd": -0.017,
+   "se": 0.091,
+   "p": 0.852,
+   "n": 8389,
+   "events": 936
+  },
+  "civil_conflict_5y:gp_rivalry_change_5y": {
+   "coef_sd": 0.017,
+   "se": 0.064,
+   "p": 0.79,
+   "n": 8305,
+   "events": 930
+  },
+  "civil_conflict_5y:contested": {
+   "coef_sd": 0.011,
+   "se": 0.083,
+   "p": 0.896,
+   "n": 7681,
+   "events": 894
+  },
+  "civil_conflict_5y:rivalry_x_contested": {
+   "coef_sd": 0.052,
+   "se": 0.082,
+   "p": 0.526,
+   "n": 7681,
+   "events": 894
+  },
+  "coup_1y:gp_rivalry": {
+   "coef_sd": 0.365,
+   "se": 0.09,
+   "p": 0.0,
+   "n": 10187,
+   "events": 386
+  },
+  "coup_1y:gp_rivalry_change_5y": {
+   "coef_sd": -0.05,
+   "se": 0.053,
+   "p": 0.35,
+   "n": 10111,
+   "events": 381
+  },
+  "coup_1y:contested": {
+   "coef_sd": 0.158,
+   "se": 0.064,
+   "p": 0.014,
+   "n": 9772,
+   "events": 382
+  },
+  "coup_1y:rivalry_x_contested": {
+   "coef_sd": 0.212,
+   "se": 0.056,
+   "p": 0.0,
+   "n": 9772,
+   "events": 382
+  },
+  "econ_collapse_5y:gp_rivalry": {
+   "coef_sd": -0.144,
+   "se": 0.073,
+   "p": 0.049,
+   "n": 9883,
+   "events": 1108
+  },
+  "econ_collapse_5y:gp_rivalry_change_5y": {
+   "coef_sd": -0.264,
+   "se": 0.046,
+   "p": 0.0,
+   "n": 9792,
+   "events": 1106
+  },
+  "econ_collapse_5y:contested": {
+   "coef_sd": 0.111,
+   "se": 0.077,
+   "p": 0.151,
+   "n": 9135,
+   "events": 1029
+  },
+  "econ_collapse_5y:rivalry_x_contested": {
+   "coef_sd": 0.082,
+   "se": 0.07,
+   "p": 0.238,
+   "n": 9135,
+   "events": 1029
+  },
+  "autocratization_5y:gp_rivalry": {
+   "coef_sd": 0.063,
+   "se": 0.097,
+   "p": 0.514,
+   "n": 8729,
+   "events": 673
+  },
+  "autocratization_5y:gp_rivalry_change_5y": {
+   "coef_sd": 0.223,
+   "se": 0.062,
+   "p": 0.0,
+   "n": 8657,
+   "events": 668
+  },
+  "autocratization_5y:contested": {
+   "coef_sd": 0.104,
+   "se": 0.091,
+   "p": 0.252,
+   "n": 8167,
+   "events": 645
+  },
+  "autocratization_5y:rivalry_x_contested": {
+   "coef_sd": 0.153,
+   "se": 0.086,
+   "p": 0.075,
+   "n": 8167,
+   "events": 645
+  }
+ },
+ "gbm_backtest": {
+  "base:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8128,
+    "bss": 0.1284
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6479,
+    "bss": 0.0705
+   },
+   "autocratization_5y": {
+    "auc": 0.8393,
+    "bss": 0.0933
+   },
+   "coup_5y": {
+    "auc": 0.8282,
+    "bss": 0.1919
+   },
+   "onset_1y": {
+    "auc": 0.8383,
+    "bss": 0.0557
+   },
+   "termination_1y": {
+    "auc": 0.7327,
+    "bss": 0.1007
+   },
+   "coup_1y": {
+    "auc": 0.8481,
+    "bss": 0.0832
+   },
+   "score": 0.9031
+  },
+  "base:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9104,
+    "bss": 0.25
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7917,
+    "bss": 0.096
+   },
+   "autocratization_5y": {
+    "auc": 0.7295,
+    "bss": 0.0699
+   },
+   "coup_5y": {
+    "auc": 0.8446,
+    "bss": 0.2577
+   },
+   "onset_1y": {
+    "auc": 0.9158,
+    "bss": 0.0951
+   },
+   "termination_1y": {
+    "auc": 0.7388,
+    "bss": 0.1292
+   },
+   "coup_1y": {
+    "auc": 0.8366,
+    "bss": 0.0925
+   },
+   "score": 0.9875
+  },
+  "rivalry:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.815,
+    "bss": 0.1306
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6476,
+    "bss": 0.069
+   },
+   "autocratization_5y": {
+    "auc": 0.8358,
+    "bss": 0.092
+   },
+   "coup_5y": {
+    "auc": 0.8291,
+    "bss": 0.1928
+   },
+   "onset_1y": {
+    "auc": 0.8345,
+    "bss": 0.0521
+   },
+   "termination_1y": {
+    "auc": 0.7311,
+    "bss": 0.0994
+   },
+   "coup_1y": {
+    "auc": 0.846,
+    "bss": 0.0808
+   },
+   "score": 0.903
+  },
+  "rivalry:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9108,
+    "bss": 0.2527
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7903,
+    "bss": 0.0972
+   },
+   "autocratization_5y": {
+    "auc": 0.7312,
+    "bss": 0.0724
+   },
+   "coup_5y": {
+    "auc": 0.8442,
+    "bss": 0.259
+   },
+   "onset_1y": {
+    "auc": 0.9144,
+    "bss": 0.0937
+   },
+   "termination_1y": {
+    "auc": 0.7411,
+    "bss": 0.1332
+   },
+   "coup_1y": {
+    "auc": 0.8245,
+    "bss": 0.0907
+   },
+   "score": 0.9895
+  }
+ }
+}

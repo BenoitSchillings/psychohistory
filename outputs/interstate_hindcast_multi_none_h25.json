@@ -1,0 +1,154 @@
+[
+ {
+  "origin": 1980,
+  "end": 1990,
+  "active_per_year_sim": 2.096950054168701,
+  "active_per_year_real": 2.7,
+  "years_in_90": 1.0,
+  "pairs_fought_real": 10,
+  "pairs_fought_sim": 12.951000213623047,
+  "pair_auc": 0.882759643916914,
+  "battle_deaths_real": 1954.0,
+  "battle_deaths_sim_median": 80829.0546875,
+  "battle_deaths_sim_90": [
+   7274.0,
+   471809.0
+  ],
+  "battle_deaths_real_pctile": 0.012,
+  "oil_in_90": 0.0,
+  "oil_in_50": 0.0
+ },
+ {
+  "origin": 1985,
+  "end": 1995,
+  "active_per_year_sim": 2.000200033187866,
+  "active_per_year_real": 2.0,
+  "years_in_90": 1.0,
+  "pairs_fought_real": 8,
+  "pairs_fought_sim": 11.487499237060547,
+  "pair_auc": 0.8806349440188568,
+  "battle_deaths_real": 24009.0,
+  "battle_deaths_sim_median": 72914.328125,
+  "battle_deaths_sim_90": [
+   7077.0,
+   453859.0
+  ],
+  "battle_deaths_real_pctile": 0.2045,
+  "oil_in_90": 0.0,
+  "oil_in_50": 0.0
+ },
+ {
+  "origin": 1990,
+  "end": 2000,
+  "active_per_year_sim": 1.7352499961853027,
+  "active_per_year_real": 1.4,
+  "years_in_90": 1.0,
+  "pairs_fought_real": 4,
+  "pairs_fought_sim": 9.555500030517578,
+  "pair_auc": 0.9882584597432905,
+  "battle_deaths_real": 121771.0,
+  "battle_deaths_sim_median": 55905.390625,
+  "battle_deaths_sim_90": [
+   6485.0,
+   441649.0
+  ],
+  "battle_deaths_real_pctile": 0.694,
+  "oil_in_90": 0.0,
+  "oil_in_50": 0.0
+ },
+ {
+  "origin": 1995,
+  "end": 2005,
+  "active_per_year_sim": 1.340399980545044,
+  "active_per_year_real": 1.7,
+  "years_in_90": 1.0,
+  "pairs_fought_real": 7,
+  "pairs_fought_sim": 7.839500427246094,
+  "pair_auc": 0.9112259765489489,
+  "battle_deaths_real": 109537.0,
+  "battle_deaths_sim_median": 35247.1796875,
+  "battle_deaths_sim_90": [
+   1581.0,
+   345434.0
+  ],
+  "battle_deaths_real_pctile": 0.751,
+  "oil_in_90": 1.0,
+  "oil_in_50": 0.2
+ },
+ {
+  "origin": 2000,
+  "end": 2010,
+  "active_per_year_sim": 1.2482000589370728,
+  "active_per_year_real": 0.9,
+  "years_in_90": 0.9,
+  "pairs_fought_real": 6,
+  "pairs_fought_sim": 6.332000255584717,
+  "pair_auc": 0.8466019417475729,
+  "battle_deaths_real": 9856.0,
+  "battle_deaths_sim_median": 24635.86328125,
+  "battle_deaths_sim_90": [
+   1436.0,
+   333861.0
+  ],
+  "battle_deaths_real_pctile": 0.294,
+  "oil_in_90": 1.0,
+  "oil_in_50": 0.2
+ },
+ {
+  "origin": 2005,
+  "end": 2015,
+  "active_per_year_sim": 0.9500499963760376,
+  "active_per_year_real": 0.6,
+  "years_in_90": 1.0,
+  "pairs_fought_real": 3,
+  "pairs_fought_sim": 5.748000144958496,
+  "pair_auc": 0.9797590361445784,
+  "battle_deaths_real": 574.0,
+  "battle_deaths_sim_median": 17621.177734375,
+  "battle_deaths_sim_90": [
+   403.0,
+   324784.0
+  ],
+  "battle_deaths_real_pctile": 0.068,
+  "oil_in_90": 1.0,
+  "oil_in_50": 0.2
+ },
+ {
+  "origin": 2010,
+  "end": 2020,
+  "active_per_year_sim": 0.7117000222206116,
+  "active_per_year_real": 1.5,
+  "years_in_90": 1.0,
+  "pairs_fought_real": 5,
+  "pairs_fought_sim": 4.463500022888184,
+  "pair_auc": 0.9707061068702291,
+  "battle_deaths_real": 2005.0,
+  "battle_deaths_sim_median": 9624.416015625,
+  "battle_deaths_sim_90": [
+   127.0,
+   247995.0
+  ],
+  "battle_deaths_real_pctile": 0.275,
+  "oil_in_90": 1.0,
+  "oil_in_50": 0.5
+ },
+ {
+  "origin": 2014,
+  "end": 2024,
+  "active_per_year_sim": 0.925000011920929,
+  "active_per_year_real": 2.3,
+  "years_in_90": 0.9,
+  "pairs_fought_real": 9,
+  "pairs_fought_sim": 5.245500564575195,
+  "pair_auc": 0.8835677783046204,
+  "battle_deaths_real": 245212.0,
+  "battle_deaths_sim_median": 13347.548828125,
+  "battle_deaths_sim_90": [
+   400.0,
+   293109.0
+  ],
+  "battle_deaths_real_pctile": 0.9385,
+  "oil_in_90": 0.8,
+  "oil_in_50": 0.5
+ }
+]

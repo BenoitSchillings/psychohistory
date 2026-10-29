@@ -1,0 +1,9574 @@
+{
+ "n_worlds": 8000,
+ "years": [
+  2026,
+  2065
+ ],
+ "sets": {
+  "economic": {
+   "n": 80,
+   "auc_null_95": 0.054502209595959604,
+   "assumptions": [
+    {
+     "name": "ai_arrival",
+     "auc": 0.779,
+     "median_disaster": 2070.0,
+     "median_all": 2043.391357421875,
+     "q10": 2028.5325927734375,
+     "q90": 2070.0
+    },
+    {
+     "name": "dmg_family",
+     "auc": 0.752,
+     "median_disaster": 2.0,
+     "median_all": 1.0,
+     "q10": 0.0,
+     "q90": 2.0
+    },
+    {
+     "name": "robot_arrival",
+     "auc": 0.734,
+     "median_disaster": 2059.75927734375,
+     "median_all": 2039.227294921875,
+     "q10": 2029.451904296875,
+     "q90": 2070.0
+    },
+    {
+     "name": "climate_damage",
+     "auc": 0.655,
+     "median_disaster": 1.2318165302276611,
+     "median_all": 1.0017542839050293,
+     "q10": 0.6000218391418457,
+     "q90": 1.4015876054763794
+    },
+    {
+     "name": "articles_beta",
+     "auc": 0.372,
+     "median_disaster": 0.0018656242173165083,
+     "median_all": 0.0022814678959548473,
+     "q10": 0.0008824717369861901,
+     "q90": 0.003715736325830221
+    },
+    {
+     "name": "workforce_beta",
+     "auc": 0.627,
+     "median_disaster": 1.2871897220611572,
+     "median_all": 1.2149173021316528,
+     "q10": 0.9973780512809753,
+     "q90": 1.4317214488983154
+    },
+    {
+     "name": "clim_response",
+     "auc": 0.612,
+     "median_disaster": 0.45178085565567017,
+     "median_all": 0.004125665873289108,
+     "q10": -1.2835665941238403,
+     "q90": 1.3345659971237183
+    },
+    {
+     "name": "pandemic_p",
+     "auc": 0.59,
+     "median_disaster": 0.02912481501698494,
+     "median_all": 0.025194644927978516,
+     "q10": 0.013071452267467976,
+     "q90": 0.03715067729353905
+    },
+    {
+     "name": "war_site_loss",
+     "auc": 0.572,
+     "median_disaster": 0.09573224186897278,
+     "median_all": 0.08984942734241486,
+     "q10": 0.05297677591443062,
+     "q90": 0.12694920599460602
+    },
+    {
+     "name": "sanction_loss",
+     "auc": 0.568,
+     "median_disaster": 0.024313798174262047,
+     "median_all": 0.02018558233976364,
+     "q10": 0.003997716121375561,
+     "q90": 0.03609069436788559
+    }
+   ],
+   "events": [
+    {
+     "event": "great-power war",
+     "share_disaster": 0.45,
+     "share_all": 0.48,
+     "ratio": 0.94,
+     "median_first_year": 2042.0
+    },
+    {
+     "event": "large nuclear exchange",
+     "share_disaster": 0.013,
+     "share_all": 0.002,
+     "ratio": 6.67,
+     "median_first_year": 2054.0
+    },
+    {
+     "event": "limited nuclear use",
+     "share_disaster": 0.15,
+     "share_all": 0.139,
+     "ratio": 1.08,
+     "median_first_year": 2034.5
+    },
+    {
+     "event": "engineered pandemic",
+     "share_disaster": 0.075,
+     "share_all": 0.115,
+     "ratio": 0.66,
+     "median_first_year": 2060.5
+    },
+    {
+     "event": "natural pandemic",
+     "share_disaster": 0.787,
+     "share_all": 0.548,
+     "ratio": 1.44,
+     "median_first_year": 2036.0
+    },
+    {
+     "event": "AI bubble burst",
+     "share_disaster": 0.45,
+     "share_all": 0.405,
+     "ratio": 1.11,
+     "median_first_year": 2028.0
+    },
+    {
+     "event": "solar superstorm",
+     "share_disaster": 0.4,
+     "share_all": 0.345,
+     "ratio": 1.16,
+     "median_first_year": 2041.0
+    },
+    {
+     "event": "VEI 6+ eruption",
+     "share_disaster": 0.263,
+     "share_all": 0.303,
+     "ratio": 0.87,
+     "median_first_year": 2038.0
+    },
+    {
+     "event": "oil price doubles",
+     "share_disaster": 0.537,
+     "share_all": 0.518,
+     "ratio": 1.04,
+     "median_first_year": 2039.0
+    },
+    {
+     "event": "civil-war onset wave",
+     "share_disaster": 0.525,
+     "share_all": 0.456,
+     "ratio": 1.15,
+     "median_first_year": 2031.5
+    },
+    {
+     "event": "world GDP falls 5%+ in a year",
+     "share_disaster": 0.775,
+     "share_all": 0.203,
+     "ratio": 3.82,
+     "median_first_year": 2038.5
+    }
+   ],
+   "first_shock": {
+    "AI bubble burst": 23,
+    "natural pandemic": 17,
+    "civil-war onset wave": 15,
+    "solar superstorm": 9,
+    "oil price doubles": 8,
+    "great-power war": 4,
+    "limited nuclear use": 3,
+    "VEI 6+ eruption": 1
+   },
+   "outcomes_disaster": {
+    "world_gdp_2065": 12331.703125,
+    "world_gdp_2026": 18175.642578125,
+    "deaths_m": 2.4857165813446045,
+    "conflict_mean": 0.21164286136627197,
+    "dem_2065": 0.4946895241737366
+   }
+  },
+  "deaths": {
+   "n": 80,
+   "auc_null_95": 0.06281865530303027,
+   "assumptions": [
+    {
+     "name": "nuclear_war_factor",
+     "auc": 0.613,
+     "median_disaster": 0.40392354130744934,
+     "median_all": 0.3262364864349365,
+     "q10": 0.14783179759979248,
+     "q90": 0.5049178004264832
+    },
+    {
+     "name": "civ_mult",
+     "auc": 0.609,
+     "median_disaster": 2.1414432525634766,
+     "median_all": 1.7754703760147095,
+     "q10": 0.7666822075843811,
+     "q90": 2.7689666748046875
+    },
+    {
+     "name": "ai_arrival",
+     "auc": 0.42,
+     "median_disaster": 2036.2889404296875,
+     "median_all": 2043.391357421875,
+     "q10": 2028.5325927734375,
+     "q90": 2070.0
+    },
+    {
+     "name": "fish_high",
+     "auc": 0.431,
+     "median_disaster": 0.021775003522634506,
+     "median_all": 0.03972133994102478,
+     "q10": -0.02306223474442959,
+     "q90": 0.10407665371894836
+    },
+    {
+     "name": "open_lag",
+     "auc": 0.568,
+     "median_disaster": 2.64680552482605,
+     "median_all": 2.2743616104125977,
+     "q10": 0.8392101526260376,
+     "q90": 3.6494898796081543
+    },
+    {
+     "name": "drone_onset",
+     "auc": 0.566,
+     "median_disaster": 0.17045053839683533,
+     "median_all": 0.09160342812538147,
+     "q10": -0.22429707646369934,
+     "q90": 0.4201609492301941
+    },
+    {
+     "name": "pandemic_mort",
+     "auc": 0.437,
+     "median_disaster": 0.0023436164483428,
+     "median_all": 0.0027483515441417694,
+     "q10": 0.0009253083844669163,
+     "q90": 0.004530193749815226
+    },
+    {
+     "name": "robot_arrival",
+     "auc": 0.441,
+     "median_disaster": 2036.339599609375,
+     "median_all": 2039.227294921875,
+     "q10": 2029.451904296875,
+     "q90": 2070.0
+    },
+    {
+     "name": "workforce_beta",
+     "auc": 0.443,
+     "median_disaster": 1.1907424926757812,
+     "median_all": 1.2149173021316528,
+     "q10": 0.9973780512809753,
+     "q90": 1.4317214488983154
+    },
+    {
+     "name": "drone_persist",
+     "auc": 0.556,
+     "median_disaster": 0.48028355836868286,
+     "median_all": 0.40148916840553284,
+     "q10": 0.0773836076259613,
+     "q90": 0.722179651260376
+    }
+   ],
+   "events": [
+    {
+     "event": "great-power war",
+     "share_disaster": 1.0,
+     "share_all": 0.48,
+     "ratio": 2.08,
+     "median_first_year": 2040.0
+    },
+    {
+     "event": "large nuclear exchange",
+     "share_disaster": 0.138,
+     "share_all": 0.002,
+     "ratio": 73.33,
+     "median_first_year": 2054.0
+    },
+    {
+     "event": "limited nuclear use",
+     "share_disaster": 0.25,
+     "share_all": 0.139,
+     "ratio": 1.79,
+     "median_first_year": 2046.0
+    },
+    {
+     "event": "engineered pandemic",
+     "share_disaster": 0.15,
+     "share_all": 0.115,
+     "ratio": 1.31,
+     "median_first_year": 2052.5
+    },
+    {
+     "event": "natural pandemic",
+     "share_disaster": 0.487,
+     "share_all": 0.548,
+     "ratio": 0.89,
+     "median_first_year": 2038.0
+    },
+    {
+     "event": "AI bubble burst",
+     "share_disaster": 0.412,
+     "share_all": 0.405,
+     "ratio": 1.02,
+     "median_first_year": 2027.0
+    },
+    {
+     "event": "solar superstorm",
+     "share_disaster": 0.312,
+     "share_all": 0.345,
+     "ratio": 0.91,
+     "median_first_year": 2042.0
+    },
+    {
+     "event": "VEI 6+ eruption",
+     "share_disaster": 0.325,
+     "share_all": 0.303,
+     "ratio": 1.07,
+     "median_first_year": 2040.5
+    },
+    {
+     "event": "oil price doubles",
+     "share_disaster": 0.512,
+     "share_all": 0.518,
+     "ratio": 0.99,
+     "median_first_year": 2045.0
+    },
+    {
+     "event": "civil-war onset wave",
+     "share_disaster": 0.463,
+     "share_all": 0.456,
+     "ratio": 1.01,
+     "median_first_year": 2033.0
+    },
+    {
+     "event": "world GDP falls 5%+ in a year",
+     "share_disaster": 0.4,
+     "share_all": 0.203,
+     "ratio": 1.97,
+     "median_first_year": 2048.5
+    }
+   ],
+   "first_shock": {
+    "AI bubble burst": 25,
+    "great-power war": 20,
+    "civil-war onset wave": 13,
+    "natural pandemic": 11,
+    "oil price doubles": 4,
+    "limited nuclear use": 3,
+    "solar superstorm": 3,
+    "VEI 6+ eruption": 1
+   },
+   "outcomes_disaster": {
+    "world_gdp_2065": 32548.4453125,
+    "world_gdp_2026": 18279.69921875,
+    "deaths_m": 40.85725021362305,
+    "conflict_mean": 0.19492857158184052,
+    "dem_2065": 0.4504947364330292
+   }
+  },
+  "civil_war": {
+   "n": 80,
+   "auc_null_95": 0.056436119002525265,
+   "assumptions": [
+    {
+     "name": "mineral_elast",
+     "auc": 0.416,
+     "median_disaster": 0.1980326771736145,
+     "median_all": 0.24831609427928925,
+     "q10": 0.04692201688885689,
+     "q90": 0.45271509885787964
+    },
+    {
+     "name": "fish_trop",
+     "auc": 0.578,
+     "median_disaster": -0.06747797131538391,
+     "median_all": -0.0807032361626625,
+     "q10": -0.1307559758424759,
+     "q90": -0.028890399262309074
+    },
+    {
+     "name": "nuc_gdp_large",
+     "auc": 0.425,
+     "median_disaster": 0.14070577919483185,
+     "median_all": 0.17233487963676453,
+     "q10": 0.0745246633887291,
+     "q90": 0.2744252681732178
+    },
+    {
+     "name": "china_pause",
+     "auc": 0.571,
+     "median_disaster": 0.7188384532928467,
+     "median_all": 0.5986400842666626,
+     "q10": 0.2755051851272583,
+     "q90": 0.9234833121299744
+    },
+    {
+     "name": "slr_mult",
+     "auc": 0.431,
+     "median_disaster": 1.0337114334106445,
+     "median_all": 1.1453158855438232,
+     "q10": 0.7951605319976807,
+     "q90": 1.4948686361312866
+    },
+    {
+     "name": "amoc_hit",
+     "auc": 0.564,
+     "median_disaster": 0.0,
+     "median_all": 0.0,
+     "q10": 0.0,
+     "q90": 0.0
+    },
+    {
+     "name": "growth_dividend",
+     "auc": 0.561,
+     "median_disaster": 0.03399025648832321,
+     "median_all": 0.029770171269774437,
+     "q10": 0.014115576632320881,
+     "q90": 0.04622740298509598
+    },
+    {
+     "name": "phys_dividend",
+     "auc": 0.56,
+     "median_disaster": 0.024968646466732025,
+     "median_all": 0.022567903622984886,
+     "q10": 0.008575286716222763,
+     "q90": 0.036406245082616806
+    },
+    {
+     "name": "volc_p",
+     "auc": 0.441,
+     "median_disaster": 0.0077055515721440315,
+     "median_all": 0.008938024751842022,
+     "q10": 0.004253895487636328,
+     "q90": 0.013909752480685711
+    },
+    {
+     "name": "ai_war_beta",
+     "auc": 0.559,
+     "median_disaster": 1.1261100769042969,
+     "median_all": 0.9813030958175659,
+     "q10": 0.19729483127593994,
+     "q90": 1.7894330024719238
+    }
+   ],
+   "events": [
+    {
+     "event": "great-power war",
+     "share_disaster": 0.463,
+     "share_all": 0.48,
+     "ratio": 0.96,
+     "median_first_year": 2040.0
+    },
+    {
+     "event": "large nuclear exchange",
+     "share_disaster": 0.0,
+     "share_all": 0.002,
+     "ratio": 0.0,
+     "median_first_year": null
+    },
+    {
+     "event": "limited nuclear use",
+     "share_disaster": 0.125,
+     "share_all": 0.139,
+     "ratio": 0.9,
+     "median_first_year": 2040.0
+    },
+    {
+     "event": "engineered pandemic",
+     "share_disaster": 0.125,
+     "share_all": 0.115,
+     "ratio": 1.09,
+     "median_first_year": 2053.5
+    },
+    {
+     "event": "natural pandemic",
+     "share_disaster": 0.487,
+     "share_all": 0.548,
+     "ratio": 0.89,
+     "median_first_year": 2038.0
+    },
+    {
+     "event": "AI bubble burst",
+     "share_disaster": 0.412,
+     "share_all": 0.405,
+     "ratio": 1.02,
+     "median_first_year": 2028.0
+    },
+    {
+     "event": "solar superstorm",
+     "share_disaster": 0.362,
+     "share_all": 0.345,
+     "ratio": 1.05,
+     "median_first_year": 2049.0
+    },
+    {
+     "event": "VEI 6+ eruption",
+     "share_disaster": 0.275,
+     "share_all": 0.303,
+     "ratio": 0.91,
+     "median_first_year": 2047.5
+    },
+    {
+     "event": "oil price doubles",
+     "share_disaster": 0.412,
+     "share_all": 0.518,
+     "ratio": 0.8,
+     "median_first_year": 2037.0
+    },
+    {
+     "event": "civil-war onset wave",
+     "share_disaster": 1.0,
+     "share_all": 0.456,
+     "ratio": 2.19,
+     "median_first_year": 2026.0
+    },
+    {
+     "event": "world GDP falls 5%+ in a year",
+     "share_disaster": 0.287,
+     "share_all": 0.203,
+     "ratio": 1.42,
+     "median_first_year": 2046.0
+    }
+   ],
+   "first_shock": {
+    "civil-war onset wave": 65,
+    "AI bubble burst": 9,
+    "natural pandemic": 3,
+    "limited nuclear use": 2,
+    "oil price doubles": 1
+   },
+   "outcomes_disaster": {
+    "world_gdp_2065": 27473.3359375,
+    "world_gdp_2026": 18322.798828125,
+    "deaths_m": 2.6197850704193115,
+    "conflict_mean": 0.45085710287094116,
+    "dem_2065": 0.42844367027282715
+   }
+  },
+  "autocracy": {
+   "n": 80,
+   "auc_null_95": 0.062391137941919105,
+   "assumptions": [
+    {
+     "name": "ai_arrival",
+     "auc": 0.296,
+     "median_disaster": 2032.378173828125,
+     "median_all": 2043.391357421875,
+     "q10": 2028.5325927734375,
+     "q90": 2070.0
+    },
+    {
+     "name": "autocracy_drift",
+     "auc": 0.67,
+     "median_disaster": 0.0058347312733531,
+     "median_all": 0.004064610227942467,
+     "q10": 0.0008183324825949967,
+     "q90": 0.007194692734628916
+    },
+    {
+     "name": "robot_arrival",
+     "auc": 0.353,
+     "median_disaster": 2033.035400390625,
+     "median_all": 2039.227294921875,
+     "q10": 2029.451904296875,
+     "q90": 2070.0
+    },
+    {
+     "name": "nuc_escalate",
+     "auc": 0.412,
+     "median_disaster": 0.1849004328250885,
+     "median_all": 0.22752276062965393,
+     "q10": 0.08603566884994507,
+     "q90": 0.3636527955532074
+    },
+    {
+     "name": "tariff_pass",
+     "auc": 0.415,
+     "median_disaster": 0.5680434703826904,
+     "median_all": 0.7520410418510437,
+     "q10": 0.14648021757602692,
+     "q90": 1.345799207687378
+    },
+    {
+     "name": "fish_trop",
+     "auc": 0.425,
+     "median_disaster": -0.09590891003608704,
+     "median_all": -0.0807032361626625,
+     "q10": -0.1307559758424759,
+     "q90": -0.028890399262309074
+    },
+    {
+     "name": "breakout_years",
+     "auc": 0.575,
+     "median_disaster": 4.511098861694336,
+     "median_all": 3.982860565185547,
+     "q10": 2.378044605255127,
+     "q90": 5.581595420837402
+    },
+    {
+     "name": "workforce_beta",
+     "auc": 0.431,
+     "median_disaster": 1.1602615118026733,
+     "median_all": 1.2149173021316528,
+     "q10": 0.9973780512809753,
+     "q90": 1.4317214488983154
+    },
+    {
+     "name": "robot_aging",
+     "auc": 0.565,
+     "median_disaster": 0.5997837781906128,
+     "median_all": 0.4931839406490326,
+     "q10": 0.09729959070682526,
+     "q90": 0.9026525616645813
+    },
+    {
+     "name": "solar_loss",
+     "auc": 0.435,
+     "median_disaster": 0.038362689316272736,
+     "median_all": 0.045596592128276825,
+     "q10": 0.017172014340758324,
+     "q90": 0.07289736717939377
+    }
+   ],
+   "events": [
+    {
+     "event": "great-power war",
+     "share_disaster": 0.588,
+     "share_all": 0.48,
+     "ratio": 1.22,
+     "median_first_year": 2040.0
+    },
+    {
+     "event": "large nuclear exchange",
+     "share_disaster": 0.0,
+     "share_all": 0.002,
+     "ratio": 0.0,
+     "median_first_year": null
+    },
+    {
+     "event": "limited nuclear use",
+     "share_disaster": 0.2,
+     "share_all": 0.139,
+     "ratio": 1.43,
+     "median_first_year": 2044.5
+    },
+    {
+     "event": "engineered pandemic",
+     "share_disaster": 0.175,
+     "share_all": 0.115,
+     "ratio": 1.53,
+     "median_first_year": 2052.5
+    },
+    {
+     "event": "natural pandemic",
+     "share_disaster": 0.487,
+     "share_all": 0.548,
+     "ratio": 0.89,
+     "median_first_year": 2040.0
+    },
+    {
+     "event": "AI bubble burst",
+     "share_disaster": 0.375,
+     "share_all": 0.405,
+     "ratio": 0.93,
+     "median_first_year": 2028.0
+    },
+    {
+     "event": "solar superstorm",
+     "share_disaster": 0.312,
+     "share_all": 0.345,
+     "ratio": 0.91,
+     "median_first_year": 2040.0
+    },
+    {
+     "event": "VEI 6+ eruption",
+     "share_disaster": 0.425,
+     "share_all": 0.303,
+     "ratio": 1.4,
+     "median_first_year": 2044.5
+    },
+    {
+     "event": "oil price doubles",
+     "share_disaster": 0.512,
+     "share_all": 0.518,
+     "ratio": 0.99,
+     "median_first_year": 2037.0
+    },
+    {
+     "event": "civil-war onset wave",
+     "share_disaster": 0.512,
+     "share_all": 0.456,
+     "ratio": 1.12,
+     "median_first_year": 2030.0
+    },
+    {
+     "event": "world GDP falls 5%+ in a year",
+     "share_disaster": 0.138,
+     "share_all": 0.203,
+     "ratio": 0.68,
+     "median_first_year": 2049.0
+    }
+   ],
+   "first_shock": {
+    "AI bubble burst": 18,
+    "civil-war onset wave": 14,
+    "great-power war": 13,
+    "oil price doubles": 12,
+    "solar superstorm": 8,
+    "VEI 6+ eruption": 7,
+    "natural pandemic": 6,
+    "none of these": 1,
+    "limited nuclear use": 1
+   },
+   "outcomes_disaster": {
+    "world_gdp_2065": 56460.33984375,
+    "world_gdp_2026": 18353.125,
+    "deaths_m": 4.187087535858154,
+    "conflict_mean": 0.20499998331069946,
+    "dem_2065": 0.25387758016586304
+   }
+  },
+  "composite": {
+   "n": 80,
+   "auc_null_95": 0.06096851325757577,
+   "assumptions": [
+    {
+     "name": "dmg_family",
+     "auc": 0.614,
+     "median_disaster": 2.0,
+     "median_all": 1.0,
+     "q10": 0.0,
+     "q90": 2.0
+    },
+    {
+     "name": "robot_arrival",
+     "auc": 0.607,
+     "median_disaster": 2047.2154541015625,
+     "median_all": 2039.227294921875,
+     "q10": 2029.451904296875,
+     "q90": 2070.0
+    },
+    {
+     "name": "civ_mult",
+     "auc": 0.605,
+     "median_disaster": 2.1913232803344727,
+     "median_all": 1.7754703760147095,
+     "q10": 0.7666822075843811,
+     "q90": 2.7689666748046875
+    },
+    {
+     "name": "ai_arrival",
+     "auc": 0.598,
+     "median_disaster": 2052.387939453125,
+     "median_all": 2043.391357421875,
+     "q10": 2028.5325927734375,
+     "q90": 2070.0
+    },
+    {
+     "name": "slr_mult",
+     "auc": 0.416,
+     "median_disaster": 1.0559476613998413,
+     "median_all": 1.1453158855438232,
+     "q10": 0.7951605319976807,
+     "q90": 1.4948686361312866
+    },
+    {
+     "name": "workforce_beta",
+     "auc": 0.58,
+     "median_disaster": 1.2682785987854004,
+     "median_all": 1.2149173021316528,
+     "q10": 0.9973780512809753,
+     "q90": 1.4317214488983154
+    },
+    {
+     "name": "nuclear_war_factor",
+     "auc": 0.57,
+     "median_disaster": 0.3665018677711487,
+     "median_all": 0.3262364864349365,
+     "q10": 0.14783179759979248,
+     "q90": 0.5049178004264832
+    },
+    {
+     "name": "speed_mult",
+     "auc": 0.432,
+     "median_disaster": 1.0612682104110718,
+     "median_all": 1.1182775497436523,
+     "q10": 0.8180369734764099,
+     "q90": 1.4227185249328613
+    },
+    {
+     "name": "yield_water",
+     "auc": 0.438,
+     "median_disaster": 0.3618776798248291,
+     "median_all": 0.39929282665252686,
+     "q10": 0.16216769814491272,
+     "q90": 0.6391004920005798
+    },
+    {
+     "name": "pko_beta",
+     "auc": 0.56,
+     "median_disaster": 0.3655083179473877,
+     "median_all": 0.3140813708305359,
+     "q10": 0.12509195506572723,
+     "q90": 0.5096784830093384
+    }
+   ],
+   "events": [
+    {
+     "event": "great-power war",
+     "share_disaster": 0.787,
+     "share_all": 0.48,
+     "ratio": 1.64,
+     "median_first_year": 2041.0
+    },
+    {
+     "event": "large nuclear exchange",
+     "share_disaster": 0.025,
+     "share_all": 0.002,
+     "ratio": 13.33,
+     "median_first_year": 2057.5
+    },
+    {
+     "event": "limited nuclear use",
+     "share_disaster": 0.175,
+     "share_all": 0.139,
+     "ratio": 1.26,
+     "median_first_year": 2049.0
+    },
+    {
+     "event": "engineered pandemic",
+     "share_disaster": 0.212,
+     "share_all": 0.115,
+     "ratio": 1.86,
+     "median_first_year": 2055.0
+    },
+    {
+     "event": "natural pandemic",
+     "share_disaster": 0.588,
+     "share_all": 0.548,
+     "ratio": 1.07,
+     "median_first_year": 2036.0
+    },
+    {
+     "event": "AI bubble burst",
+     "share_disaster": 0.45,
+     "share_all": 0.405,
+     "ratio": 1.11,
+     "median_first_year": 2027.0
+    },
+    {
+     "event": "solar superstorm",
+     "share_disaster": 0.2,
+     "share_all": 0.345,
+     "ratio": 0.58,
+     "median_first_year": 2042.0
+    },
+    {
+     "event": "VEI 6+ eruption",
+     "share_disaster": 0.287,
+     "share_all": 0.303,
+     "ratio": 0.95,
+     "median_first_year": 2037.0
+    },
+    {
+     "event": "oil price doubles",
+     "share_disaster": 0.475,
+     "share_all": 0.518,
+     "ratio": 0.92,
+     "median_first_year": 2036.0
+    },
+    {
+     "event": "civil-war onset wave",
+     "share_disaster": 0.812,
+     "share_all": 0.456,
+     "ratio": 1.78,
+     "median_first_year": 2028.0
+    },
+    {
+     "event": "world GDP falls 5%+ in a year",
+     "share_disaster": 0.512,
+     "share_all": 0.203,
+     "ratio": 2.52,
+     "median_first_year": 2044.0
+    }
+   ],
+   "first_shock": {
+    "civil-war onset wave": 35,
+    "AI bubble burst": 20,
+    "great-power war": 11,
+    "natural pandemic": 10,
+    "oil price doubles": 2,
+    "VEI 6+ eruption": 1,
+    "solar superstorm": 1
+   },
+   "outcomes_disaster": {
+    "world_gdp_2065": 20754.060546875,
+    "world_gdp_2026": 18251.9140625,
+    "deaths_m": 7.868675708770752,
+    "conflict_mean": 0.3075000047683716,
+    "dem_2065": 0.35824859142303467
+   }
+  }
+ },
+ "outcomes_all": {
+  "world_gdp_2065": 34335.59375,
+  "world_gdp_2026": 18302.69140625,
+  "deaths_m": 2.451288938522339,
+  "deaths_m_q99": 31.87490463256836,
+  "conflict_mean": 0.206142857670784,
+  "dem_2065": 0.4543030261993408,
+  "p_gdp_2065_below_2026": 0.07025,
+  "world_gdp_2065_q01": 13373.560546875
+ },
+ "economic_decomposition": {
+  "total_log_gap": -1.0646171569824219,
+  "underlying_growth": -0.8308401107788086,
+  "war_and_shock_damage": -0.008582115173339844,
+  "climate_damage": -0.22519493103027344,
+  "population_mix_part": -0.0007925033569335938
+ },
+ "economic_by_country": {
+  "gap_usd": -22003.890625,
+  "countries": [
+   {
+    "code": "CHN",
+    "name": "China",
+    "contribution_usd": -4638,
+    "gdp_disaster": 13777,
+    "gdp_middle": 56612,
+    "war_damage_disaster": -0.013,
+    "war_damage_middle": -0.003,
+    "conflict_share_disaster": 0.148,
+    "conflict_share_middle": 0.127
+   },
+   {
+    "code": "USA",
+    "name": "United States",
+    "contribution_usd": -2934,
+    "gdp_disaster": 36298,
+    "gdp_middle": 110005,
+    "war_damage_disaster": -0.001,
+    "war_damage_middle": -0.001,
+    "conflict_share_disaster": 0.251,
+    "conflict_share_middle": 0.227
+   },
+   {
+    "code": "IND",
+    "name": "India",
+    "contribution_usd": -2285,
+    "gdp_disaster": 7051,
+    "gdp_middle": 20274,
+    "war_damage_disaster": -0.039,
+    "war_damage_middle": -0.045,
+    "conflict_share_disaster": 0.849,
+    "conflict_share_middle": 0.835
+   },
+   {
+    "code": "DEU",
+    "name": "Germany",
+    "contribution_usd": -538,
+    "gdp_disaster": 33927,
+    "gdp_middle": 105495,
+    "war_damage_disaster": -0.002,
+    "war_damage_middle": -0.002,
+    "conflict_share_disaster": 0.123,
+    "conflict_share_middle": 0.087
+   },
+   {
+    "code": "JPN",
+    "name": "Japan",
+    "contribution_usd": -521,
+    "gdp_disaster": 24051,
+    "gdp_middle": 78851,
+    "war_damage_disaster": -0.002,
+    "war_damage_middle": -0.001,
+    "conflict_share_disaster": 0.11,
+    "conflict_share_middle": 0.083
+   },
+   {
+    "code": "IDN",
+    "name": "Indonesia",
+    "contribution_usd": -482,
+    "gdp_disaster": 10036,
+    "gdp_middle": 24700,
+    "war_damage_disaster": -0.002,
+    "war_damage_middle": -0.002,
+    "conflict_share_disaster": 0.482,
+    "conflict_share_middle": 0.489
+   },
+   {
+    "code": "GBR",
+    "name": "United Kingdom",
+    "contribution_usd": -452,
+    "gdp_disaster": 30889,
+    "gdp_middle": 89964,
+    "war_damage_disaster": -0.002,
+    "war_damage_middle": -0.002,
+    "conflict_share_disaster": 0.119,
+    "conflict_share_middle": 0.098
+   },
+   {
+    "code": "FRA",
+    "name": "France",
+    "contribution_usd": -408,
+    "gdp_disaster": 35496,
+    "gdp_middle": 95367,
+    "war_damage_disaster": -0.002,
+    "war_damage_middle": -0.002,
+    "conflict_share_disaster": 0.129,
+    "conflict_share_middle": 0.104
+   },
+   {
+    "code": "BRA",
+    "name": "Brazil",
+    "contribution_usd": -379,
+    "gdp_disaster": 14124,
+    "gdp_middle": 32308,
+    "war_damage_disaster": -0.001,
+    "war_damage_middle": -0.001,
+    "conflict_share_disaster": 0.299,
+    "conflict_share_middle": 0.222
+   },
+   {
+    "code": "RUS",
+    "name": "Russia",
+    "contribution_usd": -365,
+    "gdp_disaster": 15997,
+    "gdp_middle": 43373,
+    "war_damage_disaster": -0.035,
+    "war_damage_middle": -0.027,
+    "conflict_share_disaster": 0.432,
+    "conflict_share_middle": 0.387
+   },
+   {
+    "code": "CAN",
+    "name": "Canada",
+    "contribution_usd": -364,
+    "gdp_disaster": 33823,
+    "gdp_middle": 109060,
+    "war_damage_disaster": -0.001,
+    "war_damage_middle": -0.001,
+    "conflict_share_disaster": 0.159,
+    "conflict_share_middle": 0.111
+   },
+   {
+    "code": "MEX",
+    "name": "Mexico",
+    "contribution_usd": -276,
+    "gdp_disaster": 13991,
+    "gdp_middle": 32310,
+    "war_damage_disaster": -0.002,
+    "war_damage_middle": -0.001,
+    "conflict_share_disaster": 0.27,
+    "conflict_share_middle": 0.284
+   }
+  ]
+ },
+ "civil_war_by_country": [
+  {
+   "name": "Cyprus",
+   "share_disaster": 0.575,
+   "share_middle": 0.042
+  },
+  {
+   "name": "Lithuania",
+   "share_disaster": 0.535,
+   "share_middle": 0.029
+  },
+  {
+   "name": "Zambia",
+   "share_disaster": 0.561,
+   "share_middle": 0.056
+  },
+  {
+   "name": "Burundi",
+   "share_disaster": 0.648,
+   "share_middle": 0.147
+  },
+  {
+   "name": "Sweden",
+   "share_disaster": 0.525,
+   "share_middle": 0.03
+  },
+  {
+   "name": "Estonia",
+   "share_disaster": 0.507,
+   "share_middle": 0.032
+  },
+  {
+   "name": "Finland",
+   "share_disaster": 0.489,
+   "share_middle": 0.027
+  },
+  {
+   "name": "Uruguay",
+   "share_disaster": 0.488,
+   "share_middle": 0.029
+  },
+  {
+   "name": "Luxembourg",
+   "share_disaster": 0.47,
+   "share_middle": 0.016
+  },
+  {
+   "name": "Argentina",
+   "share_disaster": 0.47,
+   "share_middle": 0.046
+  },
+  {
+   "name": "Italy",
+   "share_disaster": 0.481,
+   "share_middle": 0.062
+  },
+  {
+   "name": "Zimbabwe",
+   "share_disaster": 0.547,
+   "share_middle": 0.135
+  }
+ ],
+ "civil_war_breadth": {
+  "countries_up_10pp": 153,
+  "countries_up_5pp": 160
+ },
+ "picked": {
+  "composite": {
+   "world": 2956,
+   "percentile": {
+    "economic": 0.965,
+    "deaths": 0.912,
+    "civil_war": 0.975,
+    "autocracy": 0.948,
+    "composite": 1.0
+   },
+   "world_gdp_2065": 15899.068359375,
+   "deaths_m": 9.449642181396484,
+   "conflict_mean": 0.37457141280174255,
+   "dem_2065": 0.3184627890586853,
+   "params": {
+    "cascade_q": 0.19753329455852509,
+    "nuclear_war_factor": 0.330792635679245,
+    "war_spillover": 0.5761384963989258,
+    "war_site_loss": 0.11603648215532303,
+    "oil_eta": 0.5254446268081665,
+    "oil_war_jump": 0.179907888174057,
+    "pandemic_p": 0.014074934646487236,
+    "climate_damage": 1.2678654193878174,
+    "growth_dividend": 0.03030921332538128,
+    "autocracy_drift": 0.007360718213021755,
+    "bubble_p": 0.5801430940628052,
+    "bubble_cost": 0.028626250103116035,
+    "speed_mult": 1.0190247297286987,
+    "open_lag": 2.8744845390319824,
+    "export_lag": 1.3545111417770386,
+    "hub_rent": 0.270967036485672,
+    "chip_pause": 0.7514111399650574,
+    "chip_gdp": 0.024551749229431152,
+    "dc_share": 0.06653764843940735,
+    "robot_lag": 4.711883544921875,
+    "robot_aging": 0.5626195073127747,
+    "dem_erosion": 0.0033505328465253115,
+    "ai_war_beta": 1.3838411569595337,
+    "nuc_beta": 0.19382479786872864,
+    "eng_pandemic": 0.009751811623573303,
+    "natural_cut": 0.4946376085281372,
+    "robot_years": 10.237750053405762,
+    "phys_dividend": 0.0233004093170166,
+    "drone_onset": -0.2564384341239929,
+    "drone_persist": 0.4334486126899719,
+    "drone_reach": 0.0845334455370903,
+    "drone_civil": 0.15317727625370026,
+    "water_dispute": 0.3930220305919647,
+    "water_scarcity_k": 0.2495846450328827,
+    "yield_water": 0.5807957649230957,
+    "glacier_tau": 36.97205352783203,
+    "glacier_flow_mult": 0.6676369309425354,
+    "peak_shift": 9.475299835205078,
+    "cascade_hop2": 0.352446973323822,
+    "quasi_USA_TWN": 0.6656720638275146,
+    "quasi_USA_ISR": 0.15166857838630676,
+    "quasi_RUS_IRN": 0.08374003320932388,
+    "quasi_CHN_PAK": 0.035846155136823654,
+    "intl_beta": -0.44299110770225525,
+    "prolif_mult": 0.8938734531402588,
+    "prolif_cascade": 1.2607362270355225,
+    "iran_pursuit0": 0.28545448184013367,
+    "breakout_years": 5.046720504760742,
+    "prevent_beta": 1.1640677452087402,
+    "nuc_use_both": 0.0210270918905735,
+    "nuc_use_one": 0.001740162493661046,
+    "nuc_escalate": 0.2828318476676941,
+    "nuc_gdp_large": 0.05279882997274399,
+    "sanction_loss": 0.032858263701200485,
+    "mineral_elast": 0.08099844306707382,
+    "china_pause": 0.6977936029434204,
+    "civ_mult": 2.4184985160827637,
+    "pandemic_mort": 0.003475188510492444,
+    "slr_mult": 1.0812283754348755,
+    "slr_cost": 0.059299957007169724,
+    "storm_trend": 0.0678430125117302,
+    "storm_loss": 0.01188022829592228,
+    "solar_p": 0.013652498833835125,
+    "solar_loss": 0.06109030544757843,
+    "volc_p": 0.008895953185856342,
+    "volc_yield": 0.07708559185266495,
+    "cyber_loss": 0.023146742954850197,
+    "fin_contagion": 4.900853633880615,
+    "workforce_beta": 1.6071789264678955,
+    "fish_trop": -0.16215597093105316,
+    "fish_mid": -0.04196106642484665,
+    "fish_high": 0.04074079170823097,
+    "wild_trend": -0.0027640596963465214,
+    "articles_beta": 0.0016270596534013748,
+    "dividend_fade": 0.0025457425508648157,
+    "pko_beta": 0.46819934248924255,
+    "pko_cut": 0.13867150247097015,
+    "pko_decay": 0.0055274139158427715,
+    "aid_mult": 0.1129961833357811,
+    "commod_coup": -3.292677402496338,
+    "tariff_pass": 0.18947628140449524,
+    "tariff_us": 0.0075514595955610275,
+    "frag_beta": -2.4733452796936035,
+    "st_debt_beta": 0.5688508749008179,
+    "peer_coup": 2.466822385787964,
+    "dmg_family": 2.0,
+    "amoc_p": 0.05029737949371338,
+    "amoc_eu_loss": 0.03161647170782089,
+    "amoc_eu_yield": 0.1800529658794403,
+    "amoc_rain": 0.11392424255609512,
+    "slr_ice_mult": 2.5659422874450684,
+    "harvest_amp": 0.06214408576488495,
+    "dry_area_elast": 0.7673879265785217,
+    "clim_conflict": 0.2192961722612381,
+    "clim_migr": 0.35567110776901245,
+    "slr_ice": 0.0,
+    "amoc_hit": 0.0,
+    "ai_arrival": 2070.0,
+    "robot_arrival": 2070.0,
+    "clim_response": 0.7739342451095581
+   },
+   "param_pct": {
+    "cascade_q": 0.984,
+    "nuclear_war_factor": 0.511,
+    "war_spillover": 0.58,
+    "war_site_loss": 0.815,
+    "oil_eta": 0.361,
+    "oil_war_jump": 0.503,
+    "pandemic_p": 0.133,
+    "climate_damage": 0.765,
+    "growth_dividend": 0.515,
+    "autocracy_drift": 0.92,
+    "bubble_p": 0.954,
+    "bubble_cost": 0.617,
+    "speed_mult": 0.373,
+    "open_lag": 0.665,
+    "export_lag": 0.449,
+    "hub_rent": 0.54,
+    "chip_pause": 0.501,
+    "chip_gdp": 0.146,
+    "dc_share": 0.776,
+    "robot_lag": 0.337,
+    "robot_aging": 0.571,
+    "dem_erosion": 0.556,
+    "ai_war_beta": 0.698,
+    "nuc_beta": 0.191,
+    "eng_pandemic": 0.967,
+    "natural_cut": 0.727,
+    "robot_years": 0.184,
+    "phys_dividend": 0.523,
+    "drone_onset": 0.057,
+    "drone_persist": 0.541,
+    "drone_reach": 0.429,
+    "drone_civil": 0.585,
+    "water_dispute": 0.785,
+    "water_scarcity_k": 0.057,
+    "yield_water": 0.798,
+    "glacier_tau": 0.242,
+    "glacier_flow_mult": 0.168,
+    "peak_shift": 0.824,
+    "cascade_hop2": 0.362,
+    "quasi_USA_TWN": 0.829,
+    "quasi_USA_ISR": 0.13,
+    "quasi_RUS_IRN": 0.836,
+    "quasi_CHN_PAK": 0.358,
+    "intl_beta": 0.459,
+    "prolif_mult": 0.371,
+    "prolif_cascade": 0.054,
+    "iran_pursuit0": 0.367,
+    "breakout_years": 0.771,
+    "prevent_beta": 0.776,
+    "nuc_use_both": 0.68,
+    "nuc_use_one": 0.108,
+    "nuc_escalate": 0.662,
+    "nuc_gdp_large": 0.011,
+    "sanction_loss": 0.82,
+    "mineral_elast": 0.17,
+    "china_pause": 0.624,
+    "civ_mult": 0.763,
+    "pandemic_mort": 0.659,
+    "slr_mult": 0.424,
+    "slr_cost": 0.584,
+    "storm_trend": 0.218,
+    "storm_loss": 0.266,
+    "solar_p": 0.649,
+    "solar_loss": 0.724,
+    "volc_p": 0.497,
+    "volc_yield": 0.519,
+    "cyber_loss": 0.772,
+    "fin_contagion": 0.875,
+    "workforce_beta": 0.988,
+    "fish_trop": 0.017,
+    "fish_mid": 0.347,
+    "fish_high": 0.508,
+    "wild_trend": 0.548,
+    "articles_beta": 0.274,
+    "dividend_fade": 0.061,
+    "pko_beta": 0.847,
+    "pko_cut": 0.097,
+    "pko_decay": 0.057,
+    "aid_mult": 0.116,
+    "commod_coup": 0.317,
+    "tariff_pass": 0.128,
+    "tariff_us": 0.746,
+    "frag_beta": 0.097,
+    "st_debt_beta": 0.413,
+    "peer_coup": 0.407,
+    "dmg_family": 0.665,
+    "amoc_p": 0.5,
+    "amoc_eu_loss": 0.541,
+    "amoc_eu_yield": 0.403,
+    "amoc_rain": 0.073,
+    "slr_ice_mult": 0.711,
+    "harvest_amp": 0.204,
+    "dry_area_elast": 0.58,
+    "clim_conflict": 0.734,
+    "clim_migr": 0.887,
+    "slr_ice": 0.0,
+    "amoc_hit": 0.0,
+    "ai_arrival": 0.723,
+    "robot_arrival": 0.837,
+    "clim_response": 0.789
+   },
+   "events": [
+    {
+     "year": 2026,
+     "world_gdp": 18237,
+     "conflict_share": 0.2,
+     "onset": [
+      "Switzerland",
+      "Czechia",
+      "United Kingdom",
+      "Latvia",
+      "Tajikistan"
+     ],
+     "coup": [
+      "Congo"
+     ],
+     "dem_drop": [
+      "Argentina",
+      "Libya",
+      "Nepal",
+      "Paraguay",
+      "Senegal",
+      "Sao Tome and Principe"
+     ],
+     "slump": [
+      "Belgium",
+      "Comoros",
+      "Kuwait",
+      "Liberia",
+      "Luxembourg",
+      "Serbia"
+     ],
+     "new_interstate": [
+      "Iran vs United States (war)",
+      "Iraq vs Israel",
+      "Iraq vs United States",
+      "United States vs Venezuela"
+     ],
+     "oil_index": 129
+    },
+    {
+     "year": 2027,
+     "world_gdp": 18372,
+     "conflict_share": 0.229,
+     "onset": [
+      "Bolivia",
+      "Cape Verde",
+      "Kyrgyzstan",
+      "Mauritius",
+      "Poland",
+      "Rwanda",
+      "Chad",
+      "United States"
+     ],
+     "dem_drop": [
+      "Angola",
+      "Libya",
+      "Mongolia",
+      "Sierra Leone"
+     ],
+     "slump": [
+      "Eritrea",
+      "Luxembourg",
+      "Montenegro",
+      "New Zealand",
+      "South Africa"
+     ],
+     "new_interstate": [
+      "United Arab Emirates vs United States (war)"
+     ],
+     "oil_index": 111
+    },
+    {
+     "year": 2028,
+     "world_gdp": 18336,
+     "conflict_share": 0.269,
+     "onset": [
+      "Austria",
+      "Belarus",
+      "Chile",
+      "Ghana",
+      "Ireland",
+      "Kuwait",
+      "Malawi",
+      "El Salvador",
+      "Sao Tome and Principe"
+     ],
+     "coup": [
+      "Bolivia"
+     ],
+     "dem_drop": [
+      "Bolivia",
+      "Guyana",
+      "Laos",
+      "Lesotho",
+      "Mali",
+      "Montenegro",
+      "Uruguay"
+     ],
+     "slump": [
+      "Albania",
+      "United Arab Emirates",
+      "Bulgaria",
+      "Botswana",
+      "Costa Rica",
+      "Equatorial Guinea",
+      "Kuwait",
+      "Luxembourg",
+      "Montenegro",
+      "Mozambique",
+      "Mauritius",
+      "New Zealand",
+      "South Africa"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan"
+     ],
+     "oil_index": 78
+    },
+    {
+     "year": 2029,
+     "world_gdp": 18290,
+     "conflict_share": 0.274,
+     "onset": [
+      "Bhutan",
+      "Congo",
+      "Cuba",
+      "Honduras"
+     ],
+     "dem_drop": [
+      "Benin",
+      "Tanzania",
+      "Uzbekistan"
+     ],
+     "slump": [
+      "Bulgaria",
+      "Botswana",
+      "Guinea",
+      "Luxembourg",
+      "Mozambique",
+      "New Zealand",
+      "Tajikistan",
+      "South Africa"
+     ],
+     "oil_index": 91
+    },
+    {
+     "year": 2030,
+     "world_gdp": 18490,
+     "conflict_share": 0.291,
+     "onset": [
+      "Bahrain",
+      "Cambodia",
+      "Russia"
+     ],
+     "coup": [
+      "Bolivia"
+     ],
+     "dem_drop": [
+      "Cameroon",
+      "Djibouti",
+      "Denmark",
+      "Mexico",
+      "Portugal"
+     ],
+     "slump": [
+      "Bulgaria",
+      "Bolivia",
+      "Czechia",
+      "Kyrgyzstan",
+      "Luxembourg",
+      "Mauritius",
+      "Vanuatu",
+      "South Africa"
+     ],
+     "new_interstate": [
+      "Benin vs Nigeria (war)",
+      "Algeria vs France",
+      "Gabon vs Nigeria (war)"
+     ],
+     "oil_index": 100
+    },
+    {
+     "year": 2031,
+     "world_gdp": 18745,
+     "conflict_share": 0.263,
+     "onset": [
+      "Canada",
+      "Papua New Guinea"
+     ],
+     "dem_drop": [
+      "Canada",
+      "Moldova",
+      "Madagascar",
+      "Malaysia"
+     ],
+     "slump": [
+      "Kenya",
+      "Luxembourg",
+      "Eswatini",
+      "Tajikistan",
+      "South Africa"
+     ],
+     "new_interstate": [
+      "Iran vs Israel"
+     ],
+     "oil_index": 100
+    },
+    {
+     "year": 2032,
+     "world_gdp": 18901,
+     "conflict_share": 0.274,
+     "onset": [
+      "Guinea-Bissau",
+      "Tanzania",
+      "Zambia"
+     ],
+     "dem_drop": [
+      "Haiti",
+      "Madagascar",
+      "Malawi",
+      "El Salvador",
+      "Uruguay"
+     ],
+     "slump": [
+      "Botswana",
+      "Switzerland",
+      "Democratic Republic of Congo",
+      "Costa Rica",
+      "Guinea",
+      "Luxembourg",
+      "New Zealand",
+      "Poland",
+      "Suriname",
+      "Eswatini",
+      "South Africa"
+     ],
+     "oil_index": 87
+    },
+    {
+     "year": 2033,
+     "world_gdp": 18988,
+     "conflict_share": 0.303,
+     "onset": [
+      "Belgium",
+      "France",
+      "Gabon",
+      "United States",
+      "Venezuela"
+     ],
+     "coup": [
+      "Cameroon",
+      "Guinea"
+     ],
+     "dem_drop": [
+      "Cape Verde",
+      "Guinea-Bissau",
+      "Nigeria"
+     ],
+     "slump": [
+      "Barbados",
+      "Estonia",
+      "Gabon",
+      "Luxembourg",
+      "New Zealand",
+      "El Salvador",
+      "Eswatini",
+      "Togo",
+      "South Africa"
+     ],
+     "new_interstate": [
+      "Iran vs Israel"
+     ],
+     "oil_index": 66
+    },
+    {
+     "year": 2034,
+     "world_gdp": 19180,
+     "conflict_share": 0.337,
+     "onset": [
+      "Cote d'Ivoire",
+      "Dominican Republic",
+      "Hungary",
+      "Malawi",
+      "North Korea",
+      "Saudi Arabia",
+      "Senegal",
+      "Tunisia"
+     ],
+     "dem_drop": [
+      "Argentina",
+      "Bosnia and Herzegovina",
+      "Ecuador",
+      "Honduras",
+      "Morocco",
+      "Madagascar",
+      "Mozambique",
+      "Nicaragua"
+     ],
+     "slump": [
+      "Azerbaijan",
+      "Barbados",
+      "Fiji",
+      "Guinea",
+      "Luxembourg",
+      "New Zealand",
+      "El Salvador",
+      "Eswatini",
+      "South Africa"
+     ],
+     "new_interstate": [
+      "Eritrea vs Ethiopia"
+     ],
+     "oil_index": 62
+    },
+    {
+     "year": 2035,
+     "world_gdp": 19374,
+     "conflict_share": 0.309,
+     "onset": [
+      "Ecuador"
+     ],
+     "coup": [
+      "Guinea",
+      "Mali"
+     ],
+     "dem_drop": [
+      "Angola",
+      "Bangladesh",
+      "Lebanon",
+      "Mauritania",
+      "Malawi",
+      "Tanzania"
+     ],
+     "slump": [
+      "Botswana",
+      "Costa Rica",
+      "Djibouti",
+      "Equatorial Guinea",
+      "Luxembourg",
+      "Sudan",
+      "El Salvador",
+      "South Africa"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan (war)",
+      "Afghanistan vs United States (war)"
+     ],
+     "oil_index": 48
+    },
+    {
+     "year": 2036,
+     "world_gdp": 19370,
+     "conflict_share": 0.309,
+     "onset": [
+      "Estonia",
+      "Liberia",
+      "Eswatini"
+     ],
+     "coup": [
+      "Congo"
+     ],
+     "dem_drop": [
+      "Belgium",
+      "Bolivia",
+      "Dominican Republic",
+      "Kazakhstan",
+      "Morocco",
+      "Thailand",
+      "United States"
+     ],
+     "slump": [
+      "Afghanistan",
+      "Botswana",
+      "Denmark",
+      "Luxembourg",
+      "Singapore",
+      "Slovenia",
+      "South Africa"
+     ],
+     "new_interstate": [
+      "China vs India"
+     ],
+     "oil_index": 38
+    },
+    {
+     "year": 2037,
+     "world_gdp": 19337,
+     "conflict_share": 0.309,
+     "onset": [
+      "Brazil",
+      "Dominican Republic",
+      "Sierra Leone",
+      "Tanzania"
+     ],
+     "dem_drop": [
+      "Equatorial Guinea",
+      "Honduras",
+      "Hungary",
+      "Moldova",
+      "Papua New Guinea",
+      "Chad",
+      "Tajikistan",
+      "Turkey"
+     ],
+     "slump": [
+      "Barbados",
+      "Botswana",
+      "Cuba",
+      "Finland",
+      "Luxembourg",
+      "El Salvador",
+      "South Sudan",
+      "Slovenia",
+      "South Africa"
+     ],
+     "oil_index": 37
+    },
+    {
+     "year": 2038,
+     "world_gdp": 19330,
+     "conflict_share": 0.32,
+     "onset": [
+      "Australia",
+      "Bulgaria",
+      "Bosnia and Herzegovina",
+      "Hungary",
+      "Singapore"
+     ],
+     "coup": [
+      "Burkina Faso",
+      "Tanzania"
+     ],
+     "dem_drop": [
+      "Democratic Republic of Congo",
+      "Ghana",
+      "India",
+      "Jordan",
+      "Kenya",
+      "Thailand",
+      "East Timor"
+     ],
+     "slump": [
+      "Burkina Faso",
+      "Botswana",
+      "Costa Rica",
+      "Finland",
+      "Hong Kong",
+      "Sri Lanka",
+      "Luxembourg",
+      "Singapore",
+      "Serbia",
+      "South Sudan",
+      "Slovenia"
+     ],
+     "oil_index": 50
+    },
+    {
+     "year": 2039,
+     "world_gdp": 19183,
+     "conflict_share": 0.314,
+     "onset": [
+      "Bolivia"
+     ],
+     "coup": [
+      "Myanmar"
+     ],
+     "dem_drop": [
+      "Angola",
+      "United Arab Emirates",
+      "Benin",
+      "Colombia",
+      "Cuba",
+      "Mali",
+      "Myanmar",
+      "Nigeria",
+      "Pakistan",
+      "Philippines",
+      "Palestine",
+      "Senegal",
+      "Sierra Leone"
+     ],
+     "slump": [
+      "Benin",
+      "Switzerland",
+      "Cape Verde",
+      "Cuba",
+      "Spain",
+      "Finland",
+      "Hong Kong",
+      "Jamaica",
+      "Montenegro",
+      "Singapore",
+      "Suriname",
+      "Slovenia"
+     ],
+     "new_interstate": [
+      "Iran vs Israel (war)",
+      "Iran vs Turkey (war)",
+      "Iran vs United States (war)"
+     ],
+     "oil_index": 56
+    },
+    {
+     "year": 2040,
+     "world_gdp": 18783,
+     "conflict_share": 0.337,
+     "onset": [
+      "Denmark",
+      "Italy",
+      "Namibia",
+      "Slovakia",
+      "Turkmenistan"
+     ],
+     "coup": [
+      "Hungary",
+      "Palestine"
+     ],
+     "dem_drop": [
+      "Botswana",
+      "Algeria",
+      "Ghana",
+      "Hungary",
+      "Mexico",
+      "Niger",
+      "Palestine"
+     ],
+     "slump": [
+      "Cuba",
+      "Finland",
+      "Jordan",
+      "Montenegro",
+      "Slovenia",
+      "Vietnam"
+     ],
+     "oil_index": 45
+    },
+    {
+     "year": 2041,
+     "world_gdp": 17555,
+     "conflict_share": 0.36,
+     "onset": [
+      "Burundi",
+      "Egypt",
+      "Hungary",
+      "Malawi",
+      "Russia"
+     ],
+     "dem_drop": [
+      "Albania",
+      "Bulgaria",
+      "Estonia",
+      "India",
+      "Cambodia",
+      "Mozambique",
+      "Vietnam"
+     ],
+     "slump": [
+      "Angola",
+      "Albania",
+      "Belarus",
+      "Bolivia",
+      "Switzerland",
+      "Cote d'Ivoire",
+      "Comoros",
+      "Cuba",
+      "Czechia",
+      "Ecuador",
+      "Egypt",
+      "Eritrea",
+      "Finland",
+      "Guinea-Bissau",
+      "Hong Kong",
+      "Hungary",
+      "India",
+      "Ireland",
+      "Iran",
+      "Latvia",
+      "Moldova",
+      "Montenegro",
+      "Niger",
+      "New Zealand",
+      "Poland",
+      "Russia",
+      "Senegal",
+      "South Sudan",
+      "Slovakia",
+      "Slovenia",
+      "Seychelles",
+      "Tunisia",
+      "Taiwan",
+      "Vietnam"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan",
+      "Costa Rica vs Nicaragua (war)",
+      "United Kingdom vs Iran"
+     ],
+     "pandemic": true,
+     "oil_index": 35
+    },
+    {
+     "year": 2042,
+     "world_gdp": 17007,
+     "conflict_share": 0.389,
+     "onset": [
+      "Greece",
+      "Sao Tome and Principe",
+      "Turkey",
+      "Ukraine",
+      "South Africa"
+     ],
+     "coup": [
+      "Mauritania"
+     ],
+     "dem_drop": [
+      "Hungary",
+      "Senegal",
+      "Solomon Islands",
+      "Tanzania"
+     ],
+     "slump": [
+      "Bolivia",
+      "Costa Rica",
+      "Cuba",
+      "Denmark",
+      "Finland",
+      "Greece",
+      "Iran",
+      "Malta",
+      "Myanmar",
+      "Malawi",
+      "Senegal",
+      "Slovenia",
+      "Tunisia"
+     ],
+     "new_interstate": [
+      "China vs India",
+      "Jordan vs Syria"
+     ],
+     "oil_index": 30
+    },
+    {
+     "year": 2043,
+     "world_gdp": 16803,
+     "conflict_share": 0.4,
+     "onset": [
+      "Eritrea",
+      "Saudi Arabia",
+      "Taiwan",
+      "United States"
+     ],
+     "coup": [
+      "Madagascar"
+     ],
+     "dem_drop": [
+      "Albania",
+      "Switzerland",
+      "Egypt",
+      "Hungary"
+     ],
+     "slump": [
+      "Bolivia",
+      "Cuba",
+      "Germany",
+      "Finland",
+      "Mali",
+      "Malta",
+      "Qatar",
+      "Sudan",
+      "Senegal",
+      "Solomon Islands",
+      "Slovenia",
+      "Tunisia"
+     ],
+     "oil_index": 26
+    },
+    {
+     "year": 2044,
+     "world_gdp": 16505,
+     "conflict_share": 0.389,
+     "onset": [
+      "East Timor"
+     ],
+     "coup": [
+      "Iraq"
+     ],
+     "dem_drop": [
+      "Democratic Republic of Congo",
+      "Nepal",
+      "Eswatini",
+      "Uganda"
+     ],
+     "slump": [
+      "Bulgaria",
+      "Cuba",
+      "Finland",
+      "Jordan",
+      "Kuwait",
+      "Morocco",
+      "Malta",
+      "Slovenia",
+      "Tunisia",
+      "Ukraine"
+     ],
+     "oil_index": 21
+    },
+    {
+     "year": 2045,
+     "world_gdp": 16100,
+     "conflict_share": 0.394,
+     "onset": [
+      "United Arab Emirates",
+      "Spain",
+      "Gabon",
+      "Kuwait",
+      "Mauritius"
+     ],
+     "dem_drop": [
+      "Bosnia and Herzegovina",
+      "Bhutan",
+      "Comoros",
+      "Djibouti",
+      "Mauritania",
+      "Sierra Leone",
+      "Thailand"
+     ],
+     "slump": [
+      "Cote d'Ivoire",
+      "Ethiopia",
+      "Finland",
+      "Kyrgyzstan",
+      "Mali",
+      "Mongolia",
+      "Portugal",
+      "Russia",
+      "Slovenia",
+      "Thailand"
+     ],
+     "new_interstate": [
+      "Eritrea vs Ethiopia"
+     ],
+     "oil_index": 17
+    },
+    {
+     "year": 2046,
+     "world_gdp": 15583,
+     "conflict_share": 0.406,
+     "onset": [
+      "Central African Republic",
+      "Djibouti",
+      "Dominican Republic"
+     ],
+     "dem_drop": [
+      "United Arab Emirates",
+      "Bosnia and Herzegovina",
+      "Cote d'Ivoire",
+      "Egypt",
+      "Hungary",
+      "Seychelles",
+      "Togo"
+     ],
+     "slump": [
+      "Bosnia and Herzegovina",
+      "Cuba",
+      "Spain",
+      "Kyrgyzstan",
+      "Sri Lanka",
+      "Malta"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan (war)",
+      "China vs India (war)"
+     ],
+     "oil_index": 15
+    },
+    {
+     "year": 2047,
+     "world_gdp": 15112,
+     "conflict_share": 0.389,
+     "onset": [
+      "Fiji"
+     ],
+     "dem_drop": [
+      "Albania",
+      "Togo",
+      "Uganda",
+      "Ukraine"
+     ],
+     "slump": [
+      "Austria",
+      "Guinea",
+      "Hong Kong",
+      "Malta",
+      "North Korea",
+      "Taiwan",
+      "Yemen",
+      "South Africa",
+      "Zambia"
+     ],
+     "new_interstate": [
+      "Ethiopia vs Sudan",
+      "Israel vs Syria"
+     ],
+     "oil_index": 16
+    },
+    {
+     "year": 2048,
+     "world_gdp": 15074,
+     "conflict_share": 0.389,
+     "onset": [
+      "Kyrgyzstan",
+      "Libya",
+      "Lesotho",
+      "Peru",
+      "Vietnam"
+     ],
+     "dem_drop": [
+      "Serbia",
+      "Thailand"
+     ],
+     "slump": [
+      "Malta",
+      "New Zealand",
+      "Papua New Guinea",
+      "Qatar",
+      "Thailand"
+     ],
+     "new_interstate": [
+      "Armenia vs Azerbaijan"
+     ],
+     "oil_index": 14
+    },
+    {
+     "year": 2049,
+     "world_gdp": 15303,
+     "conflict_share": 0.383,
+     "onset": [
+      "Hungary"
+     ],
+     "dem_drop": [
+      "Comoros",
+      "Eritrea",
+      "Ethiopia",
+      "Equatorial Guinea",
+      "Greece",
+      "Japan",
+      "Netherlands",
+      "Paraguay"
+     ],
+     "slump": [
+      "Eritrea",
+      "Guinea",
+      "Guyana",
+      "Malta",
+      "Mozambique",
+      "Trinidad and Tobago"
+     ],
+     "new_interstate": [
+      "Azerbaijan vs Iran (war)",
+      "Russia vs Turkey (war)"
+     ],
+     "oil_index": 23
+    },
+    {
+     "year": 2050,
+     "world_gdp": 15337,
+     "conflict_share": 0.394,
+     "onset": [
+      "Bhutan",
+      "Denmark",
+      "Croatia",
+      "Chad",
+      "Turkey"
+     ],
+     "dem_drop": [
+      "Armenia",
+      "Central African Republic",
+      "Congo",
+      "Algeria",
+      "Kyrgyzstan",
+      "Moldova",
+      "Mongolia"
+     ],
+     "slump": [
+      "Belgium",
+      "Chile",
+      "Malta",
+      "Trinidad and Tobago"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan",
+      "Germany vs Vietnam"
+     ],
+     "oil_index": 25
+    },
+    {
+     "year": 2051,
+     "world_gdp": 15217,
+     "conflict_share": 0.4,
+     "onset": [
+      "Barbados",
+      "Costa Rica",
+      "Cyprus",
+      "Liberia",
+      "Togo"
+     ],
+     "dem_drop": [
+      "Bolivia",
+      "Congo",
+      "Lebanon",
+      "North Korea",
+      "Tajikistan"
+     ],
+     "slump": [
+      "United Arab Emirates",
+      "Laos",
+      "Latvia",
+      "Malta",
+      "Portugal",
+      "Trinidad and Tobago"
+     ],
+     "new_interstate": [
+      "Egypt vs Sudan (war)",
+      "Eritrea vs Ethiopia"
+     ],
+     "oil_index": 30
+    },
+    {
+     "year": 2052,
+     "world_gdp": 15293,
+     "conflict_share": 0.411,
+     "onset": [
+      "Benin",
+      "Central African Republic",
+      "Cote d'Ivoire",
+      "Guatemala",
+      "Mexico",
+      "Myanmar",
+      "Eswatini",
+      "Uganda"
+     ],
+     "coup": [
+      "Chad"
+     ],
+     "dem_drop": [
+      "Czechia",
+      "Indonesia",
+      "Jordan",
+      "Qatar",
+      "Saudi Arabia",
+      "Somalia",
+      "Syria",
+      "East Timor",
+      "Ukraine",
+      "South Africa"
+     ],
+     "slump": [
+      "Bulgaria",
+      "Egypt",
+      "Haiti",
+      "Malta",
+      "Pakistan"
+     ],
+     "oil_index": 40
+    },
+    {
+     "year": 2053,
+     "world_gdp": 15483,
+     "conflict_share": 0.429,
+     "onset": [
+      "Czechia",
+      "Mozambique",
+      "Nicaragua",
+      "Sweden"
+     ],
+     "dem_drop": [
+      "Gabon",
+      "Guinea-Bissau",
+      "Japan",
+      "Liberia",
+      "Lesotho",
+      "Nicaragua",
+      "El Salvador",
+      "Tajikistan",
+      "Vietnam"
+     ],
+     "slump": [
+      "Guinea",
+      "Luxembourg",
+      "Malta",
+      "Portugal",
+      "Zambia"
+     ],
+     "new_interstate": [
+      "Japan vs Vietnam"
+     ],
+     "oil_index": 52
+    },
+    {
+     "year": 2054,
+     "world_gdp": 15594,
+     "conflict_share": 0.429,
+     "onset": [
+      "Djibouti",
+      "Gambia",
+      "Vietnam"
+     ],
+     "dem_drop": [
+      "Bolivia",
+      "Guyana",
+      "Portugal",
+      "Ukraine",
+      "Venezuela"
+     ],
+     "slump": [
+      "Colombia",
+      "Czechia",
+      "Equatorial Guinea",
+      "Jamaica",
+      "Malta",
+      "Zambia"
+     ],
+     "new_interstate": [
+      "Burundi vs Tanzania"
+     ],
+     "oil_index": 52
+    },
+    {
+     "year": 2055,
+     "world_gdp": 15165,
+     "conflict_share": 0.429,
+     "onset": [
+      "Armenia",
+      "Denmark",
+      "North Macedonia",
+      "Norway",
+      "Uzbekistan"
+     ],
+     "dem_drop": [
+      "Iran",
+      "East Timor"
+     ],
+     "slump": [
+      "Bahrain",
+      "Bosnia and Herzegovina",
+      "Chile",
+      "Colombia",
+      "Czechia",
+      "Ecuador",
+      "Ghana",
+      "Guinea-Bissau",
+      "Equatorial Guinea",
+      "Guyana",
+      "Ireland",
+      "Lithuania",
+      "North Macedonia",
+      "Malta",
+      "Netherlands",
+      "Sao Tome and Principe",
+      "Seychelles",
+      "Trinidad and Tobago",
+      "Ukraine",
+      "Uzbekistan",
+      "Vanuatu",
+      "Zambia"
+     ],
+     "new_interstate": [
+      "China vs India",
+      "Djibouti vs Eritrea (war)"
+     ],
+     "pandemic": true,
+     "oil_index": 52
+    },
+    {
+     "year": 2056,
+     "world_gdp": 14894,
+     "conflict_share": 0.434,
+     "onset": [
+      "Japan",
+      "Morocco",
+      "Sudan"
+     ],
+     "dem_drop": [
+      "Barbados",
+      "Cyprus",
+      "Algeria",
+      "Indonesia",
+      "Morocco",
+      "Mauritius",
+      "Nicaragua",
+      "Pakistan",
+      "Qatar",
+      "El Salvador",
+      "Tajikistan",
+      "South Africa"
+     ],
+     "slump": [
+      "Bahrain",
+      "Cuba",
+      "Estonia",
+      "Indonesia",
+      "Jamaica",
+      "Moldova",
+      "North Macedonia",
+      "Malta",
+      "Tunisia"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan",
+      "China vs Myanmar",
+      "India vs Pakistan"
+     ],
+     "oil_index": 51
+    },
+    {
+     "year": 2057,
+     "world_gdp": 14807,
+     "conflict_share": 0.451,
+     "onset": [
+      "United Arab Emirates",
+      "Burundi",
+      "Liberia",
+      "Mauritania",
+      "Seychelles"
+     ],
+     "dem_drop": [
+      "Burundi",
+      "Bulgaria",
+      "Cote d'Ivoire",
+      "Ethiopia",
+      "Equatorial Guinea",
+      "Guyana",
+      "Japan",
+      "Cambodia",
+      "Morocco",
+      "Moldova",
+      "Uzbekistan",
+      "South Africa"
+     ],
+     "slump": [
+      "Spain",
+      "Moldova",
+      "Zambia"
+     ],
+     "oil_index": 51
+    },
+    {
+     "year": 2058,
+     "world_gdp": 14787,
+     "conflict_share": 0.446,
+     "onset": [
+      "Dominican Republic",
+      "Kenya"
+     ],
+     "dem_drop": [
+      "Peru",
+      "Philippines",
+      "Paraguay",
+      "Serbia",
+      "Seychelles"
+     ],
+     "slump": [
+      "Albania",
+      "Bahrain",
+      "Kuwait",
+      "Moldova",
+      "Venezuela",
+      "Zambia"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan"
+     ],
+     "oil_index": 47
+    },
+    {
+     "year": 2059,
+     "world_gdp": 14804,
+     "conflict_share": 0.457,
+     "onset": [
+      "United Kingdom",
+      "Malta",
+      "Slovakia"
+     ],
+     "dem_drop": [
+      "Guatemala",
+      "Kenya"
+     ],
+     "slump": [
+      "Bahrain",
+      "Chile",
+      "Fiji",
+      "Guyana",
+      "Moldova",
+      "Malta",
+      "Seychelles"
+     ],
+     "new_interstate": [
+      "China vs India",
+      "India vs Pakistan"
+     ],
+     "oil_index": 47
+    },
+    {
+     "year": 2060,
+     "world_gdp": 14906,
+     "conflict_share": 0.457,
+     "onset": [
+      "Brazil",
+      "Canada",
+      "Moldova"
+     ],
+     "dem_drop": [
+      "Armenia",
+      "Brazil",
+      "Democratic Republic of Congo",
+      "Indonesia",
+      "North Korea",
+      "Yemen",
+      "Zambia"
+     ],
+     "slump": [
+      "Bahrain",
+      "Guinea",
+      "Moldova",
+      "Malta",
+      "Montenegro",
+      "Mozambique",
+      "Slovenia",
+      "Uzbekistan"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan (war)"
+     ],
+     "oil_index": 46
+    },
+    {
+     "year": 2061,
+     "world_gdp": 15004,
+     "conflict_share": 0.474,
+     "onset": [
+      "Haiti",
+      "Jordan",
+      "Lesotho"
+     ],
+     "dem_drop": [
+      "Guinea",
+      "Japan",
+      "Namibia",
+      "Nicaragua",
+      "Seychelles",
+      "South Africa"
+     ],
+     "slump": [
+      "Bahrain",
+      "Eritrea",
+      "Moldova",
+      "Malaysia",
+      "Uzbekistan"
+     ],
+     "new_interstate": [
+      "China vs United States",
+      "Japan vs Kuwait (war)"
+     ],
+     "oil_index": 54
+    },
+    {
+     "year": 2062,
+     "world_gdp": 14981,
+     "conflict_share": 0.48,
+     "onset": [
+      "Bahrain",
+      "Kuwait",
+      "Papua New Guinea",
+      "Zimbabwe"
+     ],
+     "dem_drop": [
+      "Armenia",
+      "Algeria",
+      "Egypt",
+      "Liberia",
+      "Eswatini",
+      "South Africa"
+     ],
+     "slump": [
+      "Bahrain",
+      "Haiti",
+      "Moldova",
+      "Niger",
+      "Uzbekistan"
+     ],
+     "oil_index": 44
+    },
+    {
+     "year": 2063,
+     "world_gdp": 15146,
+     "conflict_share": 0.474,
+     "onset": [
+      "Madagascar",
+      "Saudi Arabia"
+     ],
+     "dem_drop": [
+      "Benin",
+      "Bosnia and Herzegovina",
+      "Canada",
+      "Cote d'Ivoire",
+      "Congo",
+      "Ethiopia",
+      "Greece",
+      "Iraq",
+      "Niger",
+      "Zambia"
+     ],
+     "slump": [
+      "Bahrain",
+      "Barbados",
+      "Kuwait",
+      "Moldova",
+      "Niger",
+      "South Africa"
+     ],
+     "new_interstate": [
+      "China vs India"
+     ],
+     "oil_index": 44
+    },
+    {
+     "year": 2064,
+     "world_gdp": 15730,
+     "conflict_share": 0.497,
+     "onset": [
+      "Lebanon",
+      "Pakistan",
+      "Palestine",
+      "Uganda",
+      "Uruguay"
+     ],
+     "coup": [
+      "Israel"
+     ],
+     "dem_drop": [
+      "Ecuador",
+      "Gambia",
+      "Hong Kong",
+      "Israel",
+      "Tunisia",
+      "Zimbabwe"
+     ],
+     "slump": [
+      "Argentina",
+      "Bahrain",
+      "Kenya",
+      "Moldova",
+      "Seychelles",
+      "East Timor",
+      "Uzbekistan",
+      "Vietnam"
+     ],
+     "new_interstate": [
+      "Brazil vs Guyana",
+      "Ethiopia vs South Sudan (war)",
+      "Rwanda vs South Sudan (war)"
+     ],
+     "oil_index": 43
+    },
+    {
+     "year": 2065,
+     "world_gdp": 15899,
+     "conflict_share": 0.486,
+     "onset": [
+      "Comoros",
+      "Iceland"
+     ],
+     "dem_drop": [
+      "Chile",
+      "Indonesia",
+      "Israel",
+      "Portugal",
+      "Zimbabwe"
+     ],
+     "slump": [
+      "Bahrain",
+      "Laos",
+      "Lebanon",
+      "Moldova"
+     ],
+     "oil_index": 41
+    }
+   ]
+  },
+  "economic": {
+   "world": 3301,
+   "percentile": {
+    "economic": 1.0,
+    "deaths": 0.513,
+    "civil_war": 0.431,
+    "autocracy": 0.446,
+    "composite": 0.744
+   },
+   "world_gdp_2065": 8651.037109375,
+   "deaths_m": 2.5210187435150146,
+   "conflict_mean": 0.19685713946819305,
+   "dem_2065": 0.46574166417121887,
+   "params": {
+    "cascade_q": 0.0934213250875473,
+    "nuclear_war_factor": 0.3499565124511719,
+    "war_spillover": 0.10106048732995987,
+    "war_site_loss": 0.1348109245300293,
+    "oil_eta": 0.7951309680938721,
+    "oil_war_jump": 0.12620598077774048,
+    "pandemic_p": 0.01643924042582512,
+    "climate_damage": 1.487532615661621,
+    "growth_dividend": 0.049392230808734894,
+    "autocracy_drift": 0.004850796423852444,
+    "bubble_p": 0.5152610540390015,
+    "bubble_cost": 0.028695395216345787,
+    "speed_mult": 1.1512250900268555,
+    "open_lag": 2.6935997009277344,
+    "export_lag": 2.646303653717041,
+    "hub_rent": 0.2089933305978775,
+    "chip_pause": 0.8205115795135498,
+    "chip_gdp": 0.031058114022016525,
+    "dc_share": 0.0505167692899704,
+    "robot_lag": 7.978110313415527,
+    "robot_aging": 0.2923135757446289,
+    "dem_erosion": 0.005965610034763813,
+    "ai_war_beta": 0.7138867378234863,
+    "nuc_beta": 0.8788328766822815,
+    "eng_pandemic": 0.003130438271909952,
+    "natural_cut": 0.22757890820503235,
+    "robot_years": 18.115089416503906,
+    "phys_dividend": 0.034039516001939774,
+    "drone_onset": 0.374423623085022,
+    "drone_persist": 0.5775489211082458,
+    "drone_reach": 0.10603626072406769,
+    "drone_civil": -0.13526147603988647,
+    "water_dispute": 0.1872890293598175,
+    "water_scarcity_k": 1.5543594360351562,
+    "yield_water": 0.19074545800685883,
+    "glacier_tau": 34.46546173095703,
+    "glacier_flow_mult": 0.9847204685211182,
+    "peak_shift": -18.2677001953125,
+    "cascade_hop2": 0.7680827379226685,
+    "quasi_USA_TWN": 0.3931697607040405,
+    "quasi_USA_ISR": 0.4505482316017151,
+    "quasi_RUS_IRN": 0.07252401858568192,
+    "quasi_CHN_PAK": 0.08742671459913254,
+    "intl_beta": -0.45839959383010864,
+    "prolif_mult": 1.4499319791793823,
+    "prolif_cascade": 5.225289344787598,
+    "iran_pursuit0": 0.12226028740406036,
+    "breakout_years": 4.79727029800415,
+    "prevent_beta": 1.2465945482254028,
+    "nuc_use_both": 0.016581272706389427,
+    "nuc_use_one": 0.004141471814364195,
+    "nuc_escalate": 0.2616230547428131,
+    "nuc_gdp_large": 0.2970500588417053,
+    "sanction_loss": 0.019769122824072838,
+    "mineral_elast": 0.484775573015213,
+    "china_pause": 0.8742160797119141,
+    "civ_mult": 2.1899192333221436,
+    "pandemic_mort": 0.0037143765948712826,
+    "slr_mult": 0.7081242203712463,
+    "slr_cost": 0.007414409425109625,
+    "storm_trend": 0.2864176630973816,
+    "storm_loss": 0.012408677488565445,
+    "solar_p": 0.00982328038662672,
+    "solar_loss": 0.02862461656332016,
+    "volc_p": 0.005886157043278217,
+    "volc_yield": 0.0445832684636116,
+    "cyber_loss": 0.029398998245596886,
+    "fin_contagion": 3.6307778358459473,
+    "workforce_beta": 1.4133862257003784,
+    "fish_trop": -0.06323742866516113,
+    "fish_mid": -0.032577257603406906,
+    "fish_high": 0.0724552646279335,
+    "wild_trend": 0.0028829481452703476,
+    "articles_beta": 0.0015728870639577508,
+    "dividend_fade": 0.024828827008605003,
+    "pko_beta": 0.050835639238357544,
+    "pko_cut": 0.4556819200515747,
+    "pko_decay": 0.01711147092282772,
+    "aid_mult": 0.6628556251525879,
+    "commod_coup": -3.2153520584106445,
+    "tariff_pass": 0.6768355965614319,
+    "tariff_us": 0.0015411658678203821,
+    "frag_beta": -1.7522096633911133,
+    "st_debt_beta": 0.5657777786254883,
+    "peer_coup": 1.2271275520324707,
+    "dmg_family": 2.0,
+    "amoc_p": 0.06614106893539429,
+    "amoc_eu_loss": 0.027384506538510323,
+    "amoc_eu_yield": 0.20054548978805542,
+    "amoc_rain": 0.13512390851974487,
+    "slr_ice_mult": 1.8205652236938477,
+    "harvest_amp": 0.2538455128669739,
+    "dry_area_elast": 0.758520245552063,
+    "clim_conflict": 0.04448157548904419,
+    "clim_migr": 0.04775584489107132,
+    "slr_ice": 0.0,
+    "amoc_hit": 0.0,
+    "ai_arrival": 2070.0,
+    "robot_arrival": 2045.4918212890625,
+    "clim_response": 2.52876353263855
+   },
+   "param_pct": {
+    "cascade_q": 0.286,
+    "nuclear_war_factor": 0.553,
+    "war_spillover": 0.098,
+    "war_site_loss": 0.94,
+    "oil_eta": 0.72,
+    "oil_war_jump": 0.251,
+    "pandemic_p": 0.212,
+    "climate_damage": 0.988,
+    "growth_dividend": 0.984,
+    "autocracy_drift": 0.602,
+    "bubble_p": 0.788,
+    "bubble_cost": 0.619,
+    "speed_mult": 0.543,
+    "open_lag": 0.614,
+    "export_lag": 0.883,
+    "hub_rent": 0.419,
+    "chip_pause": 0.639,
+    "chip_gdp": 0.361,
+    "dc_share": 0.51,
+    "robot_lag": 0.995,
+    "robot_aging": 0.294,
+    "dem_erosion": 0.994,
+    "ai_war_beta": 0.364,
+    "nuc_beta": 0.876,
+    "eng_pandemic": 0.146,
+    "natural_cut": 0.067,
+    "robot_years": 0.848,
+    "phys_dividend": 0.829,
+    "drone_onset": 0.846,
+    "drone_persist": 0.712,
+    "drone_reach": 0.531,
+    "drone_civil": 0.107,
+    "water_dispute": 0.386,
+    "water_scarcity_k": 0.373,
+    "yield_water": 0.149,
+    "glacier_tau": 0.157,
+    "glacier_flow_mult": 0.478,
+    "peak_shift": 0.032,
+    "cascade_hop2": 0.767,
+    "quasi_USA_TWN": 0.284,
+    "quasi_USA_ISR": 0.876,
+    "quasi_RUS_IRN": 0.72,
+    "quasi_CHN_PAK": 0.874,
+    "intl_beta": 0.432,
+    "prolif_mult": 0.677,
+    "prolif_cascade": 0.852,
+    "iran_pursuit0": 0.044,
+    "breakout_years": 0.71,
+    "prevent_beta": 0.827,
+    "nuc_use_both": 0.524,
+    "nuc_use_one": 0.462,
+    "nuc_escalate": 0.599,
+    "nuc_gdp_large": 0.989,
+    "sanction_loss": 0.49,
+    "mineral_elast": 0.967,
+    "china_pause": 0.837,
+    "civ_mult": 0.667,
+    "pandemic_mort": 0.715,
+    "slr_mult": 0.008,
+    "slr_cost": 0.076,
+    "storm_trend": 0.955,
+    "storm_loss": 0.287,
+    "solar_p": 0.43,
+    "solar_loss": 0.265,
+    "volc_p": 0.241,
+    "volc_yield": 0.163,
+    "cyber_loss": 0.98,
+    "fin_contagion": 0.134,
+    "workforce_beta": 0.878,
+    "fish_trop": 0.67,
+    "fish_mid": 0.464,
+    "fish_high": 0.745,
+    "wild_trend": 0.991,
+    "articles_beta": 0.259,
+    "dividend_fade": 0.626,
+    "pko_beta": 0.043,
+    "pko_cut": 0.887,
+    "pko_decay": 0.171,
+    "aid_mult": 0.661,
+    "commod_coup": 0.343,
+    "tariff_pass": 0.45,
+    "tariff_us": 0.151,
+    "frag_beta": 0.669,
+    "st_debt_beta": 0.4,
+    "peer_coup": 0.047,
+    "dmg_family": 0.665,
+    "amoc_p": 0.666,
+    "amoc_eu_loss": 0.431,
+    "amoc_eu_yield": 0.505,
+    "amoc_rain": 0.176,
+    "slr_ice_mult": 0.215,
+    "harvest_amp": 0.853,
+    "dry_area_elast": 0.569,
+    "clim_conflict": 0.156,
+    "clim_migr": 0.115,
+    "slr_ice": 0.0,
+    "amoc_hit": 0.0,
+    "ai_arrival": 0.723,
+    "robot_arrival": 0.629,
+    "clim_response": 0.98
+   },
+   "events": [
+    {
+     "year": 2026,
+     "world_gdp": 18101,
+     "conflict_share": 0.166,
+     "onset": [
+      "Azerbaijan",
+      "Mongolia"
+     ],
+     "dem_drop": [
+      "Guinea"
+     ],
+     "slump": [
+      "Belarus",
+      "Comoros",
+      "Guatemala",
+      "Liberia",
+      "Uruguay"
+     ],
+     "new_interstate": [
+      "Germany vs Ukraine",
+      "Iran vs United States (war)",
+      "Iraq vs Israel",
+      "Iraq vs United States",
+      "United States vs Venezuela"
+     ],
+     "oil_index": 126
+    },
+    {
+     "year": 2027,
+     "world_gdp": 18220,
+     "conflict_share": 0.154,
+     "onset": [
+      "Tajikistan"
+     ],
+     "dem_drop": [
+      "Bangladesh",
+      "Denmark",
+      "Laos",
+      "Paraguay",
+      "Somalia"
+     ],
+     "slump": [
+      "Barbados",
+      "Cote d'Ivoire",
+      "Cuba",
+      "Jamaica",
+      "Liberia",
+      "Latvia",
+      "Tajikistan"
+     ],
+     "oil_index": 89
+    },
+    {
+     "year": 2028,
+     "world_gdp": 18060,
+     "conflict_share": 0.126,
+     "onset": [
+      "Austria",
+      "Sierra Leone"
+     ],
+     "coup": [
+      "Mali",
+      "Chad"
+     ],
+     "dem_drop": [
+      "Armenia",
+      "Democratic Republic of Congo",
+      "Congo",
+      "Algeria",
+      "Ghana",
+      "Lesotho",
+      "Nicaragua",
+      "Chad"
+     ],
+     "slump": [
+      "Barbados",
+      "Colombia",
+      "Jamaica",
+      "Sao Tome and Principe",
+      "Uganda",
+      "Uruguay"
+     ],
+     "oil_index": 81
+    },
+    {
+     "year": 2029,
+     "world_gdp": 17847,
+     "conflict_share": 0.114,
+     "dem_drop": [
+      "Canada",
+      "Malaysia",
+      "New Zealand",
+      "Rwanda",
+      "Chad"
+     ],
+     "slump": [
+      "Jamaica",
+      "Liberia",
+      "Mauritius",
+      "Serbia"
+     ],
+     "oil_index": 73
+    },
+    {
+     "year": 2030,
+     "world_gdp": 17567,
+     "conflict_share": 0.143,
+     "onset": [
+      "Argentina",
+      "Gambia",
+      "Ireland",
+      "Libya",
+      "Turkmenistan",
+      "Ukraine"
+     ],
+     "dem_drop": [
+      "Bolivia",
+      "Gabon",
+      "Lebanon",
+      "Madagascar",
+      "Philippines",
+      "Turkey"
+     ],
+     "slump": [
+      "Bolivia",
+      "Jamaica",
+      "Serbia",
+      "Uganda",
+      "Ukraine"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan",
+      "China vs Cambodia",
+      "Estonia vs United States"
+     ],
+     "oil_index": 83
+    },
+    {
+     "year": 2031,
+     "world_gdp": 16782,
+     "conflict_share": 0.143,
+     "onset": [
+      "United Kingdom",
+      "Morocco",
+      "Trinidad and Tobago"
+     ],
+     "dem_drop": [
+      "Croatia",
+      "Jordan",
+      "Panama",
+      "Philippines",
+      "Serbia",
+      "Tanzania"
+     ],
+     "slump": [
+      "Fiji",
+      "Hungary",
+      "India",
+      "Iran",
+      "Jamaica",
+      "Liberia",
+      "Sao Tome and Principe",
+      "Tanzania",
+      "Uganda"
+     ],
+     "oil_index": 69
+    },
+    {
+     "year": 2032,
+     "world_gdp": 16251,
+     "conflict_share": 0.149,
+     "onset": [
+      "Georgia",
+      "Turkey"
+     ],
+     "dem_drop": [
+      "Albania",
+      "Austria",
+      "Bosnia and Herzegovina",
+      "Cameroon",
+      "Algeria",
+      "Guinea-Bissau",
+      "Zimbabwe"
+     ],
+     "slump": [
+      "Austria",
+      "Hong Kong",
+      "Jamaica",
+      "Liberia",
+      "Norway",
+      "Sao Tome and Principe",
+      "Uganda",
+      "Ukraine",
+      "Zambia"
+     ],
+     "new_interstate": [
+      "Colombia vs Venezuela",
+      "Myanmar vs Pakistan"
+     ],
+     "oil_index": 58
+    },
+    {
+     "year": 2033,
+     "world_gdp": 15969,
+     "conflict_share": 0.149,
+     "onset": [
+      "Vanuatu",
+      "Yemen"
+     ],
+     "dem_drop": [
+      "Chile",
+      "Greece",
+      "Iceland",
+      "Jordan",
+      "Syria"
+     ],
+     "slump": [
+      "Cuba",
+      "Liberia",
+      "Mozambique",
+      "Mauritius",
+      "Netherlands",
+      "Norway",
+      "Sao Tome and Principe",
+      "Zambia"
+     ],
+     "oil_index": 52
+    },
+    {
+     "year": 2034,
+     "world_gdp": 15667,
+     "conflict_share": 0.154,
+     "onset": [
+      "Ecuador",
+      "Italy",
+      "Solomon Islands"
+     ],
+     "dem_drop": [
+      "Burundi",
+      "Botswana",
+      "Poland",
+      "Rwanda"
+     ],
+     "slump": [
+      "Djibouti",
+      "Dominican Republic",
+      "Japan",
+      "Liberia",
+      "Mozambique",
+      "Mauritius",
+      "Niger",
+      "Netherlands",
+      "Papua New Guinea",
+      "North Korea",
+      "Rwanda",
+      "Serbia",
+      "Sao Tome and Principe",
+      "Yemen"
+     ],
+     "new_interstate": [
+      "France vs Palestine",
+      "Guyana vs Venezuela"
+     ],
+     "oil_index": 45
+    },
+    {
+     "year": 2035,
+     "world_gdp": 15343,
+     "conflict_share": 0.154,
+     "onset": [
+      "Albania",
+      "Indonesia",
+      "Malaysia"
+     ],
+     "coup": [
+      "Burundi"
+     ],
+     "dem_drop": [
+      "Croatia",
+      "Hungary"
+     ],
+     "slump": [
+      "Cyprus",
+      "Jamaica",
+      "Japan",
+      "Liberia",
+      "Mozambique",
+      "Mauritius",
+      "Niger",
+      "Sierra Leone",
+      "Serbia",
+      "Sao Tome and Principe",
+      "Uganda",
+      "Venezuela"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan (war)",
+      "United Kingdom vs Iran (war)",
+      "Iran vs United States (war)"
+     ],
+     "oil_index": 61
+    },
+    {
+     "year": 2036,
+     "world_gdp": 15143,
+     "conflict_share": 0.166,
+     "onset": [
+      "Sri Lanka",
+      "Morocco",
+      "Russia"
+     ],
+     "coup": [
+      "Burkina Faso"
+     ],
+     "dem_drop": [
+      "Argentina",
+      "Bulgaria",
+      "Ghana",
+      "Mauritania",
+      "Nigeria",
+      "Oman"
+     ],
+     "slump": [
+      "Egypt",
+      "Jamaica",
+      "Sao Tome and Principe",
+      "Syria"
+     ],
+     "oil_index": 74
+    },
+    {
+     "year": 2037,
+     "world_gdp": 14964,
+     "conflict_share": 0.189,
+     "onset": [
+      "Comoros",
+      "Eritrea",
+      "Rwanda",
+      "South Sudan",
+      "Ukraine"
+     ],
+     "coup": [
+      "Democratic Republic of Congo"
+     ],
+     "dem_drop": [
+      "Afghanistan",
+      "Belarus",
+      "Brazil",
+      "Cameroon",
+      "Democratic Republic of Congo",
+      "Egypt",
+      "Iran",
+      "Maldives",
+      "Mauritania",
+      "Malaysia",
+      "Niger",
+      "Yemen"
+     ],
+     "slump": [
+      "Bulgaria",
+      "Bahrain",
+      "Comoros",
+      "Egypt",
+      "Maldives",
+      "Mozambique",
+      "Sao Tome and Principe",
+      "Chad"
+     ],
+     "oil_index": 84
+    },
+    {
+     "year": 2038,
+     "world_gdp": 14769,
+     "conflict_share": 0.206,
+     "onset": [
+      "Armenia",
+      "Australia",
+      "Canada",
+      "Montenegro",
+      "Serbia",
+      "Tanzania",
+      "Zimbabwe"
+     ],
+     "coup": [
+      "Cameroon"
+     ],
+     "dem_drop": [
+      "Georgia",
+      "Croatia",
+      "Iran",
+      "Kenya",
+      "Niger",
+      "Nigeria"
+     ],
+     "slump": [
+      "Djibouti",
+      "Egypt",
+      "Lithuania",
+      "Nepal",
+      "El Salvador"
+     ],
+     "oil_index": 84
+    },
+    {
+     "year": 2039,
+     "world_gdp": 14556,
+     "conflict_share": 0.2,
+     "onset": [
+      "Haiti",
+      "Romania",
+      "United States"
+     ],
+     "coup": [
+      "Mauritania"
+     ],
+     "dem_drop": [
+      "Afghanistan",
+      "Benin",
+      "Niger",
+      "Nepal",
+      "Turkey"
+     ],
+     "slump": [
+      "Dominican Republic",
+      "Egypt",
+      "Kyrgyzstan",
+      "Lithuania",
+      "Mauritania",
+      "Singapore",
+      "Chad"
+     ],
+     "new_interstate": [
+      "Oman vs Yemen"
+     ],
+     "oil_index": 100
+    },
+    {
+     "year": 2040,
+     "world_gdp": 14415,
+     "conflict_share": 0.183,
+     "onset": [
+      "Dominican Republic"
+     ],
+     "coup": [
+      "Thailand"
+     ],
+     "dem_drop": [
+      "Comoros",
+      "Ecuador",
+      "Egypt",
+      "Indonesia",
+      "Mauritius",
+      "Niger",
+      "Poland",
+      "El Salvador",
+      "Togo",
+      "Yemen"
+     ],
+     "slump": [
+      "Bulgaria",
+      "Djibouti",
+      "Egypt",
+      "Jordan",
+      "Lithuania",
+      "Sao Tome and Principe",
+      "Chad",
+      "Venezuela"
+     ],
+     "new_interstate": [
+      "China vs Uganda",
+      "United Kingdom vs Somalia"
+     ],
+     "oil_index": 111
+    },
+    {
+     "year": 2041,
+     "world_gdp": 14257,
+     "conflict_share": 0.217,
+     "onset": [
+      "Bolivia",
+      "Central African Republic",
+      "Cote d'Ivoire",
+      "Spain",
+      "Serbia",
+      "Tajikistan"
+     ],
+     "dem_drop": [
+      "Niger",
+      "Philippines",
+      "Rwanda"
+     ],
+     "slump": [
+      "Angola",
+      "Djibouti",
+      "Egypt",
+      "Chad",
+      "Thailand"
+     ],
+     "oil_index": 73
+    },
+    {
+     "year": 2042,
+     "world_gdp": 14009,
+     "conflict_share": 0.206,
+     "onset": [
+      "Greece"
+     ],
+     "dem_drop": [
+      "Bangladesh",
+      "Chile",
+      "Kyrgyzstan",
+      "Nigeria",
+      "Thailand"
+     ],
+     "slump": [
+      "Angola",
+      "Bulgaria",
+      "Egypt",
+      "Eritrea",
+      "Lithuania",
+      "Senegal",
+      "Chad",
+      "Thailand"
+     ],
+     "new_interstate": [
+      "Angola vs Japan"
+     ],
+     "oil_index": 55
+    },
+    {
+     "year": 2043,
+     "world_gdp": 13248,
+     "conflict_share": 0.211,
+     "onset": [
+      "Central African Republic",
+      "Italy",
+      "Panama"
+     ],
+     "coup": [
+      "Brazil"
+     ],
+     "dem_drop": [
+      "Botswana",
+      "Guyana",
+      "Kenya",
+      "Sudan"
+     ],
+     "slump": [
+      "Angola",
+      "Bulgaria",
+      "Bahrain",
+      "Cyprus",
+      "Djibouti",
+      "Egypt",
+      "United Kingdom",
+      "Hungary",
+      "Indonesia",
+      "India",
+      "South Korea",
+      "Kuwait",
+      "Liberia",
+      "North Macedonia",
+      "Mauritania",
+      "Mauritius",
+      "Seychelles",
+      "Chad",
+      "Tunisia"
+     ],
+     "oil_index": 32
+    },
+    {
+     "year": 2044,
+     "world_gdp": 13057,
+     "conflict_share": 0.217,
+     "onset": [
+      "Nepal",
+      "Sudan",
+      "Solomon Islands",
+      "Serbia"
+     ],
+     "dem_drop": [
+      "Cote d'Ivoire",
+      "Cuba",
+      "Guinea",
+      "Rwanda",
+      "Uruguay",
+      "Zimbabwe"
+     ],
+     "slump": [
+      "Bahrain",
+      "Algeria",
+      "Egypt",
+      "Eritrea",
+      "Indonesia",
+      "Qatar",
+      "Chad"
+     ],
+     "new_interstate": [
+      "Armenia vs Azerbaijan",
+      "Nicaragua vs El Salvador"
+     ],
+     "oil_index": 35
+    },
+    {
+     "year": 2045,
+     "world_gdp": 12874,
+     "conflict_share": 0.211,
+     "onset": [
+      "Ireland"
+     ],
+     "coup": [
+      "Ethiopia"
+     ],
+     "dem_drop": [
+      "Cote d'Ivoire",
+      "Egypt",
+      "Ethiopia",
+      "Guinea-Bissau",
+      "Croatia",
+      "Haiti",
+      "Paraguay",
+      "Ukraine",
+      "Zambia"
+     ],
+     "slump": [
+      "Angola",
+      "Egypt",
+      "Iran",
+      "Liberia",
+      "Luxembourg",
+      "Chad",
+      "Trinidad and Tobago"
+     ],
+     "new_interstate": [
+      "China vs India"
+     ],
+     "oil_index": 37
+    },
+    {
+     "year": 2046,
+     "world_gdp": 12537,
+     "conflict_share": 0.217,
+     "onset": [
+      "Egypt",
+      "Nicaragua"
+     ],
+     "coup": [
+      "Syria"
+     ],
+     "dem_drop": [
+      "Congo",
+      "Finland",
+      "Mongolia",
+      "Nicaragua",
+      "Pakistan",
+      "Syria"
+     ],
+     "slump": [
+      "Cote d'Ivoire",
+      "Egypt",
+      "Iran",
+      "Myanmar",
+      "Mauritania",
+      "Pakistan",
+      "Thailand",
+      "Uzbekistan"
+     ],
+     "new_interstate": [
+      "Cameroon vs Nigeria (war)",
+      "Iran vs Israel"
+     ],
+     "oil_index": 48
+    },
+    {
+     "year": 2047,
+     "world_gdp": 12040,
+     "conflict_share": 0.217,
+     "onset": [
+      "Albania",
+      "Comoros"
+     ],
+     "coup": [
+      "Cote d'Ivoire"
+     ],
+     "dem_drop": [
+      "Switzerland",
+      "Cote d'Ivoire",
+      "Czechia",
+      "Jordan"
+     ],
+     "slump": [
+      "Angola",
+      "Cote d'Ivoire",
+      "Djibouti",
+      "Jordan",
+      "Norway",
+      "Russia",
+      "Thailand",
+      "Tajikistan",
+      "Vietnam"
+     ],
+     "new_interstate": [
+      "Egypt vs Israel",
+      "Eritrea vs Ethiopia"
+     ],
+     "oil_index": 35
+    },
+    {
+     "year": 2048,
+     "world_gdp": 11603,
+     "conflict_share": 0.246,
+     "onset": [
+      "United Arab Emirates",
+      "Laos",
+      "Latvia",
+      "Madagascar",
+      "Malta",
+      "Paraguay",
+      "Ukraine"
+     ],
+     "coup": [
+      "Mali"
+     ],
+     "dem_drop": [
+      "Georgia",
+      "Mali",
+      "Namibia"
+     ],
+     "slump": [
+      "Belgium",
+      "Cote d'Ivoire",
+      "Egypt",
+      "United Kingdom",
+      "Guinea",
+      "Iran",
+      "Jordan",
+      "Mauritania",
+      "Oman",
+      "Tajikistan"
+     ],
+     "oil_index": 40
+    },
+    {
+     "year": 2049,
+     "world_gdp": 11216,
+     "conflict_share": 0.257,
+     "onset": [
+      "Mozambique",
+      "El Salvador",
+      "South Sudan",
+      "Tajikistan"
+     ],
+     "dem_drop": [
+      "Iraq",
+      "Madagascar",
+      "Togo"
+     ],
+     "slump": [
+      "Belgium",
+      "Cote d'Ivoire",
+      "Iran",
+      "Iraq",
+      "Mauritania",
+      "Nepal",
+      "Taiwan"
+     ],
+     "new_interstate": [
+      "India vs Pakistan"
+     ],
+     "oil_index": 37
+    },
+    {
+     "year": 2050,
+     "world_gdp": 10813,
+     "conflict_share": 0.257,
+     "onset": [
+      "France",
+      "Italy",
+      "Mexico"
+     ],
+     "dem_drop": [
+      "Austria",
+      "China",
+      "Mongolia",
+      "Seychelles",
+      "Ukraine"
+     ],
+     "slump": [
+      "Armenia",
+      "Belgium",
+      "Cote d'Ivoire",
+      "Guatemala",
+      "Hong Kong",
+      "Iraq",
+      "North Macedonia",
+      "Mauritania"
+     ],
+     "new_interstate": [
+      "Eritrea vs Sudan (war)"
+     ],
+     "oil_index": 33
+    },
+    {
+     "year": 2051,
+     "world_gdp": 10549,
+     "conflict_share": 0.246,
+     "onset": [
+      "North Macedonia",
+      "Mauritania"
+     ],
+     "coup": [
+      "Democratic Republic of Congo"
+     ],
+     "dem_drop": [
+      "Democratic Republic of Congo",
+      "Colombia",
+      "Ecuador",
+      "Kuwait",
+      "Myanmar",
+      "Somalia",
+      "Vietnam"
+     ],
+     "slump": [
+      "Armenia",
+      "Belgium",
+      "Cote d'Ivoire",
+      "Greece",
+      "Guatemala",
+      "Iran",
+      "Mauritania",
+      "Oman",
+      "Somalia",
+      "Turkmenistan",
+      "Turkey"
+     ],
+     "new_interstate": [
+      "Israel vs Syria"
+     ],
+     "oil_index": 43
+    },
+    {
+     "year": 2052,
+     "world_gdp": 9627,
+     "conflict_share": 0.24,
+     "onset": [
+      "Bahrain",
+      "Philippines"
+     ],
+     "coup": [
+      "Egypt",
+      "Haiti",
+      "Nigeria"
+     ],
+     "dem_drop": [
+      "Bangladesh",
+      "Kazakhstan",
+      "Palestine",
+      "Sudan"
+     ],
+     "slump": [
+      "Afghanistan",
+      "United Arab Emirates",
+      "Armenia",
+      "Australia",
+      "Burundi",
+      "Belgium",
+      "Bahrain",
+      "Bosnia and Herzegovina",
+      "Brazil",
+      "China",
+      "Cote d'Ivoire",
+      "Democratic Republic of Congo",
+      "Colombia",
+      "Cyprus",
+      "Ecuador",
+      "Ethiopia",
+      "Hong Kong",
+      "Croatia",
+      "Indonesia",
+      "India",
+      "Iran",
+      "Iraq",
+      "Jordan",
+      "Kenya",
+      "Kyrgyzstan",
+      "Cambodia",
+      "Laos",
+      "North Macedonia",
+      "Myanmar",
+      "Mongolia",
+      "Mauritania",
+      "Norway",
+      "Nepal",
+      "Oman",
+      "Pakistan",
+      "Philippines",
+      "Palestine",
+      "Qatar",
+      "Saudi Arabia",
+      "Singapore",
+      "El Salvador",
+      "Slovenia",
+      "Eswatini",
+      "Tajikistan",
+      "Turkmenistan",
+      "Trinidad and Tobago",
+      "Turkey",
+      "Taiwan",
+      "Ukraine",
+      "Uzbekistan",
+      "Venezuela",
+      "Vietnam",
+      "Yemen"
+     ],
+     "new_interstate": [
+      "Colombia vs Venezuela",
+      "India vs Pakistan"
+     ],
+     "pandemic": true,
+     "oil_index": 52
+    },
+    {
+     "year": 2053,
+     "world_gdp": 9246,
+     "conflict_share": 0.24,
+     "onset": [
+      "Democratic Republic of Congo",
+      "Djibouti",
+      "Malawi",
+      "Chad"
+     ],
+     "dem_drop": [
+      "Morocco",
+      "Chad",
+      "Uganda",
+      "Vietnam"
+     ],
+     "slump": [
+      "Armenia",
+      "Belgium",
+      "Cote d'Ivoire",
+      "Guinea",
+      "Hong Kong",
+      "Mauritania",
+      "Malaysia",
+      "South Sudan",
+      "Tunisia"
+     ],
+     "new_interstate": [
+      "United Kingdom vs Sudan (war)",
+      "Italy vs Sudan (war)"
+     ],
+     "oil_index": 63
+    },
+    {
+     "year": 2054,
+     "world_gdp": 8969,
+     "conflict_share": 0.206,
+     "onset": [
+      "Bangladesh",
+      "Uruguay"
+     ],
+     "coup": [
+      "Haiti",
+      "Nigeria"
+     ],
+     "dem_drop": [
+      "Bulgaria",
+      "Haiti",
+      "Laos",
+      "Sri Lanka",
+      "Netherlands",
+      "Oman",
+      "Qatar",
+      "Syria",
+      "Uzbekistan",
+      "Vietnam"
+     ],
+     "slump": [
+      "Belgium",
+      "Bhutan",
+      "Cote d'Ivoire",
+      "Hong Kong",
+      "Croatia",
+      "Iran",
+      "Kenya",
+      "Mauritania",
+      "El Salvador",
+      "Zambia"
+     ],
+     "new_interstate": [
+      "China vs Turkmenistan",
+      "Egypt vs Israel"
+     ],
+     "oil_index": 72
+    },
+    {
+     "year": 2055,
+     "world_gdp": 8761,
+     "conflict_share": 0.2,
+     "onset": [
+      "Latvia",
+      "Madagascar",
+      "Turkmenistan"
+     ],
+     "coup": [
+      "Syria"
+     ],
+     "dem_drop": [
+      "Belarus",
+      "Ireland",
+      "Lebanon",
+      "Paraguay",
+      "Venezuela",
+      "Yemen"
+     ],
+     "slump": [
+      "Belgium",
+      "Bangladesh",
+      "Cote d'Ivoire",
+      "Eritrea",
+      "Guyana",
+      "Hong Kong",
+      "Croatia",
+      "Iran",
+      "Lesotho",
+      "Mauritania",
+      "Niger"
+     ],
+     "new_interstate": [
+      "Cameroon vs Nigeria"
+     ],
+     "oil_index": 87
+    },
+    {
+     "year": 2056,
+     "world_gdp": 8542,
+     "conflict_share": 0.2,
+     "onset": [
+      "South Africa"
+     ],
+     "dem_drop": [
+      "Colombia",
+      "Egypt",
+      "Spain",
+      "Jamaica",
+      "Morocco",
+      "Serbia",
+      "Sao Tome and Principe"
+     ],
+     "slump": [
+      "Botswana",
+      "Cote d'Ivoire",
+      "Djibouti",
+      "Estonia",
+      "Guatemala",
+      "Mauritania",
+      "Niger",
+      "Papua New Guinea",
+      "Sao Tome and Principe",
+      "Syria",
+      "Trinidad and Tobago"
+     ],
+     "new_interstate": [
+      "India vs Pakistan"
+     ],
+     "oil_index": 89
+    },
+    {
+     "year": 2057,
+     "world_gdp": 8302,
+     "conflict_share": 0.217,
+     "onset": [
+      "China",
+      "Eritrea",
+      "Ghana",
+      "Libya"
+     ],
+     "coup": [
+      "Ghana"
+     ],
+     "dem_drop": [
+      "Djibouti",
+      "Dominican Republic",
+      "Honduras",
+      "Mali",
+      "Poland",
+      "Rwanda"
+     ],
+     "slump": [
+      "Comoros",
+      "Czechia",
+      "Guyana",
+      "Mali",
+      "Mongolia",
+      "Mauritania",
+      "Panama",
+      "Solomon Islands"
+     ],
+     "new_interstate": [
+      "Belarus vs Germany (war)",
+      "Belarus vs Finland (war)",
+      "Egypt vs Israel",
+      "Eritrea vs Ethiopia"
+     ],
+     "oil_index": 90
+    },
+    {
+     "year": 2058,
+     "world_gdp": 8127,
+     "conflict_share": 0.217,
+     "onset": [
+      "Gabon",
+      "Papua New Guinea"
+     ],
+     "dem_drop": [
+      "Angola",
+      "Albania",
+      "Cote d'Ivoire",
+      "Ghana",
+      "Kenya",
+      "Lesotho",
+      "Mexico",
+      "Poland",
+      "Palestine",
+      "Qatar",
+      "Rwanda",
+      "Saudi Arabia",
+      "Sudan",
+      "Turkey"
+     ],
+     "slump": [
+      "Comoros",
+      "Djibouti",
+      "Philippines",
+      "South Sudan",
+      "Suriname"
+     ],
+     "new_interstate": [
+      "Iran vs Pakistan"
+     ],
+     "oil_index": 83
+    },
+    {
+     "year": 2059,
+     "world_gdp": 8083,
+     "conflict_share": 0.211,
+     "onset": [
+      "Bangladesh",
+      "Cote d'Ivoire",
+      "Democratic Republic of Congo",
+      "Slovenia"
+     ],
+     "dem_drop": [
+      "Afghanistan",
+      "Bahrain",
+      "Equatorial Guinea",
+      "Niger",
+      "Norway",
+      "Oman",
+      "Pakistan",
+      "Ukraine",
+      "Vanuatu"
+     ],
+     "slump": [
+      "Djibouti",
+      "Indonesia",
+      "Lebanon",
+      "Malta",
+      "Papua New Guinea",
+      "Russia",
+      "South Sudan"
+     ],
+     "new_interstate": [
+      "Cameroon vs Nigeria",
+      "Egypt vs Israel"
+     ],
+     "oil_index": 101
+    },
+    {
+     "year": 2060,
+     "world_gdp": 7983,
+     "conflict_share": 0.206,
+     "onset": [
+      "Ghana",
+      "India"
+     ],
+     "coup": [
+      "Solomon Islands",
+      "Syria"
+     ],
+     "dem_drop": [
+      "Equatorial Guinea",
+      "Honduras",
+      "Lesotho",
+      "Poland",
+      "Solomon Islands",
+      "Syria"
+     ],
+     "slump": [
+      "Armenia",
+      "Azerbaijan",
+      "Djibouti",
+      "France",
+      "Honduras",
+      "Philippines",
+      "Sao Tome and Principe",
+      "Seychelles"
+     ],
+     "new_interstate": [
+      "India vs Pakistan"
+     ],
+     "oil_index": 88
+    },
+    {
+     "year": 2061,
+     "world_gdp": 7955,
+     "conflict_share": 0.206,
+     "onset": [
+      "Guinea-Bissau",
+      "Kazakhstan",
+      "Tunisia"
+     ],
+     "coup": [
+      "Chad"
+     ],
+     "dem_drop": [
+      "Bulgaria",
+      "Cuba",
+      "Cyprus",
+      "Egypt",
+      "Serbia",
+      "Sao Tome and Principe",
+      "Tajikistan",
+      "Trinidad and Tobago"
+     ],
+     "slump": [
+      "Bulgaria",
+      "Djibouti",
+      "Dominican Republic",
+      "Estonia",
+      "Fiji",
+      "Equatorial Guinea",
+      "Mozambique",
+      "Philippines",
+      "Sao Tome and Principe",
+      "Syria"
+     ],
+     "new_interstate": [
+      "Egypt vs Iran",
+      "India vs Myanmar"
+     ],
+     "oil_index": 78
+    },
+    {
+     "year": 2062,
+     "world_gdp": 8111,
+     "conflict_share": 0.194,
+     "onset": [
+      "Benin",
+      "Equatorial Guinea",
+      "Jamaica"
+     ],
+     "coup": [
+      "Madagascar"
+     ],
+     "dem_drop": [
+      "Australia",
+      "France",
+      "Hungary",
+      "Iraq",
+      "Mongolia",
+      "Pakistan",
+      "Sierra Leone",
+      "Seychelles"
+     ],
+     "slump": [
+      "Bahrain",
+      "Cuba",
+      "Djibouti",
+      "Gabon",
+      "Indonesia",
+      "Myanmar",
+      "Mozambique",
+      "Netherlands",
+      "Sao Tome and Principe",
+      "Syria"
+     ],
+     "oil_index": 77
+    },
+    {
+     "year": 2063,
+     "world_gdp": 8271,
+     "conflict_share": 0.194,
+     "onset": [
+      "Azerbaijan",
+      "Costa Rica",
+      "Tanzania"
+     ],
+     "dem_drop": [
+      "Djibouti",
+      "Gambia",
+      "Japan",
+      "Mongolia",
+      "North Korea",
+      "Serbia",
+      "Sao Tome and Principe"
+     ],
+     "slump": [
+      "Central African Republic",
+      "Comoros",
+      "Malta",
+      "Sao Tome and Principe"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan",
+      "Egypt vs Israel"
+     ],
+     "oil_index": 76
+    },
+    {
+     "year": 2064,
+     "world_gdp": 8490,
+     "conflict_share": 0.223,
+     "onset": [
+      "United Arab Emirates",
+      "Bolivia",
+      "Brazil",
+      "Cuba",
+      "Ireland",
+      "Mali",
+      "Mauritius"
+     ],
+     "dem_drop": [
+      "Benin",
+      "Indonesia",
+      "Kuwait",
+      "Morocco",
+      "Poland",
+      "Sierra Leone",
+      "Taiwan",
+      "Yemen"
+     ],
+     "slump": [
+      "Azerbaijan",
+      "Comoros",
+      "Djibouti",
+      "Laos",
+      "Malta",
+      "Sao Tome and Principe"
+     ],
+     "oil_index": 75
+    },
+    {
+     "year": 2065,
+     "world_gdp": 8651,
+     "conflict_share": 0.223,
+     "onset": [
+      "Denmark",
+      "Paraguay",
+      "Togo"
+     ],
+     "dem_drop": [
+      "Azerbaijan",
+      "Ireland",
+      "Kyrgyzstan",
+      "Niger",
+      "Panama",
+      "Serbia",
+      "Ukraine",
+      "Uruguay"
+     ],
+     "slump": [
+      "Bahrain",
+      "Chile",
+      "Comoros",
+      "Cyprus",
+      "Malta",
+      "Sudan",
+      "Sao Tome and Principe",
+      "Syria"
+     ],
+     "oil_index": 67
+    }
+   ]
+  },
+  "deaths": {
+   "world": 6050,
+   "percentile": {
+    "economic": 0.912,
+    "deaths": 1.0,
+    "civil_war": 0.891,
+    "autocracy": 0.591,
+    "composite": 0.993
+   },
+   "world_gdp_2065": 19057.095703125,
+   "deaths_m": 231.0438690185547,
+   "conflict_mean": 0.29257142543792725,
+   "dem_2065": 0.43494540452957153,
+   "params": {
+    "cascade_q": 0.18134944140911102,
+    "nuclear_war_factor": 0.48350945115089417,
+    "war_spillover": 0.596489667892456,
+    "war_site_loss": 0.10872410982847214,
+    "oil_eta": 0.6091351509094238,
+    "oil_war_jump": 0.17876507341861725,
+    "pandemic_p": 0.03313441202044487,
+    "climate_damage": 0.7078449726104736,
+    "growth_dividend": 0.039117231965065,
+    "autocracy_drift": 0.0038113114424049854,
+    "bubble_p": 0.5777455568313599,
+    "bubble_cost": 0.02841932885348797,
+    "speed_mult": 0.8730825781822205,
+    "open_lag": 3.436135768890381,
+    "export_lag": 2.295912027359009,
+    "hub_rent": 0.35230502486228943,
+    "chip_pause": 0.8011124134063721,
+    "chip_gdp": 0.033774614334106445,
+    "dc_share": 0.036659132689237595,
+    "robot_lag": 5.610455513000488,
+    "robot_aging": 0.5546593070030212,
+    "dem_erosion": 0.003674061968922615,
+    "ai_war_beta": 0.04333272576332092,
+    "nuc_beta": 0.6380912065505981,
+    "eng_pandemic": 0.008288851007819176,
+    "natural_cut": 0.5948719382286072,
+    "robot_years": 18.39104652404785,
+    "phys_dividend": 0.029803503304719925,
+    "drone_onset": 0.2976975440979004,
+    "drone_persist": 0.791451096534729,
+    "drone_reach": 0.02037123218178749,
+    "drone_civil": -0.05134238302707672,
+    "water_dispute": 0.060569602996110916,
+    "water_scarcity_k": 0.3812699615955353,
+    "yield_water": 0.1951775848865509,
+    "glacier_tau": 53.625457763671875,
+    "glacier_flow_mult": 1.3496471643447876,
+    "peak_shift": 1.1194281578063965,
+    "cascade_hop2": 0.11216022074222565,
+    "quasi_USA_TWN": 0.639981746673584,
+    "quasi_USA_ISR": 0.3330787718296051,
+    "quasi_RUS_IRN": 0.0912623330950737,
+    "quasi_CHN_PAK": 0.011562245897948742,
+    "intl_beta": -0.5145956873893738,
+    "prolif_mult": 0.4436347484588623,
+    "prolif_cascade": 4.463746547698975,
+    "iran_pursuit0": 0.2746783494949341,
+    "breakout_years": 2.1885061264038086,
+    "prevent_beta": 0.9227924346923828,
+    "nuc_use_both": 0.009009178727865219,
+    "nuc_use_one": 0.003030562773346901,
+    "nuc_escalate": 0.3960753381252289,
+    "nuc_gdp_large": 0.27373600006103516,
+    "sanction_loss": 0.010545659810304642,
+    "mineral_elast": 0.32752662897109985,
+    "china_pause": 0.6635154485702515,
+    "civ_mult": 2.9293551445007324,
+    "pandemic_mort": 0.004326230846345425,
+    "slr_mult": 0.9781115651130676,
+    "slr_cost": 0.06085691601037979,
+    "storm_trend": 0.26632586121559143,
+    "storm_loss": 0.01521911472082138,
+    "solar_p": 0.012228274717926979,
+    "solar_loss": 0.045923858880996704,
+    "volc_p": 0.010351445525884628,
+    "volc_yield": 0.050186097621917725,
+    "cyber_loss": 0.009609876200556755,
+    "fin_contagion": 4.021717071533203,
+    "workforce_beta": 0.9180017113685608,
+    "fish_trop": -0.06850060820579529,
+    "fish_mid": -0.03763620927929878,
+    "fish_high": 0.03975263237953186,
+    "wild_trend": -0.006741203833371401,
+    "articles_beta": 0.002456632209941745,
+    "dividend_fade": 0.009250536561012268,
+    "pko_beta": 0.3161485195159912,
+    "pko_cut": 0.24887162446975708,
+    "pko_decay": 0.07985208928585052,
+    "aid_mult": 0.40263164043426514,
+    "commod_coup": -3.1226089000701904,
+    "tariff_pass": 0.5037392377853394,
+    "tariff_us": 0.007443172391504049,
+    "frag_beta": -2.4846301078796387,
+    "st_debt_beta": 0.5313025712966919,
+    "peer_coup": 3.0004658699035645,
+    "dmg_family": 1.0,
+    "amoc_p": 0.06360936164855957,
+    "amoc_eu_loss": 0.03995274007320404,
+    "amoc_eu_yield": 0.21723294258117676,
+    "amoc_rain": 0.23096436262130737,
+    "slr_ice_mult": 2.2956032752990723,
+    "harvest_amp": 0.2281762659549713,
+    "dry_area_elast": 0.9164328575134277,
+    "clim_conflict": 0.16955341398715973,
+    "clim_migr": 0.26135680079460144,
+    "slr_ice": 0.0,
+    "amoc_hit": 0.0,
+    "ai_arrival": 2033.3575439453125,
+    "robot_arrival": 2032.4400634765625,
+    "clim_response": -2.5058341026306152
+   },
+   "param_pct": {
+    "cascade_q": 0.88,
+    "nuclear_war_factor": 0.855,
+    "war_spillover": 0.6,
+    "war_site_loss": 0.737,
+    "oil_eta": 0.475,
+    "oil_war_jump": 0.497,
+    "pandemic_p": 0.766,
+    "climate_damage": 0.212,
+    "growth_dividend": 0.725,
+    "autocracy_drift": 0.468,
+    "bubble_p": 0.947,
+    "bubble_cost": 0.61,
+    "speed_mult": 0.175,
+    "open_lag": 0.837,
+    "export_lag": 0.76,
+    "hub_rent": 0.702,
+    "chip_pause": 0.601,
+    "chip_gdp": 0.455,
+    "dc_share": 0.277,
+    "robot_lag": 0.518,
+    "robot_aging": 0.561,
+    "dem_erosion": 0.611,
+    "ai_war_beta": 0.023,
+    "nuc_beta": 0.634,
+    "eng_pandemic": 0.786,
+    "natural_cut": 0.986,
+    "robot_years": 0.873,
+    "phys_dividend": 0.711,
+    "drone_onset": 0.752,
+    "drone_persist": 0.99,
+    "drone_reach": 0.105,
+    "drone_civil": 0.251,
+    "water_dispute": 0.12,
+    "water_scarcity_k": 0.089,
+    "yield_water": 0.154,
+    "glacier_tau": 0.78,
+    "glacier_flow_mult": 0.846,
+    "peak_shift": 0.542,
+    "cascade_hop2": 0.108,
+    "quasi_USA_TWN": 0.781,
+    "quasi_USA_ISR": 0.586,
+    "quasi_RUS_IRN": 0.913,
+    "quasi_CHN_PAK": 0.117,
+    "intl_beta": 0.32,
+    "prolif_mult": 0.109,
+    "prolif_cascade": 0.701,
+    "iran_pursuit0": 0.345,
+    "breakout_years": 0.05,
+    "prevent_beta": 0.617,
+    "nuc_use_both": 0.247,
+    "nuc_use_one": 0.296,
+    "nuc_escalate": 0.99,
+    "nuc_gdp_large": 0.897,
+    "sanction_loss": 0.262,
+    "mineral_elast": 0.659,
+    "china_pause": 0.58,
+    "civ_mult": 0.972,
+    "pandemic_mort": 0.857,
+    "slr_mult": 0.308,
+    "slr_cost": 0.6,
+    "storm_trend": 0.886,
+    "storm_loss": 0.399,
+    "solar_p": 0.565,
+    "solar_loss": 0.504,
+    "volc_p": 0.612,
+    "volc_yield": 0.23,
+    "cyber_loss": 0.32,
+    "fin_contagion": 0.333,
+    "workforce_beta": 0.04,
+    "fish_trop": 0.621,
+    "fish_mid": 0.402,
+    "fish_high": 0.5,
+    "wild_trend": 0.246,
+    "articles_beta": 0.563,
+    "dividend_fade": 0.23,
+    "pko_beta": 0.503,
+    "pko_cut": 0.37,
+    "pko_decay": 0.794,
+    "aid_mult": 0.404,
+    "commod_coup": 0.383,
+    "tariff_pass": 0.336,
+    "tariff_us": 0.736,
+    "frag_beta": 0.093,
+    "st_debt_beta": 0.281,
+    "peer_coup": 0.657,
+    "dmg_family": 0.335,
+    "amoc_p": 0.638,
+    "amoc_eu_loss": 0.749,
+    "amoc_eu_yield": 0.589,
+    "amoc_rain": 0.648,
+    "slr_ice_mult": 0.532,
+    "harvest_amp": 0.77,
+    "dry_area_elast": 0.765,
+    "clim_conflict": 0.565,
+    "clim_migr": 0.653,
+    "slr_ice": 0.0,
+    "amoc_hit": 0.0,
+    "ai_arrival": 0.274,
+    "robot_arrival": 0.255,
+    "clim_response": 0.021
+   },
+   "events": [
+    {
+     "year": 2026,
+     "world_gdp": 18344,
+     "conflict_share": 0.183,
+     "onset": [
+      "Armenia",
+      "Croatia",
+      "Laos",
+      "South Africa"
+     ],
+     "coup": [
+      "Mauritania",
+      "Peru"
+     ],
+     "dem_drop": [
+      "Albania",
+      "Belarus",
+      "Bolivia",
+      "Congo",
+      "Comoros",
+      "North Macedonia",
+      "Senegal",
+      "Tunisia"
+     ],
+     "slump": [
+      "Bahrain",
+      "Germany",
+      "Jordan",
+      "Moldova",
+      "Mozambique",
+      "Qatar",
+      "Sao Tome and Principe"
+     ],
+     "new_interstate": [
+      "Iran vs Iraq",
+      "Iran vs United States (war)",
+      "Iraq vs Israel",
+      "Iraq vs United States",
+      "United States vs Venezuela"
+     ],
+     "oil_index": 113
+    },
+    {
+     "year": 2027,
+     "world_gdp": 18655,
+     "conflict_share": 0.2,
+     "onset": [
+      "Maldives",
+      "Nepal",
+      "North Korea",
+      "Tajikistan",
+      "East Timor"
+     ],
+     "dem_drop": [
+      "Albania",
+      "Bosnia and Herzegovina",
+      "Bolivia",
+      "Gambia",
+      "Hungary",
+      "Lesotho",
+      "Palestine",
+      "Zimbabwe"
+     ],
+     "slump": [
+      "Cape Verde",
+      "Djibouti",
+      "France",
+      "Liberia",
+      "Portugal",
+      "Qatar",
+      "Sao Tome and Principe"
+     ],
+     "new_interstate": [
+      "France vs Yemen (war)",
+      "United Kingdom vs Libya (war)"
+     ],
+     "oil_index": 113
+    },
+    {
+     "year": 2028,
+     "world_gdp": 18260,
+     "conflict_share": 0.189,
+     "onset": [
+      "Sierra Leone",
+      "Zimbabwe"
+     ],
+     "coup": [
+      "Peru",
+      "Yemen"
+     ],
+     "dem_drop": [
+      "Albania",
+      "Bosnia and Herzegovina",
+      "Dominican Republic",
+      "Ghana",
+      "Niger",
+      "Peru"
+     ],
+     "slump": [
+      "United Arab Emirates",
+      "Azerbaijan",
+      "Brazil",
+      "Barbados",
+      "Czechia",
+      "Djibouti",
+      "Georgia",
+      "Ghana",
+      "Greece",
+      "Sri Lanka",
+      "Portugal",
+      "Qatar",
+      "Sao Tome and Principe",
+      "Trinidad and Tobago",
+      "Tunisia",
+      "Tanzania",
+      "United States"
+     ],
+     "oil_index": 59
+    },
+    {
+     "year": 2029,
+     "world_gdp": 18285,
+     "conflict_share": 0.2,
+     "onset": [
+      "Austria",
+      "Fiji",
+      "South Korea",
+      "Montenegro"
+     ],
+     "coup": [
+      "Bolivia",
+      "Sudan"
+     ],
+     "dem_drop": [
+      "United Kingdom",
+      "Luxembourg",
+      "Latvia",
+      "Mauritius",
+      "Malaysia",
+      "Sao Tome and Principe",
+      "Ukraine",
+      "Uzbekistan"
+     ],
+     "slump": [
+      "Botswana",
+      "Djibouti",
+      "Hong Kong",
+      "Madagascar",
+      "Portugal",
+      "Qatar",
+      "Sao Tome and Principe",
+      "Slovenia",
+      "Tanzania",
+      "United States",
+      "Uzbekistan",
+      "Zambia"
+     ],
+     "new_interstate": [
+      "Austria vs Russia",
+      "Eritrea vs Saudi Arabia (war)"
+     ],
+     "oil_index": 71
+    },
+    {
+     "year": 2030,
+     "world_gdp": 18337,
+     "conflict_share": 0.194,
+     "onset": [
+      "Congo",
+      "Trinidad and Tobago"
+     ],
+     "dem_drop": [
+      "Albania",
+      "Bosnia and Herzegovina",
+      "Gambia",
+      "Kazakhstan",
+      "Madagascar",
+      "Sierra Leone",
+      "Turkey"
+     ],
+     "slump": [
+      "Belarus",
+      "Czechia",
+      "Guinea",
+      "Lithuania",
+      "Portugal",
+      "Qatar",
+      "Sao Tome and Principe",
+      "United States",
+      "Zimbabwe"
+     ],
+     "oil_index": 76
+    },
+    {
+     "year": 2031,
+     "world_gdp": 18532,
+     "conflict_share": 0.206,
+     "onset": [
+      "Hong Kong",
+      "Kyrgyzstan",
+      "Namibia"
+     ],
+     "dem_drop": [
+      "Bosnia and Herzegovina",
+      "Iceland",
+      "Nigeria",
+      "Peru",
+      "Russia",
+      "Rwanda",
+      "Zimbabwe"
+     ],
+     "slump": [
+      "Belarus",
+      "Barbados",
+      "Czechia",
+      "France",
+      "Norway",
+      "Portugal",
+      "Qatar",
+      "Sao Tome and Principe",
+      "Tanzania"
+     ],
+     "oil_index": 63
+    },
+    {
+     "year": 2032,
+     "world_gdp": 18251,
+     "conflict_share": 0.206,
+     "onset": [
+      "Norway",
+      "Ukraine"
+     ],
+     "coup": [
+      "Gabon",
+      "Guinea"
+     ],
+     "dem_drop": [
+      "Bosnia and Herzegovina",
+      "Cuba",
+      "Equatorial Guinea",
+      "Guyana",
+      "Croatia",
+      "Jordan",
+      "Lithuania",
+      "Madagascar",
+      "Pakistan",
+      "Tajikistan",
+      "Zambia"
+     ],
+     "slump": [
+      "Fiji",
+      "France",
+      "Norway",
+      "Portugal",
+      "Paraguay",
+      "Qatar",
+      "Saudi Arabia",
+      "Sao Tome and Principe",
+      "Tajikistan",
+      "Tunisia",
+      "Tanzania",
+      "Ukraine",
+      "United States",
+      "Vanuatu"
+     ],
+     "new_interstate": [
+      "China vs India"
+     ],
+     "oil_index": 40
+    },
+    {
+     "year": 2033,
+     "world_gdp": 18574,
+     "conflict_share": 0.206,
+     "onset": [
+      "Spain",
+      "Palestine"
+     ],
+     "dem_drop": [
+      "Albania",
+      "Guinea",
+      "Guatemala",
+      "Israel",
+      "Mauritania",
+      "Zimbabwe"
+     ],
+     "slump": [
+      "Czechia",
+      "Djibouti",
+      "Estonia",
+      "Georgia",
+      "Luxembourg",
+      "Morocco",
+      "Moldova",
+      "Portugal",
+      "Qatar",
+      "Sao Tome and Principe",
+      "Thailand",
+      "Tanzania"
+     ],
+     "oil_index": 53
+    },
+    {
+     "year": 2034,
+     "world_gdp": 18916,
+     "conflict_share": 0.194,
+     "onset": [
+      "Guinea-Bissau",
+      "Panama",
+      "Thailand"
+     ],
+     "coup": [
+      "Armenia"
+     ],
+     "dem_drop": [
+      "United Arab Emirates",
+      "Bosnia and Herzegovina",
+      "Hong Kong",
+      "Kazakhstan",
+      "Laos",
+      "Qatar"
+     ],
+     "slump": [
+      "Botswana",
+      "Djibouti",
+      "Estonia",
+      "Indonesia",
+      "Kenya",
+      "North Macedonia",
+      "Malta",
+      "Qatar",
+      "Russia",
+      "Sao Tome and Principe",
+      "Tanzania",
+      "Ukraine",
+      "Venezuela"
+     ],
+     "oil_index": 60
+    },
+    {
+     "year": 2035,
+     "world_gdp": 19214,
+     "conflict_share": 0.217,
+     "onset": [
+      "Botswana",
+      "Gambia",
+      "Equatorial Guinea",
+      "Russia"
+     ],
+     "coup": [
+      "Guinea"
+     ],
+     "dem_drop": [
+      "Mauritania",
+      "Palestine",
+      "South Sudan"
+     ],
+     "slump": [
+      "Botswana",
+      "Gabon",
+      "Jamaica",
+      "Portugal",
+      "Qatar",
+      "Sao Tome and Principe",
+      "Chad"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan",
+      "Armenia vs Iran"
+     ],
+     "oil_index": 67
+    },
+    {
+     "year": 2036,
+     "world_gdp": 19326,
+     "conflict_share": 0.234,
+     "onset": [
+      "Belarus",
+      "Canada",
+      "Djibouti",
+      "Tajikistan"
+     ],
+     "coup": [
+      "Egypt",
+      "Guinea-Bissau"
+     ],
+     "dem_drop": [
+      "Armenia",
+      "Honduras",
+      "Haiti",
+      "Lebanon",
+      "Mali",
+      "Nepal"
+     ],
+     "slump": [
+      "Botswana",
+      "Djibouti",
+      "Jamaica",
+      "Libya",
+      "Sao Tome and Principe",
+      "Turkmenistan",
+      "Tanzania"
+     ],
+     "oil_index": 56
+    },
+    {
+     "year": 2037,
+     "world_gdp": 18846,
+     "conflict_share": 0.246,
+     "onset": [
+      "Democratic Republic of Congo",
+      "Madagascar",
+      "Mongolia",
+      "Vietnam"
+     ],
+     "coup": [
+      "Madagascar"
+     ],
+     "dem_drop": [
+      "Croatia",
+      "Lebanon",
+      "Uganda"
+     ],
+     "slump": [
+      "Bahrain",
+      "Cameroon",
+      "Spain",
+      "Indonesia",
+      "Jamaica",
+      "Lesotho",
+      "Qatar",
+      "Sao Tome and Principe"
+     ],
+     "new_interstate": [
+      "Germany vs Nigeria",
+      "India vs Pakistan (war)",
+      "India vs United States (war)"
+     ],
+     "oil_index": 45
+    },
+    {
+     "year": 2038,
+     "world_gdp": 19089,
+     "conflict_share": 0.246,
+     "onset": [
+      "Cape Verde",
+      "Mozambique"
+     ],
+     "coup": [
+      "Cuba"
+     ],
+     "dem_drop": [
+      "Benin",
+      "China",
+      "Haiti",
+      "India",
+      "Lebanon",
+      "North Macedonia",
+      "Montenegro",
+      "Syria"
+     ],
+     "slump": [
+      "Cape Verde",
+      "Jamaica",
+      "Kuwait",
+      "Lebanon",
+      "Lesotho",
+      "Madagascar",
+      "Namibia",
+      "Qatar",
+      "Sao Tome and Principe"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan"
+     ],
+     "oil_index": 30
+    },
+    {
+     "year": 2039,
+     "world_gdp": 19329,
+     "conflict_share": 0.234,
+     "onset": [
+      "Mexico"
+     ],
+     "coup": [
+      "Ireland"
+     ],
+     "dem_drop": [
+      "Bahrain",
+      "Haiti",
+      "Kuwait",
+      "Lebanon",
+      "Mexico"
+     ],
+     "slump": [
+      "Bahrain",
+      "Botswana",
+      "Spain",
+      "Italy",
+      "Jamaica",
+      "Qatar",
+      "Sao Tome and Principe",
+      "Suriname",
+      "Turkmenistan"
+     ],
+     "new_interstate": [
+      "Djibouti vs Eritrea (war)"
+     ],
+     "oil_index": 25
+    },
+    {
+     "year": 2040,
+     "world_gdp": 19069,
+     "conflict_share": 0.229,
+     "onset": [
+      "Denmark"
+     ],
+     "coup": [
+      "Burkina Faso"
+     ],
+     "dem_drop": [
+      "Cameroon",
+      "Haiti",
+      "Mali",
+      "Malaysia",
+      "Panama",
+      "South Africa"
+     ],
+     "slump": [
+      "Spain",
+      "Ghana",
+      "Jamaica",
+      "Mongolia",
+      "Malawi",
+      "Somalia",
+      "Sao Tome and Principe",
+      "Turkmenistan",
+      "Venezuela"
+     ],
+     "new_interstate": [
+      "China vs India",
+      "China vs Japan (war)",
+      "China vs United States (war)"
+     ],
+     "oil_index": 21
+    },
+    {
+     "year": 2041,
+     "world_gdp": 18599,
+     "conflict_share": 0.223,
+     "onset": [
+      "Egypt"
+     ],
+     "coup": [
+      "Haiti"
+     ],
+     "dem_drop": [
+      "Cuba",
+      "Georgia",
+      "Lebanon",
+      "Mexico",
+      "Mauritania",
+      "Sao Tome and Principe",
+      "Chad",
+      "Zambia"
+     ],
+     "slump": [
+      "Belarus",
+      "Cape Verde",
+      "Dominican Republic",
+      "Spain",
+      "Jamaica",
+      "Malawi",
+      "Pakistan",
+      "Panama",
+      "Qatar",
+      "Solomon Islands",
+      "Sao Tome and Principe",
+      "Turkmenistan"
+     ],
+     "new_interstate": [
+      "France vs Mexico (war)",
+      "Mexico vs United States (war)"
+     ],
+     "oil_index": 19
+    },
+    {
+     "year": 2042,
+     "world_gdp": 18900,
+     "conflict_share": 0.223,
+     "onset": [
+      "Haiti"
+     ],
+     "dem_drop": [
+      "Democratic Republic of Congo",
+      "Israel",
+      "North Macedonia",
+      "Malta",
+      "Myanmar",
+      "Malawi"
+     ],
+     "slump": [
+      "Jamaica",
+      "Liberia",
+      "Sao Tome and Principe",
+      "Suriname",
+      "Uzbekistan"
+     ],
+     "oil_index": 21
+    },
+    {
+     "year": 2043,
+     "world_gdp": 19339,
+     "conflict_share": 0.223,
+     "onset": [
+      "Sudan",
+      "Zimbabwe"
+     ],
+     "coup": [
+      "Bolivia",
+      "Sao Tome and Principe"
+     ],
+     "dem_drop": [
+      "Dominican Republic",
+      "Hungary",
+      "Iraq",
+      "Lebanon",
+      "Libya",
+      "Morocco",
+      "Mexico",
+      "Oman",
+      "Sao Tome and Principe",
+      "Slovakia",
+      "Chad"
+     ],
+     "slump": [
+      "Cameroon",
+      "Spain",
+      "Jamaica",
+      "Moldova",
+      "Sudan",
+      "Sao Tome and Principe"
+     ],
+     "new_interstate": [
+      "Egypt vs Israel"
+     ],
+     "oil_index": 34
+    },
+    {
+     "year": 2044,
+     "world_gdp": 19730,
+     "conflict_share": 0.246,
+     "onset": [
+      "Albania",
+      "Bulgaria",
+      "Brazil",
+      "Ecuador",
+      "Finland",
+      "El Salvador"
+     ],
+     "dem_drop": [
+      "Latvia",
+      "Uruguay"
+     ],
+     "slump": [
+      "Comoros",
+      "Spain",
+      "Haiti",
+      "Jamaica",
+      "Sri Lanka",
+      "Moldova",
+      "Sao Tome and Principe",
+      "Uzbekistan"
+     ],
+     "oil_index": 32
+    },
+    {
+     "year": 2045,
+     "world_gdp": 20485,
+     "conflict_share": 0.246,
+     "onset": [
+      "Cote d'Ivoire",
+      "Eritrea",
+      "Turkmenistan"
+     ],
+     "coup": [
+      "Ethiopia"
+     ],
+     "dem_drop": [
+      "Estonia",
+      "Ethiopia",
+      "Iran",
+      "Poland",
+      "Sudan",
+      "Slovakia",
+      "Eswatini",
+      "Chad",
+      "Thailand",
+      "Ukraine"
+     ],
+     "slump": [
+      "Spain",
+      "Jamaica",
+      "Russia",
+      "Sao Tome and Principe"
+     ],
+     "new_interstate": [
+      "Bosnia and Herzegovina vs Serbia (war)",
+      "Algeria vs Russia"
+     ],
+     "oil_index": 29
+    },
+    {
+     "year": 2046,
+     "world_gdp": 20873,
+     "conflict_share": 0.28,
+     "onset": [
+      "Barbados",
+      "Democratic Republic of Congo",
+      "Comoros",
+      "Equatorial Guinea",
+      "Jamaica",
+      "Latvia",
+      "Trinidad and Tobago"
+     ],
+     "coup": [
+      "Seychelles",
+      "Chad"
+     ],
+     "dem_drop": [
+      "Gabon",
+      "Mauritius",
+      "Peru",
+      "Taiwan"
+     ],
+     "slump": [
+      "Djibouti",
+      "Eritrea",
+      "Jamaica",
+      "Maldives",
+      "Malawi",
+      "Singapore",
+      "Sao Tome and Principe"
+     ],
+     "new_interstate": [
+      "Guyana vs Venezuela (war)"
+     ],
+     "oil_index": 30
+    },
+    {
+     "year": 2047,
+     "world_gdp": 21113,
+     "conflict_share": 0.309,
+     "onset": [
+      "Angola",
+      "Kazakhstan",
+      "Serbia",
+      "Tajikistan",
+      "Venezuela"
+     ],
+     "dem_drop": [
+      "Angola",
+      "United Arab Emirates",
+      "Australia",
+      "Barbados",
+      "Ecuador",
+      "Gabon",
+      "United Kingdom",
+      "India",
+      "Cambodia",
+      "Panama",
+      "South Sudan",
+      "Thailand"
+     ],
+     "slump": [
+      "Albania",
+      "Bolivia",
+      "Djibouti",
+      "Haiti",
+      "Jamaica",
+      "Malawi",
+      "Uzbekistan",
+      "Vietnam"
+     ],
+     "new_interstate": [
+      "China vs India (war)",
+      "Egypt vs Iran"
+     ],
+     "oil_index": 24
+    },
+    {
+     "year": 2048,
+     "world_gdp": 19767,
+     "conflict_share": 0.326,
+     "onset": [
+      "United Arab Emirates",
+      "Bhutan",
+      "Georgia",
+      "Paraguay",
+      "Chad"
+     ],
+     "dem_drop": [
+      "Burkina Faso",
+      "India",
+      "Cambodia",
+      "Nigeria",
+      "Tajikistan",
+      "Zimbabwe"
+     ],
+     "slump": [
+      "Albania",
+      "Barbados",
+      "Bhutan",
+      "Cape Verde",
+      "Djibouti",
+      "Georgia",
+      "Greece",
+      "India",
+      "Jamaica",
+      "Sri Lanka",
+      "Montenegro",
+      "Malawi",
+      "Namibia",
+      "Sao Tome and Principe",
+      "Trinidad and Tobago",
+      "Turkey",
+      "Uzbekistan",
+      "Vietnam"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan",
+      "China vs United Kingdom (war)",
+      "China vs South Korea (war)"
+     ],
+     "oil_index": 30
+    },
+    {
+     "year": 2049,
+     "world_gdp": 19116,
+     "conflict_share": 0.326,
+     "onset": [
+      "Costa Rica",
+      "Netherlands",
+      "Romania"
+     ],
+     "dem_drop": [
+      "Gambia",
+      "South Korea",
+      "Paraguay",
+      "Russia"
+     ],
+     "slump": [
+      "Djibouti",
+      "Ghana",
+      "Equatorial Guinea",
+      "Haiti",
+      "Jamaica",
+      "Malawi",
+      "Nicaragua",
+      "Trinidad and Tobago"
+     ],
+     "oil_index": 24
+    },
+    {
+     "year": 2050,
+     "world_gdp": 20059,
+     "conflict_share": 0.309,
+     "onset": [
+      "Cambodia",
+      "Nicaragua",
+      "Portugal"
+     ],
+     "coup": [
+      "Mauritania"
+     ],
+     "dem_drop": [
+      "Azerbaijan",
+      "North Macedonia",
+      "Paraguay",
+      "Turkmenistan",
+      "Taiwan"
+     ],
+     "slump": [
+      "Djibouti",
+      "Haiti",
+      "Jamaica",
+      "Malawi",
+      "Panama",
+      "Rwanda",
+      "Sao Tome and Principe",
+      "Tanzania"
+     ],
+     "new_interstate": [
+      "China vs South Korea"
+     ],
+     "oil_index": 22
+    },
+    {
+     "year": 2051,
+     "world_gdp": 19891,
+     "conflict_share": 0.337,
+     "onset": [
+      "Germany",
+      "Madagascar",
+      "Malawi",
+      "Norway",
+      "Serbia"
+     ],
+     "dem_drop": [
+      "Ethiopia",
+      "Hong Kong",
+      "Iraq"
+     ],
+     "slump": [
+      "Djibouti",
+      "Guinea",
+      "Greece",
+      "Honduras",
+      "Haiti",
+      "Jamaica"
+     ],
+     "oil_index": 22
+    },
+    {
+     "year": 2052,
+     "world_gdp": 20399,
+     "conflict_share": 0.354,
+     "onset": [
+      "Morocco",
+      "North Macedonia",
+      "Uganda"
+     ],
+     "coup": [
+      "Guinea-Bissau",
+      "Pakistan"
+     ],
+     "dem_drop": [
+      "Cambodia",
+      "Laos",
+      "Maldives",
+      "Malaysia",
+      "Nicaragua",
+      "Saudi Arabia"
+     ],
+     "slump": [
+      "Djibouti",
+      "Guinea",
+      "Guyana",
+      "Haiti",
+      "Lithuania",
+      "Malawi",
+      "Panama",
+      "South Sudan",
+      "Eswatini"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan",
+      "Ethiopia vs Somalia",
+      "India vs Myanmar (war)"
+     ],
+     "oil_index": 21
+    },
+    {
+     "year": 2053,
+     "world_gdp": 20228,
+     "conflict_share": 0.349,
+     "onset": [
+      "Ethiopia"
+     ],
+     "coup": [
+      "Guinea"
+     ],
+     "dem_drop": [
+      "United Arab Emirates",
+      "Azerbaijan",
+      "Botswana",
+      "Algeria",
+      "Egypt",
+      "Iraq",
+      "Jordan",
+      "Nigeria",
+      "Senegal",
+      "Zambia"
+     ],
+     "slump": [
+      "Comoros",
+      "Djibouti",
+      "Haiti",
+      "Jamaica",
+      "Kyrgyzstan",
+      "Libya",
+      "Mauritius",
+      "Malawi"
+     ],
+     "new_interstate": [
+      "Iraq vs Israel"
+     ],
+     "oil_index": 19
+    },
+    {
+     "year": 2054,
+     "world_gdp": 19911,
+     "conflict_share": 0.36,
+     "onset": [
+      "Belgium",
+      "Bosnia and Herzegovina",
+      "Mexico"
+     ],
+     "dem_drop": [
+      "Armenia",
+      "Georgia",
+      "Ghana",
+      "Morocco",
+      "Mexico",
+      "Mauritania",
+      "Pakistan",
+      "Russia"
+     ],
+     "slump": [
+      "Azerbaijan",
+      "Djibouti",
+      "Fiji",
+      "Guatemala",
+      "Haiti",
+      "Morocco",
+      "Mexico",
+      "Malawi",
+      "Sao Tome and Principe",
+      "Seychelles",
+      "South Africa"
+     ],
+     "new_interstate": [
+      "Bulgaria vs China",
+      "China vs Pakistan (war)",
+      "China vs United States (war)"
+     ],
+     "oil_index": 17
+    },
+    {
+     "year": 2055,
+     "world_gdp": 20434,
+     "conflict_share": 0.371,
+     "onset": [
+      "Kyrgyzstan",
+      "Peru",
+      "Zimbabwe"
+     ],
+     "coup": [
+      "Guinea",
+      "Venezuela"
+     ],
+     "dem_drop": [
+      "Norway",
+      "Papua New Guinea"
+     ],
+     "slump": [
+      "Djibouti",
+      "Guinea-Bissau",
+      "Haiti",
+      "Jamaica",
+      "Lebanon",
+      "Latvia",
+      "Mongolia",
+      "Malawi",
+      "Oman",
+      "Saudi Arabia",
+      "Sao Tome and Principe",
+      "Seychelles",
+      "Zimbabwe"
+     ],
+     "oil_index": 23
+    },
+    {
+     "year": 2056,
+     "world_gdp": 14229,
+     "conflict_share": 0.377,
+     "onset": [
+      "Czechia",
+      "Dominican Republic",
+      "Guyana",
+      "Mauritius"
+     ],
+     "dem_drop": [
+      "Democratic Republic of Congo",
+      "Algeria",
+      "Guyana",
+      "Haiti"
+     ],
+     "slump": [
+      "Egypt",
+      "Haiti",
+      "Jamaica"
+     ],
+     "oil_index": 25
+    },
+    {
+     "year": 2057,
+     "world_gdp": 14529,
+     "conflict_share": 0.389,
+     "onset": [
+      "Central African Republic",
+      "China"
+     ],
+     "dem_drop": [
+      "Algeria",
+      "Georgia",
+      "Nicaragua",
+      "Oman",
+      "Palestine",
+      "Serbia",
+      "Vanuatu"
+     ],
+     "slump": [
+      "Egypt",
+      "Estonia",
+      "France",
+      "Jamaica",
+      "Sri Lanka",
+      "Peru",
+      "Sao Tome and Principe",
+      "Yemen",
+      "Zimbabwe"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan",
+      "Ethiopia vs Somalia"
+     ],
+     "oil_index": 25
+    },
+    {
+     "year": 2058,
+     "world_gdp": 14985,
+     "conflict_share": 0.389,
+     "onset": [
+      "Ecuador",
+      "Italy"
+     ],
+     "coup": [
+      "Democratic Republic of Congo"
+     ],
+     "dem_drop": [
+      "Azerbaijan",
+      "Democratic Republic of Congo",
+      "Djibouti",
+      "Kazakhstan",
+      "Niger",
+      "Oman",
+      "North Korea",
+      "Tanzania"
+     ],
+     "slump": [
+      "Afghanistan",
+      "Egypt",
+      "France",
+      "Jamaica",
+      "Nigeria",
+      "Seychelles",
+      "Yemen"
+     ],
+     "oil_index": 78
+    },
+    {
+     "year": 2059,
+     "world_gdp": 15426,
+     "conflict_share": 0.4,
+     "onset": [
+      "France",
+      "Guatemala",
+      "Honduras",
+      "Lithuania",
+      "Malta",
+      "Vanuatu"
+     ],
+     "coup": [
+      "Syria"
+     ],
+     "dem_drop": [
+      "Egypt",
+      "Indonesia",
+      "Mexico",
+      "Mali",
+      "Niger",
+      "Tanzania"
+     ],
+     "slump": [
+      "Switzerland",
+      "Egypt",
+      "France",
+      "Guinea-Bissau",
+      "Jamaica",
+      "Laos",
+      "Yemen"
+     ],
+     "new_interstate": [
+      "Chile vs France"
+     ],
+     "oil_index": 78
+    },
+    {
+     "year": 2060,
+     "world_gdp": 16210,
+     "conflict_share": 0.4,
+     "onset": [
+      "Belarus",
+      "Serbia",
+      "Ukraine"
+     ],
+     "dem_drop": [
+      "Cote d'Ivoire",
+      "Cuba",
+      "Gabon",
+      "Solomon Islands",
+      "Serbia",
+      "Thailand",
+      "Zimbabwe"
+     ],
+     "slump": [
+      "Djibouti",
+      "Egypt",
+      "Jamaica",
+      "Mauritius",
+      "Turkey",
+      "Yemen"
+     ],
+     "new_interstate": [
+      "Bosnia and Herzegovina vs Serbia"
+     ],
+     "oil_index": 68
+    },
+    {
+     "year": 2061,
+     "world_gdp": 17109,
+     "conflict_share": 0.411,
+     "onset": [
+      "Armenia",
+      "Spain",
+      "Kenya",
+      "Namibia"
+     ],
+     "coup": [
+      "Papua New Guinea"
+     ],
+     "dem_drop": [
+      "Albania",
+      "Cape Verde",
+      "Croatia",
+      "Indonesia",
+      "Kazakhstan",
+      "Malaysia"
+     ],
+     "slump": [
+      "Egypt",
+      "Jamaica",
+      "Morocco",
+      "Yemen"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan (war)",
+      "China vs Tanzania",
+      "Guyana vs Trinidad and Tobago"
+     ],
+     "oil_index": 130
+    },
+    {
+     "year": 2062,
+     "world_gdp": 17887,
+     "conflict_share": 0.417,
+     "onset": [
+      "Sao Tome and Principe",
+      "Slovakia"
+     ],
+     "dem_drop": [
+      "Bahrain",
+      "Israel",
+      "Jordan",
+      "Oman",
+      "Paraguay"
+     ],
+     "slump": [
+      "Botswana",
+      "Egypt",
+      "France",
+      "Jamaica",
+      "Latvia",
+      "Mongolia",
+      "Yemen"
+     ],
+     "oil_index": 374
+    },
+    {
+     "year": 2063,
+     "world_gdp": 18419,
+     "conflict_share": 0.417,
+     "onset": [
+      "Turkey"
+     ],
+     "dem_drop": [
+      "Denmark",
+      "Guinea",
+      "Iceland",
+      "Morocco",
+      "Philippines",
+      "Togo",
+      "Venezuela"
+     ],
+     "slump": [
+      "Burkina Faso",
+      "Bosnia and Herzegovina",
+      "Colombia",
+      "Czechia",
+      "Djibouti",
+      "Egypt",
+      "France",
+      "Guatemala",
+      "Jamaica",
+      "Peru",
+      "Sao Tome and Principe",
+      "Togo",
+      "Yemen"
+     ],
+     "new_interstate": [
+      "China vs India"
+     ],
+     "oil_index": 295
+    },
+    {
+     "year": 2064,
+     "world_gdp": 18878,
+     "conflict_share": 0.434,
+     "onset": [
+      "Azerbaijan",
+      "Estonia",
+      "Indonesia",
+      "Italy",
+      "Maldives",
+      "Rwanda"
+     ],
+     "coup": [
+      "Democratic Republic of Congo"
+     ],
+     "dem_drop": [
+      "Cuba",
+      "Ghana",
+      "Cambodia",
+      "Rwanda",
+      "Slovenia"
+     ],
+     "slump": [
+      "Burundi",
+      "Egypt",
+      "France",
+      "Equatorial Guinea",
+      "Jamaica",
+      "Laos",
+      "Latvia",
+      "Mauritius",
+      "Malawi",
+      "Paraguay",
+      "Sao Tome and Principe",
+      "Venezuela",
+      "Vanuatu",
+      "Yemen"
+     ],
+     "new_interstate": [
+      "Armenia vs Azerbaijan (war)"
+     ],
+     "oil_index": 236
+    },
+    {
+     "year": 2065,
+     "world_gdp": 19057,
+     "conflict_share": 0.406,
+     "onset": [
+      "India"
+     ],
+     "coup": [
+      "Madagascar"
+     ],
+     "dem_drop": [
+      "Gambia",
+      "Uganda"
+     ],
+     "slump": [
+      "Egypt",
+      "Guinea-Bissau",
+      "India",
+      "Jamaica",
+      "Paraguay",
+      "Romania",
+      "Yemen"
+     ],
+     "new_interstate": [
+      "China vs Thailand"
+     ],
+     "oil_index": 426
+    }
+   ]
+  },
+  "civil_war": {
+   "world": 4268,
+   "percentile": {
+    "economic": 0.988,
+    "deaths": 0.161,
+    "civil_war": 1.0,
+    "autocracy": 0.663,
+    "composite": 0.916
+   },
+   "world_gdp_2065": 13570.2666015625,
+   "deaths_m": 1.155103325843811,
+   "conflict_mean": 0.6350000500679016,
+   "dem_2065": 0.41932588815689087,
+   "params": {
+    "cascade_q": 0.11577418446540833,
+    "nuclear_war_factor": 0.12294730544090271,
+    "war_spillover": 0.8541942238807678,
+    "war_site_loss": 0.07348623871803284,
+    "oil_eta": 0.451993465423584,
+    "oil_war_jump": 0.12619751691818237,
+    "pandemic_p": 0.02211138606071472,
+    "climate_damage": 1.2708241939544678,
+    "growth_dividend": 0.0343656912446022,
+    "autocracy_drift": 0.0024031742941588163,
+    "bubble_p": 0.3605823516845703,
+    "bubble_cost": 0.023205678910017014,
+    "speed_mult": 0.9958339333534241,
+    "open_lag": 1.8319602012634277,
+    "export_lag": 2.581935405731201,
+    "hub_rent": 0.3000026345252991,
+    "chip_pause": 0.6218006014823914,
+    "chip_gdp": 0.041069336235523224,
+    "dc_share": 0.06481163203716278,
+    "robot_lag": 3.906251907348633,
+    "robot_aging": 0.3421497642993927,
+    "dem_erosion": 0.00542473467066884,
+    "ai_war_beta": 1.4296150207519531,
+    "nuc_beta": 0.9473991990089417,
+    "eng_pandemic": 0.006484430283308029,
+    "natural_cut": 0.558260440826416,
+    "robot_years": 9.815667152404785,
+    "phys_dividend": 0.03288256376981735,
+    "drone_onset": -0.1822950541973114,
+    "drone_persist": 0.17184923589229584,
+    "drone_reach": 0.1078009381890297,
+    "drone_civil": 0.385242223739624,
+    "water_dispute": 0.4534941017627716,
+    "water_scarcity_k": 3.6468558311462402,
+    "yield_water": 0.6189641952514648,
+    "glacier_tau": 47.214378356933594,
+    "glacier_flow_mult": 0.510565459728241,
+    "peak_shift": 11.546951293945312,
+    "cascade_hop2": 0.8499451875686646,
+    "quasi_USA_TWN": 0.497575968503952,
+    "quasi_USA_ISR": 0.22386431694030762,
+    "quasi_RUS_IRN": 0.058187004178762436,
+    "quasi_CHN_PAK": 0.006213799584656954,
+    "intl_beta": -0.5869724750518799,
+    "prolif_mult": 0.2536049783229828,
+    "prolif_cascade": 2.82954478263855,
+    "iran_pursuit0": 0.27098217606544495,
+    "breakout_years": 5.039210796356201,
+    "prevent_beta": 0.53020840883255,
+    "nuc_use_both": 0.011760340072214603,
+    "nuc_use_one": 0.0016463063657283783,
+    "nuc_escalate": 0.35755932331085205,
+    "nuc_gdp_large": 0.05110400915145874,
+    "sanction_loss": 0.004453520756214857,
+    "mineral_elast": 0.4061982035636902,
+    "china_pause": 0.7341130375862122,
+    "civ_mult": 2.087433338165283,
+    "pandemic_mort": 0.0006245074328035116,
+    "slr_mult": 1.2198717594146729,
+    "slr_cost": 0.05664665624499321,
+    "storm_trend": 0.05822664126753807,
+    "storm_loss": 0.029674697667360306,
+    "solar_p": 0.01257192250341177,
+    "solar_loss": 0.03282887116074562,
+    "volc_p": 0.005357559770345688,
+    "volc_yield": 0.07234783470630646,
+    "cyber_loss": 0.010722830891609192,
+    "fin_contagion": 4.837027072906494,
+    "workforce_beta": 1.084276556968689,
+    "fish_trop": -0.11788871884346008,
+    "fish_mid": 0.00581994466483593,
+    "fish_high": 0.07311037182807922,
+    "wild_trend": 0.0020405594259500504,
+    "articles_beta": 0.0038579325191676617,
+    "dividend_fade": 0.0014183783205226064,
+    "pko_beta": 0.4163724482059479,
+    "pko_cut": 0.19473475217819214,
+    "pko_decay": 0.042740605771541595,
+    "aid_mult": 0.4692957401275635,
+    "commod_coup": -2.3829538822174072,
+    "tariff_pass": 0.02971150539815426,
+    "tariff_us": 0.001275551156140864,
+    "frag_beta": -2.174649715423584,
+    "st_debt_beta": 0.7273404598236084,
+    "peer_coup": 2.3658647537231445,
+    "dmg_family": 2.0,
+    "amoc_p": 0.033658504486083984,
+    "amoc_eu_loss": 0.011372660286724567,
+    "amoc_eu_yield": 0.2974241077899933,
+    "amoc_rain": 0.2938554584980011,
+    "slr_ice_mult": 1.7381680011749268,
+    "harvest_amp": 0.2720004916191101,
+    "dry_area_elast": 1.1292355060577393,
+    "clim_conflict": 0.11689753830432892,
+    "clim_migr": 0.17278705537319183,
+    "slr_ice": 0.0,
+    "amoc_hit": 1.0,
+    "ai_arrival": 2070.0,
+    "robot_arrival": 2070.0,
+    "clim_response": -0.7026955485343933
+   },
+   "param_pct": {
+    "cascade_q": 0.441,
+    "nuclear_war_factor": 0.047,
+    "war_spillover": 0.854,
+    "war_site_loss": 0.283,
+    "oil_eta": 0.264,
+    "oil_war_jump": 0.25,
+    "pandemic_p": 0.407,
+    "climate_damage": 0.77,
+    "growth_dividend": 0.613,
+    "autocracy_drift": 0.291,
+    "bubble_p": 0.399,
+    "bubble_cost": 0.438,
+    "speed_mult": 0.341,
+    "open_lag": 0.374,
+    "export_lag": 0.858,
+    "hub_rent": 0.601,
+    "chip_pause": 0.241,
+    "chip_gdp": 0.708,
+    "dc_share": 0.744,
+    "robot_lag": 0.172,
+    "robot_aging": 0.345,
+    "dem_erosion": 0.902,
+    "ai_war_beta": 0.721,
+    "nuc_beta": 0.943,
+    "eng_pandemic": 0.567,
+    "natural_cut": 0.89,
+    "robot_years": 0.153,
+    "phys_dividend": 0.799,
+    "drone_onset": 0.156,
+    "drone_persist": 0.21,
+    "drone_reach": 0.538,
+    "drone_civil": 0.972,
+    "water_dispute": 0.905,
+    "water_scarcity_k": 0.91,
+    "yield_water": 0.865,
+    "glacier_tau": 0.572,
+    "glacier_flow_mult": 0.011,
+    "peak_shift": 0.872,
+    "cascade_hop2": 0.852,
+    "quasi_USA_TWN": 0.5,
+    "quasi_USA_ISR": 0.306,
+    "quasi_RUS_IRN": 0.577,
+    "quasi_CHN_PAK": 0.062,
+    "intl_beta": 0.207,
+    "prolif_mult": 0.001,
+    "prolif_cascade": 0.37,
+    "iran_pursuit0": 0.338,
+    "breakout_years": 0.769,
+    "prevent_beta": 0.353,
+    "nuc_use_both": 0.354,
+    "nuc_use_one": 0.095,
+    "nuc_escalate": 0.882,
+    "nuc_gdp_large": 0.004,
+    "sanction_loss": 0.109,
+    "mineral_elast": 0.815,
+    "china_pause": 0.666,
+    "civ_mult": 0.626,
+    "pandemic_mort": 0.029,
+    "slr_mult": 0.588,
+    "slr_cost": 0.556,
+    "storm_trend": 0.19,
+    "storm_loss": 0.986,
+    "solar_p": 0.585,
+    "solar_loss": 0.32,
+    "volc_p": 0.193,
+    "volc_yield": 0.465,
+    "cyber_loss": 0.353,
+    "fin_contagion": 0.85,
+    "workforce_beta": 0.224,
+    "fish_trop": 0.172,
+    "fish_mid": 0.891,
+    "fish_high": 0.75,
+    "wild_trend": 0.921,
+    "articles_beta": 0.922,
+    "dividend_fade": 0.033,
+    "pko_beta": 0.744,
+    "pko_cut": 0.238,
+    "pko_decay": 0.417,
+    "aid_mult": 0.467,
+    "commod_coup": 0.665,
+    "tariff_pass": 0.022,
+    "tariff_us": 0.126,
+    "frag_beta": 0.279,
+    "st_debt_beta": 0.88,
+    "peer_coup": 0.363,
+    "dmg_family": 0.665,
+    "amoc_p": 0.339,
+    "amoc_eu_loss": 0.033,
+    "amoc_eu_yield": 0.986,
+    "amoc_rain": 0.971,
+    "slr_ice_mult": 0.156,
+    "harvest_amp": 0.911,
+    "dry_area_elast": 0.925,
+    "clim_conflict": 0.386,
+    "clim_migr": 0.432,
+    "slr_ice": 0.0,
+    "amoc_hit": 0.951,
+    "ai_arrival": 0.723,
+    "robot_arrival": 0.837,
+    "clim_response": 0.226
+   },
+   "events": [
+    {
+     "year": 2026,
+     "world_gdp": 17934,
+     "conflict_share": 0.303,
+     "onset": [
+      "Argentina",
+      "Azerbaijan",
+      "Burundi",
+      "Bolivia",
+      "Barbados",
+      "Guinea",
+      "Greece",
+      "Ireland",
+      "Cambodia",
+      "Kuwait",
+      "Lithuania",
+      "New Zealand",
+      "Paraguay",
+      "Palestine",
+      "Russia",
+      "Sierra Leone",
+      "Slovenia",
+      "Turkmenistan",
+      "Taiwan",
+      "Uruguay",
+      "United States",
+      "Zimbabwe"
+     ],
+     "dem_drop": [
+      "Georgia",
+      "Indonesia",
+      "Iraq",
+      "Libya",
+      "Myanmar",
+      "Malawi",
+      "Norway",
+      "Ukraine",
+      "Venezuela",
+      "South Africa"
+     ],
+     "slump": [
+      "Botswana",
+      "Djibouti",
+      "Kenya",
+      "Serbia",
+      "Turkmenistan"
+     ],
+     "new_interstate": [
+      "Azerbaijan vs Russia",
+      "Iran vs United States (war)",
+      "Iraq vs Israel",
+      "Iraq vs United States",
+      "United States vs Venezuela"
+     ],
+     "oil_index": 124
+    },
+    {
+     "year": 2027,
+     "world_gdp": 18060,
+     "conflict_share": 0.4,
+     "onset": [
+      "Austria",
+      "Bahrain",
+      "Czechia",
+      "Egypt",
+      "Hong Kong",
+      "Croatia",
+      "Iceland",
+      "Kyrgyzstan",
+      "Lebanon",
+      "Maldives",
+      "Netherlands",
+      "Portugal",
+      "Romania",
+      "El Salvador",
+      "South Sudan",
+      "Slovakia",
+      "Tajikistan",
+      "Zambia"
+     ],
+     "coup": [
+      "Myanmar"
+     ],
+     "dem_drop": [
+      "Cote d'Ivoire",
+      "Libya",
+      "Venezuela",
+      "Yemen"
+     ],
+     "slump": [
+      "Albania",
+      "Bahrain",
+      "Germany",
+      "Iraq",
+      "Cambodia",
+      "Palestine",
+      "El Salvador",
+      "South Sudan",
+      "Suriname",
+      "Turkmenistan"
+     ],
+     "oil_index": 133
+    },
+    {
+     "year": 2028,
+     "world_gdp": 18189,
+     "conflict_share": 0.377,
+     "onset": [
+      "Albania",
+      "Chile",
+      "Cameroon",
+      "Denmark",
+      "Jamaica",
+      "North Macedonia",
+      "Uzbekistan",
+      "Vietnam"
+     ],
+     "coup": [
+      "Burkina Faso",
+      "Cote d'Ivoire"
+     ],
+     "dem_drop": [
+      "Angola",
+      "Albania",
+      "Argentina",
+      "Australia",
+      "Burkina Faso",
+      "Guatemala",
+      "Croatia",
+      "Senegal",
+      "East Timor"
+     ],
+     "slump": [
+      "Bahrain",
+      "Botswana",
+      "Cuba",
+      "Germany",
+      "Equatorial Guinea",
+      "Jordan",
+      "Palestine"
+     ],
+     "new_interstate": [
+      "India vs Pakistan"
+     ],
+     "oil_index": 117
+    },
+    {
+     "year": 2029,
+     "world_gdp": 18001,
+     "conflict_share": 0.417,
+     "onset": [
+      "Armenia",
+      "Dominican Republic",
+      "Estonia",
+      "Finland",
+      "Japan",
+      "Kazakhstan",
+      "Mongolia",
+      "Netherlands",
+      "Qatar",
+      "United States"
+     ],
+     "dem_drop": [
+      "Slovakia",
+      "Ukraine"
+     ],
+     "slump": [
+      "Armenia",
+      "Bahrain",
+      "Bolivia",
+      "Bhutan",
+      "Botswana",
+      "Cuba",
+      "Germany",
+      "Equatorial Guinea",
+      "Jordan",
+      "Myanmar",
+      "Palestine",
+      "Qatar",
+      "Syria",
+      "Thailand"
+     ],
+     "new_interstate": [
+      "Ethiopia vs Somalia"
+     ],
+     "oil_index": 92
+    },
+    {
+     "year": 2030,
+     "world_gdp": 17420,
+     "conflict_share": 0.457,
+     "onset": [
+      "Azerbaijan",
+      "Belgium",
+      "Switzerland",
+      "Spain",
+      "United Kingdom",
+      "Guatemala",
+      "Kuwait",
+      "Liberia",
+      "Malta",
+      "Mauritania",
+      "Mauritius",
+      "Romania",
+      "Solomon Islands"
+     ],
+     "dem_drop": [
+      "Cameroon",
+      "Colombia",
+      "Malta",
+      "Chad"
+     ],
+     "slump": [
+      "Angola",
+      "United Arab Emirates",
+      "Argentina",
+      "Austria",
+      "Azerbaijan",
+      "Bulgaria",
+      "Bahrain",
+      "Bolivia",
+      "Brazil",
+      "Botswana",
+      "Chile",
+      "Comoros",
+      "Cuba",
+      "Germany",
+      "Guatemala",
+      "Hong Kong",
+      "Honduras",
+      "Jordan",
+      "Moldova",
+      "Myanmar",
+      "Mongolia",
+      "Malaysia",
+      "Oman",
+      "Papua New Guinea",
+      "Palestine",
+      "Qatar",
+      "Saudi Arabia",
+      "Singapore",
+      "El Salvador",
+      "South Sudan",
+      "Syria",
+      "Thailand",
+      "Turkey",
+      "Taiwan"
+     ],
+     "pandemic": true,
+     "oil_index": 59
+    },
+    {
+     "year": 2031,
+     "world_gdp": 17143,
+     "conflict_share": 0.491,
+     "onset": [
+      "Angola",
+      "Comoros",
+      "Honduras",
+      "Iceland",
+      "Sri Lanka",
+      "Luxembourg",
+      "Mexico",
+      "Montenegro",
+      "Malaysia",
+      "Rwanda",
+      "Tanzania",
+      "Ukraine",
+      "Zambia"
+     ],
+     "dem_drop": [
+      "Argentina",
+      "Cuba",
+      "Guinea",
+      "Maldives"
+     ],
+     "slump": [
+      "Bahrain",
+      "Cuba",
+      "Germany",
+      "Jordan",
+      "Norway",
+      "Oman",
+      "North Korea",
+      "Palestine",
+      "South Sudan",
+      "Eswatini"
+     ],
+     "new_interstate": [
+      "Bulgaria vs Bosnia and Herzegovina"
+     ],
+     "oil_index": 82
+    },
+    {
+     "year": 2032,
+     "world_gdp": 16818,
+     "conflict_share": 0.543,
+     "onset": [
+      "Bulgaria",
+      "Costa Rica",
+      "Germany",
+      "Cambodia",
+      "Lesotho",
+      "Norway",
+      "Panama",
+      "Poland",
+      "Singapore",
+      "Sao Tome and Principe",
+      "Sweden",
+      "Eswatini",
+      "Tajikistan",
+      "Venezuela",
+      "Vanuatu"
+     ],
+     "coup": [
+      "Chad"
+     ],
+     "dem_drop": [
+      "Dominican Republic",
+      "Mongolia",
+      "Tanzania"
+     ],
+     "slump": [
+      "Bahrain",
+      "Cuba",
+      "Germany",
+      "Jordan",
+      "Palestine",
+      "El Salvador",
+      "Syria"
+     ],
+     "oil_index": 113
+    },
+    {
+     "year": 2033,
+     "world_gdp": 16198,
+     "conflict_share": 0.577,
+     "onset": [
+      "Albania",
+      "United Arab Emirates",
+      "Azerbaijan",
+      "Algeria",
+      "Ecuador",
+      "France",
+      "Equatorial Guinea",
+      "Mauritius",
+      "Oman",
+      "Turkmenistan",
+      "South Africa"
+     ],
+     "dem_drop": [
+      "Switzerland",
+      "Estonia",
+      "Mozambique",
+      "Sweden",
+      "Turkey",
+      "Uzbekistan"
+     ],
+     "slump": [
+      "Argentina",
+      "Azerbaijan",
+      "Bahrain",
+      "Botswana",
+      "Germany",
+      "Indonesia",
+      "Ireland",
+      "Iraq",
+      "Jordan",
+      "Madagascar",
+      "Nigeria",
+      "Norway",
+      "Palestine",
+      "Qatar",
+      "Singapore",
+      "El Salvador",
+      "Sao Tome and Principe",
+      "Suriname",
+      "Syria"
+     ],
+     "oil_index": 103
+    },
+    {
+     "year": 2034,
+     "world_gdp": 15844,
+     "conflict_share": 0.651,
+     "onset": [
+      "Armenia",
+      "Botswana",
+      "Canada",
+      "Chile",
+      "Comoros",
+      "Cyprus",
+      "Czechia",
+      "Estonia",
+      "Gabon",
+      "Guinea",
+      "Haiti",
+      "Hungary",
+      "Jamaica",
+      "Jordan",
+      "South Korea",
+      "Maldives",
+      "Malawi",
+      "North Korea",
+      "Qatar",
+      "Thailand",
+      "Uganda"
+     ],
+     "dem_drop": [
+      "Cuba",
+      "Cyprus",
+      "Ecuador",
+      "Guinea",
+      "Papua New Guinea"
+     ],
+     "slump": [
+      "Angola",
+      "Bahrain",
+      "Bosnia and Herzegovina",
+      "Colombia",
+      "Cuba",
+      "Germany",
+      "Guatemala",
+      "Ireland",
+      "Jordan",
+      "Libya",
+      "Moldova",
+      "Montenegro",
+      "Palestine",
+      "Qatar",
+      "El Salvador",
+      "South Sudan",
+      "Turkey",
+      "Taiwan",
+      "Yemen"
+     ],
+     "new_interstate": [
+      "Israel vs Syria"
+     ],
+     "oil_index": 139
+    },
+    {
+     "year": 2035,
+     "world_gdp": 15289,
+     "conflict_share": 0.646,
+     "onset": [
+      "Argentina",
+      "Eritrea",
+      "Finland",
+      "Hong Kong",
+      "Morocco",
+      "Madagascar",
+      "Romania"
+     ],
+     "dem_drop": [
+      "Albania",
+      "Armenia",
+      "Belgium",
+      "Hungary",
+      "North Macedonia"
+     ],
+     "slump": [
+      "United Arab Emirates",
+      "Bahrain",
+      "Bolivia",
+      "Germany",
+      "Algeria",
+      "Ethiopia",
+      "Jordan",
+      "South Korea",
+      "Luxembourg",
+      "Mongolia",
+      "Palestine",
+      "Saudi Arabia",
+      "Sudan",
+      "South Sudan",
+      "Uzbekistan"
+     ],
+     "oil_index": 184
+    },
+    {
+     "year": 2036,
+     "world_gdp": 15191,
+     "conflict_share": 0.634,
+     "onset": [
+      "Bosnia and Herzegovina",
+      "Bolivia",
+      "Malta",
+      "Malaysia",
+      "Papua New Guinea",
+      "South Sudan",
+      "Slovenia",
+      "Chad",
+      "Venezuela"
+     ],
+     "coup": [
+      "Mauritania"
+     ],
+     "dem_drop": [
+      "Eritrea",
+      "Mexico",
+      "Mauritius",
+      "Nigeria",
+      "Norway",
+      "Palestine",
+      "Tunisia"
+     ],
+     "slump": [
+      "Austria",
+      "Burundi",
+      "Czechia",
+      "Fiji",
+      "Jordan",
+      "East Timor"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan"
+     ],
+     "oil_index": 173
+    },
+    {
+     "year": 2037,
+     "world_gdp": 15330,
+     "conflict_share": 0.629,
+     "onset": [
+      "Cameroon",
+      "Czechia",
+      "Fiji",
+      "Croatia",
+      "Nicaragua",
+      "New Zealand",
+      "Romania",
+      "Senegal"
+     ],
+     "dem_drop": [
+      "Bahrain",
+      "Cameroon",
+      "India",
+      "Morocco",
+      "Madagascar"
+     ],
+     "slump": [
+      "Panama",
+      "Sao Tome and Principe"
+     ],
+     "new_interstate": [
+      "Armenia vs Russia"
+     ],
+     "oil_index": 162
+    },
+    {
+     "year": 2038,
+     "world_gdp": 15576,
+     "conflict_share": 0.617,
+     "onset": [
+      "Argentina",
+      "Burundi",
+      "Lithuania",
+      "Moldova",
+      "Namibia",
+      "Qatar",
+      "Trinidad and Tobago",
+      "Vanuatu"
+     ],
+     "coup": [
+      "Sao Tome and Principe"
+     ],
+     "dem_drop": [
+      "Democratic Republic of Congo",
+      "Ecuador",
+      "Fiji",
+      "Kyrgyzstan",
+      "Moldova",
+      "Turkey"
+     ],
+     "slump": [
+      "Angola",
+      "Ecuador",
+      "Kuwait",
+      "Maldives",
+      "Rwanda"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan (war)",
+      "Afghanistan vs United States (war)"
+     ],
+     "oil_index": 139
+    },
+    {
+     "year": 2039,
+     "world_gdp": 15561,
+     "conflict_share": 0.634,
+     "onset": [
+      "United Arab Emirates",
+      "Brazil",
+      "Cape Verde",
+      "Djibouti",
+      "United Kingdom",
+      "Kyrgyzstan",
+      "Panama",
+      "Saudi Arabia",
+      "Sierra Leone"
+     ],
+     "coup": [
+      "North Korea"
+     ],
+     "dem_drop": [
+      "Cyprus",
+      "Fiji",
+      "Madagascar",
+      "Singapore",
+      "Somalia"
+     ],
+     "slump": [
+      "Afghanistan",
+      "Angola",
+      "Gambia",
+      "Guinea-Bissau",
+      "Japan",
+      "Moldova",
+      "Netherlands",
+      "Panama",
+      "Rwanda",
+      "Ukraine",
+      "Venezuela"
+     ],
+     "new_interstate": [
+      "Hungary vs Ukraine",
+      "India vs Pakistan"
+     ],
+     "oil_index": 141
+    },
+    {
+     "year": 2040,
+     "world_gdp": 15375,
+     "conflict_share": 0.611,
+     "onset": [
+      "Angola",
+      "Japan",
+      "Sri Lanka",
+      "Norway"
+     ],
+     "dem_drop": [
+      "Central African Republic",
+      "Poland",
+      "Romania",
+      "Slovakia",
+      "Syria",
+      "Chad"
+     ],
+     "slump": [
+      "United Arab Emirates",
+      "Brazil",
+      "Moldova",
+      "Rwanda"
+     ],
+     "new_interstate": [
+      "Bahrain vs Iran"
+     ],
+     "oil_index": 129
+    },
+    {
+     "year": 2041,
+     "world_gdp": 15522,
+     "conflict_share": 0.669,
+     "onset": [
+      "Argentina",
+      "Armenia",
+      "Comoros",
+      "Ecuador",
+      "Italy",
+      "South Korea",
+      "Luxembourg",
+      "Morocco",
+      "Malaysia",
+      "Nicaragua",
+      "Russia",
+      "Singapore",
+      "Slovenia",
+      "Tanzania"
+     ],
+     "coup": [
+      "Yemen"
+     ],
+     "dem_drop": [
+      "Botswana",
+      "Serbia",
+      "Syria",
+      "Thailand"
+     ],
+     "slump": [
+      "Greece",
+      "Vietnam"
+     ],
+     "oil_index": 111
+    },
+    {
+     "year": 2042,
+     "world_gdp": 15813,
+     "conflict_share": 0.714,
+     "onset": [
+      "Cuba",
+      "Ireland",
+      "Jamaica",
+      "Libya",
+      "Lesotho",
+      "Lithuania",
+      "Moldova",
+      "Malawi",
+      "South Sudan",
+      "Eswatini",
+      "Taiwan"
+     ],
+     "dem_drop": [
+      "Gabon",
+      "Croatia",
+      "Liberia",
+      "Mali",
+      "El Salvador",
+      "Tunisia",
+      "Uruguay",
+      "Uzbekistan"
+     ],
+     "slump": [
+      "Fiji",
+      "Moldova",
+      "Venezuela"
+     ],
+     "new_interstate": [
+      "Austria vs Germany (war)"
+     ],
+     "oil_index": 105
+    },
+    {
+     "year": 2043,
+     "world_gdp": 16034,
+     "conflict_share": 0.703,
+     "onset": [
+      "Australia",
+      "Greece",
+      "Malta",
+      "North Korea",
+      "Seychelles",
+      "Zambia"
+     ],
+     "dem_drop": [
+      "Bosnia and Herzegovina",
+      "Chile",
+      "Hong Kong",
+      "South Korea",
+      "Mauritania",
+      "Slovakia",
+      "Eswatini"
+     ],
+     "slump": [
+      "Haiti",
+      "Jamaica",
+      "Rwanda",
+      "Tajikistan",
+      "Vanuatu"
+     ],
+     "new_interstate": [
+      "Ethiopia vs Sudan"
+     ],
+     "oil_index": 100
+    },
+    {
+     "year": 2044,
+     "world_gdp": 16220,
+     "conflict_share": 0.714,
+     "onset": [
+      "United Arab Emirates",
+      "Cote d'Ivoire",
+      "Dominican Republic",
+      "Nepal",
+      "Saudi Arabia",
+      "Tunisia"
+     ],
+     "dem_drop": [
+      "Iran",
+      "Mexico",
+      "Oman",
+      "Syria"
+     ],
+     "slump": [
+      "Dominican Republic",
+      "Iran",
+      "Jamaica",
+      "Rwanda",
+      "Suriname"
+     ],
+     "new_interstate": [
+      "Burundi vs Tanzania"
+     ],
+     "oil_index": 96
+    },
+    {
+     "year": 2045,
+     "world_gdp": 16702,
+     "conflict_share": 0.726,
+     "onset": [
+      "Armenia",
+      "Burundi",
+      "Belarus",
+      "Bhutan",
+      "Jordan",
+      "Norway",
+      "Slovenia",
+      "Trinidad and Tobago"
+     ],
+     "dem_drop": [
+      "Belarus",
+      "Iceland",
+      "Solomon Islands"
+     ],
+     "slump": [
+      "Bahrain",
+      "Kuwait"
+     ],
+     "new_interstate": [
+      "Colombia vs Venezuela",
+      "Italy vs Lebanon"
+     ],
+     "oil_index": 83
+    },
+    {
+     "year": 2046,
+     "world_gdp": 16834,
+     "conflict_share": 0.731,
+     "onset": [
+      "United Arab Emirates",
+      "Bangladesh",
+      "Botswana",
+      "Guinea-Bissau",
+      "Serbia",
+      "Tanzania"
+     ],
+     "dem_drop": [
+      "Spain",
+      "Hungary",
+      "Laos",
+      "Madagascar",
+      "Peru",
+      "North Korea",
+      "Uzbekistan",
+      "Zimbabwe"
+     ],
+     "slump": [
+      "Turkmenistan"
+     ],
+     "new_interstate": [
+      "Egypt vs Syria"
+     ],
+     "oil_index": 82
+    },
+    {
+     "year": 2047,
+     "world_gdp": 16910,
+     "conflict_share": 0.686,
+     "onset": [
+      "Angola",
+      "Djibouti",
+      "Dominican Republic",
+      "Finland",
+      "Solomon Islands",
+      "Thailand"
+     ],
+     "dem_drop": [
+      "Gambia",
+      "Indonesia",
+      "Kuwait",
+      "Mongolia",
+      "Mozambique",
+      "Oman"
+     ],
+     "slump": [
+      "Angola",
+      "Barbados",
+      "Dominican Republic",
+      "Malta",
+      "Malaysia",
+      "Turkey"
+     ],
+     "oil_index": 86
+    },
+    {
+     "year": 2048,
+     "world_gdp": 16873,
+     "conflict_share": 0.703,
+     "onset": [
+      "China",
+      "Germany",
+      "Estonia",
+      "Kuwait",
+      "South Sudan",
+      "Slovenia",
+      "Sweden"
+     ],
+     "dem_drop": [
+      "Burundi",
+      "Egypt",
+      "France",
+      "Gabon",
+      "Kazakhstan",
+      "Palestine",
+      "South Africa",
+      "Zimbabwe"
+     ],
+     "slump": [
+      "France",
+      "Guatemala",
+      "Lebanon",
+      "Malaysia",
+      "Papua New Guinea",
+      "Turkey"
+     ],
+     "oil_index": 84
+    },
+    {
+     "year": 2049,
+     "world_gdp": 16930,
+     "conflict_share": 0.68,
+     "onset": [
+      "Azerbaijan",
+      "Belarus",
+      "Congo",
+      "Egypt",
+      "Spain",
+      "Mongolia",
+      "Nicaragua"
+     ],
+     "coup": [
+      "South Sudan"
+     ],
+     "dem_drop": [
+      "Burundi",
+      "Belarus",
+      "Cameroon",
+      "Kazakhstan",
+      "Kenya",
+      "Nepal",
+      "Philippines",
+      "North Korea",
+      "Syria",
+      "Taiwan",
+      "Uganda",
+      "South Africa"
+     ],
+     "slump": [
+      "Bahrain",
+      "Barbados",
+      "Congo",
+      "Montenegro",
+      "Malaysia",
+      "Romania",
+      "Sweden",
+      "Turkey"
+     ],
+     "new_interstate": [
+      "India vs Pakistan",
+      "Sudan vs Uganda"
+     ],
+     "oil_index": 68
+    },
+    {
+     "year": 2050,
+     "world_gdp": 17243,
+     "conflict_share": 0.663,
+     "onset": [
+      "Austria",
+      "Comoros",
+      "Algeria",
+      "Lebanon",
+      "Norway"
+     ],
+     "dem_drop": [
+      "Albania",
+      "Bulgaria",
+      "Nigeria",
+      "Oman",
+      "Senegal"
+     ],
+     "slump": [
+      "Gabon",
+      "Guatemala",
+      "Cambodia",
+      "Malaysia",
+      "Romania",
+      "Russia",
+      "Slovenia",
+      "Turkey",
+      "Ukraine"
+     ],
+     "new_interstate": [
+      "China vs India"
+     ],
+     "oil_index": 73
+    },
+    {
+     "year": 2051,
+     "world_gdp": 16775,
+     "conflict_share": 0.669,
+     "onset": [
+      "Australia",
+      "Cuba",
+      "Haiti",
+      "Moldova",
+      "Saudi Arabia",
+      "Slovenia",
+      "Venezuela"
+     ],
+     "dem_drop": [
+      "United Arab Emirates",
+      "Belgium",
+      "Bulgaria",
+      "Gabon",
+      "Kuwait",
+      "Nigeria",
+      "Sierra Leone",
+      "Suriname"
+     ],
+     "slump": [
+      "Brazil",
+      "Democratic Republic of Congo",
+      "Cyprus",
+      "Denmark",
+      "Algeria",
+      "Guatemala",
+      "Montenegro",
+      "Malaysia",
+      "Paraguay",
+      "Romania",
+      "Suriname",
+      "Slovenia",
+      "Turkey",
+      "Ukraine",
+      "Uzbekistan",
+      "Vanuatu"
+     ],
+     "oil_index": 45
+    },
+    {
+     "year": 2052,
+     "world_gdp": 16723,
+     "conflict_share": 0.714,
+     "onset": [
+      "Benin",
+      "Bosnia and Herzegovina",
+      "Cyprus",
+      "Croatia",
+      "Japan",
+      "Luxembourg",
+      "Latvia",
+      "North Macedonia",
+      "Sierra Leone",
+      "El Salvador",
+      "Ukraine",
+      "Vietnam"
+     ],
+     "dem_drop": [
+      "Angola",
+      "Belarus",
+      "Spain",
+      "Gabon",
+      "Ghana",
+      "Gambia",
+      "Guinea-Bissau",
+      "Guatemala",
+      "Cambodia",
+      "Togo"
+     ],
+     "slump": [
+      "Argentina",
+      "Switzerland",
+      "Guatemala",
+      "Iceland",
+      "Maldives",
+      "North Macedonia",
+      "Malaysia",
+      "Romania",
+      "Saudi Arabia",
+      "Turkey",
+      "Ukraine"
+     ],
+     "new_interstate": [
+      "Iran vs Iraq (war)"
+     ],
+     "oil_index": 56
+    },
+    {
+     "year": 2053,
+     "world_gdp": 16112,
+     "conflict_share": 0.709,
+     "onset": [
+      "India",
+      "Kuwait",
+      "Saudi Arabia",
+      "Chad",
+      "Tanzania"
+     ],
+     "dem_drop": [
+      "Burundi",
+      "Central African Republic",
+      "Cape Verde",
+      "Spain",
+      "Ethiopia",
+      "Finland",
+      "Greece",
+      "Haiti",
+      "Maldives",
+      "Mali",
+      "Mauritania",
+      "Slovakia"
+     ],
+     "slump": [
+      "Argentina",
+      "Bosnia and Herzegovina",
+      "Czechia",
+      "Eritrea",
+      "Estonia",
+      "Finland",
+      "Guatemala",
+      "Haiti",
+      "Iceland",
+      "Libya",
+      "Luxembourg",
+      "North Macedonia",
+      "Malta",
+      "Malaysia",
+      "Norway",
+      "Paraguay",
+      "Qatar",
+      "Romania",
+      "Russia",
+      "Saudi Arabia",
+      "Senegal",
+      "Singapore",
+      "Serbia",
+      "Slovenia",
+      "Turkey"
+     ],
+     "new_interstate": [
+      "France vs Portugal"
+     ],
+     "oil_index": 31
+    },
+    {
+     "year": 2054,
+     "world_gdp": 15901,
+     "conflict_share": 0.731,
+     "onset": [
+      "Cape Verde",
+      "Ghana",
+      "Iran",
+      "Iraq",
+      "Singapore",
+      "Sweden",
+      "Thailand"
+     ],
+     "coup": [
+      "Benin"
+     ],
+     "dem_drop": [
+      "Benin",
+      "Bahrain",
+      "Congo",
+      "Fiji",
+      "Gabon",
+      "Gambia",
+      "Indonesia",
+      "Kuwait",
+      "Russia",
+      "Somalia",
+      "South Africa"
+     ],
+     "slump": [
+      "Argentina",
+      "Comoros",
+      "Spain",
+      "Equatorial Guinea",
+      "Slovenia",
+      "Turkey",
+      "Zambia"
+     ],
+     "new_interstate": [
+      "Iran vs Iraq (war)"
+     ],
+     "oil_index": 49
+    },
+    {
+     "year": 2055,
+     "world_gdp": 16010,
+     "conflict_share": 0.697,
+     "onset": [
+      "Belgium",
+      "Congo",
+      "Panama",
+      "Uganda"
+     ],
+     "dem_drop": [
+      "Argentina",
+      "Iceland",
+      "Libya",
+      "Madagascar",
+      "Nepal"
+     ],
+     "slump": [
+      "Colombia",
+      "Comoros",
+      "Dominican Republic",
+      "Equatorial Guinea",
+      "Myanmar",
+      "Malaysia",
+      "Turkey"
+     ],
+     "new_interstate": [
+      "Azerbaijan vs United Kingdom"
+     ],
+     "oil_index": 50
+    },
+    {
+     "year": 2056,
+     "world_gdp": 16046,
+     "conflict_share": 0.703,
+     "onset": [
+      "Bosnia and Herzegovina",
+      "Italy",
+      "Solomon Islands",
+      "South Sudan",
+      "Eswatini"
+     ],
+     "dem_drop": [
+      "Albania",
+      "Austria",
+      "Benin",
+      "Burkina Faso",
+      "Cote d'Ivoire",
+      "Maldives"
+     ],
+     "slump": [
+      "Bahrain",
+      "Ecuador",
+      "Finland",
+      "Libya",
+      "Netherlands",
+      "Oman",
+      "Sierra Leone",
+      "Somalia",
+      "Turkmenistan",
+      "Vanuatu"
+     ],
+     "new_interstate": [
+      "Guatemala vs El Salvador"
+     ],
+     "oil_index": 26
+    },
+    {
+     "year": 2057,
+     "world_gdp": 15905,
+     "conflict_share": 0.686,
+     "onset": [
+      "Burundi",
+      "Botswana",
+      "India",
+      "Latvia",
+      "Oman"
+     ],
+     "dem_drop": [
+      "United Arab Emirates",
+      "China",
+      "Cuba",
+      "Egypt",
+      "Sao Tome and Principe",
+      "Uganda",
+      "South Africa"
+     ],
+     "slump": [
+      "Cape Verde",
+      "Ecuador",
+      "Iceland",
+      "Libya",
+      "Paraguay",
+      "Turkmenistan"
+     ],
+     "oil_index": 25
+    },
+    {
+     "year": 2058,
+     "world_gdp": 15770,
+     "conflict_share": 0.731,
+     "onset": [
+      "Chile",
+      "Finland",
+      "Georgia",
+      "Equatorial Guinea",
+      "Guyana",
+      "Kuwait",
+      "Senegal",
+      "Tajikistan",
+      "Tunisia",
+      "Vanuatu"
+     ],
+     "dem_drop": [
+      "Belarus",
+      "Fiji",
+      "Guatemala",
+      "Guyana",
+      "Kenya",
+      "Morocco",
+      "Nicaragua",
+      "Romania",
+      "Uganda"
+     ],
+     "slump": [
+      "Belarus",
+      "Switzerland",
+      "Ecuador",
+      "Haiti",
+      "Jamaica",
+      "Libya",
+      "Netherlands",
+      "Sudan",
+      "Eswatini",
+      "Tanzania"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan (war)"
+     ],
+     "oil_index": 24
+    },
+    {
+     "year": 2059,
+     "world_gdp": 15523,
+     "conflict_share": 0.726,
+     "onset": [
+      "Lesotho",
+      "Latvia",
+      "Sweden",
+      "Taiwan",
+      "Zimbabwe"
+     ],
+     "dem_drop": [
+      "China",
+      "Kenya",
+      "Cambodia",
+      "Myanmar"
+     ],
+     "slump": [
+      "Switzerland",
+      "Ecuador",
+      "Haiti",
+      "Ireland",
+      "Libya",
+      "Namibia",
+      "Netherlands",
+      "Nepal",
+      "Singapore",
+      "Turkmenistan"
+     ],
+     "new_interstate": [
+      "United Arab Emirates vs Japan",
+      "Israel vs Syria"
+     ],
+     "oil_index": 23
+    },
+    {
+     "year": 2060,
+     "world_gdp": 14794,
+     "conflict_share": 0.714,
+     "onset": [
+      "Austria",
+      "Belarus",
+      "Moldova",
+      "Slovenia"
+     ],
+     "dem_drop": [
+      "Georgia",
+      "Guatemala",
+      "North Macedonia",
+      "Peru"
+     ],
+     "slump": [
+      "Bahrain",
+      "Belarus",
+      "Botswana",
+      "Central African Republic",
+      "Dominican Republic",
+      "Ecuador",
+      "Egypt",
+      "Fiji",
+      "Haiti",
+      "Japan",
+      "Libya",
+      "Namibia",
+      "Nicaragua",
+      "Netherlands",
+      "Nepal",
+      "Singapore",
+      "Solomon Islands",
+      "Turkmenistan",
+      "East Timor",
+      "Tunisia",
+      "Taiwan",
+      "United States"
+     ],
+     "pandemic": true,
+     "oil_index": 28
+    },
+    {
+     "year": 2061,
+     "world_gdp": 14416,
+     "conflict_share": 0.68,
+     "onset": [
+      "Finland",
+      "Laos",
+      "North Macedonia",
+      "Mauritania",
+      "Sweden"
+     ],
+     "dem_drop": [
+      "Comoros",
+      "Cape Verde",
+      "Algeria",
+      "Georgia",
+      "El Salvador"
+     ],
+     "slump": [
+      "Brazil",
+      "Czechia",
+      "Ecuador",
+      "Egypt",
+      "Georgia",
+      "Haiti",
+      "Jamaica",
+      "Libya",
+      "Nicaragua",
+      "Netherlands",
+      "Sudan",
+      "Singapore",
+      "Seychelles",
+      "Tajikistan",
+      "Turkmenistan",
+      "Vanuatu"
+     ],
+     "oil_index": 26
+    },
+    {
+     "year": 2062,
+     "world_gdp": 14150,
+     "conflict_share": 0.691,
+     "onset": [
+      "Brazil",
+      "Spain",
+      "Estonia",
+      "Haiti",
+      "Kuwait",
+      "Lebanon",
+      "Montenegro",
+      "Mozambique",
+      "North Korea"
+     ],
+     "dem_drop": [
+      "Democratic Republic of Congo",
+      "Costa Rica",
+      "Algeria",
+      "United Kingdom",
+      "Hong Kong",
+      "Iran",
+      "Cambodia",
+      "New Zealand",
+      "Russia",
+      "Uganda",
+      "Ukraine"
+     ],
+     "slump": [
+      "Albania",
+      "Bangladesh",
+      "Belarus",
+      "Ecuador",
+      "Haiti",
+      "Jamaica",
+      "Libya",
+      "Netherlands",
+      "Sudan",
+      "Eswatini"
+     ],
+     "new_interstate": [
+      "India vs Pakistan"
+     ],
+     "oil_index": 32
+    },
+    {
+     "year": 2063,
+     "world_gdp": 14120,
+     "conflict_share": 0.68,
+     "onset": [
+      "Angola",
+      "United Arab Emirates",
+      "Burundi",
+      "Ghana",
+      "Guinea-Bissau",
+      "South Sudan",
+      "Thailand",
+      "Trinidad and Tobago",
+      "Ukraine"
+     ],
+     "coup": [
+      "East Timor"
+     ],
+     "dem_drop": [
+      "Cote d'Ivoire",
+      "Costa Rica",
+      "Spain",
+      "Honduras",
+      "Indonesia",
+      "Kazakhstan",
+      "Cambodia",
+      "Nicaragua",
+      "Netherlands",
+      "Panama",
+      "Somalia",
+      "Eswatini",
+      "Tanzania"
+     ],
+     "slump": [
+      "Albania",
+      "Armenia",
+      "Belarus",
+      "Ecuador",
+      "Honduras",
+      "Haiti",
+      "Kazakhstan",
+      "Cambodia",
+      "Libya",
+      "Netherlands",
+      "Panama",
+      "Ukraine"
+     ],
+     "new_interstate": [
+      "Laos vs Vietnam",
+      "Russia vs East Timor"
+     ],
+     "oil_index": 38
+    },
+    {
+     "year": 2064,
+     "world_gdp": 14264,
+     "conflict_share": 0.629,
+     "onset": [
+      "Germany",
+      "Fiji",
+      "Malta"
+     ],
+     "dem_drop": [
+      "Angola",
+      "Bahrain",
+      "Comoros",
+      "Djibouti",
+      "Ghana",
+      "Mongolia",
+      "Turkey",
+      "Uganda",
+      "Vanuatu"
+     ],
+     "slump": [
+      "Albania",
+      "Belarus",
+      "Switzerland",
+      "Ecuador",
+      "Haiti",
+      "Jamaica",
+      "Libya",
+      "Netherlands",
+      "Panama",
+      "Qatar"
+     ],
+     "oil_index": 30
+    },
+    {
+     "year": 2065,
+     "world_gdp": 13570,
+     "conflict_share": 0.663,
+     "onset": [
+      "Burundi",
+      "Cameroon",
+      "Haiti",
+      "Lebanon",
+      "Luxembourg",
+      "New Zealand",
+      "Suriname",
+      "Slovakia"
+     ],
+     "dem_drop": [
+      "Bangladesh",
+      "Djibouti",
+      "Equatorial Guinea",
+      "Palestine",
+      "Chad",
+      "Togo"
+     ],
+     "slump": [
+      "Albania",
+      "Armenia",
+      "Bangladesh",
+      "Belarus",
+      "Chile",
+      "Colombia",
+      "Ecuador",
+      "Georgia",
+      "Greece",
+      "Guatemala",
+      "Honduras",
+      "Haiti",
+      "Iraq",
+      "Liberia",
+      "Libya",
+      "Mauritania",
+      "Niger",
+      "Nicaragua",
+      "Netherlands",
+      "Oman",
+      "Portugal",
+      "Paraguay",
+      "Qatar",
+      "Saudi Arabia",
+      "Singapore",
+      "Turkmenistan",
+      "Trinidad and Tobago",
+      "Uruguay"
+     ],
+     "new_interstate": [
+      "Japan vs Mali (war)"
+     ],
+     "pandemic": true,
+     "oil_index": 16
+    }
+   ]
+  },
+  "autocracy": {
+   "world": 4423,
+   "percentile": {
+    "economic": 0.138,
+    "deaths": 0.879,
+    "civil_war": 0.404,
+    "autocracy": 1.0,
+    "composite": 0.761
+   },
+   "world_gdp_2065": 64998.28515625,
+   "deaths_m": 7.40172815322876,
+   "conflict_mean": 0.19328570365905762,
+   "dem_2065": 0.19488155841827393,
+   "params": {
+    "cascade_q": 0.11418381333351135,
+    "nuclear_war_factor": 0.45141515135765076,
+    "war_spillover": 0.7532612085342407,
+    "war_site_loss": 0.09965138137340546,
+    "oil_eta": 0.2731512188911438,
+    "oil_war_jump": 0.1293499618768692,
+    "pandemic_p": 0.016432706266641617,
+    "climate_damage": 1.2759592533111572,
+    "growth_dividend": 0.013694661669433117,
+    "autocracy_drift": 0.007559449411928654,
+    "bubble_p": 0.2669408619403839,
+    "bubble_cost": 0.030328823253512383,
+    "speed_mult": 0.8656243681907654,
+    "open_lag": 0.6949852705001831,
+    "export_lag": 2.938908100128174,
+    "hub_rent": 0.32406947016716003,
+    "chip_pause": 0.7354167103767395,
+    "chip_gdp": 0.036951735615730286,
+    "dc_share": 0.03556286543607712,
+    "robot_lag": 4.134109020233154,
+    "robot_aging": 0.9531017541885376,
+    "dem_erosion": 0.0057132956571877,
+    "ai_war_beta": 1.63934326171875,
+    "nuc_beta": 0.6807776689529419,
+    "eng_pandemic": 0.0026977909728884697,
+    "natural_cut": 0.5262598991394043,
+    "robot_years": 15.037250518798828,
+    "phys_dividend": 0.029147665947675705,
+    "drone_onset": 0.013296455144882202,
+    "drone_persist": 0.32034721970558167,
+    "drone_reach": 0.16982732713222504,
+    "drone_civil": 0.35462552309036255,
+    "water_dispute": 0.3424668312072754,
+    "water_scarcity_k": 1.3928433656692505,
+    "yield_water": 0.4966362714767456,
+    "glacier_tau": 38.25886917114258,
+    "glacier_flow_mult": 0.7474718689918518,
+    "peak_shift": -24.19036865234375,
+    "cascade_hop2": 0.4761272370815277,
+    "quasi_USA_TWN": 0.6525590419769287,
+    "quasi_USA_ISR": 0.2347652018070221,
+    "quasi_RUS_IRN": 0.02811572514474392,
+    "quasi_CHN_PAK": 0.027384554967284203,
+    "intl_beta": 0.014043658971786499,
+    "prolif_mult": 1.3955410718917847,
+    "prolif_cascade": 4.593419551849365,
+    "iran_pursuit0": 0.5916271209716797,
+    "breakout_years": 5.181356430053711,
+    "prevent_beta": 0.2131275236606598,
+    "nuc_use_both": 0.012931092642247677,
+    "nuc_use_one": 0.0026776078157126904,
+    "nuc_escalate": 0.11542269587516785,
+    "nuc_gdp_large": 0.05443529039621353,
+    "sanction_loss": 0.03704575449228287,
+    "mineral_elast": 0.22439031302928925,
+    "china_pause": 0.7970983982086182,
+    "civ_mult": 1.9546699523925781,
+    "pandemic_mort": 0.0026850581634789705,
+    "slr_mult": 1.4193816184997559,
+    "slr_cost": 0.030834415927529335,
+    "storm_trend": 0.02082381397485733,
+    "storm_loss": 0.026949413120746613,
+    "solar_p": 0.017293578013777733,
+    "solar_loss": 0.02303995192050934,
+    "volc_p": 0.009038486517965794,
+    "volc_yield": 0.07774949073791504,
+    "cyber_loss": 0.016888223588466644,
+    "fin_contagion": 4.958034515380859,
+    "workforce_beta": 0.9956557154655457,
+    "fish_trop": -0.11144288629293442,
+    "fish_mid": -0.07004603743553162,
+    "fish_high": -0.010826725512742996,
+    "wild_trend": 0.00017458945512771606,
+    "articles_beta": 0.0018806776497513056,
+    "dividend_fade": 0.006812056060880423,
+    "pko_beta": 0.2419165074825287,
+    "pko_cut": 0.4585762023925781,
+    "pko_decay": 0.07654217630624771,
+    "aid_mult": 0.6434541940689087,
+    "commod_coup": -3.366166353225708,
+    "tariff_pass": 1.06111741065979,
+    "tariff_us": 0.0011903488775715232,
+    "frag_beta": -1.9715101718902588,
+    "st_debt_beta": 0.42814671993255615,
+    "peer_coup": 1.8318133354187012,
+    "dmg_family": 1.0,
+    "amoc_p": 0.00047423900105059147,
+    "amoc_eu_loss": 0.030435172840952873,
+    "amoc_eu_yield": 0.10502326488494873,
+    "amoc_rain": 0.1036975234746933,
+    "slr_ice_mult": 2.5237553119659424,
+    "harvest_amp": 0.2684222161769867,
+    "dry_area_elast": 0.6632054448127747,
+    "clim_conflict": 0.10700421780347824,
+    "clim_migr": 0.2149306982755661,
+    "slr_ice": 0.0,
+    "amoc_hit": 0.0,
+    "ai_arrival": 2027.1964111328125,
+    "robot_arrival": 2028.2000732421875,
+    "clim_response": 0.17332294583320618
+   },
+   "param_pct": {
+    "cascade_q": 0.428,
+    "nuclear_war_factor": 0.783,
+    "war_spillover": 0.753,
+    "war_site_loss": 0.632,
+    "oil_eta": 0.03,
+    "oil_war_jump": 0.265,
+    "pandemic_p": 0.212,
+    "climate_damage": 0.775,
+    "growth_dividend": 0.089,
+    "autocracy_drift": 0.943,
+    "bubble_p": 0.162,
+    "bubble_cost": 0.678,
+    "speed_mult": 0.165,
+    "open_lag": 0.058,
+    "export_lag": 0.978,
+    "hub_rent": 0.649,
+    "chip_pause": 0.469,
+    "chip_gdp": 0.564,
+    "dc_share": 0.26,
+    "robot_lag": 0.222,
+    "robot_aging": 0.954,
+    "dem_erosion": 0.951,
+    "ai_war_beta": 0.826,
+    "nuc_beta": 0.673,
+    "eng_pandemic": 0.09,
+    "natural_cut": 0.806,
+    "robot_years": 0.586,
+    "phys_dividend": 0.693,
+    "drone_onset": 0.4,
+    "drone_persist": 0.398,
+    "drone_reach": 0.849,
+    "drone_civil": 0.92,
+    "water_dispute": 0.688,
+    "water_scarcity_k": 0.334,
+    "yield_water": 0.667,
+    "glacier_tau": 0.284,
+    "glacier_flow_mult": 0.245,
+    "peak_shift": 0.009,
+    "cascade_hop2": 0.482,
+    "quasi_USA_TWN": 0.805,
+    "quasi_USA_ISR": 0.333,
+    "quasi_RUS_IRN": 0.28,
+    "quasi_CHN_PAK": 0.277,
+    "intl_beta": 0.986,
+    "prolif_mult": 0.648,
+    "prolif_cascade": 0.725,
+    "iran_pursuit0": 0.982,
+    "breakout_years": 0.802,
+    "prevent_beta": 0.141,
+    "nuc_use_both": 0.397,
+    "nuc_use_one": 0.247,
+    "nuc_escalate": 0.188,
+    "nuc_gdp_large": 0.018,
+    "sanction_loss": 0.923,
+    "mineral_elast": 0.451,
+    "china_pause": 0.746,
+    "civ_mult": 0.576,
+    "pandemic_mort": 0.488,
+    "slr_mult": 0.815,
+    "slr_cost": 0.304,
+    "storm_trend": 0.07,
+    "storm_loss": 0.876,
+    "solar_p": 0.853,
+    "solar_loss": 0.181,
+    "volc_p": 0.509,
+    "volc_yield": 0.526,
+    "cyber_loss": 0.553,
+    "fin_contagion": 0.895,
+    "workforce_beta": 0.098,
+    "fish_trop": 0.217,
+    "fish_mid": 0.091,
+    "fish_high": 0.151,
+    "wild_trend": 0.777,
+    "articles_beta": 0.354,
+    "dividend_fade": 0.17,
+    "pko_beta": 0.32,
+    "pko_cut": 0.896,
+    "pko_decay": 0.76,
+    "aid_mult": 0.643,
+    "commod_coup": 0.293,
+    "tariff_pass": 0.704,
+    "tariff_us": 0.118,
+    "frag_beta": 0.468,
+    "st_debt_beta": 0.064,
+    "peer_coup": 0.165,
+    "dmg_family": 0.335,
+    "amoc_p": 0.005,
+    "amoc_eu_loss": 0.51,
+    "amoc_eu_yield": 0.027,
+    "amoc_rain": 0.018,
+    "slr_ice_mult": 0.686,
+    "harvest_amp": 0.898,
+    "dry_area_elast": 0.44,
+    "clim_conflict": 0.354,
+    "clim_migr": 0.535,
+    "slr_ice": 0.0,
+    "amoc_hit": 0.0,
+    "ai_arrival": 0.034,
+    "robot_arrival": 0.057,
+    "clim_response": 0.575
+   },
+   "events": [
+    {
+     "year": 2026,
+     "world_gdp": 17907,
+     "conflict_share": 0.171,
+     "onset": [
+      "Egypt",
+      "Laos"
+     ],
+     "coup": [
+      "Seychelles"
+     ],
+     "dem_drop": [
+      "Afghanistan",
+      "Algeria",
+      "Gabon",
+      "Iran",
+      "Mongolia",
+      "Romania",
+      "Somalia"
+     ],
+     "slump": [
+      "China",
+      "Fiji",
+      "Sudan",
+      "Sao Tome and Principe",
+      "Tajikistan",
+      "Ukraine"
+     ],
+     "new_interstate": [
+      "Iran vs United States (war)",
+      "Iraq vs Israel",
+      "Iraq vs United States",
+      "United States vs Venezuela"
+     ],
+     "oil_index": 122
+    },
+    {
+     "year": 2027,
+     "world_gdp": 18502,
+     "conflict_share": 0.171,
+     "onset": [
+      "Eritrea",
+      "Iran",
+      "Lithuania",
+      "Uganda"
+     ],
+     "dem_drop": [
+      "Armenia",
+      "Denmark",
+      "Spain",
+      "Kazakhstan",
+      "Oman",
+      "Portugal",
+      "Turkey",
+      "Tanzania",
+      "Venezuela"
+     ],
+     "slump": [
+      "Dominican Republic",
+      "Ghana",
+      "Rwanda",
+      "Syria"
+     ],
+     "new_interstate": [
+      "China vs Japan (war)"
+     ],
+     "oil_index": 94
+    },
+    {
+     "year": 2028,
+     "world_gdp": 19140,
+     "conflict_share": 0.194,
+     "onset": [
+      "United Arab Emirates",
+      "Libya",
+      "Mexico",
+      "Mozambique",
+      "Namibia",
+      "Russia",
+      "Rwanda",
+      "South Sudan",
+      "Chad"
+     ],
+     "dem_drop": [
+      "Argentina",
+      "Armenia",
+      "Azerbaijan",
+      "Bolivia",
+      "Brazil",
+      "Democratic Republic of Congo",
+      "Comoros",
+      "Fiji",
+      "Guinea",
+      "Malaysia",
+      "Peru",
+      "Senegal",
+      "Tunisia",
+      "Uganda",
+      "Vanuatu"
+     ],
+     "slump": [
+      "Azerbaijan",
+      "Ghana",
+      "Iran",
+      "Myanmar",
+      "Syria"
+     ],
+     "new_interstate": [
+      "India vs Pakistan",
+      "Israel vs Syria"
+     ],
+     "oil_index": 90
+    },
+    {
+     "year": 2029,
+     "world_gdp": 20046,
+     "conflict_share": 0.16,
+     "onset": [
+      "Comoros",
+      "Cambodia",
+      "Papua New Guinea"
+     ],
+     "dem_drop": [
+      "Barbados",
+      "Gambia",
+      "Lebanon",
+      "Liberia",
+      "Lesotho",
+      "Malawi",
+      "Syria"
+     ],
+     "slump": [
+      "Azerbaijan",
+      "Jordan",
+      "Netherlands",
+      "Senegal",
+      "Syria",
+      "Yemen"
+     ],
+     "new_interstate": [
+      "China vs India",
+      "United States vs Yemen (war)"
+     ],
+     "oil_index": 88
+    },
+    {
+     "year": 2030,
+     "world_gdp": 20651,
+     "conflict_share": 0.166,
+     "onset": [
+      "Congo",
+      "Eritrea",
+      "Sudan",
+      "Syria",
+      "Chad"
+     ],
+     "dem_drop": [
+      "Benin",
+      "Botswana",
+      "Guinea-Bissau",
+      "Lithuania",
+      "North Macedonia",
+      "Mali",
+      "Pakistan",
+      "Qatar",
+      "Togo"
+     ],
+     "slump": [
+      "Guinea-Bissau",
+      "Senegal",
+      "Syria",
+      "Yemen"
+     ],
+     "oil_index": 98
+    },
+    {
+     "year": 2031,
+     "world_gdp": 21522,
+     "conflict_share": 0.137,
+     "onset": [
+      "Niger"
+     ],
+     "dem_drop": [
+      "Angola",
+      "Central African Republic",
+      "Israel",
+      "Rwanda",
+      "Senegal",
+      "Serbia",
+      "Uzbekistan"
+     ],
+     "slump": [
+      "Cote d'Ivoire",
+      "North Macedonia",
+      "Senegal"
+     ],
+     "new_interstate": [
+      "Bosnia and Herzegovina vs Serbia",
+      "Djibouti vs Eritrea"
+     ],
+     "oil_index": 84
+    },
+    {
+     "year": 2032,
+     "world_gdp": 22394,
+     "conflict_share": 0.149,
+     "onset": [
+      "Democratic Republic of Congo",
+      "Chad",
+      "Togo"
+     ],
+     "coup": [
+      "Guinea"
+     ],
+     "dem_drop": [
+      "Comoros",
+      "Guinea",
+      "Guyana",
+      "India",
+      "Madagascar",
+      "Maldives",
+      "Mongolia",
+      "Vanuatu",
+      "South Africa"
+     ],
+     "slump": [
+      "Azerbaijan",
+      "Hungary",
+      "Qatar",
+      "Yemen"
+     ],
+     "oil_index": 82
+    },
+    {
+     "year": 2033,
+     "world_gdp": 23231,
+     "conflict_share": 0.166,
+     "onset": [
+      "Algeria",
+      "Sudan",
+      "Sweden"
+     ],
+     "dem_drop": [
+      "Costa Rica",
+      "Jordan",
+      "Kazakhstan",
+      "Tunisia"
+     ],
+     "slump": [
+      "Azerbaijan",
+      "Central African Republic",
+      "Iran",
+      "Senegal",
+      "Syria"
+     ],
+     "new_interstate": [
+      "Iraq vs Saudi Arabia (war)"
+     ],
+     "oil_index": 87
+    },
+    {
+     "year": 2034,
+     "world_gdp": 24215,
+     "conflict_share": 0.171,
+     "onset": [
+      "Central African Republic",
+      "Malawi",
+      "Serbia"
+     ],
+     "dem_drop": [
+      "Brazil",
+      "China",
+      "Greece",
+      "Kyrgyzstan",
+      "Mongolia",
+      "East Timor"
+     ],
+     "slump": [
+      "Argentina",
+      "Fiji",
+      "Jamaica",
+      "Senegal",
+      "Syria"
+     ],
+     "oil_index": 72
+    },
+    {
+     "year": 2035,
+     "world_gdp": 25113,
+     "conflict_share": 0.183,
+     "onset": [
+      "Democratic Republic of Congo",
+      "Congo",
+      "Eritrea",
+      "South Sudan"
+     ],
+     "coup": [
+      "Congo",
+      "Guinea"
+     ],
+     "dem_drop": [
+      "Indonesia",
+      "Maldives",
+      "Nigeria",
+      "Tanzania"
+     ],
+     "slump": [
+      "Azerbaijan",
+      "Lebanon",
+      "Nigeria",
+      "Syria",
+      "Yemen"
+     ],
+     "new_interstate": [
+      "Israel vs Syria (war)"
+     ],
+     "oil_index": 68
+    },
+    {
+     "year": 2036,
+     "world_gdp": 25830,
+     "conflict_share": 0.2,
+     "onset": [
+      "Central African Republic",
+      "Algeria",
+      "Nicaragua",
+      "Rwanda",
+      "Sudan"
+     ],
+     "dem_drop": [
+      "Bhutan",
+      "Morocco"
+     ],
+     "slump": [
+      "India",
+      "Nigeria",
+      "Vanuatu"
+     ],
+     "new_interstate": [
+      "China vs India"
+     ],
+     "oil_index": 86
+    },
+    {
+     "year": 2037,
+     "world_gdp": 26910,
+     "conflict_share": 0.183,
+     "onset": [
+      "Eritrea",
+      "Nigeria",
+      "El Salvador",
+      "Tajikistan"
+     ],
+     "dem_drop": [
+      "Bulgaria",
+      "Ethiopia",
+      "Ghana",
+      "Greece",
+      "Iraq",
+      "Italy",
+      "Laos",
+      "Lithuania",
+      "Mauritania",
+      "Panama",
+      "Philippines",
+      "Eswatini"
+     ],
+     "slump": [
+      "Costa Rica",
+      "Mauritania",
+      "Solomon Islands",
+      "El Salvador",
+      "Uganda",
+      "Vanuatu"
+     ],
+     "new_interstate": [
+      "Germany vs Sierra Leone",
+      "Russia vs Ukraine"
+     ],
+     "oil_index": 86
+    },
+    {
+     "year": 2038,
+     "world_gdp": 28165,
+     "conflict_share": 0.194,
+     "onset": [
+      "Central African Republic",
+      "Democratic Republic of Congo",
+      "Palestine"
+     ],
+     "dem_drop": [
+      "Bangladesh",
+      "Hong Kong",
+      "Kenya",
+      "Nigeria",
+      "Papua New Guinea",
+      "Romania",
+      "Thailand"
+     ],
+     "slump": [
+      "Ecuador"
+     ],
+     "oil_index": 110
+    },
+    {
+     "year": 2039,
+     "world_gdp": 28093,
+     "conflict_share": 0.2,
+     "onset": [
+      "Finland",
+      "Syria",
+      "Uganda",
+      "Venezuela"
+     ],
+     "dem_drop": [
+      "Canada",
+      "Dominican Republic",
+      "France",
+      "Kenya",
+      "Mexico",
+      "North Macedonia",
+      "Panama",
+      "Togo"
+     ],
+     "slump": [
+      "Burkina Faso",
+      "Costa Rica",
+      "Ecuador",
+      "United Kingdom",
+      "Iran",
+      "Romania",
+      "El Salvador",
+      "Eswatini",
+      "Uganda",
+      "Vanuatu"
+     ],
+     "new_interstate": [
+      "South Korea vs North Korea (war)"
+     ],
+     "oil_index": 108
+    },
+    {
+     "year": 2040,
+     "world_gdp": 28617,
+     "conflict_share": 0.229,
+     "onset": [
+      "Eritrea",
+      "Gambia",
+      "Equatorial Guinea",
+      "Iran",
+      "Nicaragua",
+      "Rwanda",
+      "Vietnam",
+      "Zimbabwe"
+     ],
+     "dem_drop": [
+      "Greece",
+      "Hungary",
+      "Eswatini"
+     ],
+     "slump": [
+      "Denmark",
+      "United Kingdom",
+      "Nicaragua",
+      "Suriname"
+     ],
+     "new_interstate": [
+      "Eritrea vs Sudan (war)",
+      "India vs Pakistan"
+     ],
+     "oil_index": 144
+    },
+    {
+     "year": 2041,
+     "world_gdp": 29564,
+     "conflict_share": 0.194,
+     "onset": [
+      "Czechia",
+      "Madagascar"
+     ],
+     "dem_drop": [
+      "Argentina",
+      "Central African Republic",
+      "Djibouti",
+      "Algeria",
+      "Mexico",
+      "Mongolia",
+      "Slovakia",
+      "Syria",
+      "Tunisia"
+     ],
+     "slump": [
+      "Dominican Republic",
+      "United Kingdom",
+      "El Salvador",
+      "Vanuatu"
+     ],
+     "oil_index": 191
+    },
+    {
+     "year": 2042,
+     "world_gdp": 30265,
+     "conflict_share": 0.211,
+     "onset": [
+      "Burkina Faso",
+      "Democratic Republic of Congo",
+      "Eritrea",
+      "Mozambique",
+      "Nicaragua",
+      "Sudan",
+      "Zimbabwe"
+     ],
+     "dem_drop": [
+      "Argentina",
+      "Botswana",
+      "Democratic Republic of Congo",
+      "Japan",
+      "Moldova",
+      "Senegal",
+      "South Africa"
+     ],
+     "slump": [
+      "Ecuador",
+      "United Kingdom",
+      "Solomon Islands",
+      "Uganda",
+      "Vanuatu"
+     ],
+     "new_interstate": [
+      "India vs Pakistan",
+      "Kazakhstan vs Uzbekistan"
+     ],
+     "oil_index": 151
+    },
+    {
+     "year": 2043,
+     "world_gdp": 30354,
+     "conflict_share": 0.223,
+     "onset": [
+      "Burundi",
+      "Central African Republic",
+      "El Salvador",
+      "Zambia"
+     ],
+     "dem_drop": [
+      "Botswana",
+      "Cuba",
+      "Hungary",
+      "Mongolia",
+      "Nigeria",
+      "Sao Tome and Principe",
+      "United States"
+     ],
+     "slump": [
+      "United Kingdom",
+      "Kazakhstan",
+      "Nicaragua",
+      "El Salvador",
+      "Uganda"
+     ],
+     "pandemic": true,
+     "oil_index": 186
+    },
+    {
+     "year": 2044,
+     "world_gdp": 32204,
+     "conflict_share": 0.217,
+     "onset": [
+      "Mali",
+      "Poland"
+     ],
+     "dem_drop": [
+      "Moldova"
+     ],
+     "slump": [
+      "United Kingdom",
+      "Uganda"
+     ],
+     "new_interstate": [
+      "Cameroon vs Nigeria (war)",
+      "Indonesia vs East Timor",
+      "Nigeria vs Chad (war)"
+     ],
+     "oil_index": 277
+    },
+    {
+     "year": 2045,
+     "world_gdp": 33296,
+     "conflict_share": 0.206,
+     "onset": [
+      "Palestine",
+      "El Salvador"
+     ],
+     "dem_drop": [
+      "Argentina",
+      "Austria",
+      "Indonesia",
+      "Iceland",
+      "Liberia",
+      "Paraguay",
+      "Serbia",
+      "Eswatini"
+     ],
+     "slump": [
+      "Comoros",
+      "Cuba",
+      "Algeria",
+      "Maldives",
+      "Eswatini",
+      "Togo",
+      "Uganda"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan (war)",
+      "Afghanistan vs United States (war)",
+      "Eritrea vs Ethiopia"
+     ],
+     "oil_index": 227
+    },
+    {
+     "year": 2046,
+     "world_gdp": 33833,
+     "conflict_share": 0.217,
+     "onset": [
+      "Argentina",
+      "Eritrea",
+      "Greece",
+      "Nigeria",
+      "Uzbekistan"
+     ],
+     "dem_drop": [
+      "Namibia",
+      "Nepal",
+      "Eswatini",
+      "Turkmenistan"
+     ],
+     "slump": [
+      "Italy",
+      "Nicaragua",
+      "Philippines"
+     ],
+     "new_interstate": [
+      "India vs Pakistan (war)"
+     ],
+     "oil_index": 289
+    },
+    {
+     "year": 2047,
+     "world_gdp": 34118,
+     "conflict_share": 0.2,
+     "onset": [
+      "Central African Republic"
+     ],
+     "dem_drop": [
+      "Botswana",
+      "Cuba",
+      "Spain",
+      "Indonesia",
+      "Namibia",
+      "Nepal",
+      "Eswatini"
+     ],
+     "slump": [
+      "Bahrain",
+      "Guinea-Bissau",
+      "Indonesia",
+      "Israel",
+      "Mauritania",
+      "Eswatini",
+      "United States"
+     ],
+     "new_interstate": [
+      "Afghanistan vs Pakistan",
+      "South Korea vs North Korea"
+     ],
+     "oil_index": 257
+    },
+    {
+     "year": 2048,
+     "world_gdp": 34880,
+     "conflict_share": 0.223,
+     "onset": [
+      "Congo",
+      "Oman",
+      "Sudan",
+      "Uganda"
+     ],
+     "coup": [
+      "Egypt"
+     ],
+     "dem_drop": [
+      "Cameroon",
+      "Egypt",
+      "Nepal",
+      "Panama",
+      "Poland",
+      "Sudan",
+      "Senegal"
+     ],
+     "slump": [
+      "Cape Verde",
+      "Guinea-Bissau",
+      "Indonesia",
+      "Madagascar",
+      "Nicaragua",
+      "Yemen"
+     ],
+     "oil_index": 325
+    },
+    {
+     "year": 2049,
+     "world_gdp": 35631,
+     "conflict_share": 0.206,
+     "onset": [
+      "Honduras"
+     ],
+     "dem_drop": [
+      "Burundi",
+      "Bangladesh",
+      "Botswana",
+      "Ecuador",
+      "Iran",
+      "Nigeria",
+      "Nepal",
+      "Slovakia"
+     ],
+     "slump": [
+      "Congo",
+      "Indonesia",
+      "Maldives",
+      "Nicaragua",
+      "Paraguay"
+     ],
+     "new_interstate": [
+      "Bhutan vs Russia",
+      "South Korea vs North Korea"
+     ],
+     "oil_index": 364
+    },
+    {
+     "year": 2050,
+     "world_gdp": 36370,
+     "conflict_share": 0.189,
+     "onset": [
+      "Guyana",
+      "Iran",
+      "Madagascar"
+     ],
+     "coup": [
+      "Burkina Faso"
+     ],
+     "dem_drop": [
+      "Namibia",
+      "Nepal",
+      "Senegal",
+      "Singapore"
+     ],
+     "slump": [
+      "Guinea-Bissau",
+      "Indonesia",
+      "Lebanon",
+      "Maldives",
+      "Nicaragua",
+      "Sao Tome and Principe",
+      "Turkmenistan",
+      "United States",
+      "Vanuatu"
+     ],
+     "oil_index": 296
+    },
+    {
+     "year": 2051,
+     "world_gdp": 36943,
+     "conflict_share": 0.189,
+     "onset": [
+      "Egypt",
+      "Lebanon",
+      "Sudan"
+     ],
+     "coup": [
+      "Bhutan"
+     ],
+     "dem_drop": [
+      "Bhutan",
+      "Panama",
+      "Zimbabwe"
+     ],
+     "slump": [
+      "Botswana",
+      "Guinea-Bissau",
+      "Indonesia",
+      "Nicaragua",
+      "Suriname",
+      "United States"
+     ],
+     "new_interstate": [
+      "China vs India (war)"
+     ],
+     "oil_index": 270
+    },
+    {
+     "year": 2052,
+     "world_gdp": 38038,
+     "conflict_share": 0.183,
+     "onset": [
+      "Burkina Faso",
+      "Niger"
+     ],
+     "dem_drop": [
+      "Congo",
+      "Djibouti",
+      "Solomon Islands",
+      "Ukraine"
+     ],
+     "slump": [
+      "Bangladesh",
+      "Guinea-Bissau",
+      "Haiti",
+      "Indonesia",
+      "Maldives",
+      "Myanmar",
+      "Niger",
+      "Nicaragua"
+     ],
+     "new_interstate": [
+      "Cameroon vs Nigeria (war)"
+     ],
+     "oil_index": 389
+    },
+    {
+     "year": 2053,
+     "world_gdp": 39163,
+     "conflict_share": 0.206,
+     "onset": [
+      "Armenia",
+      "Bahrain",
+      "Italy",
+      "Sudan",
+      "Uzbekistan"
+     ],
+     "coup": [
+      "Burkina Faso"
+     ],
+     "dem_drop": [
+      "Bhutan",
+      "Dominican Republic",
+      "Ghana",
+      "Honduras",
+      "Jordan",
+      "Malaysia",
+      "Sierra Leone",
+      "Chad"
+     ],
+     "slump": [
+      "Guinea-Bissau",
+      "Guyana",
+      "Indonesia",
+      "Iran",
+      "Maldives",
+      "Montenegro",
+      "Nicaragua",
+      "Palestine",
+      "United States"
+     ],
+     "new_interstate": [
+      "North Macedonia vs Russia"
+     ],
+     "oil_index": 166
+    },
+    {
+     "year": 2054,
+     "world_gdp": 40340,
+     "conflict_share": 0.194,
+     "onset": [
+      "Qatar"
+     ],
+     "coup": [
+      "Malawi"
+     ],
+     "dem_drop": [
+      "Indonesia",
+      "Namibia",
+      "Paraguay",
+      "Sierra Leone",
+      "Venezuela"
+     ],
+     "slump": [
+      "Bhutan",
+      "Botswana",
+      "Guinea-Bissau",
+      "Indonesia",
+      "Nicaragua",
+      "Palestine",
+      "Serbia",
+      "East Timor",
+      "United States"
+     ],
+     "new_interstate": [
+      "France vs Nigeria (war)",
+      "Gabon vs Nigeria (war)"
+     ],
+     "oil_index": 178
+    },
+    {
+     "year": 2055,
+     "world_gdp": 41343,
+     "conflict_share": 0.2,
+     "onset": [
+      "Botswana",
+      "Dominican Republic",
+      "Nicaragua",
+      "Vietnam"
+     ],
+     "dem_drop": [
+      "United Arab Emirates",
+      "Cote d'Ivoire",
+      "Djibouti",
+      "Dominican Republic",
+      "Hungary",
+      "Italy",
+      "Lesotho",
+      "Mauritania",
+      "Portugal",
+      "Slovakia"
+     ],
+     "slump": [
+      "Albania",
+      "Guinea-Bissau",
+      "Indonesia",
+      "Montenegro",
+      "Mauritania",
+      "Nicaragua"
+     ],
+     "oil_index": 143
+    },
+    {
+     "year": 2056,
+     "world_gdp": 42818,
+     "conflict_share": 0.189,
+     "onset": [
+      "Cote d'Ivoire",
+      "Tajikistan"
+     ],
+     "coup": [
+      "Fiji"
+     ],
+     "dem_drop": [
+      "Bhutan",
+      "Madagascar",
+      "Turkmenistan",
+      "Venezuela"
+     ],
+     "slump": [
+      "Mali"
+     ],
+     "oil_index": 136
+    },
+    {
+     "year": 2057,
+     "world_gdp": 44265,
+     "conflict_share": 0.2,
+     "onset": [
+      "Sudan",
+      "Yemen"
+     ],
+     "dem_drop": [
+      "Armenia",
+      "Bhutan",
+      "Cote d'Ivoire",
+      "Cameroon",
+      "Iran",
+      "Malawi",
+      "Philippines",
+      "Portugal",
+      "Senegal",
+      "Togo",
+      "Tanzania"
+     ],
+     "slump": [
+      "Denmark",
+      "Gambia",
+      "Moldova",
+      "Namibia",
+      "Niger"
+     ],
+     "new_interstate": [
+      "India vs Pakistan"
+     ],
+     "oil_index": 126
+    },
+    {
+     "year": 2058,
+     "world_gdp": 46652,
+     "conflict_share": 0.189,
+     "onset": [
+      "Mauritania"
+     ],
+     "dem_drop": [
+      "Belgium",
+      "Brazil",
+      "Iraq",
+      "Liberia",
+      "Madagascar",
+      "North Macedonia",
+      "Malta",
+      "Sao Tome and Principe",
+      "Seychelles",
+      "Togo"
+     ],
+     "slump": [
+      "North Macedonia",
+      "Mauritania",
+      "Nicaragua",
+      "Suriname"
+     ],
+     "new_interstate": [
+      "Cameroon vs Japan (war)"
+     ],
+     "oil_index": 158
+    },
+    {
+     "year": 2059,
+     "world_gdp": 49263,
+     "conflict_share": 0.194,
+     "onset": [
+      "Burkina Faso",
+      "Congo",
+      "United States"
+     ],
+     "coup": [
+      "Fiji"
+     ],
+     "dem_drop": [
+      "Gambia",
+      "Iran",
+      "Qatar",
+      "Yemen",
+      "South Africa"
+     ],
+     "slump": [
+      "Azerbaijan",
+      "Barbados",
+      "Guinea-Bissau",
+      "Rwanda"
+     ],
+     "new_interstate": [
+      "Armenia vs Azerbaijan"
+     ],
+     "oil_index": 196
+    },
+    {
+     "year": 2060,
+     "world_gdp": 52160,
+     "conflict_share": 0.189,
+     "onset": [
+      "Paraguay"
+     ],
+     "dem_drop": [
+      "Fiji",
+      "Mauritania",
+      "Namibia",
+      "Seychelles",
+      "Togo"
+     ],
+     "slump": [
+      "Guinea-Bissau"
+     ],
+     "oil_index": 179
+    },
+    {
+     "year": 2061,
+     "world_gdp": 54987,
+     "conflict_share": 0.177,
+     "onset": [
+      "Egypt"
+     ],
+     "coup": [
+      "Mali"
+     ],
+     "dem_drop": [
+      "Armenia",
+      "Democratic Republic of Congo",
+      "Iraq",
+      "Chad"
+     ],
+     "slump": [
+      "Hong Kong",
+      "Kyrgyzstan",
+      "Nicaragua",
+      "Somalia"
+     ],
+     "oil_index": 208
+    },
+    {
+     "year": 2062,
+     "world_gdp": 57682,
+     "conflict_share": 0.2,
+     "onset": [
+      "Algeria",
+      "Guinea",
+      "Malaysia",
+      "Niger",
+      "Sudan",
+      "Yemen"
+     ],
+     "dem_drop": [
+      "Armenia",
+      "Indonesia",
+      "Sri Lanka",
+      "Madagascar",
+      "North Macedonia",
+      "Paraguay",
+      "Sao Tome and Principe",
+      "South Africa"
+     ],
+     "slump": [
+      "Mongolia",
+      "Sao Tome and Principe",
+      "Tunisia"
+     ],
+     "new_interstate": [
+      "Armenia vs Azerbaijan",
+      "Palestine vs Russia (war)"
+     ],
+     "oil_index": 221
+    },
+    {
+     "year": 2063,
+     "world_gdp": 60602,
+     "conflict_share": 0.2,
+     "onset": [
+      "Cuba",
+      "Equatorial Guinea",
+      "Indonesia",
+      "Saudi Arabia"
+     ],
+     "dem_drop": [
+      "Democratic Republic of Congo",
+      "Dominican Republic",
+      "Gabon",
+      "Guyana",
+      "Iran",
+      "Madagascar",
+      "Niger",
+      "Panama",
+      "Russia",
+      "Singapore",
+      "Taiwan"
+     ],
+     "slump": [
+      "Denmark",
+      "Guinea-Bissau",
+      "Niger",
+      "Peru"
+     ],
+     "oil_index": 177
+    },
+    {
+     "year": 2064,
+     "world_gdp": 62786,
+     "conflict_share": 0.217,
+     "onset": [
+      "Belgium",
+      "Congo",
+      "Rwanda",
+      "Tajikistan",
+      "East Timor"
+     ],
+     "dem_drop": [
+      "Belarus",
+      "Kazakhstan",
+      "Madagascar",
+      "Mozambique",
+      "Nigeria",
+      "Panama",
+      "Zambia"
+     ],
+     "slump": [
+      "Central African Republic",
+      "Egypt",
+      "Kazakhstan",
+      "Laos",
+      "Maldives",
+      "Mongolia",
+      "Sao Tome and Principe"
+     ],
+     "oil_index": 90
+    },
+    {
+     "year": 2065,
+     "world_gdp": 64998,
+     "conflict_share": 0.246,
+     "onset": [
+      "Burundi",
+      "United Kingdom",
+      "Japan",
+      "Lebanon",
+      "Turkey",
+      "Vietnam"
+     ],
+     "dem_drop": [
+      "Madagascar",
+      "Sao Tome and Principe",
+      "Zambia"
+     ],
+     "slump": [
+      "Belarus",
+      "Mongolia",
+      "Nicaragua",
+      "Solomon Islands"
+     ],
+     "new_interstate": [
+      "India vs Pakistan"
+     ],
+     "oil_index": 85
+    }
+   ]
+  }
+ },
+ "knockouts": {
+  "thresholds": {
+   "economic": -9.501033782958984,
+   "deaths": 31874904.0,
+   "civil_war": 0.41843003034591675,
+   "autocracy": -0.26953521370887756
+  },
+  "runs": {
+   "no_interstate_wars": {
+    "economic": {
+     "tail_share": 0.010125,
+     "median": -10.45933723449707,
+     "q99": -9.500372886657715
+    },
+    "deaths": {
+     "tail_share": 0.0,
+     "median": 0.0,
+     "q99": 0.0
+    },
+    "civil_war": {
+     "tail_share": 0.00825,
+     "median": 0.2045714408159256,
+     "q99": 0.4098585844039917
+    },
+    "autocracy": {
+     "tail_share": 0.006375,
+     "median": -0.4650138020515442,
+     "q99": -0.2814425528049469
+    }
+   },
+   "no_nuclear_use": {
+    "economic": {
+     "tail_share": 0.01,
+     "median": -10.445625305175781,
+     "q99": -9.501060485839844
+    },
+    "deaths": {
+     "tail_share": 0.009,
+     "median": 2413841.75,
+     "q99": 30912426.0
+    },
+    "civil_war": {
+     "tail_share": 0.01,
+     "median": 0.206142857670784,
+     "q99": 0.41843003034591675
+    },
+    "autocracy": {
+     "tail_share": 0.010125,
+     "median": -0.4543091058731079,
+     "q99": -0.26950618624687195
+    }
+   },
+   "no_pandemics": {
+    "economic": {
+     "tail_share": 0.004625,
+     "median": -10.518980026245117,
+     "q99": -9.579780578613281
+    },
+    "deaths": {
+     "tail_share": 0.0125,
+     "median": 2455652.0,
+     "q99": 34767532.0
+    },
+    "civil_war": {
+     "tail_share": 0.00975,
+     "median": 0.20642857253551483,
+     "q99": 0.41786298155784607
+    },
+    "autocracy": {
+     "tail_share": 0.0105,
+     "median": -0.4535388946533203,
+     "q99": -0.26895925402641296
+    }
+   },
+   "no_climate_damage": {
+    "economic": {
+     "tail_share": 0.001,
+     "median": -10.607721328735352,
+     "q99": -9.758613586425781
+    },
+    "deaths": {
+     "tail_share": 0.010375,
+     "median": 2447272.0,
+     "q99": 32448658.0
+    },
+    "civil_war": {
+     "tail_share": 0.010125,
+     "median": 0.20628571510314941,
+     "q99": 0.4187142848968506
+    },
+    "autocracy": {
+     "tail_share": 0.011375,
+     "median": -0.4531196057796478,
+     "q99": -0.26682814955711365
+    }
+   },
+   "no_ai": {
+    "economic": {
+     "tail_share": 0.026375,
+     "median": -10.113099098205566,
+     "q99": -9.381269454956055
+    },
+    "deaths": {
+     "tail_share": 0.00575,
+     "median": 2136411.0,
+     "q99": 25776496.0
+    },
+    "civil_war": {
+     "tail_share": 0.00825,
+     "median": 0.20399999618530273,
+     "q99": 0.4121472239494324
+    },
+    "autocracy": {
+     "tail_share": 0.00225,
+     "median": -0.4750770330429077,
+     "q99": -0.304013192653656
+    }
+   },
+   "no_bubbles": {
+    "economic": {
+     "tail_share": 0.009,
+     "median": -10.454916000366211,
+     "q99": -9.51179027557373
+    },
+    "deaths": {
+     "tail_share": 0.010625,
+     "median": 2456721.0,
+     "q99": 32319588.0
+    },
+    "civil_war": {
+     "tail_share": 0.01,
+     "median": 0.20600000023841858,
+     "q99": 0.41843003034591675
+    },
+    "autocracy": {
+     "tail_share": 0.01025,
+     "median": -0.4541333019733429,
+     "q99": -0.26883208751678467
+    }
+   },
+   "no_alliance_cascades": {
+    "economic": {
+     "tail_share": 0.00925,
+     "median": -10.457910537719727,
+     "q99": -9.510930061340332
+    },
+    "deaths": {
+     "tail_share": 0.005,
+     "median": 1812155.0,
+     "q99": 24721082.0
+    },
+    "civil_war": {
+     "tail_share": 0.00975,
+     "median": 0.20600000023841858,
+     "q99": 0.41729453206062317
+    },
+    "autocracy": {
+     "tail_share": 0.010125,
+     "median": -0.45485764741897583,
+     "q99": -0.26921072602272034
+    }
+   },
+   "no_war_spillover": {
+    "economic": {
+     "tail_share": 0.009875,
+     "median": -10.445592880249023,
+     "q99": -9.502392768859863
+    },
+    "deaths": {
+     "tail_share": 0.011375,
+     "median": 2442662.0,
+     "q99": 33728736.0
+    },
+    "civil_war": {
+     "tail_share": 0.010125,
+     "median": 0.20600000023841858,
+     "q99": 0.4185773432254791
+    },
+    "autocracy": {
+     "tail_share": 0.0105,
+     "median": -0.4542503356933594,
+     "q99": -0.2689551115036011
+    }
+   },
+   "no_financial_contagion": {
+    "economic": {
+     "tail_share": 0.0105,
+     "median": -10.444803237915039,
+     "q99": -9.498586654663086
+    },
+    "deaths": {
+     "tail_share": 0.010375,
+     "median": 2455298.5,
+     "q99": 32036540.0
+    },
+    "civil_war": {
+     "tail_share": 0.00975,
+     "median": 0.20628571510314941,
+     "q99": 0.41585713624954224
+    },
+    "autocracy": {
+     "tail_share": 0.009875,
+     "median": -0.4542617201805115,
+     "q99": -0.2696426510810852
+    }
+   },
+   "no_country_frailty": {
+    "economic": {
+     "tail_share": 0.010375,
+     "median": -10.451098442077637,
+     "q99": -9.496907234191895
+    },
+    "deaths": {
+     "tail_share": 0.01125,
+     "median": 2477558.0,
+     "q99": 33851128.0
+    },
+    "civil_war": {
+     "tail_share": 0.00875,
+     "median": 0.1947142779827118,
+     "q99": 0.4101501703262329
+    },
+    "autocracy": {
+     "tail_share": 0.011625,
+     "median": -0.45419853925704956,
+     "q99": -0.26503655314445496
+    }
+   },
+   "no_world_mood": {
+    "economic": {
+     "tail_share": 0.01,
+     "median": -10.443244934082031,
+     "q99": -9.50131607055664
+    },
+    "deaths": {
+     "tail_share": 0.01225,
+     "median": 2446921.5,
+     "q99": 33469288.0
+    },
+    "civil_war": {
+     "tail_share": 0.005875,
+     "median": 0.2054285705089569,
+     "q99": 0.394580215215683
+    },
+    "autocracy": {
+     "tail_share": 0.01075,
+     "median": -0.4542737603187561,
+     "q99": -0.26843419671058655
+    }
+   },
+   "no_tail_catastrophes": {
+    "economic": {
+     "tail_share": 0.0105,
+     "median": -10.443435668945312,
+     "q99": -9.496051788330078
+    },
+    "deaths": {
+     "tail_share": 0.009875,
+     "median": 2441398.0,
+     "q99": 31775364.0
+    },
+    "civil_war": {
+     "tail_share": 0.00975,
+     "median": 0.206142857670784,
+     "q99": 0.41729453206062317
+    },
+    "autocracy": {
+     "tail_share": 0.01,
+     "median": -0.4544559419155121,
+     "q99": -0.2697071433067322
+    }
+   },
+   "no_climate_tails": {
+    "economic": {
+     "tail_share": 0.009625,
+     "median": -10.447317123413086,
+     "q99": -9.506794929504395
+    },
+    "deaths": {
+     "tail_share": 0.009625,
+     "median": 2437133.0,
+     "q99": 31579776.0
+    },
+    "civil_war": {
+     "tail_share": 0.008375,
+     "median": 0.20271429419517517,
+     "q99": 0.4138600826263428
+    },
+    "autocracy": {
+     "tail_share": 0.01,
+     "median": -0.45469745993614197,
+     "q99": -0.26989179849624634
+    }
+   },
+   "smallest_climate_damage": {
+    "economic": {
+     "tail_share": 0.00125,
+     "median": -10.595706939697266,
+     "q99": -9.748127937316895
+    },
+    "deaths": {
+     "tail_share": 0.0105,
+     "median": 2449953.0,
+     "q99": 32136376.0
+    },
+    "civil_war": {
+     "tail_share": 0.01,
+     "median": 0.20642857253551483,
+     "q99": 0.41843149065971375
+    },
+    "autocracy": {
+     "tail_share": 0.0115,
+     "median": -0.45300430059432983,
+     "q99": -0.2669680714607239
+    }
+   }
+  }
+ }
+}

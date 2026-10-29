@@ -1,0 +1,100 @@
+{
+ "civil_conflict_5y": {
+  "nested_gain_mean": 0.0011,
+  "origins_better": 5,
+  "chosen_w_per_origin": [
+   0.2,
+   0.1,
+   0.1,
+   0.1,
+   0.1,
+   0.1,
+   0.1
+  ],
+  "w_all_dev": 0.1
+ },
+ "econ_collapse_5y": {
+  "nested_gain_mean": 0.0,
+  "origins_better": 0,
+  "chosen_w_per_origin": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "w_all_dev": 0.0
+ },
+ "autocratization_5y": {
+  "nested_gain_mean": -0.0034,
+  "origins_better": 0,
+  "chosen_w_per_origin": [
+   0.1,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.1
+  ],
+  "w_all_dev": 0.0
+ },
+ "coup_5y": {
+  "nested_gain_mean": -0.0003,
+  "origins_better": 2,
+  "chosen_w_per_origin": [
+   0.1,
+   0.1,
+   0.1,
+   0.0,
+   0.1,
+   0.1,
+   0.1
+  ],
+  "w_all_dev": 0.1
+ },
+ "onset_1y": {
+  "nested_gain_mean": -0.0014,
+  "origins_better": 2,
+  "chosen_w_per_origin": [
+   0.1,
+   0.0,
+   0.1,
+   0.1,
+   0.1,
+   0.2,
+   0.1
+  ],
+  "w_all_dev": 0.1
+ },
+ "termination_1y": {
+  "nested_gain_mean": -0.0005,
+  "origins_better": 4,
+  "chosen_w_per_origin": [
+   0.3,
+   0.2,
+   0.2,
+   0.1,
+   0.3,
+   0.2,
+   0.3
+  ],
+  "w_all_dev": 0.2
+ },
+ "coup_1y": {
+  "nested_gain_mean": 0.0,
+  "origins_better": 0,
+  "chosen_w_per_origin": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "w_all_dev": 0.0
+ }
+}

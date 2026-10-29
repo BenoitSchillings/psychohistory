@@ -1,0 +1,312 @@
+{
+ "coverage": {
+  "growth_vs_own_trend": 0.306,
+  "growth_vs_neighbours": 0.345,
+  "schooling_ahead_of_income": 0.277,
+  "educated_unemployment": 0.113,
+  "youth_unemployment": 0.161
+ },
+ "logit": {
+  "onset_1y:growth_vs_own_trend": {
+   "coef_sd": -0.052,
+   "se": 0.072,
+   "p": 0.467,
+   "n": 8144,
+   "events": 244
+  },
+  "onset_1y:growth_vs_neighbours": {
+   "coef_sd": 0.045,
+   "se": 0.058,
+   "p": 0.442,
+   "n": 8690,
+   "events": 262
+  },
+  "onset_1y:schooling_ahead_of_income": {
+   "coef_sd": -0.279,
+   "se": 0.089,
+   "p": 0.002,
+   "n": 6649,
+   "events": 189
+  },
+  "onset_1y:educated_unemployment": {
+   "coef_sd": 0.223,
+   "se": 0.107,
+   "p": 0.037,
+   "n": 3149,
+   "events": 85
+  },
+  "onset_1y:youth_unemployment": {
+   "coef_sd": 0.17,
+   "se": 0.124,
+   "p": 0.171,
+   "n": 4451,
+   "events": 134
+  },
+  "civil_conflict_5y:growth_vs_own_trend": {
+   "coef_sd": -0.041,
+   "se": 0.072,
+   "p": 0.57,
+   "n": 7628,
+   "events": 844
+  },
+  "civil_conflict_5y:growth_vs_neighbours": {
+   "coef_sd": 0.012,
+   "se": 0.055,
+   "p": 0.823,
+   "n": 8174,
+   "events": 921
+  },
+  "civil_conflict_5y:schooling_ahead_of_income": {
+   "coef_sd": -0.393,
+   "se": 0.099,
+   "p": 0.0,
+   "n": 6215,
+   "events": 677
+  },
+  "civil_conflict_5y:educated_unemployment": {
+   "coef_sd": 0.377,
+   "se": 0.144,
+   "p": 0.009,
+   "n": 2717,
+   "events": 253
+  },
+  "civil_conflict_5y:youth_unemployment": {
+   "coef_sd": 0.201,
+   "se": 0.129,
+   "p": 0.119,
+   "n": 3941,
+   "events": 403
+  },
+  "coup_1y:growth_vs_own_trend": {
+   "coef_sd": -0.073,
+   "se": 0.059,
+   "p": 0.218,
+   "n": 9526,
+   "events": 339
+  },
+  "coup_1y:growth_vs_neighbours": {
+   "coef_sd": -0.071,
+   "se": 0.048,
+   "p": 0.136,
+   "n": 10040,
+   "events": 379
+  },
+  "coup_1y:schooling_ahead_of_income": {
+   "coef_sd": -0.341,
+   "se": 0.121,
+   "p": 0.005,
+   "n": 7736,
+   "events": 279
+  },
+  "coup_1y:educated_unemployment": {
+   "coef_sd": -0.181,
+   "se": 0.357,
+   "p": 0.612,
+   "n": 3828,
+   "events": 50
+  },
+  "coup_1y:youth_unemployment": {
+   "coef_sd": -0.135,
+   "se": 0.129,
+   "p": 0.292,
+   "n": 5323,
+   "events": 96
+  },
+  "econ_collapse_5y:growth_vs_own_trend": {
+   "coef_sd": -0.332,
+   "se": 0.064,
+   "p": 0.0,
+   "n": 9037,
+   "events": 1009
+  },
+  "econ_collapse_5y:growth_vs_neighbours": {
+   "coef_sd": -0.301,
+   "se": 0.06,
+   "p": 0.0,
+   "n": 9656,
+   "events": 1096
+  },
+  "econ_collapse_5y:schooling_ahead_of_income": {
+   "coef_sd": -0.154,
+   "se": 0.099,
+   "p": 0.12,
+   "n": 7349,
+   "events": 708
+  },
+  "econ_collapse_5y:educated_unemployment": {
+   "coef_sd": 0.208,
+   "se": 0.123,
+   "p": 0.09,
+   "n": 3327,
+   "events": 260
+  },
+  "econ_collapse_5y:youth_unemployment": {
+   "coef_sd": 0.096,
+   "se": 0.105,
+   "p": 0.363,
+   "n": 4755,
+   "events": 419
+  },
+  "autocratization_5y:growth_vs_own_trend": {
+   "coef_sd": -0.072,
+   "se": 0.078,
+   "p": 0.36,
+   "n": 8131,
+   "events": 598
+  },
+  "autocratization_5y:growth_vs_neighbours": {
+   "coef_sd": -0.042,
+   "se": 0.082,
+   "p": 0.604,
+   "n": 8586,
+   "events": 665
+  },
+  "autocratization_5y:schooling_ahead_of_income": {
+   "coef_sd": -0.284,
+   "se": 0.11,
+   "p": 0.01,
+   "n": 6741,
+   "events": 525
+  },
+  "autocratization_5y:educated_unemployment": {
+   "coef_sd": 0.092,
+   "se": 0.15,
+   "p": 0.539,
+   "n": 3238,
+   "events": 279
+  },
+  "autocratization_5y:youth_unemployment": {
+   "coef_sd": -0.083,
+   "se": 0.125,
+   "p": 0.504,
+   "n": 4513,
+   "events": 382
+  }
+ },
+ "gbm_backtest": {
+  "base:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8128,
+    "bss": 0.1284
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6479,
+    "bss": 0.0705
+   },
+   "autocratization_5y": {
+    "auc": 0.8393,
+    "bss": 0.0933
+   },
+   "coup_5y": {
+    "auc": 0.8282,
+    "bss": 0.1919
+   },
+   "onset_1y": {
+    "auc": 0.8383,
+    "bss": 0.0557
+   },
+   "termination_1y": {
+    "auc": 0.7327,
+    "bss": 0.1007
+   },
+   "coup_1y": {
+    "auc": 0.8481,
+    "bss": 0.0832
+   },
+   "score": 0.9031
+  },
+  "base:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9104,
+    "bss": 0.25
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7917,
+    "bss": 0.096
+   },
+   "autocratization_5y": {
+    "auc": 0.7295,
+    "bss": 0.0699
+   },
+   "coup_5y": {
+    "auc": 0.8446,
+    "bss": 0.2577
+   },
+   "onset_1y": {
+    "auc": 0.9158,
+    "bss": 0.0951
+   },
+   "termination_1y": {
+    "auc": 0.7388,
+    "bss": 0.1292
+   },
+   "coup_1y": {
+    "auc": 0.8366,
+    "bss": 0.0925
+   },
+   "score": 0.9875
+  },
+  "deprivation:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8144,
+    "bss": 0.1314
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6441,
+    "bss": 0.0694
+   },
+   "autocratization_5y": {
+    "auc": 0.8371,
+    "bss": 0.093
+   },
+   "coup_5y": {
+    "auc": 0.8288,
+    "bss": 0.1895
+   },
+   "onset_1y": {
+    "auc": 0.8391,
+    "bss": 0.0554
+   },
+   "termination_1y": {
+    "auc": 0.7292,
+    "bss": 0.099
+   },
+   "coup_1y": {
+    "auc": 0.8479,
+    "bss": 0.0808
+   },
+   "score": 0.9019
+  },
+  "deprivation:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9107,
+    "bss": 0.2498
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7954,
+    "bss": 0.0957
+   },
+   "autocratization_5y": {
+    "auc": 0.7294,
+    "bss": 0.0737
+   },
+   "coup_5y": {
+    "auc": 0.8394,
+    "bss": 0.2557
+   },
+   "onset_1y": {
+    "auc": 0.9143,
+    "bss": 0.0912
+   },
+   "termination_1y": {
+    "auc": 0.7421,
+    "bss": 0.1336
+   },
+   "coup_1y": {
+    "auc": 0.8203,
+    "bss": 0.09
+   },
+   "score": 0.9875
+  }
+ }
+}

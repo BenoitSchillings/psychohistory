@@ -1,0 +1,148 @@
+{
+ "logit": {
+  "onset_1y:warm10": {
+   "coef_sd": 0.202,
+   "se": 0.135,
+   "p": 0.135,
+   "n": 7659,
+   "events": 245
+  },
+  "onset_1y:heat10": {
+   "coef_sd": 0.009,
+   "se": 0.104,
+   "p": 0.934,
+   "n": 7659,
+   "events": 245
+  },
+  "onset_1y:warm10_agri": {
+   "coef_sd": 0.234,
+   "se": 0.098,
+   "p": 0.018,
+   "n": 6594,
+   "events": 219
+  },
+  "onset_1y:warm10_poor": {
+   "coef_sd": 0.27,
+   "se": 0.137,
+   "p": 0.049,
+   "n": 7659,
+   "events": 245
+  },
+  "onset_1y:warm10_agex": {
+   "coef_sd": 0.039,
+   "se": 0.055,
+   "p": 0.478,
+   "n": 6594,
+   "events": 219
+  },
+  "onset_1y:heat10_agri": {
+   "coef_sd": 0.196,
+   "se": 0.101,
+   "p": 0.053,
+   "n": 6594,
+   "events": 219
+  },
+  "onset_1y:hot_agri": {
+   "coef_sd": 0.091,
+   "se": 0.083,
+   "p": 0.275,
+   "n": 6594,
+   "events": 219
+  },
+  "civil_conflict_5y:warm10": {
+   "coef_sd": 0.13,
+   "se": 0.179,
+   "p": 0.467,
+   "n": 7159,
+   "events": 847
+  },
+  "civil_conflict_5y:heat10": {
+   "coef_sd": -0.076,
+   "se": 0.121,
+   "p": 0.529,
+   "n": 7159,
+   "events": 847
+  },
+  "civil_conflict_5y:warm10_agri": {
+   "coef_sd": 0.337,
+   "se": 0.142,
+   "p": 0.018,
+   "n": 6099,
+   "events": 745
+  },
+  "civil_conflict_5y:warm10_poor": {
+   "coef_sd": 0.387,
+   "se": 0.168,
+   "p": 0.021,
+   "n": 7159,
+   "events": 847
+  },
+  "civil_conflict_5y:warm10_agex": {
+   "coef_sd": 0.077,
+   "se": 0.069,
+   "p": 0.264,
+   "n": 6099,
+   "events": 745
+  },
+  "civil_conflict_5y:heat10_agri": {
+   "coef_sd": 0.26,
+   "se": 0.13,
+   "p": 0.046,
+   "n": 6099,
+   "events": 745
+  },
+  "civil_conflict_5y:hot_agri": {
+   "coef_sd": 0.134,
+   "se": 0.115,
+   "p": 0.244,
+   "n": 6099,
+   "events": 745
+  }
+ },
+ "gbm_backtest": {
+  "base:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8068,
+    "bss": 0.13
+   },
+   "onset_1y": {
+    "auc": 0.8376,
+    "bss": 0.0557
+   },
+   "score": 0.9185
+  },
+  "base:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9135,
+    "bss": 0.2465
+   },
+   "onset_1y": {
+    "auc": 0.9171,
+    "bss": 0.0923
+   },
+   "score": 1.0038
+  },
+  "climate:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8051,
+    "bss": 0.1213
+   },
+   "onset_1y": {
+    "auc": 0.8368,
+    "bss": 0.0544
+   },
+   "score": 0.9144
+  },
+  "climate:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9076,
+    "bss": 0.2398
+   },
+   "onset_1y": {
+    "auc": 0.9146,
+    "bss": 0.0914
+   },
+   "score": 0.9941
+  }
+ }
+}

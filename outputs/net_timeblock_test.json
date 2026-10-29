@@ -1,0 +1,59 @@
+{
+ "base": {
+  "score": 0.8764,
+  "tasks": {
+   "civil_conflict_5y": {
+    "auc": 0.8087,
+    "n": 4755.0,
+    "events": 542.0
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7093,
+    "n": 5568.0,
+    "events": 851.0
+   },
+   "autocratization_5y": {
+    "auc": 0.7371,
+    "n": 5353.0,
+    "events": 260.0
+   },
+   "coup_5y": {
+    "auc": 0.8139,
+    "n": 5637.0,
+    "events": 652.0
+   }
+  }
+ },
+ "tb": {
+  "score": 0.8505,
+  "tasks": {
+   "civil_conflict_5y": {
+    "auc": 0.8005,
+    "n": 4755.0,
+    "events": 542.0
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6489,
+    "n": 5568.0,
+    "events": 851.0
+   },
+   "autocratization_5y": {
+    "auc": 0.7395,
+    "n": 5353.0,
+    "events": 260.0
+   },
+   "coup_5y": {
+    "auc": 0.8144,
+    "n": 5637.0,
+    "events": 652.0
+   }
+  }
+ },
+ "diff_tb_minus_base": {
+  "point": -0.0259,
+  "ci90": [
+   -0.0389,
+   -0.0152
+  ]
+ }
+}

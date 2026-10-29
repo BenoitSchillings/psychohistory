@@ -1,0 +1,74 @@
+{
+ "base:dev:all": {
+  "brier": 0.022948,
+  "logloss": 0.07937,
+  "events": 649,
+  "n": 11460
+ },
+ "base:dev:new": {
+  "brier": 0.003638,
+  "logloss": 0.02142,
+  "events": 39,
+  "n": 10116
+ },
+ "base:test:all": {
+  "brier": 0.023472,
+  "logloss": 0.07847,
+  "events": 1059,
+  "n": 13752
+ },
+ "base:test:new": {
+  "brier": 0.005696,
+  "logloss": 0.02473,
+  "events": 76,
+  "n": 11916
+ },
+ "material:dev:all": {
+  "brier": 0.023012,
+  "logloss": 0.07948,
+  "events": 649,
+  "n": 11460
+ },
+ "material:dev:new": {
+  "brier": 0.003651,
+  "logloss": 0.02139,
+  "events": 39,
+  "n": 10116
+ },
+ "material:test:all": {
+  "brier": 0.023213,
+  "logloss": 0.07802,
+  "events": 1059,
+  "n": 13752
+ },
+ "material:test:new": {
+  "brier": 0.00576,
+  "logloss": 0.02494,
+  "events": 76,
+  "n": 11916
+ },
+ "rhetoric:dev:all": {
+  "brier": 0.023081,
+  "logloss": 0.07957,
+  "events": 649,
+  "n": 11460
+ },
+ "rhetoric:dev:new": {
+  "brier": 0.003656,
+  "logloss": 0.02128,
+  "events": 39,
+  "n": 10116
+ },
+ "rhetoric:test:all": {
+  "brier": 0.023288,
+  "logloss": 0.07824,
+  "events": 1059,
+  "n": 13752
+ },
+ "rhetoric:test:new": {
+  "brier": 0.005765,
+  "logloss": 0.02502,
+  "events": 76,
+  "n": 11916
+ }
+}

@@ -1,0 +1,276 @@
+{
+ "coverage": {
+  "imf_months": 0.247,
+  "imf_share_10y": 0.282,
+  "imf_new": 1.0,
+  "imf_nonconcessional": 0.247
+ },
+ "logit": {
+  "onset_1y:imf_months": {
+   "coef_sd": 0.033,
+   "se": 0.064,
+   "p": 0.611,
+   "n": 8308,
+   "events": 256
+  },
+  "onset_1y:imf_share_10y": {
+   "coef_sd": 0.112,
+   "se": 0.075,
+   "p": 0.132,
+   "n": 8308,
+   "events": 256
+  },
+  "onset_1y:imf_new": {
+   "coef_sd": 0.042,
+   "se": 0.045,
+   "p": 0.354,
+   "n": 8905,
+   "events": 264
+  },
+  "onset_1y:imf_nonconcessional": {
+   "coef_sd": -0.03,
+   "se": 0.061,
+   "p": 0.626,
+   "n": 8308,
+   "events": 256
+  },
+  "civil_conflict_5y:imf_months": {
+   "coef_sd": 0.142,
+   "se": 0.069,
+   "p": 0.038,
+   "n": 7800,
+   "events": 895
+  },
+  "civil_conflict_5y:imf_share_10y": {
+   "coef_sd": 0.201,
+   "se": 0.09,
+   "p": 0.025,
+   "n": 7800,
+   "events": 895
+  },
+  "civil_conflict_5y:imf_new": {
+   "coef_sd": 0.048,
+   "se": 0.031,
+   "p": 0.118,
+   "n": 8389,
+   "events": 936
+  },
+  "civil_conflict_5y:imf_nonconcessional": {
+   "coef_sd": 0.119,
+   "se": 0.063,
+   "p": 0.058,
+   "n": 7800,
+   "events": 895
+  },
+  "coup_1y:imf_months": {
+   "coef_sd": 0.148,
+   "se": 0.06,
+   "p": 0.014,
+   "n": 9903,
+   "events": 371
+  },
+  "coup_1y:imf_share_10y": {
+   "coef_sd": 0.113,
+   "se": 0.073,
+   "p": 0.123,
+   "n": 9903,
+   "events": 371
+  },
+  "coup_1y:imf_new": {
+   "coef_sd": 0.083,
+   "se": 0.043,
+   "p": 0.055,
+   "n": 10187,
+   "events": 386
+  },
+  "coup_1y:imf_nonconcessional": {
+   "coef_sd": 0.177,
+   "se": 0.058,
+   "p": 0.002,
+   "n": 9903,
+   "events": 371
+  },
+  "econ_collapse_5y:imf_months": {
+   "coef_sd": -0.087,
+   "se": 0.065,
+   "p": 0.182,
+   "n": 9261,
+   "events": 1046
+  },
+  "econ_collapse_5y:imf_share_10y": {
+   "coef_sd": -0.109,
+   "se": 0.077,
+   "p": 0.158,
+   "n": 9261,
+   "events": 1046
+  },
+  "econ_collapse_5y:imf_new": {
+   "coef_sd": 0.062,
+   "se": 0.028,
+   "p": 0.026,
+   "n": 9883,
+   "events": 1108
+  },
+  "econ_collapse_5y:imf_nonconcessional": {
+   "coef_sd": -0.038,
+   "se": 0.061,
+   "p": 0.54,
+   "n": 9261,
+   "events": 1046
+  },
+  "autocratization_5y:imf_months": {
+   "coef_sd": 0.073,
+   "se": 0.069,
+   "p": 0.289,
+   "n": 8321,
+   "events": 640
+  },
+  "autocratization_5y:imf_share_10y": {
+   "coef_sd": 0.126,
+   "se": 0.083,
+   "p": 0.131,
+   "n": 8321,
+   "events": 640
+  },
+  "autocratization_5y:imf_new": {
+   "coef_sd": 0.026,
+   "se": 0.035,
+   "p": 0.449,
+   "n": 8729,
+   "events": 673
+  },
+  "autocratization_5y:imf_nonconcessional": {
+   "coef_sd": 0.096,
+   "se": 0.063,
+   "p": 0.127,
+   "n": 8321,
+   "events": 640
+  }
+ },
+ "gbm_backtest": {
+  "base:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8128,
+    "bss": 0.1284
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6479,
+    "bss": 0.0705
+   },
+   "autocratization_5y": {
+    "auc": 0.8393,
+    "bss": 0.0933
+   },
+   "coup_5y": {
+    "auc": 0.8282,
+    "bss": 0.1919
+   },
+   "onset_1y": {
+    "auc": 0.8383,
+    "bss": 0.0557
+   },
+   "termination_1y": {
+    "auc": 0.7327,
+    "bss": 0.1007
+   },
+   "coup_1y": {
+    "auc": 0.8481,
+    "bss": 0.0832
+   },
+   "score": 0.9031
+  },
+  "base:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9104,
+    "bss": 0.25
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7917,
+    "bss": 0.096
+   },
+   "autocratization_5y": {
+    "auc": 0.7295,
+    "bss": 0.0699
+   },
+   "coup_5y": {
+    "auc": 0.8446,
+    "bss": 0.2577
+   },
+   "onset_1y": {
+    "auc": 0.9158,
+    "bss": 0.0951
+   },
+   "termination_1y": {
+    "auc": 0.7388,
+    "bss": 0.1292
+   },
+   "coup_1y": {
+    "auc": 0.8366,
+    "bss": 0.0925
+   },
+   "score": 0.9875
+  },
+  "imf:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8139,
+    "bss": 0.1308
+   },
+   "econ_collapse_5y": {
+    "auc": 0.648,
+    "bss": 0.0721
+   },
+   "autocratization_5y": {
+    "auc": 0.8374,
+    "bss": 0.0921
+   },
+   "coup_5y": {
+    "auc": 0.8297,
+    "bss": 0.1944
+   },
+   "onset_1y": {
+    "auc": 0.838,
+    "bss": 0.0537
+   },
+   "termination_1y": {
+    "auc": 0.7323,
+    "bss": 0.1009
+   },
+   "coup_1y": {
+    "auc": 0.8462,
+    "bss": 0.0818
+   },
+   "score": 0.9046
+  },
+  "imf:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9111,
+    "bss": 0.2524
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7938,
+    "bss": 0.0962
+   },
+   "autocratization_5y": {
+    "auc": 0.7287,
+    "bss": 0.0709
+   },
+   "coup_5y": {
+    "auc": 0.8439,
+    "bss": 0.259
+   },
+   "onset_1y": {
+    "auc": 0.9148,
+    "bss": 0.0933
+   },
+   "termination_1y": {
+    "auc": 0.7411,
+    "bss": 0.131
+   },
+   "coup_1y": {
+    "auc": 0.8236,
+    "bss": 0.0905
+   },
+   "score": 0.989
+  }
+ }
+}

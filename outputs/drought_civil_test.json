@@ -1,0 +1,106 @@
+{
+ "logit": {
+  "onset_1y:drought_agri": {
+   "coef_sd": 0.093,
+   "se": 0.079,
+   "p": 0.238,
+   "n": 6605,
+   "events": 219
+  },
+  "onset_1y:drought_excl": {
+   "coef_sd": -0.097,
+   "se": 0.065,
+   "p": 0.137,
+   "n": 6605,
+   "events": 219
+  },
+  "onset_1y:drought_agex": {
+   "coef_sd": -0.018,
+   "se": 0.036,
+   "p": 0.613,
+   "n": 6605,
+   "events": 219
+  },
+  "onset_1y:dry_agex": {
+   "coef_sd": 0.043,
+   "se": 0.039,
+   "p": 0.275,
+   "n": 6605,
+   "events": 219
+  },
+  "civil_conflict_5y:drought_agri": {
+   "coef_sd": 0.071,
+   "se": 0.053,
+   "p": 0.178,
+   "n": 6110,
+   "events": 745
+  },
+  "civil_conflict_5y:drought_excl": {
+   "coef_sd": -0.072,
+   "se": 0.05,
+   "p": 0.145,
+   "n": 6110,
+   "events": 745
+  },
+  "civil_conflict_5y:drought_agex": {
+   "coef_sd": -0.032,
+   "se": 0.021,
+   "p": 0.137,
+   "n": 6110,
+   "events": 745
+  },
+  "civil_conflict_5y:dry_agex": {
+   "coef_sd": 0.006,
+   "se": 0.028,
+   "p": 0.816,
+   "n": 6110,
+   "events": 745
+  }
+ },
+ "gbm_backtest": {
+  "base:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8134,
+    "bss": 0.1277
+   },
+   "onset_1y": {
+    "auc": 0.8384,
+    "bss": 0.0556
+   },
+   "score": 0.9035
+  },
+  "base:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9103,
+    "bss": 0.2495
+   },
+   "onset_1y": {
+    "auc": 0.9157,
+    "bss": 0.0949
+   },
+   "score": 0.9873
+  },
+  "drought:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8139,
+    "bss": 0.1301
+   },
+   "onset_1y": {
+    "auc": 0.8391,
+    "bss": 0.0552
+   },
+   "score": 0.9035
+  },
+  "drought:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9132,
+    "bss": 0.2546
+   },
+   "onset_1y": {
+    "auc": 0.9126,
+    "bss": 0.0879
+   },
+   "score": 0.989
+  }
+ }
+}

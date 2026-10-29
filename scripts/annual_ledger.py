@@ -1,0 +1,107 @@
+"""Prospective ledger for the simulator: freeze each published forecast version and score it year by year.
+
+python -P scripts/annual_ledger.py issue    # log the current outputs/forecast.json (once per model version)
+python -P scripts/annual_ledger.py score    # score every logged version against each completed calendar year
+
+issue: a model version is the SHA-256 of the code (psychohistory/*.py, ensemble_config.json) and of the forecast
+itself; each new version is saved once as outputs/ledger/annual_<origin>_<hash12>.json, never overwritten, with
+ - per country: P(in conflict) for each year 2026-2030 (the simulator's conflict path), P(a coup by 2030),
+   P(a new conflict by 2030), and the 5-year risk models' civil-conflict and coup probabilities;
+ - per pair: the 5-year interstate probabilities of the 40 pairs with the highest risk;
+ - per year: world quantiles (5/25/50/75/95) of the share of countries in conflict, coups and new conflicts.
+and a line in outputs/ledger/model_versions.jsonl.
+score: for every calendar year that is complete in the UCDP data (final GED or a December candidate file), the
+per-country P(in conflict) against "25 or more state-based battle deaths in the year" (UCDP GED events located in the
+country: a proxy for the training label, the UCDP/PRIO conflict list, which is published later), with the same-proxy
+persistence baseline (in conflict the year before: probability 0.9 / 0.1) and the world share against the fan.
+Coups and new conflicts need the end of 2030 (or a coup list for each year) and are scored then.
+"""
+import datetime as dt
+import glob
+import hashlib
+import json
+import os
+import sys
+import warnings
+
+warnings.filterwarnings("ignore")
+ROOT = os.path.join(os.path.dirname(__file__), "..")
+sys.path.insert(0, ROOT)
+import numpy as np
+
+LEDGER = os.path.join(ROOT, "outputs", "ledger")
+FC = os.path.join(ROOT, "outputs", "forecast.json")
+YEARS = 5                      # 2026-2030
+
+
+def version():
+    h = hashlib.sha256()
+    files = sorted(glob.glob(os.path.join(ROOT, "psychohistory", "*.py"))) + [os.path.join(ROOT, "psychohistory", "ensemble_config.json"), FC]
+    for f in files:
+        h.update(os.path.basename(f).encode())
+        h.update(open(f, "rb").read())
+    return h.hexdigest()[:12]
+
+
+def issue():
+    os.makedirs(LEDGER, exist_ok=True)
+    d = json.load(open(FC))
+    v = version()
+    origin = int(d["meta"]["origin"])
+    f = os.path.join(LEDGER, f"annual_{origin}_{v}.json")
+    if os.path.exists(f):
+        return f"already logged: {os.path.basename(f)}"
+    yrs = d["world"]["years"][:YEARS]
+    num = lambda x: None if x is None else round(float(x), 5)
+    countries = {c["code"]: {"p_conflict_year": [num(x) for x in c["conflict_path"][:YEARS]], "in_conflict_2025": c["in_conflict"],
+                             "p_coup_by_2030": num(c.get("p_coup_by_2030")), "p_onset_by_2030": num(c.get("p_onset_by_2030")),
+                             "coup_5y": num(c.get("coup_5y")), "civil_conflict_5y": num(c.get("civil_conflict_5y"))}
+                 for c in d["countries"]}
+    pairs = [{k: r[k] for k in ("a", "b", "p_conflict_5y", "p_lo", "p_hi", "ongoing", "observed") if k in r}
+             for r in d["interstate"]["top"][:40]]
+    world = {k: [[num(q[i]) for q in d["world"][k]] for i in range(YEARS)] for k in ("world_conflict_q", "coups_q", "onsets_q")}
+    out = {"version": v, "issued": dt.date.today().isoformat(), "origin": origin, "years": yrs,
+           "n_scenarios": d["meta"].get("n_scenarios"), "countries": countries, "pairs": pairs, "world": world}
+    json.dump(out, open(f, "w"), indent=1)
+    with open(os.path.join(LEDGER, "model_versions.jsonl"), "a") as g:
+        g.write(json.dumps({"version": v, "issued": out["issued"], "origin": origin, "file": os.path.basename(f)}) + "\n")
+    return f"logged {os.path.basename(f)}"
+
+
+def completed_years():
+    """calendar years whose twelve months are all in the UCDP data"""
+    from psychohistory import monthly as MO
+    ly, lm = MO.last_observed()
+    return MO, (ly if lm == 12 else ly - 1)
+
+
+def score():
+    MO, last_full = completed_years()
+    gw2iso, codes = MO.gw_map()
+    D = MO.deaths(codes, gw2iso, last_full, 12)
+    ci = {c: i for i, c in enumerate(codes)}
+    yearly = lambda y: D[:, MO.midx(y, 1):MO.midx(y, 12) + 1].sum(1)
+    out = {"complete_through": last_full, "versions": {}}
+    for f in sorted(glob.glob(os.path.join(LEDGER, "annual_*.json"))):
+        L = json.load(open(f))
+        res = {}
+        for j, y in enumerate(L["years"]):
+            if y > last_full:
+                break
+            obs, prev = yearly(y), yearly(y - 1)
+            rows = [(c, v["p_conflict_year"][j]) for c, v in L["countries"].items() if c in ci and v["p_conflict_year"][j] is not None]
+            p = np.array([r[1] for r in rows])
+            yv = np.array([float(obs[ci[c]] >= 25) for c, _ in rows])
+            pers = np.array([0.9 if prev[ci[c]] >= 25 else 0.1 for c, _ in rows])
+            share = float(yv.mean())
+            q = L["world"]["world_conflict_q"][j]
+            res[str(y)] = {"n": len(rows), "in_conflict": int(yv.sum()), "brier_model": round(float(np.mean((p - yv) ** 2)), 5),
+                           "brier_persistence": round(float(np.mean((pers - yv) ** 2)), 5), "share_observed": round(share, 4),
+                           "share_fan_5_95": [q[0], q[4]], "share_in_90": bool(q[0] <= share <= q[4])}
+        out["versions"][L["version"]] = res or f"first year ({L['years'][0]}) not complete yet (data through {last_full})"
+    return out
+
+
+if __name__ == "__main__":
+    r = issue() if sys.argv[1] == "issue" else score()
+    print(json.dumps(r, indent=1) if isinstance(r, dict) else r)

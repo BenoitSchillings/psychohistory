@@ -1,0 +1,109 @@
+{
+ "C1_crisis_logit": {
+  "coef": {
+   "const": -2.92,
+   "g": -10.519,
+   "low": -0.4347,
+   "ldebt": 0.084,
+   "ddebt": -0.0007,
+   "linfl": 1.0138
+  },
+  "se": {
+   "const": 0.3402,
+   "g": 1.7388,
+   "low": 0.2824,
+   "ldebt": 0.0834,
+   "ddebt": 0.0017,
+   "linfl": 0.2415
+  },
+  "n": 6437,
+  "rate": 0.06571384185179431
+ },
+ "C1_oos_2000_2024": {
+  "auc_new": 0.6515849835204587,
+  "auc_two_bin": 0.5387559509454521,
+  "brier_new": 0.04139179710781472,
+  "brier_two_bin": 0.040325819179496944,
+  "brier_clim": 0.04055110157563516,
+  "n": 3476,
+  "events": 134
+ },
+ "C3_rents_logit": {
+  "onset_1y": {
+   "coef_sd_log_rents": -0.09,
+   "se": 0.073,
+   "n": 6422
+  },
+  "civil_conflict_5y": {
+   "coef_sd_log_rents": -0.063,
+   "se": 0.089,
+   "n": 5912
+  }
+ },
+ "C3_rents_gbm_dev": {
+  "base": {
+   "score": 0.9031,
+   "civil_conflict_5y": {
+    "auc": 0.8128,
+    "bss": 0.1284
+   },
+   "onset_1y": {
+    "auc": 0.8383,
+    "bss": 0.0557
+   }
+  },
+  "rents": {
+   "score": 0.904,
+   "civil_conflict_5y": {
+    "auc": 0.8149,
+    "bss": 0.1316
+   },
+   "onset_1y": {
+    "auc": 0.8375,
+    "bss": 0.0542
+   }
+  }
+ },
+ "D1_fertility_income": {
+  "elasticity_10y": -0.0345,
+  "se": 0.0209,
+  "n": 1713
+ },
+ "D2_yield_weather": {
+  "tas": {
+   "coef": 0.0064,
+   "se": 0.0059
+  },
+  "txx": {
+   "coef": -0.0103,
+   "se": 0.0025
+  },
+  "cdd": {
+   "coef": -0.0001,
+   "se": 0.0002
+  },
+  "pr": {
+   "coef": 0.0567,
+   "se": 0.0161
+  },
+  "n": 9134
+ },
+ "D2_anomaly_correlation": {
+  "tas": {
+   "mean_offdiag": 0.17357825903026358,
+   "n_countries": 175
+  },
+  "txx": {
+   "mean_offdiag": 0.09582972658162149,
+   "n_countries": 175
+  },
+  "cdd": {
+   "mean_offdiag": 0.019886612082496615,
+   "n_countries": 175
+  },
+  "pr": {
+   "mean_offdiag": 0.03587223574012094,
+   "n_countries": 175
+  }
+ }
+}

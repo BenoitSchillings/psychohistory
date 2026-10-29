@@ -1,0 +1,25 @@
+{
+ "calib_recent": 1.6614666604842714,
+ "calib_long": 1.0840750744689116,
+ "drift": {
+  "great_power_war": 0.583,
+  "great_power_war_cow": 0.306,
+  "nuclear_use": 0.161,
+  "china_india_war": 0.39,
+  "india_pakistan_war": 0.529
+ },
+ "long": {
+  "great_power_war": 0.524,
+  "great_power_war_cow": 0.264,
+  "nuclear_use": 0.147,
+  "china_india_war": 0.345,
+  "india_pakistan_war": 0.486
+ },
+ "none": {
+  "great_power_war": 0.505,
+  "great_power_war_cow": 0.252,
+  "nuclear_use": 0.139,
+  "china_india_war": 0.323,
+  "india_pakistan_war": 0.465
+ }
+}

@@ -1,0 +1,194 @@
+{
+ "logit": {
+  "onset_1y:protest_ev_z": {
+   "coef_sd": -0.065,
+   "se": 0.13,
+   "p": 0.62,
+   "n": 3686,
+   "events": 111
+  },
+  "onset_1y:unrest_ev_z": {
+   "coef_sd": 0.232,
+   "se": 0.19,
+   "p": 0.222,
+   "n": 3686,
+   "events": 111
+  },
+  "onset_1y:protest_ev_3y": {
+   "coef_sd": -0.247,
+   "se": 0.134,
+   "p": 0.065,
+   "n": 3780,
+   "events": 112
+  },
+  "onset_1y:protest_surge": {
+   "coef_sd": 0.1,
+   "se": 0.113,
+   "p": 0.376,
+   "n": 3651,
+   "events": 110
+  },
+  "civil_conflict_5y:protest_ev_z": {
+   "coef_sd": -0.049,
+   "se": 0.097,
+   "p": 0.613,
+   "n": 3188,
+   "events": 329
+  },
+  "civil_conflict_5y:unrest_ev_z": {
+   "coef_sd": 0.219,
+   "se": 0.165,
+   "p": 0.186,
+   "n": 3188,
+   "events": 329
+  },
+  "civil_conflict_5y:protest_ev_3y": {
+   "coef_sd": -0.207,
+   "se": 0.142,
+   "p": 0.144,
+   "n": 3267,
+   "events": 333
+  },
+  "civil_conflict_5y:protest_surge": {
+   "coef_sd": 0.119,
+   "se": 0.06,
+   "p": 0.045,
+   "n": 3157,
+   "events": 327
+  },
+  "coup_1y:protest_ev_z": {
+   "coef_sd": 0.221,
+   "se": 0.162,
+   "p": 0.174,
+   "n": 4416,
+   "events": 62
+  },
+  "coup_1y:unrest_ev_z": {
+   "coef_sd": 0.51,
+   "se": 0.234,
+   "p": 0.029,
+   "n": 4416,
+   "events": 62
+  },
+  "coup_1y:protest_ev_3y": {
+   "coef_sd": 0.126,
+   "se": 0.168,
+   "p": 0.454,
+   "n": 4510,
+   "events": 66
+  },
+  "coup_1y:protest_surge": {
+   "coef_sd": 0.114,
+   "se": 0.13,
+   "p": 0.378,
+   "n": 4378,
+   "events": 60
+  },
+  "econ_collapse_5y:protest_ev_z": {
+   "coef_sd": -0.062,
+   "se": 0.097,
+   "p": 0.524,
+   "n": 3847,
+   "events": 290
+  },
+  "econ_collapse_5y:unrest_ev_z": {
+   "coef_sd": 0.096,
+   "se": 0.126,
+   "p": 0.449,
+   "n": 3847,
+   "events": 290
+  },
+  "econ_collapse_5y:protest_ev_3y": {
+   "coef_sd": -0.112,
+   "se": 0.132,
+   "p": 0.394,
+   "n": 3926,
+   "events": 299
+  },
+  "econ_collapse_5y:protest_surge": {
+   "coef_sd": 0.008,
+   "se": 0.043,
+   "p": 0.844,
+   "n": 3813,
+   "events": 287
+  }
+ },
+ "gbm_backtest": {
+  "base:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8134,
+    "bss": 0.1277
+   },
+   "onset_1y": {
+    "auc": 0.8384,
+    "bss": 0.0556
+   },
+   "coup_1y": {
+    "auc": 0.8484,
+    "bss": 0.0828
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6486,
+    "bss": 0.0717
+   },
+   "score": 0.9035
+  },
+  "base:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9103,
+    "bss": 0.2495
+   },
+   "onset_1y": {
+    "auc": 0.9157,
+    "bss": 0.0949
+   },
+   "coup_1y": {
+    "auc": 0.8357,
+    "bss": 0.0922
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7917,
+    "bss": 0.096
+   },
+   "score": 0.9873
+  },
+  "events:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8136,
+    "bss": 0.129
+   },
+   "onset_1y": {
+    "auc": 0.8385,
+    "bss": 0.0559
+   },
+   "coup_1y": {
+    "auc": 0.8487,
+    "bss": 0.0827
+   },
+   "econ_collapse_5y": {
+    "auc": 0.649,
+    "bss": 0.0716
+   },
+   "score": 0.904
+  },
+  "events:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9113,
+    "bss": 0.2535
+   },
+   "onset_1y": {
+    "auc": 0.9134,
+    "bss": 0.0911
+   },
+   "coup_1y": {
+    "auc": 0.8363,
+    "bss": 0.0962
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7917,
+    "bss": 0.0946
+   },
+   "score": 0.9892
+  }
+ }
+}

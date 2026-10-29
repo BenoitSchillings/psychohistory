@@ -1,0 +1,26 @@
+{
+ "all on": {
+  "world_gdp_2065_median": 42246.0,
+  "world_gdp_2045_median": 23996.0
+ },
+ "no workforce": {
+  "world_gdp_2065_median": 61380.0,
+  "world_gdp_2045_median": 29386.0
+ },
+ "no fisheries": {
+  "world_gdp_2065_median": 42086.0,
+  "world_gdp_2045_median": 23964.0
+ },
+ "no science term": {
+  "world_gdp_2065_median": 37607.0,
+  "world_gdp_2045_median": 22614.0
+ },
+ "no AI dividend fade": {
+  "world_gdp_2065_median": 45206.0,
+  "world_gdp_2045_median": 24305.0
+ },
+ "no 2025 tariffs / aid cut": {
+  "world_gdp_2065_median": 42369.0,
+  "world_gdp_2045_median": 24106.0
+ }
+}

@@ -1,0 +1,420 @@
+{
+ "coverage": {
+  "legit_personalist": 0.425,
+  "personalization_5y": 0.405,
+  "presidentialism": 0.511,
+  "regime_corruption": 0.513,
+  "support_military": 0.509,
+  "support_foreign": 0.509,
+  "support_ethnic": 0.509,
+  "path_force": 0.513
+ },
+ "logit": {
+  "onset_1y:legit_personalist": {
+   "coef_sd": 0.084,
+   "se": 0.103,
+   "p": 0.414,
+   "n": 8742,
+   "events": 264
+  },
+  "onset_1y:personalization_5y": {
+   "coef_sd": 0.029,
+   "se": 0.067,
+   "p": 0.661,
+   "n": 8696,
+   "events": 263
+  },
+  "onset_1y:presidentialism": {
+   "coef_sd": 0.221,
+   "se": 0.132,
+   "p": 0.093,
+   "n": 8872,
+   "events": 264
+  },
+  "onset_1y:regime_corruption": {
+   "coef_sd": 0.261,
+   "se": 0.101,
+   "p": 0.01,
+   "n": 8872,
+   "events": 264
+  },
+  "onset_1y:support_military": {
+   "coef_sd": 0.241,
+   "se": 0.099,
+   "p": 0.015,
+   "n": 8849,
+   "events": 261
+  },
+  "onset_1y:support_foreign": {
+   "coef_sd": -0.009,
+   "se": 0.072,
+   "p": 0.899,
+   "n": 8849,
+   "events": 261
+  },
+  "onset_1y:support_ethnic": {
+   "coef_sd": 0.078,
+   "se": 0.056,
+   "p": 0.166,
+   "n": 8849,
+   "events": 261
+  },
+  "onset_1y:path_force": {
+   "coef_sd": -0.042,
+   "se": 0.07,
+   "p": 0.548,
+   "n": 8872,
+   "events": 264
+  },
+  "civil_conflict_5y:legit_personalist": {
+   "coef_sd": -0.007,
+   "se": 0.112,
+   "p": 0.947,
+   "n": 8356,
+   "events": 936
+  },
+  "civil_conflict_5y:personalization_5y": {
+   "coef_sd": 0.014,
+   "se": 0.054,
+   "p": 0.79,
+   "n": 8310,
+   "events": 932
+  },
+  "civil_conflict_5y:presidentialism": {
+   "coef_sd": 0.21,
+   "se": 0.148,
+   "p": 0.157,
+   "n": 8356,
+   "events": 936
+  },
+  "civil_conflict_5y:regime_corruption": {
+   "coef_sd": 0.34,
+   "se": 0.105,
+   "p": 0.001,
+   "n": 8356,
+   "events": 936
+  },
+  "civil_conflict_5y:support_military": {
+   "coef_sd": 0.27,
+   "se": 0.103,
+   "p": 0.009,
+   "n": 8343,
+   "events": 928
+  },
+  "civil_conflict_5y:support_foreign": {
+   "coef_sd": -0.021,
+   "se": 0.076,
+   "p": 0.785,
+   "n": 8343,
+   "events": 928
+  },
+  "civil_conflict_5y:support_ethnic": {
+   "coef_sd": 0.169,
+   "se": 0.062,
+   "p": 0.006,
+   "n": 8343,
+   "events": 928
+  },
+  "civil_conflict_5y:path_force": {
+   "coef_sd": -0.009,
+   "se": 0.066,
+   "p": 0.897,
+   "n": 8356,
+   "events": 936
+  },
+  "coup_1y:legit_personalist": {
+   "coef_sd": -0.402,
+   "se": 0.108,
+   "p": 0.0,
+   "n": 10031,
+   "events": 384
+  },
+  "coup_1y:personalization_5y": {
+   "coef_sd": -0.09,
+   "se": 0.065,
+   "p": 0.166,
+   "n": 9972,
+   "events": 381
+  },
+  "coup_1y:presidentialism": {
+   "coef_sd": -0.042,
+   "se": 0.172,
+   "p": 0.805,
+   "n": 10187,
+   "events": 386
+  },
+  "coup_1y:regime_corruption": {
+   "coef_sd": 0.241,
+   "se": 0.118,
+   "p": 0.041,
+   "n": 10187,
+   "events": 386
+  },
+  "coup_1y:support_military": {
+   "coef_sd": 0.345,
+   "se": 0.101,
+   "p": 0.001,
+   "n": 10134,
+   "events": 385
+  },
+  "coup_1y:support_foreign": {
+   "coef_sd": -0.096,
+   "se": 0.081,
+   "p": 0.239,
+   "n": 10134,
+   "events": 385
+  },
+  "coup_1y:support_ethnic": {
+   "coef_sd": -0.419,
+   "se": 0.098,
+   "p": 0.0,
+   "n": 10134,
+   "events": 385
+  },
+  "coup_1y:path_force": {
+   "coef_sd": 0.159,
+   "se": 0.044,
+   "p": 0.0,
+   "n": 10187,
+   "events": 386
+  },
+  "econ_collapse_5y:legit_personalist": {
+   "coef_sd": 0.156,
+   "se": 0.09,
+   "p": 0.082,
+   "n": 9853,
+   "events": 1099
+  },
+  "econ_collapse_5y:personalization_5y": {
+   "coef_sd": -0.179,
+   "se": 0.048,
+   "p": 0.0,
+   "n": 9791,
+   "events": 1070
+  },
+  "econ_collapse_5y:presidentialism": {
+   "coef_sd": 0.316,
+   "se": 0.202,
+   "p": 0.118,
+   "n": 9853,
+   "events": 1099
+  },
+  "econ_collapse_5y:regime_corruption": {
+   "coef_sd": 0.212,
+   "se": 0.105,
+   "p": 0.043,
+   "n": 9853,
+   "events": 1099
+  },
+  "econ_collapse_5y:support_military": {
+   "coef_sd": 0.167,
+   "se": 0.096,
+   "p": 0.083,
+   "n": 9813,
+   "events": 1072
+  },
+  "econ_collapse_5y:support_foreign": {
+   "coef_sd": -0.021,
+   "se": 0.074,
+   "p": 0.781,
+   "n": 9813,
+   "events": 1072
+  },
+  "econ_collapse_5y:support_ethnic": {
+   "coef_sd": 0.213,
+   "se": 0.093,
+   "p": 0.022,
+   "n": 9813,
+   "events": 1072
+  },
+  "econ_collapse_5y:path_force": {
+   "coef_sd": 0.053,
+   "se": 0.05,
+   "p": 0.295,
+   "n": 9853,
+   "events": 1099
+  },
+  "autocratization_5y:legit_personalist": {
+   "coef_sd": 0.221,
+   "se": 0.13,
+   "p": 0.09,
+   "n": 8696,
+   "events": 673
+  },
+  "autocratization_5y:personalization_5y": {
+   "coef_sd": 0.248,
+   "se": 0.076,
+   "p": 0.001,
+   "n": 8641,
+   "events": 662
+  },
+  "autocratization_5y:presidentialism": {
+   "coef_sd": 0.021,
+   "se": 0.235,
+   "p": 0.928,
+   "n": 8696,
+   "events": 673
+  },
+  "autocratization_5y:regime_corruption": {
+   "coef_sd": 0.336,
+   "se": 0.138,
+   "p": 0.015,
+   "n": 8696,
+   "events": 673
+  },
+  "autocratization_5y:support_military": {
+   "coef_sd": -0.032,
+   "se": 0.12,
+   "p": 0.791,
+   "n": 8658,
+   "events": 670
+  },
+  "autocratization_5y:support_foreign": {
+   "coef_sd": 0.148,
+   "se": 0.085,
+   "p": 0.08,
+   "n": 8658,
+   "events": 670
+  },
+  "autocratization_5y:support_ethnic": {
+   "coef_sd": -0.17,
+   "se": 0.092,
+   "p": 0.065,
+   "n": 8658,
+   "events": 670
+  },
+  "autocratization_5y:path_force": {
+   "coef_sd": -0.099,
+   "se": 0.067,
+   "p": 0.139,
+   "n": 8696,
+   "events": 673
+  }
+ },
+ "gbm_backtest": {
+  "base:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8128,
+    "bss": 0.1284
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6479,
+    "bss": 0.0705
+   },
+   "autocratization_5y": {
+    "auc": 0.8393,
+    "bss": 0.0933
+   },
+   "coup_5y": {
+    "auc": 0.8282,
+    "bss": 0.1919
+   },
+   "onset_1y": {
+    "auc": 0.8383,
+    "bss": 0.0557
+   },
+   "termination_1y": {
+    "auc": 0.7327,
+    "bss": 0.1007
+   },
+   "coup_1y": {
+    "auc": 0.8481,
+    "bss": 0.0832
+   },
+   "score": 0.9031
+  },
+  "base:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9104,
+    "bss": 0.25
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7917,
+    "bss": 0.096
+   },
+   "autocratization_5y": {
+    "auc": 0.7295,
+    "bss": 0.0699
+   },
+   "coup_5y": {
+    "auc": 0.8446,
+    "bss": 0.2577
+   },
+   "onset_1y": {
+    "auc": 0.9158,
+    "bss": 0.0951
+   },
+   "termination_1y": {
+    "auc": 0.7388,
+    "bss": 0.1292
+   },
+   "coup_1y": {
+    "auc": 0.8366,
+    "bss": 0.0925
+   },
+   "score": 0.9875
+  },
+  "personal:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8153,
+    "bss": 0.1296
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6514,
+    "bss": 0.0739
+   },
+   "autocratization_5y": {
+    "auc": 0.8396,
+    "bss": 0.0943
+   },
+   "coup_5y": {
+    "auc": 0.8307,
+    "bss": 0.1938
+   },
+   "onset_1y": {
+    "auc": 0.8394,
+    "bss": 0.0556
+   },
+   "termination_1y": {
+    "auc": 0.7342,
+    "bss": 0.098
+   },
+   "coup_1y": {
+    "auc": 0.8488,
+    "bss": 0.0831
+   },
+   "score": 0.9071
+  },
+  "personal:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9151,
+    "bss": 0.2563
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7914,
+    "bss": 0.0934
+   },
+   "autocratization_5y": {
+    "auc": 0.7307,
+    "bss": 0.071
+   },
+   "coup_5y": {
+    "auc": 0.8521,
+    "bss": 0.265
+   },
+   "onset_1y": {
+    "auc": 0.9144,
+    "bss": 0.0924
+   },
+   "termination_1y": {
+    "auc": 0.7397,
+    "bss": 0.128
+   },
+   "coup_1y": {
+    "auc": 0.8299,
+    "bss": 0.0912
+   },
+   "score": 0.9937
+  }
+ }
+}

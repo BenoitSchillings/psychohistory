@@ -1,0 +1,17 @@
+{
+ "autocratization_5y": {
+  "w": {
+   "G": 0.5,
+   "G60": 0.3,
+   "L": 0.2
+  },
+  "mode": "logit"
+ },
+ "econ_collapse_5y": {
+  "w": {
+   "Nq": 0.7,
+   "L": 0.3
+  },
+  "mode": "prob"
+ }
+}

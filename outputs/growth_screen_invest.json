@@ -1,0 +1,38 @@
+{
+ "base": {
+  "g1:dev": 0.0037613574231374525,
+  "g1:test": 0.00172006860495401,
+  "g10:dev": 0.0012801595939584435,
+  "g10:test": 0.000615140207704816
+ },
+ "investment": {
+  "g1:dev": 0.3,
+  "g1:test": 0.04,
+  "g10:dev": 0.02,
+  "g10:test": 0.82
+ },
+ "fixed_investment": {
+  "g1:dev": 0.06,
+  "g1:test": 0.02,
+  "g10:dev": -0.29,
+  "g10:test": 1.4
+ },
+ "fdi_inflow": {
+  "g1:dev": 0.01,
+  "g1:test": 0.82,
+  "g10:dev": -0.99,
+  "g10:test": 12.09
+ },
+ "investment_change_5y": {
+  "g1:dev": 0.32,
+  "g1:test": 0.19,
+  "g10:dev": 1.05,
+  "g10:test": -0.41
+ },
+ "investment+fixed_investment": {
+  "g1:dev": 0.36,
+  "g1:test": 0.04,
+  "g10:dev": -0.33,
+  "g10:test": 1.25
+ }
+}

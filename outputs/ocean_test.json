@@ -1,0 +1,336 @@
+{
+ "country": {
+  "onset": {
+   "dependence": {
+    "fish_dep": [
+     -0.72,
+     2.823
+    ]
+   },
+   "dependence oos_brier_without": 0.02881,
+   "dependence oos_brier_with": 0.02881,
+   "dependence n": 6394,
+   "dependence events": 211,
+   "dependence+decline": {
+    "fish_dep": [
+     0.049,
+     2.788
+    ],
+    "catch_chg5": [
+     -0.015,
+     0.242
+    ],
+    "decline_x_dep": [
+     22.236,
+     17.406
+    ]
+   },
+   "dependence+decline oos_brier_without": 0.03116,
+   "dependence+decline oos_brier_with": 0.03115,
+   "dependence+decline n": 5682,
+   "dependence+decline events": 196
+  },
+  "collapse": {
+   "dependence": {
+    "fish_dep": [
+     -1.972,
+     1.229
+    ]
+   },
+   "dependence oos_brier_without": 0.05373,
+   "dependence oos_brier_with": 0.05372,
+   "dependence n": 7719,
+   "dependence events": 578,
+   "dependence+decline": {
+    "fish_dep": [
+     -1.008,
+     1.364
+    ],
+    "catch_chg5": [
+     -0.346,
+     0.148
+    ],
+    "decline_x_dep": [
+     -0.246,
+     5.719
+    ]
+   },
+   "dependence+decline oos_brier_without": 0.05445,
+   "dependence+decline oos_brier_with": 0.05437,
+   "dependence+decline n": 6939,
+   "dependence+decline events": 489
+  }
+ },
+ "pair": {
+  "descriptive": {
+   "interstate_5y": {
+    "0.0": 0.002,
+    "1.0": 0.0061
+   },
+   "fatal_mid_5y": {
+    "0.0": 0.0105,
+    "1.0": 0.0283
+   },
+   "force_5y": {
+    "0.0": 0.0392,
+    "1.0": 0.1316
+   }
+  },
+  "interstate_5y": {
+   "base": {
+    "logit": {
+     "auc": 0.9551,
+     "bss": 0.1241,
+     "events": 126,
+     "n": 70613,
+     "top1pct_capture": 0.4365
+    },
+    "gbm": {
+     "auc": 0.9407,
+     "bss": 0.162,
+     "events": 126,
+     "n": 70613,
+     "top1pct_capture": 0.4683
+    },
+    "avg": {
+     "auc": 0.9565,
+     "bss": 0.1688,
+     "events": 126,
+     "n": 70613,
+     "top1pct_capture": 0.4683
+    }
+   },
+   "fish": {
+    "logit": {
+     "auc": 0.9541,
+     "bss": 0.122,
+     "events": 126,
+     "n": 70613,
+     "top1pct_capture": 0.4444
+    },
+    "gbm": {
+     "auc": 0.9325,
+     "bss": 0.164,
+     "events": 126,
+     "n": 70613,
+     "top1pct_capture": 0.4683
+    },
+    "avg": {
+     "auc": 0.9542,
+     "bss": 0.1669,
+     "events": 126,
+     "n": 70613,
+     "top1pct_capture": 0.4683
+    }
+   },
+   "brier_gain": {
+    "avg": [
+     -3.4306721354356094e-06,
+     [
+      -1.444100900766624e-05,
+      4.807900819241478e-06
+     ]
+    ],
+    "logit": [
+     -3.776610168501077e-06,
+     [
+      -2.8881801488499298e-05,
+      1.634644606824697e-05
+     ]
+    ]
+   }
+  },
+  "fatal_mid_5y": {
+   "base": {
+    "logit": {
+     "auc": 0.9357,
+     "bss": 0.1827,
+     "events": 461,
+     "n": 41046,
+     "top1pct_capture": 0.3254
+    },
+    "gbm": {
+     "auc": 0.9379,
+     "bss": 0.1924,
+     "events": 461,
+     "n": 41046,
+     "top1pct_capture": 0.3427
+    },
+    "avg": {
+     "auc": 0.945,
+     "bss": 0.1977,
+     "events": 461,
+     "n": 41046,
+     "top1pct_capture": 0.321
+    }
+   },
+   "fish": {
+    "logit": {
+     "auc": 0.9286,
+     "bss": 0.1811,
+     "events": 461,
+     "n": 41046,
+     "top1pct_capture": 0.3319
+    },
+    "gbm": {
+     "auc": 0.9371,
+     "bss": 0.1949,
+     "events": 461,
+     "n": 41046,
+     "top1pct_capture": 0.3406
+    },
+    "avg": {
+     "auc": 0.9398,
+     "bss": 0.1979,
+     "events": 461,
+     "n": 41046,
+     "top1pct_capture": 0.3275
+    }
+   },
+   "brier_gain": {
+    "avg": [
+     3.1726943061497233e-06,
+     [
+      -1.5013442393476058e-05,
+      1.9997573705362027e-05
+     ]
+    ],
+    "logit": [
+     -1.9115134009188802e-05,
+     [
+      -5.4090738700728135e-05,
+      7.639680893715728e-06
+     ]
+    ]
+   }
+  },
+  "force_5y": {
+   "base": {
+    "logit": {
+     "auc": 0.8743,
+     "bss": 0.2038,
+     "events": 1583,
+     "n": 41046,
+     "top1pct_capture": 0.1598
+    },
+    "gbm": {
+     "auc": 0.8908,
+     "bss": 0.2214,
+     "events": 1583,
+     "n": 41046,
+     "top1pct_capture": 0.168
+    },
+    "avg": {
+     "auc": 0.8918,
+     "bss": 0.2188,
+     "events": 1583,
+     "n": 41046,
+     "top1pct_capture": 0.1706
+    }
+   },
+   "fish": {
+    "logit": {
+     "auc": 0.8802,
+     "bss": 0.2054,
+     "events": 1583,
+     "n": 41046,
+     "top1pct_capture": 0.1598
+    },
+    "gbm": {
+     "auc": 0.8922,
+     "bss": 0.2242,
+     "events": 1583,
+     "n": 41046,
+     "top1pct_capture": 0.1712
+    },
+    "avg": {
+     "auc": 0.8987,
+     "bss": 0.2242,
+     "events": 1583,
+     "n": 41046,
+     "top1pct_capture": 0.1706
+    }
+   },
+   "brier_gain": {
+    "avg": [
+     0.0002051250597434958,
+     [
+      -1.1105817480696112e-05,
+      0.00043786141405850916
+     ]
+    ],
+    "logit": [
+     5.964945809842018e-05,
+     [
+      -0.000368921358655323,
+      0.0005061215994724119
+     ]
+    ]
+   }
+  },
+  "onset_1y": {
+   "base": {
+    "logit": {
+     "auc": 0.8881,
+     "bss": -0.003,
+     "events": 15,
+     "n": 57819,
+     "top1pct_capture": 0.2667
+    },
+    "gbm": {
+     "auc": 0.9304,
+     "bss": 0.0042,
+     "events": 15,
+     "n": 57819,
+     "top1pct_capture": 0.4
+    },
+    "avg": {
+     "auc": 0.9188,
+     "bss": 0.0059,
+     "events": 15,
+     "n": 57819,
+     "top1pct_capture": 0.3333
+    }
+   },
+   "fish": {
+    "logit": {
+     "auc": 0.8959,
+     "bss": -0.0049,
+     "events": 15,
+     "n": 57819,
+     "top1pct_capture": 0.2
+    },
+    "gbm": {
+     "auc": 0.9359,
+     "bss": 0.0043,
+     "events": 15,
+     "n": 57819,
+     "top1pct_capture": 0.4667
+    },
+    "avg": {
+     "auc": 0.9242,
+     "bss": 0.0049,
+     "events": 15,
+     "n": 57819,
+     "top1pct_capture": 0.3333
+    }
+   },
+   "brier_gain": {
+    "avg": [
+     -2.5382588853339084e-07,
+     [
+      -7.731091129730861e-07,
+      1.5901075939549405e-07
+     ]
+    ],
+    "logit": [
+     -4.916145222707451e-07,
+     [
+      -1.4566316206922517e-06,
+      3.457893576533929e-07
+     ]
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,1458 @@
+<title>Seldon Report 2026–2065</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<style>
+/* Layout: a single reading column (max 1120px) of numbered findings; charts sit in a two-up grid that stacks on phones. */
+:root {
+  --bg: #f4f5f8; --surface: #ffffff; --ink: #121726; --ink-2: #464c63; --muted: #6f7590;
+  --rule: #dde0e8; --accent: #3446c9; --accent-soft: #e6e9fb;
+  --fan: #2a78d6; --hist: #121726; --up: #d03b3b; --down: #2a78d6; --nodata: #e4e6ec;
+  --seq-lo: #e6effc; --seq-hi: #0d366b; --good: #0ca30c; --warn: #fab219; --ongoing: #d03b3b;
+  --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e1120; --surface: #161a2c; --ink: #eceef6; --ink-2: #b6bbcf; --muted: #8a90a8;
+  --rule: #2a3048; --accent: #9aa6ff; --accent-soft: #232a4d;
+  --fan: #3987e5; --hist: #eceef6; --up: #e66767; --down: #3987e5; --nodata: #262b40;
+  --seq-lo: #1d2742; --seq-hi: #9ec5f4; --ongoing: #e66767; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0e1120; --surface: #161a2c; --ink: #eceef6; --ink-2: #b6bbcf; --muted: #8a90a8;
+  --rule: #2a3048; --accent: #9aa6ff; --accent-soft: #232a4d;
+  --fan: #3987e5; --hist: #eceef6; --up: #e66767; --down: #3987e5; --nodata: #262b40;
+  --seq-lo: #1d2742; --seq-hi: #9ec5f4; --ongoing: #e66767; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.6 var(--body); margin: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 40px 80px; display: grid; gap: 56px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; text-wrap: balance; margin: 0; line-height: 1.1; }
+h1 { font-size: clamp(44px, 7vw, 80px); letter-spacing: -0.01em; }
+h2 { font-size: clamp(30px, 4vw, 40px); }
+h3 { font-size: 24px; margin-top: 8px; }
+h4 { font: 600 14px/1.4 var(--body); margin: 18px 0 4px; }
+p { margin: 0 0 12px; max-width: 70ch; }
+.eyebrow { font: 500 12px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.muted { color: var(--muted); }
+.lede { font-size: 18px; color: var(--ink-2); max-width: 64ch; }
+section { display: grid; gap: 20px; min-width: 0; }
+.section-head { display: grid; gap: 8px; border-top: 1px solid var(--rule); padding-top: 22px; }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; align-items: end; }
+.hero-paths { min-width: 0; }
+.hero-paths figcaption { font-size: 12px; color: var(--muted); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.tile { background: var(--surface); padding: 16px 18px; display: grid; gap: 4px; align-content: start; }
+.tile .k { font: 500 12px/1.3 var(--body); color: var(--ink-2); }
+.tile .v { font: 400 34px/1.1 var(--display); }
+.tile .s { font: 12px/1.4 var(--mono); color: var(--muted); }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; min-width: 0; display: grid; gap: 8px; align-content: start; }
+.card h3 { font-size: 21px; margin: 0; }
+.card .sub { font-size: 13px; color: var(--muted); margin: 0; }
+.chart { width: 100%; position: relative; min-width: 0; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.axis text { fill: var(--muted); font: 11px var(--mono); }
+.axis path, .axis line { stroke: var(--rule); }
+.grid line { stroke: var(--rule); stroke-opacity: .7; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--ink-2); }
+.legend i { display: inline-block; width: 14px; height: 10px; margin-right: 6px; vertical-align: -1px; border-radius: 2px; }
+.tip { position: absolute; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--rule);
+  box-shadow: 0 6px 20px rgba(0,0,0,.12); border-radius: 6px; padding: 8px 10px; font: 12px/1.45 var(--body); min-width: 150px; z-index: 5; }
+.tip b { font-weight: 600; } .tip .num { font-size: 12px; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; flex-wrap: wrap; }
+.seg button { font: 500 13px var(--body); padding: 7px 12px; border: 0; background: var(--surface); color: var(--ink-2); cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--ink); }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+select, input[type="search"] { font: 14px var(--body); padding: 7px 10px; border: 1px solid var(--rule); border-radius: 6px; background: var(--surface); color: var(--ink); max-width: 100%; }
+.tablewrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: middle; white-space: nowrap; }
+th { font: 500 11px var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); background: var(--surface); position: sticky; top: 0; }
+td.num, th.num { text-align: right; }
+tr:last-child td { border-bottom: 0; }
+td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
+.bar { position: relative; height: 12px; width: 140px; background: var(--nodata); border-radius: 2px; }
+.bar > span { position: absolute; left: 0; top: 0; bottom: 0; background: var(--fan); border-radius: 0 2px 2px 0; }
+.bar > em { position: absolute; top: -3px; bottom: -3px; border-left: 1px solid var(--ink); border-right: 1px solid var(--ink); }
+.chip { display: inline-block; font: 11px var(--mono); padding: 1px 6px; border: 1px solid var(--rule); border-radius: 10px; color: var(--ink-2); margin-right: 4px; }
+.pill { display: inline-block; font: 500 11px var(--body); padding: 1px 8px; border-radius: 10px; background: var(--accent-soft); color: var(--ink); }
+.narr { display: grid; gap: 4px; align-content: start; }
+.narr h3 { font-size: 26px; margin-top: 14px; }
+.narr ul { margin: 0 0 12px; padding-left: 20px; max-width: 70ch; } .narr li { margin-bottom: 6px; }
+.callout { border-left: 3px solid var(--accent); padding: 4px 0 4px 14px; color: var(--ink-2); max-width: 70ch; }
+.explorer { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+.footnote { font-size: 12px; color: var(--muted); }
+.tiles-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 860px) {
+  .hero, .grid2, .explorer { grid-template-columns: minmax(0, 1fr); }
+  .tiles-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 480px) { .tiles-3 { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  .prose p { margin: 0 0 10px; font-size: 14px; line-height: 1.55; max-width: none; }
+  table.wraptext td:first-child, table.wraptext th:first-child { white-space: normal; }
+.toc { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 14px; font-size: 13px; }
+.toc a { color: var(--ink-2, inherit); text-decoration: none; border-bottom: 1px solid var(--rule); }
+.credit { font-size: 14px; color: var(--ink-2); max-width: 70ch; margin: 0; }
+.credit a { color: inherit; }
+.toc a:hover { border-bottom-color: currentColor; }
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <div style="display:grid; gap:14px; min-width:0">
+      <span class="eyebrow" id="hero-eyebrow">Psychohistory model</span>
+      <h1>Seldon Report<br><em>2026–2065</em></h1>
+      <p class="lede">A statistical forecast of civil conflict, coups, economic collapse and democratic decline for every country, built from 80 years of history and 10,000 simulated futures. It speaks in probabilities about large populations, never in certainties about single events.</p>
+      <p class="credit">A study conceived and directed by <b>Benoit Schillings</b>. <a href="https://seldon-psychohistory.netlify.app/methodology.html" target="_blank" rel="noopener">Methodology</a> · <a href="https://seldon-psychohistory.netlify.app/data_sources.html" target="_blank" rel="noopener">Data source tree</a></p>
+    </div>
+    <figure class="hero-paths" style="margin:0">
+      <div class="chart" id="hero-chart"></div>
+      <figcaption>Share of countries at civil war, 1946–2025 (ink), and twelve of the simulated futures (blue).</figcaption>
+    </figure>
+  </header>
+
+  <section aria-labelledby="s-summary">
+    <div class="tiles tiles-3" id="tiles"></div>
+    <nav class="toc" aria-label="Contents"><a href="#s-risk">Hotspots 2026–30</a><a href="#s-inter">Wars between states</a><a href="#s-ai">AI race</a><a href="#s-world">Fan of futures</a><a href="#s-score25">Track record</a><a href="#s-ledger">On the record</a><a href="#s-whatif">What if</a><a href="#s-explorer">Country explorer</a><a href="#s-commentary">Commentary</a><a href="#s-climate">Climate</a><a href="#s-us">United States</a><a href="#s-trust">Validation</a><a href="#s-method">Method</a><a href="https://seldon-psychohistory.netlify.app/methodology.html" target="_blank" rel="noopener">Full methodology</a><a href="https://seldon-psychohistory.netlify.app/data_sources.html" target="_blank" rel="noopener">Data sources</a></nav>
+  </section>
+
+  <section aria-labelledby="s-narr">
+    <div class="section-head"><span class="eyebrow">Key findings</span><h2 id="s-narr">The short version</h2></div>
+    <div class="narr"><!--__NARRATIVE_TOP__--></div>
+  </section>
+
+  <section aria-labelledby="s-risk">
+    <div class="section-head"><span class="eyebrow">Five-year risk, 2026–2030</span><h2 id="s-risk">Where the risk concentrates</h2>
+      <p class="muted">Direct estimates from the model ensemble, using each country's 2025 situation. The bracket on each bar spans the lowest and highest of the three model families, a measure of how much the models disagree. Civil-conflict onset is only defined for countries at peace; countries already at war are shown separately.</p></div>
+    <div class="controls"><div class="seg" id="task-seg" role="group" aria-label="Crisis type"></div></div>
+    <div class="card"><div class="chart" id="c-map"></div><div class="legend" id="map-legend"></div></div>
+    <div class="controls"><label for="risk-search" class="muted" style="font-size:13px">Find a country</label><input type="search" id="risk-search" placeholder="e.g. Nigeria"></div>
+    <div class="tablewrap" style="max-height:560px"><table id="risk-table"></table></div>
+  </section>
+
+  <section aria-labelledby="s-inter">
+    <div class="section-head"><span class="eyebrow">Wars between states</span><h2 id="s-inter">Rivals, alliances and the risk of interstate war</h2>
+      <p class="muted" id="inter-sub"></p></div>
+    <div class="tablewrap"><table id="t-watch"></table></div>
+    <div class="grid2" id="grid-scale">
+      <div class="card"><h3>How big the wars get</h3><p class="sub" id="scale-sub"></p><div class="tablewrap"><table id="t-scale"></table></div></div>
+      <div class="card"><h3>Interstate battle deaths per year</h3><p class="sub" id="deaths-sub">Headline worlds: median and 50% / 90% bands, log scale (values below 100 shown at 100). Battle deaths only; civilian and indirect deaths are often several times larger.</p><div class="chart" id="c-deaths"></div></div>
+    </div>
+    <div class="card" id="card-risks"><h3>Nuclear weapons, catastrophes and population</h3><p class="sub" id="risks-sub"></p><div class="tablewrap"><table id="t-risks" class="wraptext"></table></div></div>
+    <div class="grid2" id="grid-water">
+      <div class="card"><h3>Water disputes</h3><p class="sub" id="water-sub"></p><div class="tablewrap"><table id="t-water"></table></div></div>
+      <div class="card"><h3>Glaciers and water supply</h3><p class="sub" id="glacier-sub"></p><div class="tablewrap"><table id="t-glacier"></table></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h3>Could it have seen the world wars coming?</h3><p class="sub">Trained only on what was known by 1913 and 1938, then asked which pairs of countries were most likely to fight in the next five years. Rank among all pairs; lower is better.</p><div class="tablewrap"><table id="t-ww"></table></div></div>
+      <div class="card"><h3>How well it forecasts interstate conflict</h3><p class="sub">Backtests and simulator hindcasts, out of sample.</p><div class="tablewrap"><table id="t-inter-val" class="wraptext"></table></div></div>
+    </div>
+    <div class="card" id="card-gulf"><h3>The 2026 Gulf war, measured</h3><p class="sub" id="gulf-sub"></p><div class="tablewrap"><table id="t-gulf" class="wraptext"></table></div></div>
+    <div class="card"><h3>Chance of at least one great-power war</h3><p class="sub">Share of simulated worlds with a war (≥ 1,000 battle deaths) between two major powers by each year.</p><div class="chart" id="c-wars"></div><div class="legend" id="wars-legend"></div></div>
+  </section>
+
+  <section aria-labelledby="s-ai">
+    <div class="section-head"><span class="eyebrow">AI: near-free cognition</span><h2 id="s-ai">If intellectual work becomes nearly free</h2>
+      <p class="muted">An assumption-driven scenario layer. When thinking costs nearly nothing, the binding constraints become physical (energy, materials, land, robots, capital); income shifts toward their owners; credentialed work loses value; science, surveillance, persuasion and weapons all get cheaper. Every channel is an explicit parameter below; the rest of the engine reacts to them through the relationships it learned from history.</p></div>
+    <div class="tiles tiles-3" id="ai-tiles"></div>
+    <div class="grid2">
+      <div class="card"><h3>World GDP per person</h3><p class="sub">Median of simulated worlds, by AI arrival year</p><div class="chart" id="c-ai-gdp"></div><div class="legend" id="ai-legend"></div></div>
+      <div class="card"><h3>Countries in civil conflict</h3><p class="sub">Median share of countries</p><div class="chart" id="c-ai-conf"></div></div>
+      <div class="card"><h3>Democracy (population-weighted)</h3><p class="sub">Median</p><div class="chart" id="c-ai-dem"></div></div>
+      <div class="card"><h3>Adoption of near-free cognition</h3><p class="sub">Population-weighted share of full adoption</p><div class="chart" id="c-ai-adopt"></div></div>
+      <div class="card" id="card-robots"><h3>Robots and military autonomy</h3><p class="sub" id="robots-sub">Population-weighted adoption of general-purpose robots (solid), by AI scenario; dashed: military autonomy (drones, autonomous weapons) in the headline worlds</p><div class="chart" id="c-robots"></div></div>
+      <div class="card"><h3>Wind and solar share of world primary energy</h3><p class="sub">S-curve fitted to 2005–2024 (6.4% in 2024); fan: uncertainty about speed and ceiling; line: median with near-free cognition from 2030</p><div class="chart" id="c-clean"></div></div>
+      <div class="card"><h3>Real oil price</h3><p class="sub">Origin year = 100. Fan: no AI shock (wars involving exporters spike prices; history replayed without its trend). Line: median with near-free cognition from 2030. 2026 is the observed January–September price</p><div class="chart" id="c-oil"></div></div>
+    </div>
+    <div class="card"><h3>Winners and losers by 2065</h3><p class="sub">GDP per person with near-free cognition from 2030, relative to the no-AI baseline (median of simulated worlds).</p><div class="chart" id="c-ai-map"></div><div class="legend" id="ai-map-legend"></div></div>
+    <div class="tablewrap"><table id="t-ai-params"></table></div>
+  </section>
+
+  <section aria-labelledby="s-world">
+    <div class="section-head"><span class="eyebrow">World trajectories</span><h2 id="s-world">The fan of futures</h2>
+      <p class="muted">Each fan is the spread across simulated worlds: dark band = middle 50%, light band = 90%, line = median. History is in ink.</p></div>
+    <div class="grid2">
+      <div class="card"><h3>Countries in civil conflict</h3><p class="sub">Share of all countries with an active intrastate armed conflict (UCDP, ≥25 battle deaths)</p><div class="chart" id="c-conflict"></div></div>
+      <div class="card"><h3>Coup attempts per year</h3><p class="sub">Count of countries with at least one coup attempt (Powell &amp; Thyne)</p><div class="chart" id="c-coups"></div></div>
+      <div class="card"><h3>World GDP per person</h3><p class="sub">Population-weighted, 2011 international dollars (Maddison), log scale</p><div class="chart" id="c-gdp"></div></div>
+      <div class="card"><h3>World democracy</h3><p class="sub">Population-weighted V-Dem electoral democracy index (0–1)</p><div class="chart" id="c-dem"></div></div>
+      <div class="card" id="card-food"><h3>World grain price</h3><p class="sub" id="food-sub">Real World Bank grains index, origin year = 100 (median and 50%/90% bands; headline worlds). Moves with oil, with world harvests per person and with the replayed history of each scenario year.</p><div class="chart" id="c-food"></div></div>
+      <div class="card" id="card-dep"><h3>Population against farmland</h3><p class="sub">Cereal import dependency (share of cereal use imported), median of worlds. Harvests grow with yields on today's cropland while populations grow; largest rises by 2065.</p><div class="tablewrap" style="max-height:300px"><table id="t-dep"></table></div></div>
+      <div class="card" id="card-displaced"><h3>Refugees from simulated wars</h3><p class="sub">People living as refugees, asylum seekers or others in need of protection outside their country, millions (median and 50%/90% bands; headline worlds). Flows follow simulated civil wars and move population to host countries in UNHCR's recent patterns.</p><div class="chart" id="c-displaced"></div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-score25">
+    <div class="section-head"><span class="eyebrow">Scored on the future</span><h2 id="s-score25">2025: the first year the model had never seen</h2>
+      <p class="muted">Every model was trained on data up to 2024 and scored on what happened in 2025 (UCDP/PRIO 26.1, V-Dem v16). The comparison with ViEWS, the leading academic conflict-forecasting system, uses its forecasts made with data to December 2024 and its own target: at least one month with 25 or more battle deaths in the country.</p></div>
+    <div class="tablewrap"><table id="t-score25" class="wraptext"></table></div>
+    <p class="muted" id="score25-notes" style="max-width:none"></p>
+    <div class="card" id="card-crowd" style="margin-top:18px"><h3>Against crowd forecasters</h3><p class="sub" id="crowd-sub"></p><div class="tablewrap"><table id="t-crowd" class="wraptext"></table></div></div>
+  </section>
+
+  <section aria-labelledby="s-bench" id="sec-bench">
+    <div class="section-head"><span class="eyebrow">Against the field</span><h2 id="s-bench">Benchmarks against published forecasters</h2>
+      <p class="muted" id="bench-sub"></p></div>
+    <div class="grid2">
+      <div class="card" id="card-pc-cm"><h3>VIEWS Prediction Challenge, country-month</h3><p class="sub" id="pc-cm-sub"></p><div class="tablewrap" style="max-height:460px"><table id="t-pc-cm"></table></div></div>
+      <div class="card" id="card-pc-pgm"><h3>VIEWS Prediction Challenge, 55 km grid cells</h3><p class="sub" id="pc-pgm-sub"></p><div class="tablewrap" style="max-height:460px"><table id="t-pc-pgm"></table></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card" id="card-varch"><h3>Head to head with every archived ViEWS run</h3><p class="sub" id="varch-sub"></p><div class="tablewrap"><table id="t-varch" class="wraptext"></table></div></div>
+      <div class="card" id="card-crowdlive"><h3>Live prediction markets and crowds</h3><p class="sub" id="crowdlive-sub"></p><div class="tablewrap" style="max-height:460px"><table id="t-crowdlive" class="wraptext"></table></div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-ledger">
+    <div class="section-head"><span class="eyebrow">On the record</span><h2 id="s-ledger">Forecasts logged before the fact</h2>
+      <p class="muted" id="ledger-sub"></p></div>
+    <div class="card" id="card-scorecard" style="margin-bottom:16px"><h3>Scorecard: forecasts frozen before the outcome</h3><p class="sub" id="scorecard-sub"></p><div class="tablewrap"><table id="t-scorecard" class="wraptext"></table></div></div>
+    <div class="grid2">
+      <div class="card"><h3>Where fighting could start in the next twelve months</h3><p class="sub" id="ledger-card-sub">Countries with no month of 25 or more battle deaths in the past year: probability of at least one such month</p><div class="tablewrap" style="max-height:420px"><table id="t-ledger"></table></div></div>
+      <div class="card"><h3>What drives the uncertainty in 2065</h3><p class="sub">Share of the spread across simulated worlds explained by each assumed parameter, drawn per world from its plausible range. "Other" is history's replayed shocks and the simulated wars, coups and elections themselves.</p><div class="tablewrap"><table id="t-attr" class="wraptext"></table></div><h4 style="margin-top:18px">Grouped, and how far the main assumptions move each outcome</h4><p class="sub" id="attr2-sub"></p><div class="tablewrap"><table id="t-attr2" class="wraptext"></table></div><div class="tablewrap"><table id="t-attr3" class="wraptext"></table></div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-whatif">
+    <div class="section-head"><span class="eyebrow">What if…</span><h2 id="s-whatif">Crisis explorer</h2>
+      <p class="muted">Each scenario forces one war into every simulated world and compares them with the same worlds without it. The rest follows from the engine: alliances pull in other states, countries where the war is fought lose about 9% of output in each war year and recover half two years later (the 1951–2023 record), trade partners suffer, oil moves if exporters fight, and the crisis models react.</p></div>
+    <div class="controls"><div class="seg" id="whatif-seg" role="group" aria-label="Crisis scenario"></div></div>
+    <div class="tiles tiles-3" id="whatif-tiles"></div>
+    <div class="grid2">
+      <div class="card"><h3>GDP per person three years after the war starts</h3><p class="sub">Change against the same worlds without the war (median)</p><div class="chart" id="c-whatif-map"></div><div class="legend" id="whatif-legend"></div></div>
+      <div class="card"><h3>Who else gets drawn in</h3><p class="sub">Rise in the chance that a pair of states fights at some point by 2065</p><div class="tablewrap"><table id="t-whatif-drawn"></table></div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-explorer">
+    <div class="section-head"><span class="eyebrow">Country explorer</span><h2 id="s-explorer">One country, ten thousand futures</h2></div>
+    <div class="controls"><label for="country-select" class="muted" style="font-size:13px">Country</label><select id="country-select"></select></div>
+    <div class="tiles tiles-3" id="country-tiles"></div>
+    <div class="explorer">
+      <div class="card"><h3>GDP per person</h3><p class="sub">2011 int. $, log scale; 1990–2025 in ink</p><div class="chart" id="x-gdp"></div></div>
+      <div class="card"><h3>Democracy index</h3><p class="sub">V-Dem electoral democracy</p><div class="chart" id="x-dem"></div></div>
+      <div class="card"><h3>Probability of civil conflict</h3><p class="sub">Ink: at war (1) or not (0), 1990–2025. Blue: share of simulated worlds at war</p><div class="chart" id="x-conf"></div></div>
+    </div>
+    <div class="card"><h3>What drives this country's five-year conflict and autocratization risk</h3>
+      <p class="sub">Contribution of each feature group to the logit model's log-odds, relative to an average country. Red raises risk, blue lowers it.</p>
+      <div class="grid2"><div class="chart" id="x-drv-conf"></div><div class="chart" id="x-drv-autoc"></div></div></div>
+  </section>
+
+  <section aria-labelledby="s-commentary">
+    <div class="section-head"><span class="eyebrow">Commentary</span><h2 id="s-commentary">What the radiant shows, in detail</h2></div>
+    <div class="narr"><!--__NARRATIVE__--></div>
+  </section>
+
+  <section aria-labelledby="s-panel">
+    <div class="section-head"><span class="eyebrow">Analyst panel</span><h2 id="s-panel">What independent AI analysts think of these numbers</h2>
+      <p class="muted" id="panel-sub">Two independent AI analysts reviewed the five-year forecasts with everything they know, including events after the model's 2024 data. Their views cannot be backtested (they have read the history), so they are shown beside the model, not merged into it, and logged with today's date to be scored as events unfold.</p></div>
+    <div class="tablewrap" style="max-height:640px"><table id="t-panel"></table></div>
+  </section>
+
+  <section aria-labelledby="s-chron">
+    <div class="section-head"><span class="eyebrow">Possible histories</span><h2 id="s-chron">Four of the simulated worlds, told as history</h2>
+      <p class="muted">Written by a language model from each world's event log, without adding events. They are stories about single draws, picked to show the range; the forecast is the whole distribution.</p></div>
+    <div class="grid2" id="chron-cards"></div>
+  </section>
+
+  <section aria-labelledby="s-disaster">
+    <div class="section-head"><span class="eyebrow">Disaster worlds</span><h2 id="s-disaster">The worst 1% of futures, and why they are possible</h2>
+      <p class="muted" id="dis-sub"></p></div>
+    <div class="tablewrap"><table id="t-dis" class="wraptext"></table></div>
+    <h3 style="margin-top:22px">Switching one mechanism off</h3>
+    <p class="muted">The same worlds rerun with one mechanism removed. Each cell: how often the disaster threshold (the baseline's worst 1%) is still crossed, as a multiple of 1%, with the change in the median world in brackets. A mechanism that moves the median as much as the tail shifts all futures; one that moves only the tail is a cause of disaster specifically.</p>
+    <div class="tablewrap"><table id="t-knock"></table></div>
+    <h3 style="margin-top:22px">Five of the worst worlds</h3>
+    <div class="grid2" id="dis-cards"></div>
+    <div class="narr" style="margin-top:18px"><!--__DISASTER__--></div>
+  </section>
+
+  <section aria-labelledby="s-crisis">
+    <div class="section-head"><span class="eyebrow">Seldon crises</span><h2 id="s-crisis">When does instability peak?</h2>
+      <p class="muted">For each simulated world, the year in which the share of countries in conflict is highest, and the conflict fan by region.</p></div>
+    <div class="grid2">
+      <div class="card"><h3>Year of peak global conflict</h3><p class="sub" id="peak-sub"></p><div class="chart" id="c-peak"></div></div>
+      <div class="card"><h3>Conflict by region</h3><p class="sub">Median share of countries in conflict, with 50% band</p><div class="chart" id="c-regions"></div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-climate">
+    <div class="section-head"><span class="eyebrow">Climate to 2065</span><h2 id="s-climate">Forty years of weather</h2>
+      <p class="muted">CMIP6 multi-model projections (World Bank Climate Change Knowledge Portal), bias-corrected to ERA5 observations, drive the simulator country by country: temperature, rainfall, dry spells and heat extremes, with year-to-year weather noise and the spread between climate models. Economic damage follows Burke, Hsiang &amp; Miguel (2015).</p></div>
+    <div class="controls"><div class="seg" id="ssp-seg" role="group" aria-label="Emissions scenario"></div>
+      <div class="seg" id="clim-var-seg" role="group" aria-label="Climate variable"></div></div>
+    <div class="card"><div class="chart" id="c-climmap"></div><div class="legend" id="climmap-legend"></div></div>
+    <div class="grid2">
+      <div class="card"><h3>World GDP per person by scenario</h3><p class="sub">Median of simulated worlds, 2011 int. $, log scale. Dashed: the same worlds with no climate damage.</p><div class="chart" id="c-scen-gdp"></div><div class="legend" id="scen-legend"></div></div>
+      <div class="card"><h3>Countries in civil conflict by scenario</h3><p class="sub">Median share of countries. Weather shocks enter the conflict model, but added no predictive skill in the backtest.</p><div class="chart" id="c-scen-conf"></div></div>
+    </div>
+    <div class="tablewrap"><table id="t-scen"></table></div>
+    <div class="card" id="clim-risk"><h3>Climate risk beyond the median path</h3><p class="sub" id="clim-risk-sub"></p>
+      <div class="grid2">
+        <div><h4>How much warming costs: three published estimates</h4><div class="tablewrap"><table id="t-cdmg"></table></div></div>
+        <div><h4>Loss of world GDP per person against the same worlds without climate damage</h4><div class="tablewrap"><table id="t-c2100"></table></div></div>
+      </div>
+      <div class="grid2">
+        <div><h4>Harvest failures</h4><div class="tablewrap"><table id="t-charv"></table></div><p class="sub" id="charv-note"></p></div>
+        <div><h4>Tipping points, drylands, migration and war</h4><div class="tablewrap"><table id="t-ctail"></table></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-us">
+    <div class="section-head"><span class="eyebrow">United States</span><h2 id="s-us">Fifty states and DC</h2>
+      <p class="muted">A separate state-level model, 1929–2024: BEA income, BLS unemployment, FHFA house prices, CDC overdoses, Mother Jones mass shootings, MIT election returns, Shor–McCarty legislative polarisation and NOAA climate. All states share one business cycle, so the data hold only a handful of independent national crises; read the absolute numbers with that in mind and the differences between states with more confidence.</p></div>
+    <div class="card"><h3>Structural stress index</h3><p class="sub" id="us-stress-sub"></p>
+      <div class="controls"><label for="us-select" class="muted" style="font-size:13px">Compare a state</label><select id="us-select"></select></div>
+      <div class="chart" id="c-us-stress"></div></div>
+    <div class="controls"><div class="seg" id="us-seg" role="group" aria-label="State outcome"></div></div>
+    <div class="card"><div class="chart" id="c-usmap"></div><div class="legend" id="usmap-legend"></div><p class="sub" id="us-skill-note"></p></div>
+    <div class="tablewrap" style="max-height:520px"><table id="us-table"></table></div>
+    <div class="card"><h3>State backtest</h3><p class="sub">Rolling origins 1990–2015, five-year horizon, out of sample. Overdose surges were not predictable from state structure (they were driven by national drug-supply shocks) and are not forecast.</p><div class="tablewrap"><table id="t-us-bt"></table></div></div>
+  </section>
+
+  <section aria-labelledby="s-cycles">
+    <div class="section-head"><span class="eyebrow">Long cycles</span><h2 id="s-cycles">Does history move in cycles?</h2>
+      <p class="muted">Two tests of the structural-demographic theory behind psychohistory: 230 years of the United States (Turchin's political-violence data, congressional polarization, wages, elites, debt), and 169 state crises over four thousand years (Seshat CrisisDB).</p></div>
+    <div class="grid2">
+      <div class="card"><h3>United States, 1790–2025</h3><p class="sub">Political violence (events per 10 million people, decade average), congressional polarization and worker immiseration, each on its own scale</p><div class="chart" id="c-us-viol"></div><div class="chart" id="c-us-pol"></div><div class="chart" id="c-us-imm"></div></div>
+      <div class="card"><h3>What the tests say</h3><div id="cycles-text" class="prose"></div><h3 style="margin-top:14px">Seshat: crises per polity-century by the polity's age</h3><div class="chart" id="c-seshat-age"></div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-system">
+    <div class="section-head"><span class="eyebrow">The world as a system</span><h2 id="s-system">What is learned, what is assumed</h2>
+      <p class="muted">Each simulated world steps every country and every politically relevant pair of countries forward a year at a time. Mechanisms marked <span class="pill">learned</span> were estimated from history and checked out of sample; those marked <span class="pill">assumed</span> come from the literature or from a stated scenario and are shown with and without.</p></div>
+    <div class="tablewrap"><table id="t-system"></table></div>
+  </section>
+
+  <section aria-labelledby="s-trust">
+    <div class="section-head"><span class="eyebrow">Validation</span><h2 id="s-trust">How much to trust this</h2>
+      <p class="muted">Every number below is out-of-sample: models were trained only on what was known before each test period.</p></div>
+    <div class="card"><h3>Backtest: ranking skill (AUC)</h3><p class="sub">Rolling origins 1980–2015, forecasting the next five years each time. 0.5 = coin flip, 1 = perfect. Highlighted = best per row. The naive model uses only wealth, size and conflict history.</p>
+      <div class="tablewrap"><table id="t-backtest"></table></div></div>
+    <div class="card" id="card-split"><h3>Origins used for tuning vs untouched origins</h3><p class="sub">Features, hyper-parameters and ensemble weights were chosen on the 1975–2005 origins, which the table above also scores; their five-year outcomes reach 2014. The 2015 origin (outcomes 2016–2024) was never seen in any choice. Ranges are 90% intervals from resampling whole countries. On that origin the ensemble keeps a clear edge on coups, collapse, autocratization and conflict endings; on civil-war onset the naive rule ranked slightly better, as at the 2000 origin, while the ensemble led at the six others by 0.04–0.09.</p>
+      <div class="tablewrap"><table id="t-split"></table></div></div>
+    <div class="grid2">
+      <div class="card"><h3>Calibration</h3><p class="sub">When the ensemble says X%, how often did it happen?</p>
+        <div class="controls"><div class="seg" id="cal-seg" role="group" aria-label="Calibration task"></div></div><div class="chart" id="c-cal"></div></div>
+      <div class="card"><h3>Hindcast: forecasting the past</h3><p class="sub" id="hind-sub">Simulator trained only on data before the origin year, then run forward and compared with what happened.</p>
+        <div class="controls"><div class="seg" id="hind-seg" role="group" aria-label="Hindcast origin"></div></div><div class="chart" id="c-hind"></div></div>
+    </div>
+    <div class="card"><h3>Simulator coverage</h3><p class="sub">Share of countries whose actual outcome fell inside the simulated band (target: 90% and 50%). "Conflict ranking" scores which countries are at war in each year, which ongoing wars make easy; "new onset" scores only countries at peace at the origin. Demography in hindcasts is extrapolated from the origin, not taken from what happened. The fan width and world-mood settings were chosen on the 1975–2004 runs; 2015 → 2025 is the only run they never saw (its GDP bands are too wide: 70% of countries inside the 50% band).</p><div class="tablewrap"><table id="t-hind"></table></div></div>
+    <div class="card"><h3>Do ideology, religion and state data help?</h3><p class="sub">Ensemble AUC when adding each new data family to the structural core (economy, demography, elites, regime, violence). Six backtest origins, 1990–2015; gain over the core in brackets.</p><div class="tablewrap"><table id="t-ablation"></table></div></div>
+  </section>
+
+  <section aria-labelledby="s-improve">
+    <div class="section-head"><span class="eyebrow">Model improvement</span><h2 id="s-improve">What made the forecasts better</h2></div>
+    <div class="narr"><!--__IMPROVE__--></div>
+  </section>
+
+  <section aria-labelledby="s-review">
+    <div class="section-head"><span class="eyebrow">Independent review</span><h2 id="s-review">What a second reviewer found</h2></div>
+    <div class="narr"><!--__REVIEW__--></div>
+  </section>
+
+  <section aria-labelledby="s-method">
+    <div class="section-head"><span class="eyebrow">Method</span><h2 id="s-method">How the model works, and where it breaks</h2></div>
+    <div class="grid2">
+      <div class="narr">
+        <h4>Data</h4>
+        <p>175 countries, 1850–2025 (most series from 1950): Maddison GDP, UN population and age structure (with UN projections to 2100), V-Dem democracy, ideology, religion, coercion and coups, UCDP armed conflict, EPR ethnic exclusion, COW World Religion Project, Global Macro Database debt and crises, plus World Bank and OWID series on inequality, education and food, and ERA5 climate (temperature, rainfall, dry spells, heat extremes) with CMIP6 projections from the World Bank Climate Change Knowledge Portal.</p>
+        <h4>Predictive models</h4>
+        <p>About 140 structural features grouped after structural-demographic theory (immiseration, youth bulge, elite overproduction, fiscal stress, regime type and institutions, leaders, ideology, contagion between neighbours). Six model families are trained: tuned gradient-boosted trees (on post-war data and on history since 1860), two neural network ensembles trained on the GPU, extremely randomised trees and a regularised logistic regression. Civil conflict and coups use a plain average of trees and neural network; autocratization blends short- and long-history trees with the logistic model; economic collapse relies on the quantile-input neural network with the logistic model. Each rule was chosen on 1975–2005 forecasts and confirmed on locked-away 2010–2015 forecasts.</p>
+        <h4>Simulator</h4>
+        <p>Each simulated world steps every country forward a year at a time. Conflict starts, ends and coup attempts are drawn from the neural hazards, aligned at the start so their average levels match the previous decade (about half of coup attempts succeed); GDP and democracy follow learned equations with conditional convergence. Shocks are resampled from history at four levels: world (a whole historical decade), region (booms and lost decades), country (decade-long growth regimes), and year. A slowly varying "world mood" lets waves of instability emerge that no structural variable foresees. Inflation and unemployment revert to each country's recent norm; rights and rule-of-law indicators move with simulated democracy. Climate follows CMIP6 projections per country and scenario, with weather noise and model spread; the Burke–Hsiang–Miguel damage function, evaluated at population-weighted temperature, lowers reported GDP for warming beyond 2024.</p>
+        <h4>Two kinds of estimate</h4>
+        <p>The five-year risks come straight from the ensemble. The simulator chains one-year hazards of the neural ensemble alone, so its five-year figures can differ; both are shown in the risk table.</p>
+      </div>
+      <div class="narr">
+        <h4>Known limits</h4>
+        <ul>
+          <li>"Mules" (a new technology, a pandemic, a single leader's choices) enter only as stated scenarios (near-free cognition, the crisis explorer) or as generic shocks drawn from the past. Their odds are assumptions, not learned from data.</li>
+          <li>Wars between states are modelled pair by pair from a thin record (few great-power wars since 1946), so those probabilities are much less certain than the civil-conflict ones.</li>
+          <li>The future is built from recombined history. A world unlike 1950–2025 would fall outside the fans.</li>
+          <li>Debt, polarization, mobilization, political violence, inequality, poverty and military spending move in the simulation (reversion, drivers and shocks fitted on 1960 onward; 90% bands cover 85–96% of countries in hindcasts); religion and ideology are held at their last value.</li>
+          <li>Features, hyper-parameters and ensemble weights were chosen on backtest origins up to 2005; only the 2015 origin is untouched (see the validation table). War and climate damage lower the GDP that the conflict, coup and democracy models see, as in their training data.</li>
+          <li>Several sources stop before 2025 (REIGN 2021, NAVCO and MMP protests 2019; ERA5 weather now runs to 2025); their last values are carried or faded to the origin, which blurs the newest information.</li>
+          <li>Demography follows the UN medium variant without its own uncertainty.</li>
+          <li>Climate damage has no settled estimate. Each simulated world draws one of three published families (a small level effect, Burke, Hsiang &amp; Miguel's growth effect, Bilal &amp; Känzig's large global-temperature effect), and hindcasts cannot tell them apart because past warming is too small. Tipping points (an Atlantic circulation collapse, fast ice-sheet loss) and the climate–conflict link are stated assumptions. US state warming is pattern-scaled from national projections.</li>
+          <li>The US state model rests on few independent national cycles; its absolute probabilities are less reliable than its ranking of states.</li>
+          <li>In hindcasts the median GDP path ran about 12% too high after 20 years (−8% to +36% depending on the era), and rich economies grew too fast in the model while growth miracles such as China were under-projected. The fans covered most outcomes, but treat GDP medians as optimistic.</li>
+          <li>The GDP fan width and the world-mood volatility were chosen with the same hindcasts used to check them, so their coverage is mildly optimistic.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="credit">The full methodology, with every test and its result, is in the <a href="https://seldon-psychohistory.netlify.app/methodology.html" target="_blank" rel="noopener">methodology document</a>; every input is listed in the <a href="https://seldon-psychohistory.netlify.app/data_sources.html" target="_blank" rel="noopener">data source tree</a>. Study conceived and directed by Benoit Schillings.</p>
+    <p class="footnote" id="footnote"></p>
+  </section>
+
+</div>
+
+<script>
+const DATA = /*__DATA__*/null;
+const TOPO = /*__TOPO__*/null;
+const USD = /*__US__*/null;
+const USTOPO = /*__USTOPO__*/null;
+const SCEN = DATA.scenarios || {};
+const SSP_NAMES = {ssp126: "SSP1-2.6", ssp245: "SSP2-4.5", ssp370: "SSP3-7.0", ssp585: "SSP5-8.5"};
+const SSP_LONG = {ssp126: "strong mitigation", ssp245: "middle of the road", ssp370: "regional rivalry", ssp585: "fossil-fuelled growth"};
+const W = DATA.world, H = DATA.history, M = DATA.meta, V = DATA.validation || {};
+const byCode = Object.fromEntries(DATA.countries.map(c => [c.code, c]));
+const TASKS = {civil_conflict_5y: "Civil conflict onset", coup_5y: "Coup attempt", econ_collapse_5y: "Economic collapse (≥10%)", autocratization_5y: "Autocratization"};
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const pct = (v, d = 0) => v == null ? "–" : (100 * v).toFixed(d) + "%";
+const money = v => v == null ? "–" : "$" + d3.format(",.0f")(v);
+const qAt = (q, i) => q.map(r => r[i]);
+document.getElementById("hero-eyebrow").textContent =
+  `Forecast origin ${M.origin} · ${d3.format(",")(M.n_scenarios)} simulated worlds · ${M.n_countries} countries`;
+
+/* ---------- tooltip ---------- */
+function tipFor(container) {
+  const t = document.createElement("div"); t.className = "tip"; t.hidden = true; container.appendChild(t);
+  return {
+    show(html, x, y) {
+      t.innerHTML = html; t.hidden = false;
+      const cw = container.clientWidth, tw = t.offsetWidth;
+      t.style.left = Math.max(0, Math.min(cw - tw, x + 14)) + "px"; t.style.top = Math.max(0, y - 10) + "px";
+    }, hide() { t.hidden = true; }
+  };
+}
+
+/* ---------- fan chart ---------- */
+function fanChart(el, o) {
+  el.innerHTML = "";
+  const w = o.w || 520, h = o.h || 260, m = {t: 12, r: 14, b: 26, l: o.ml || 48};
+  const svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${w} ${h}`).attr("role", "img").attr("aria-label", o.label || "");
+  const fy = o.fan ? o.fan.years : [], hy = o.hist ? o.hist.years : [], ey = (o.extra || []).flatMap(s => s.years);
+  const x = d3.scaleLinear().domain([d3.min([...hy, ...fy, ...ey]), d3.max([...hy, ...fy, ...ey])]).range([m.l, w - m.r]);
+  const vals = [...(o.hist ? o.hist.values : []), ...(o.fan ? o.fan.q.flat() : []), ...(o.extra || []).flatMap(s => s.values)]
+    .filter(v => v != null && isFinite(v) && (!o.log || v > 0));
+  let lo = o.ymin != null ? o.ymin : d3.min(vals), hi = o.ymax != null ? o.ymax : d3.max(vals) * 1.05;
+  const y = (o.log ? d3.scaleLog() : d3.scaleLinear()).domain([lo, hi]).range([h - m.b, m.t]).nice();
+  // log axes: only 1-2-5 steps that fall inside the domain, so labels never crowd
+  const [d0, d1] = y.domain();
+  const logTicks = o.log ? d3.range(Math.floor(Math.log10(d0)), Math.ceil(Math.log10(d1)) + 1)
+    .flatMap(e => [1, 2, 5].map(k => k * 10 ** e)).filter(v => v >= d0 && v <= d1) : null;
+  const yAxis = () => o.log ? d3.axisLeft(y).tickValues(logTicks) : d3.axisLeft(y).ticks(5);
+  svg.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`)
+    .call(yAxis().tickSize(-(w - m.l - m.r)).tickFormat("")).select(".domain").remove();
+  svg.append("g").attr("class", "axis").attr("transform", `translate(0,${h - m.b})`).call(d3.axisBottom(x).ticks(6).tickFormat(d3.format("d")).tickSizeOuter(0));
+  svg.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(yAxis().tickFormat(o.fmt).tickSizeOuter(0)).select(".domain").remove();
+  if (o.fan) {
+    const q = o.fan.q, Y = o.fan.years;
+    const area = (a, b) => d3.area().x((_, i) => x(Y[i])).y0((_, i) => y(Math.max(q[a][i], lo))).y1((_, i) => y(q[b][i]));
+    svg.append("path").attr("d", area(0, 4)(Y)).attr("fill", css("--fan")).attr("fill-opacity", .16);
+    svg.append("path").attr("d", area(1, 3)(Y)).attr("fill", css("--fan")).attr("fill-opacity", .32);
+    svg.append("path").attr("d", d3.line().x((_, i) => x(Y[i])).y((_, i) => y(q[2][i]))(Y)).attr("fill", "none").attr("stroke", css("--fan")).attr("stroke-width", 2);
+  }
+  if (o.extra) o.extra.forEach(s => svg.append("path").attr("d", d3.line().defined(v => v != null).x((_, i) => x(s.years[i])).y(v => y(v))(s.values))
+      .attr("fill", "none").attr("stroke", s.stroke || css(s.color || "--hist")).attr("stroke-width", s.width || 2).attr("stroke-dasharray", s.dash || null));
+  if (o.hist) svg.append("path").attr("d", d3.line().defined(v => v != null && isFinite(v) && v > 0 || (!o.log && v != null)).x((_, i) => x(hy[i])).y(v => y(v))(o.hist.values))
+      .attr("fill", "none").attr("stroke", css("--hist")).attr("stroke-width", 2);
+  // hover
+  const tip = tipFor(el), cross = svg.append("line").attr("stroke", css("--muted")).attr("y1", m.t).attr("y2", h - m.b).attr("visibility", "hidden");
+  svg.append("rect").attr("x", m.l).attr("y", m.t).attr("width", w - m.l - m.r).attr("height", h - m.t - m.b).attr("fill", "transparent")
+    .on("pointermove", ev => {
+      const [px] = d3.pointer(ev), yr = Math.round(x.invert(px));
+      cross.attr("x1", x(yr)).attr("x2", x(yr)).attr("visibility", "visible");
+      let html = `<b>${yr}</b><br>`;
+      const hi_ = hy.indexOf(yr), fi = fy.indexOf(yr);
+      if (hi_ >= 0 && o.hist.values[hi_] != null) html += `${o.histLabel || "Actual"}: <span class="num">${o.fmt(o.hist.values[hi_])}</span><br>`;
+      if (o.extra) o.extra.forEach(s => { const i = s.years.indexOf(yr); if (i >= 0 && s.values[i] != null) html += `${s.label}: <span class="num">${o.fmt(s.values[i])}</span><br>`; });
+      if (fi >= 0) { const q = o.fan.q; html += `Median: <span class="num">${o.fmt(q[2][fi])}</span><br>50%: <span class="num">${o.fmt(q[1][fi])} – ${o.fmt(q[3][fi])}</span><br>90%: <span class="num">${o.fmt(q[0][fi])} – ${o.fmt(q[4][fi])}</span>`; }
+      const r = el.getBoundingClientRect(), sx = r.width / w;
+      tip.show(html, px * sx, (ev.offsetY ?? 20));
+    }).on("pointerleave", () => { cross.attr("visibility", "hidden"); tip.hide(); });
+  return svg;
+}
+
+/* ---------- hero: spaghetti ---------- */
+function hero() {
+  const el = document.getElementById("hero-chart");
+  fanChart(el, {hist: {years: H.years, values: H.world_conflict}, fmt: d => pct(d), ymin: 0, h: 230, label: "Historical and simulated share of countries in civil conflict",
+    extra: W.sample_paths.map(p => ({years: [M.origin, ...W.years], values: [H.world_conflict.at(-1), ...p], color: "--fan", width: 1, label: "One simulated world"})).slice(0, 12)});
+}
+
+/* ---------- tiles ---------- */
+function tiles() {
+  const yi = y => W.years.indexOf(y), last = H.world_conflict.at(-1);
+  const ai = AI && AI["2030"], base = AI && (AI.uncertain || AI.none), noai = AI && AI.uncertain && AI.none;
+  const usa = DATA.countries.find(c => c.code === "USA");
+  const hot = DATA.countries.filter(c => !c.in_conflict).sort((a, b) => b.civil_conflict_5y - a.civil_conflict_5y);
+  const t = [
+    {k: `Countries in civil conflict, ${M.origin}`, v: pct(last), s: `${Math.round(last * M.n_countries)} of ${M.n_countries}; post-1946 peak ${pct(M.hist_max_conflict ?? W.hist_max_conflict)}`},
+    {k: "Median projection, 2035", v: pct(W.world_conflict_q[2][yi(2035)]), s: `90% band ${pct(W.world_conflict_q[0][yi(2035)])} – ${pct(W.world_conflict_q[4][yi(2035)])}; tops its 1990 peak by ${W.years.at(-1)} in ${pct(W.p_exceed_hist_max)} of worlds`},
+    {k: `Most likely new civil war, ${M.origin + 1}–${M.origin + 5}`, v: `${hot[0].name} ${pct(hot[0].civil_conflict_5y)}`, s: hot.slice(1, 4).map(c => `${c.name} ${pct(c.civil_conflict_5y)}`).join(", ")},
+    base ? {k: `Great-power war by ${W.years.at(-1)}`, v: pct(base.great_power_war_by.at(-1)), s: `≥ 1,000 deaths between great powers (COW majors + nuclear states with ≥ 5% of world output, i.e. India); ${base.great_power_war_cow_by ? `old majors only ${pct(base.great_power_war_cow_by.at(-1))}; ` : ""}${noai ? `no AI shock ${pct(noai.great_power_war_by.at(-1))}, ` : ""}AI from 2030 ${pct(ai.great_power_war_by.at(-1))}, 1914-style alliances ${pct((AI.alliances_1914 || base).great_power_war_by.at(-1))}`}
+         : {k: `World democracy index, ${W.years.at(-1)}`, v: d3.format(".2f")(W.world_dem_q[2].at(-1)), s: ""},
+    {k: `World GDP per person, ${W.years.at(-1)}`, v: money(W.world_gdp_q[2].at(-1)), s: `90% band ${money(W.world_gdp_q[0].at(-1))} – ${money(W.world_gdp_q[4].at(-1))}` + (noai ? `; no AI shock ${money(noai.world_gdp_q[2].at(-1))}` : "") + (ai ? `; AI from 2030 ${money(ai.world_gdp_q[2].at(-1))}` : "")},
+    {k: `US autocratization, ${M.origin + 1}–${M.origin + 5}`, v: pct(usa.autocratization_5y), s: `chance of another large fall in democracy; index now ${d3.format(".2f")(usa.democracy + 1e-9)}, world median ${W.years.at(-1)} ${d3.format(".2f")(W.world_dem_q[2].at(-1))}`},
+  ];
+  document.getElementById("tiles").innerHTML = t.map(d => `<div class="tile"><span class="k">${d.k}</span><span class="v num">${d.v}</span><span class="s">${d.s}</span></div>`).join("");
+}
+
+/* ---------- world fans ---------- */
+function worldFans() {
+  fanChart(document.getElementById("c-conflict"), {hist: {years: H.years, values: H.world_conflict}, fan: {years: W.years, q: W.world_conflict_q}, fmt: d => pct(d), ymin: 0, label: "Share of countries in conflict"});
+  const cy = H.years.map((y, i) => y >= 1950 ? H.coups[i] : null);
+  fanChart(document.getElementById("c-coups"), {hist: {years: H.years, values: cy}, fan: {years: W.years, q: W.coups_q}, fmt: d3.format(".0f"), ymin: 0, label: "Coup attempts per year"});
+  fanChart(document.getElementById("c-gdp"), {hist: {years: H.years, values: H.world_gdp}, fan: {years: W.years, q: W.world_gdp_q}, fmt: d => "$" + d3.format("~s")(d), log: true, ml: 52, label: "World GDP per person"});
+  fanChart(document.getElementById("c-dem"), {hist: {years: H.years, values: H.world_dem}, fan: {years: W.years, q: W.world_dem_q}, fmt: d3.format(".2f"), ymin: 0, ymax: 1, label: "World democracy"});
+  const D = DATA.ai && (DATA.ai.uncertain || DATA.ai.none);
+  if (D && D.food_price_q) fanChart(document.getElementById("c-food"), {fan: {years: W.years, q: D.food_price_q}, fmt: d3.format(".0f"), ymin: 0, label: "World grain price"});
+  else document.getElementById("card-food").hidden = true;
+  const dep = DATA.countries.filter(c => c.cereal_import_dep).map(c => ({c, a: c.cereal_import_dep[String(M.origin + 1)], b: c.cereal_import_dep[String(W.years.at(-1))]}))
+    .filter(r => r.a != null && r.b != null).sort((x, y) => (y.b - y.a) - (x.b - x.a)).slice(0, 15);
+  if (dep.length) document.getElementById("t-dep").innerHTML = `<thead><tr><th>Country</th><th class="num">${M.origin + 1}</th><th class="num">${W.years.at(-1)}</th><th class="num">Population ${M.origin}, M</th></tr></thead><tbody>` +
+    dep.map(r => `<tr><td>${r.c.name}</td><td class="num">${pct(r.a)}</td><td class="num">${pct(r.b)}</td><td class="num">${d3.format(".0f")(r.c.pop_m)}</td></tr>`).join("") + "</tbody>";
+  else document.getElementById("card-dep").hidden = true;
+  if (D && D.displaced_q) fanChart(document.getElementById("c-displaced"), {fan: {years: W.years, q: D.displaced_q}, fmt: d => d3.format(".0f")(d) + "M", ymin: 0, label: "Refugees, millions"});
+  else document.getElementById("card-displaced").hidden = true;
+}
+
+/* ---------- peak year + regions ---------- */
+function crisis() {
+  const el = document.getElementById("c-peak"); el.innerHTML = "";
+  const w = 520, h = 240, m = {t: 10, r: 10, b: 26, l: 40};
+  const n = d3.sum(W.peak_year_hist), data = W.years.map((y, i) => ({y, p: W.peak_year_hist[i] / n}));
+  const top = data.slice().sort((a, b) => b.p - a.p);
+  const early = d3.sum(data.filter(d => d.y <= 2030), d => d.p), late = d3.sum(data.filter(d => d.y >= 2041), d => d.p);
+  document.getElementById("peak-sub").textContent = `Across simulated worlds: ${pct(early)} peak by 2030, ${pct(late)} after 2040. The first bar includes worlds where conflict only declines from today; the last bar collects worlds still rising in ${W.years.at(-1)}.`;
+  const svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${w} ${h}`);
+  const x = d3.scaleBand().domain(W.years).range([m.l, w - m.r]).padding(.15), y = d3.scaleLinear().domain([0, d3.max(data, d => d.p)]).nice().range([h - m.b, m.t]);
+  svg.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(w - m.l - m.r)).tickFormat("")).select(".domain").remove();
+  svg.append("g").attr("class", "axis").attr("transform", `translate(0,${h - m.b})`).call(d3.axisBottom(x).tickValues(W.years.filter(y => y % 5 === 0)).tickSizeOuter(0));
+  svg.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickFormat(d => pct(d))).select(".domain").remove();
+  const tip = tipFor(el);
+  svg.selectAll("rect.b").data(data).join("rect").attr("x", d => x(d.y)).attr("width", x.bandwidth()).attr("y", d => y(d.p)).attr("height", d => y(0) - y(d.p))
+    .attr("fill", css("--fan")).attr("rx", 2)
+    .on("pointermove", (ev, d) => { const r = el.getBoundingClientRect(); tip.show(`<b>${d.y}</b><br>Peak year in <span class="num">${pct(d.p, 1)}</span> of worlds`, ev.clientX - r.left, ev.clientY - r.top); })
+    .on("pointerleave", () => tip.hide());
+
+  const re = document.getElementById("c-regions"); re.innerHTML = "";
+  const regs = Object.keys(W.region_conflict_q), cols = ["#2a78d6", "#eb6834", "#1baf7a", "#e87ba4", "#6250d6", "#008300"];
+  const colsDark = ["#3987e5", "#d95926", "#199e70", "#d55181", "#9085e9", "#008300"];
+  const dark = matchMedia("(prefers-color-scheme: dark)").matches && document.documentElement.dataset.theme !== "light" || document.documentElement.dataset.theme === "dark";
+  const pal = dark ? colsDark : cols;
+  const svg2 = d3.select(re).append("svg").attr("viewBox", `0 0 ${w} ${h}`);
+  const x2 = d3.scaleLinear().domain(d3.extent(W.years)).range([m.l, w - 90]);
+  const y2 = d3.scaleLinear().domain([0, d3.max(regs.flatMap(r => W.region_conflict_q[r][3]))]).nice().range([h - m.b, m.t]);
+  svg2.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y2).ticks(4).tickSize(-(w - 90 - m.l)).tickFormat("")).select(".domain").remove();
+  svg2.append("g").attr("class", "axis").attr("transform", `translate(0,${h - m.b})`).call(d3.axisBottom(x2).ticks(5).tickFormat(d3.format("d")).tickSizeOuter(0));
+  svg2.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y2).ticks(4).tickFormat(d => pct(d))).select(".domain").remove();
+  const ends = [];
+  regs.forEach((r, k) => {
+    const q = W.region_conflict_q[r];
+    svg2.append("path").attr("d", d3.area().x((_, i) => x2(W.years[i])).y0((_, i) => y2(q[1][i])).y1((_, i) => y2(q[3][i]))(W.years)).attr("fill", pal[k]).attr("fill-opacity", .14);
+    svg2.append("path").attr("d", d3.line().x((_, i) => x2(W.years[i])).y((_, i) => y2(q[2][i]))(W.years)).attr("fill", "none").attr("stroke", pal[k]).attr("stroke-width", 2);
+    ends.push({r, y: y2(q[2].at(-1)), c: pal[k], v: q[2].at(-1)});
+  });
+  ends.sort((a, b) => a.y - b.y); for (let i = 1; i < ends.length; i++) ends[i].y = Math.max(ends[i].y, ends[i - 1].y + 13);
+  ends.forEach(e => { svg2.append("text").attr("x", w - 86).attr("y", e.y + 4).attr("fill", css("--ink-2")).attr("font-size", 11).text(`${e.r} ${pct(e.v)}`);
+    svg2.append("rect").attr("x", w - 88 - 8).attr("y", e.y - 1).attr("width", 6).attr("height", 2).attr("fill", e.c); });
+}
+
+/* ---------- map + table ---------- */
+let TASK = "civil_conflict_5y";
+function seg(id, opts, cur, onPick) {
+  const el = document.getElementById(id);
+  el.innerHTML = opts.map(([k, l]) => `<button type="button" data-k="${k}" aria-pressed="${k === cur}">${l}</button>`).join("");
+  el.onclick = e => { const b = e.target.closest("button"); if (!b) return; el.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); onPick(b.dataset.k); };
+}
+function riskMap() {
+  const el = document.getElementById("c-map"); el.innerHTML = "";
+  const w = 960, h = 470;
+  const feats = topojson.feature(TOPO, TOPO.objects.countries).features.filter(f => f.id !== "ATA");
+  const proj = d3.geoNaturalEarth1().fitSize([w, h], {type: "FeatureCollection", features: feats});
+  const path = d3.geoPath(proj);
+  const vals = DATA.countries.map(c => c[TASK]).filter(v => v != null);
+  const vmax = d3.quantile(vals.slice().sort(d3.ascending), 0.98);
+  const color = d3.scaleSequential(d3.interpolateRgb(css("--seq-lo"), css("--seq-hi"))).domain([0, vmax]).clamp(true);
+  const svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${w} ${h}`).attr("role", "img").attr("aria-label", `World map of five-year ${TASKS[TASK]} risk`);
+  const tip = tipFor(el);
+  svg.selectAll("path").data(feats).join("path").attr("d", path)
+    .attr("fill", f => { const c = byCode[f.id]; if (c && TASK === "civil_conflict_5y" && c.in_conflict) return css("--ongoing");
+      return c && c[TASK] != null ? color(c[TASK]) : css("--nodata"); })
+    .attr("stroke", css("--surface")).attr("stroke-width", .6)
+    .on("pointermove", (ev, f) => {
+      const c = byCode[f.id], r = el.getBoundingClientRect();
+      tip.show(c ? (TASK === "civil_conflict_5y" && c.in_conflict
+          ? `<b>${c.name}</b><br>Civil conflict ongoing in ${M.origin}<br>Still or again in conflict in 2030: <span class="num">${pct(c.p_conflict_2030)}</span> of simulated worlds`
+          : `<b>${c.name}</b><br>${TASKS[TASK]}, 5y: <span class="num">${pct(c[TASK], 1)}</span><br><span class="muted">model range ${pct(c[TASK + "_lo"])}–${pct(c[TASK + "_hi"])}</span>`)
+                 : `<b>${f.properties.name}</b><br><span class="muted">not modelled</span>`, ev.clientX - r.left, ev.clientY - r.top);
+    }).on("pointerleave", () => tip.hide())
+    .on("click", (ev, f) => { if (byCode[f.id]) { document.getElementById("country-select").value = f.id; explorer(f.id); document.getElementById("s-explorer").scrollIntoView({behavior: "smooth"}); } });
+  const stops = d3.range(0, 1.0001, .25).map(t => t * vmax);
+  document.getElementById("map-legend").innerHTML = `<span>${TASKS[TASK]} within 5 years:</span>` +
+    stops.map(s => `<span><i style="background:${color(s)}"></i>${pct(s)}${s === vmax ? "+" : ""}</span>`).join("") +
+    (TASK === "civil_conflict_5y" ? `<span><i style="background:${css("--ongoing")}"></i>conflict ongoing in ${M.origin}</span>` : "") +
+    `<span><i style="background:${css("--nodata")}"></i>not modelled</span><span class="muted">Historical base rate ${pct(M.base_rates[TASK], 1)}. Click a country to explore it.</span>`;
+}
+function riskTable() {
+  const q = document.getElementById("risk-search").value.trim().toLowerCase();
+  let rows = DATA.countries.filter(c => c[TASK] != null).sort((a, b) => b[TASK] - a[TASK]).map((c, i) => ({...c, rank: i + 1}));
+  if (q) rows = rows.filter(c => c.name.toLowerCase().includes(q)); else rows = rows.slice(0, 30);
+  const mx = d3.max(DATA.countries, c => c[TASK + "_hi"]) || 1;
+  const Y5 = M.origin + 5, simKey = {civil_conflict_5y: `p_onset_by_${Y5}`, coup_5y: `p_coup_by_${Y5}`, econ_collapse_5y: `p_collapse_by_${Y5}`, autocratization_5y: `p_autoc_by_${Y5}`}[TASK];
+  const simKey2 = simKey.replace(String(Y5), "2035");
+  document.getElementById("risk-table").innerHTML =
+    `<thead><tr><th class="num">#</th><th>Country</th><th>Region</th><th class="num">5-year risk</th><th>Range</th><th class="num">Simulator ${M.origin + 1}–${String(M.origin + 5).slice(2)}</th><th class="num">Simulator by 2035</th><th>Top risk factors</th></tr></thead><tbody>` +
+    rows.map(c => `<tr><td class="num">${c.rank}</td><td>${c.name}${c.in_conflict ? ' <span class="pill">in conflict</span>' : ""}</td><td class="muted">${c.region}</td>
+      <td class="num">${pct(c[TASK], 1)}</td>
+      <td><div class="bar" aria-hidden="true"><span style="width:${100 * c[TASK] / mx}%"></span><em style="left:${100 * c[TASK + "_lo"] / mx}%;width:${100 * (c[TASK + "_hi"] - c[TASK + "_lo"]) / mx}%"></em></div></td>
+      <td class="num">${pct(c[simKey])}</td><td class="num">${pct(c[simKey2])}</td>
+      <td>${(c[TASK + "_drivers"] || []).map(d => `<span class="chip">${d.replaceAll("_", " ")}</span>`).join("")}</td></tr>`).join("") + "</tbody>";
+}
+
+/* ---------- explorer ---------- */
+function drivers(el, groups, title) {
+  el.innerHTML = "";
+  const data = Object.entries(groups).map(([g, v]) => ({g, v})).sort((a, b) => Math.abs(b.v) - Math.abs(a.v));
+  const w = 520, rowh = 26, h = data.length * rowh + 34, m = {l: 170, r: 40};
+  const svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${w} ${h}`);
+  const lim = Math.max(.5, d3.max(data, d => Math.abs(d.v)));
+  const x = d3.scaleLinear().domain([-lim, lim]).range([m.l, w - m.r]);
+  svg.append("text").attr("x", 0).attr("y", 14).attr("fill", css("--ink")).attr("font-size", 13).attr("font-weight", 600).text(title);
+  svg.append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y1", 22).attr("y2", h).attr("stroke", css("--muted"));
+  data.forEach((d, i) => {
+    const yy = 26 + i * rowh;
+    svg.append("text").attr("x", m.l - 8).attr("y", yy + 13).attr("text-anchor", "end").attr("fill", css("--ink-2")).attr("font-size", 12).text(d.g);
+    svg.append("rect").attr("x", Math.min(x(0), x(d.v))).attr("width", Math.abs(x(d.v) - x(0))).attr("y", yy + 3).attr("height", 14).attr("rx", 2)
+      .attr("fill", d.v > 0 ? css("--up") : css("--down"));
+    svg.append("text").attr("x", d.v > 0 ? x(d.v) + 4 : x(d.v) - 4).attr("y", yy + 14).attr("text-anchor", d.v > 0 ? "start" : "end")
+      .attr("fill", css("--muted")).attr("font-size", 11).attr("font-family", "var(--mono)").text((d.v > 0 ? "+" : "") + d.v.toFixed(2));
+  });
+}
+function explorer(code) {
+  const c = byCode[code]; if (!c) return;
+  const yrs = W.years;
+  const t = [
+    c.in_conflict ? {k: "Civil conflict", v: "Ongoing", s: `still or again in conflict in 2030: ${pct(c.p_conflict_2030)}`}
+                  : {k: "Civil conflict onset, 5y", v: pct(c.civil_conflict_5y, 1), s: `base rate ${pct(M.base_rates.civil_conflict_5y, 1)}`},
+    {k: "Coup attempt, 5y", v: pct(c.coup_5y, 1), s: `by 2050 (sim): ${pct(c.p_coup_by_2050)}`},
+    {k: "Economic collapse, 5y", v: pct(c.econ_collapse_5y, 1), s: `≥10% fall in GDP per person`},
+    {k: "Autocratization, 5y", v: pct(c.autocratization_5y, 1), s: `democracy ${c.democracy == null ? "–" : c.democracy.toFixed(2)} in ${M.origin}`},
+    {k: "GDP per person, 2065", v: money(c.gdp_2065_q && c.gdp_2065_q[2]), s: `${M.origin} ${money(c.gdp_pc)}; 90%: ${money(c.gdp_2065_q && c.gdp_2065_q[0])}–${money(c.gdp_2065_q && c.gdp_2065_q[4])}`},
+    {k: "Warming by 2065", v: c.climate ? "+" + c.climate.ssp245["2065"].tas.toFixed(1) + " °C" : "–", s: c.climate ? `SSP2-4.5; SSP5-8.5: +${c.climate.ssp585["2065"].tas.toFixed(1)} °C` : ""},
+  ];
+  document.getElementById("country-tiles").innerHTML = t.map(d => `<div class="tile"><span class="k">${d.k}</span><span class="v num">${d.v}</span><span class="s">${d.s}</span></div>`).join("");
+  const T = q => [0, 1, 2, 3, 4].map(j => q.map(r => r[j]));
+  const hist = H.years; // country history isn't shipped; show the fan from origin with the 2024 value as anchor
+  const hy = d3.range(1990, M.origin + 1);
+  if (c.gdp_pc && c.gdp_path_q[0][2] != null) fanChart(document.getElementById("x-gdp"), {hist: {years: hy, values: c.hist.gdp}, fan: {years: [M.origin, ...yrs], q: T([[c.gdp_pc, c.gdp_pc, c.gdp_pc, c.gdp_pc, c.gdp_pc], ...c.gdp_path_q])}, fmt: d => "$" + d3.format("~s")(d), log: true, ml: 52, h: 220, label: "GDP per person"});
+  else document.getElementById("x-gdp").innerHTML = "<p class='muted'>No GDP data.</p>";
+  if (c.democracy != null) fanChart(document.getElementById("x-dem"), {hist: {years: hy, values: c.hist.dem}, fan: {years: [M.origin, ...yrs], q: T([[c.democracy, c.democracy, c.democracy, c.democracy, c.democracy], ...c.dem_path_q])}, fmt: d3.format(".2f"), ymin: 0, ymax: 1, h: 220, label: "Democracy"});
+  fanChart(document.getElementById("x-conf"), {hist: {years: hy, values: c.hist.conflict}, histLabel: "At war (1 = yes)", fan: {years: [M.origin, ...yrs], q: [0, 1, 2, 3, 4].map(() => [c.in_conflict, ...c.conflict_path])}, fmt: d => pct(d), ymin: 0, ymax: 1, h: 220, label: "Probability of conflict"});
+  drivers(document.getElementById("x-drv-conf"), c.civil_conflict_5y_groups || {}, c.in_conflict ? "Civil conflict onset (structural, ignoring the ongoing war)" : "Civil conflict onset");
+  drivers(document.getElementById("x-drv-autoc"), c.autocratization_5y_groups || {}, "Autocratization");
+}
+
+/* ---------- validation ---------- */
+function backtestTable() {
+  const recs = V.backtest || []; if (!recs.length) return;
+  const models = ["Naive (Fearon-Laitin)", "Logit", "Forest", "GBM", "GBM (since 1860)", "PsychoNet", "PsychoNet (quantile)", "Seldon ensemble"];
+  const tasks = ["civil_conflict_5y", "coup_5y", "econ_collapse_5y", "autocratization_5y", "onset_1y", "coup_1y", "termination_1y"];
+  const names = {...TASKS, onset_1y: "Conflict onset, next year", coup_1y: "Coup attempt, next year", termination_1y: "Conflict ends, next year"};
+  const get = (t, m) => recs.find(r => r.task === t && r.model === m);
+  document.getElementById("t-backtest").innerHTML = `<thead><tr><th>Outcome</th><th class="num">Events</th>${models.map(m => `<th class="num">${m}</th>`).join("")}<th class="num">Brier skill</th><th class="num">Top-10% capture</th></tr></thead><tbody>` +
+    tasks.map(t => { const best = d3.max(models, m => (get(t, m) || {}).auc); const e = get(t, "Seldon ensemble") || {};
+      return `<tr><td>${names[t]}</td><td class="num">${e.events ?? "–"}</td>${models.map(m => { const r = get(t, m); return `<td class="num ${r && r.auc === best ? "best" : ""}">${r ? r.auc.toFixed(3) : "–"}</td>`; }).join("")}
+      <td class="num">${e.bss != null ? e.bss.toFixed(3) : "–"}</td><td class="num">${pct(e.top10_capture)}</td></tr>`; }).join("") + "</tbody>";
+}
+function splitTable() {
+  const recs = V.backtest_split || []; if (!recs.length) { document.getElementById("card-split").hidden = true; return; }
+  const tasks = ["civil_conflict_5y", "coup_5y", "econ_collapse_5y", "autocratization_5y", "onset_1y", "coup_1y", "termination_1y"];
+  const names = {...TASKS, onset_1y: "Conflict onset, next year", coup_1y: "Coup attempt, next year", termination_1y: "Conflict ends, next year"};
+  const get = (sp, t, m) => recs.find(r => r.split === sp && r.task === t && r.model === m);
+  const cell = r => r ? `${r.auc.toFixed(2)} <span class="muted">(${r.auc_lo.toFixed(2)}–${r.auc_hi.toFixed(2)})</span>` : "–";
+  document.getElementById("t-split").innerHTML = `<thead><tr><th>Outcome</th><th class="num">Ensemble, tuning origins</th><th class="num">Ensemble, untouched</th><th class="num">Naive, untouched</th><th class="num">Brier skill, untouched</th></tr></thead><tbody>` +
+    tasks.map(t => { const a = get("development", t, "Seldon ensemble"), b = get("held out", t, "Seldon ensemble"), c = get("held out", t, "Naive (Fearon-Laitin)");
+      return `<tr><td>${names[t]}</td><td class="num">${cell(a)}</td><td class="num">${cell(b)}</td><td class="num">${cell(c)}</td><td class="num">${b ? b.bss.toFixed(2) : "–"}</td></tr>`; }).join("") + "</tbody>";
+}
+let CAL = "civil_conflict_5y";
+function calChart() {
+  const el = document.getElementById("c-cal"); el.innerHTML = "";
+  const d = (V.calibration || []).filter(r => r.task === CAL && r.n > 0);
+  const w = 520, h = 300, m = {t: 10, r: 14, b: 34, l: 46};
+  const mx = Math.max(.1, d3.max(d, r => Math.max(r.predicted, r.observed)) * 1.1);
+  const x = d3.scaleLinear().domain([0, mx]).range([m.l, w - m.r]), y = d3.scaleLinear().domain([0, mx]).range([h - m.b, m.t]);
+  const svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${w} ${h}`);
+  svg.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(w - m.l - m.r)).tickFormat("")).select(".domain").remove();
+  svg.append("g").attr("class", "axis").attr("transform", `translate(0,${h - m.b})`).call(d3.axisBottom(x).ticks(5).tickFormat(v => pct(v)));
+  svg.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickFormat(v => pct(v))).select(".domain").remove();
+  svg.append("text").attr("x", w - m.r).attr("y", h - 4).attr("text-anchor", "end").attr("fill", css("--muted")).attr("font-size", 11).text("predicted probability");
+  svg.append("line").attr("x1", x(0)).attr("y1", y(0)).attr("x2", x(mx)).attr("y2", y(mx)).attr("stroke", css("--muted")).attr("stroke-dasharray", "4 4");
+  const r = d3.scaleSqrt().domain([0, d3.max(d, q => q.n)]).range([4, 16]);
+  svg.append("path").attr("d", d3.line().x(q => x(q.predicted)).y(q => y(q.observed))(d)).attr("fill", "none").attr("stroke", css("--fan")).attr("stroke-width", 2);
+  const tip = tipFor(el);
+  svg.selectAll("circle").data(d).join("circle").attr("cx", q => x(q.predicted)).attr("cy", q => y(q.observed)).attr("r", q => r(q.n))
+    .attr("fill", css("--fan")).attr("fill-opacity", .8).attr("stroke", css("--surface")).attr("stroke-width", 2)
+    .on("pointermove", (ev, q) => { const b = el.getBoundingClientRect(); tip.show(`<b>Bin ${q.bin}</b><br>predicted <span class="num">${pct(q.predicted, 1)}</span><br>observed <span class="num">${pct(q.observed, 1)}</span><br>${q.n} country-years`, ev.clientX - b.left, ev.clientY - b.top); })
+    .on("pointerleave", () => tip.hide());
+}
+function hindcast(origin) {
+  const f = (V.hindcast_fans || {})[origin]; if (!f) return;
+  const hm = (V.hindcast || []).find(r => String(r.origin) === String(origin)) || {};
+  document.getElementById("hind-sub").textContent = `Trained on data up to ${origin}, simulated to ${hm.end}. Ink = what actually happened. Country-level conflict ranking AUC ${hm.conflict_incidence_auc?.toFixed(2)}.`;
+  const histYears = H.years.filter(y => y <= origin && y >= origin - 15);
+  fanChart(document.getElementById("c-hind"), {hist: {years: [...histYears, ...f.years], values: [...histYears.map(y => H.world_conflict[H.years.indexOf(y)]), ...f.world_conflict_actual]},
+    fan: {years: f.years, q: f.world_conflict_q}, fmt: d => pct(d), ymin: 0, h: 280, label: "Hindcast of world conflict share"});
+}
+function hindTable() {
+  const rows = V.hindcast || [];
+  document.getElementById("t-hind").innerHTML = `<thead><tr><th>Origin → end</th><th class="num">Conflict ranking AUC</th><th class="num">New-onset AUC</th><th class="num">World conflict in 90% band</th><th class="num">GDP in 90%</th><th class="num">GDP in 50%</th><th class="num">Democracy in 90%</th><th class="num">Democracy in 50%</th></tr></thead><tbody>` +
+    rows.map(r => `<tr><td class="num">${r.origin} → ${r.end}</td><td class="num">${r.conflict_incidence_auc.toFixed(2)}</td><td class="num">${r.onset_auc_peace != null ? r.onset_auc_peace.toFixed(2) : "–"}</td><td class="num">${pct(r.world_conflict_in_90)}</td><td class="num">${pct(r.gdp_in_90)}</td><td class="num">${pct(r.gdp_in_50)}</td><td class="num">${pct(r.dem_in_90)}</td><td class="num">${pct(r.dem_in_50)}</td></tr>`).join("") + "</tbody>";
+}
+function ablationTable() {
+  const recs = (V.ablation || []).filter(r => r.model === "Seldon ensemble"); if (!recs.length) return;
+  const configs = ["base", "+Climate shocks", "+Ideology & religion", "+State capacity & coercion", "+Fiscal stress & coups", "all"];
+  const tasks = ["civil_conflict_5y", "coup_5y", "econ_collapse_5y", "autocratization_5y", "onset_1y", "coup_1y"];
+  const names = {...TASKS, onset_1y: "Onset, 1y", coup_1y: "Coup, 1y"};
+  const get = (c, t) => recs.find(r => r.config === c && r.task === t);
+  document.getElementById("t-ablation").innerHTML = `<thead><tr><th>Feature set</th>${tasks.map(t => `<th class="num">${names[t]}</th>`).join("")}</tr></thead><tbody>` +
+    configs.map(c => `<tr><td>${c === "base" ? "Structural core only" : c === "all" ? `Everything (${M.n_features} features)` : "+ " + c.slice(1)}</td>${tasks.map(t => { const r = get(c, t), b = get("base", t); const best = d3.max(configs, cc => (get(cc, t) || {}).auc);
+      return `<td class="num ${r && r.auc === best ? "best" : ""}">${r ? r.auc.toFixed(3) : "–"}${r && b && c !== "base" ? ` <span class="muted">(${r.auc - b.auc >= 0 ? "+" : ""}${(r.auc - b.auc).toFixed(3)})</span>` : ""}</td>`; }).join("")}</tr>`).join("") + "</tbody>";
+}
+
+
+/* ---------- climate ---------- */
+let SSP = "ssp245", CVAR = "tas";
+const CVARS = {tas: ["Warming", "°C"], txx: ["Hottest day", "°C"], pr_pct: ["Rainfall", "%"], cdd: ["Dry spell", "days"], gdp: ["GDP impact", "%"]};
+function climVal(c) {
+  if (CVAR === "gdp") {
+    const s = c.scenarios || {}, a = s[SSP], b = s["ssp245_nodamage"];
+    return a && b && a.gdp_end && b.gdp_end ? 100 * (a.gdp_end / b.gdp_end - 1) : null;
+  }
+  const d = c.climate && c.climate[SSP] && c.climate[SSP]["2065"];
+  return d ? d[CVAR] : null;
+}
+function climMap() {
+  const el = document.getElementById("c-climmap"); el.innerHTML = "";
+  const w = 960, h = 470;
+  const feats = topojson.feature(TOPO, TOPO.objects.countries).features.filter(f => f.id !== "ATA");
+  const path = d3.geoPath(d3.geoNaturalEarth1().fitSize([w, h], {type: "FeatureCollection", features: feats}));
+  const vals = DATA.countries.map(climVal).filter(v => v != null);
+  const diverging = CVAR === "pr_pct" || CVAR === "gdp";
+  const lim = d3.quantile(vals.map(Math.abs).sort(d3.ascending), 0.97) || 1;
+  const color = diverging
+    ? d3.scaleDiverging(t => d3.interpolateRgbBasis([css("--up"), css("--nodata"), css("--down")])(t)).domain(CVAR === "gdp" ? [-lim, 0, lim] : [-lim, 0, lim])
+    : d3.scaleSequential(d3.interpolateRgb(css("--seq-lo"), css("--up"))).domain([0, d3.quantile(vals.slice().sort(d3.ascending), 0.98)]);
+  const svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${w} ${h}`).attr("role", "img").attr("aria-label", `World map of ${CVARS[CVAR][0]} by 2065`);
+  const tip = tipFor(el);
+  const fmt = v => v == null ? "–" : (v > 0 ? "+" : "") + v.toFixed(CVAR === "tas" || CVAR === "txx" ? 1 : 0) + (CVARS[CVAR][1] === "%" ? "%" : " " + CVARS[CVAR][1]);
+  svg.selectAll("path").data(feats).join("path").attr("d", path)
+    .attr("fill", f => { const c = byCode[f.id], v = c ? climVal(c) : null; return v == null ? css("--nodata") : color(v); })
+    .attr("stroke", css("--surface")).attr("stroke-width", .6)
+    .on("pointermove", (ev, f) => {
+      const c = byCode[f.id], r = el.getBoundingClientRect();
+      if (!c) return tip.show(`<b>${f.properties.name}</b><br><span class="muted">not modelled</span>`, ev.clientX - r.left, ev.clientY - r.top);
+      const d = c.climate[SSP]["2065"], g = c.scenarios || {};
+      const imp = g[SSP] && g.ssp245_nodamage ? 100 * (g[SSP].gdp_end / g.ssp245_nodamage.gdp_end - 1) : null;
+      tip.show(`<b>${c.name}</b> · ${SSP_NAMES[SSP]}, 2065 vs 2015–24<br>Warming <span class="num">+${d.tas.toFixed(1)} °C</span> <span class="muted">(models ${d.tas_p10.toFixed(1)}–${d.tas_p90.toFixed(1)})</span><br>
+        Hottest day <span class="num">${d.txx > 0 ? "+" : ""}${d.txx.toFixed(1)} °C</span><br>Rainfall <span class="num">${d.pr_pct > 0 ? "+" : ""}${d.pr_pct.toFixed(0)}%</span> · dry spell <span class="num">${d.cdd > 0 ? "+" : ""}${d.cdd.toFixed(0)} days</span><br>
+        GDP per person vs no damage <span class="num">${imp == null ? "–" : (imp > 0 ? "+" : "") + imp.toFixed(0) + "%"}</span>`, ev.clientX - r.left, ev.clientY - r.top);
+    }).on("pointerleave", () => tip.hide());
+  const ticks = diverging ? [-lim, -lim / 2, 0, lim / 2, lim] : d3.range(0, 1.0001, .25).map(t => t * color.domain()[1]);
+  document.getElementById("climmap-legend").innerHTML = `<span>${CVARS[CVAR][0]} by 2065, ${SSP_NAMES[SSP]} (${SSP_LONG[SSP]}):</span>` +
+    ticks.map(v => `<span><i style="background:${color(v)}"></i>${fmt(v)}</span>`).join("") +
+    (CVAR === "gdp" ? `<span class="muted">Burke–Hsiang–Miguel damage on GDP per person, relative to the same worlds without climate damage.</span>` : "");
+}
+function scenCharts() {
+  const yrs = W.years, keys = ["ssp126", "ssp245", "ssp370", "ssp585"].filter(k => SCEN[k]);
+  const pal = {ssp126: "#1baf7a", ssp245: "#2a78d6", ssp370: "#eda100", ssp585: "#e34948"};
+  for (const [id, field, fmt, log] of [["c-scen-gdp", "world_gdp_q", d => "$" + d3.format("~s")(d), true], ["c-scen-conf", "world_conflict_q", d => pct(d), false]]) {
+    const extra = keys.map(k => ({years: yrs, values: SCEN[k][field][2], stroke: pal[k], label: SSP_NAMES[k]}));
+    if (field === "world_gdp_q" && SCEN.ssp245_nodamage) extra.push({years: yrs, values: SCEN.ssp245_nodamage[field][2], stroke: pal.ssp245, dash: "4 4", label: "SSP2-4.5, no damage"});
+    const h0 = H.years.indexOf(2000);
+    fanChart(document.getElementById(id), {hist: {years: H.years.slice(h0), values: (field === "world_gdp_q" ? H.world_gdp : H.world_conflict).slice(h0)},
+      fmt, log, ml: 52, ymin: log ? undefined : 0, extra, label: id});
+  }
+  document.getElementById("scen-legend").innerHTML = keys.map(k => `<span><i style="background:${pal[k]}"></i>${SSP_NAMES[k]}</span>`).join("") + `<span class="muted">ink: history</span>`;
+  const yi = W.years.indexOf(2065), pw = k => { // population-weighted warming
+    let s = 0, n = 0; DATA.countries.forEach(c => { const d = c.climate[k] && c.climate[k]["2065"]; if (d && c.pop_m) { s += d.tas * c.pop_m; n += c.pop_m; } }); return s / n; };
+  const rows = [...keys, "ssp245_nodamage", "ssp585_nodamage"].filter(k => SCEN[k]);
+  const nd = SCEN.ssp245_nodamage;
+  document.getElementById("t-scen").innerHTML = `<thead><tr><th>Scenario</th><th class="num">Warming by 2065*</th><th class="num">World GDP per person 2065</th><th class="num">90% band</th><th class="num">vs no damage</th><th class="num">Countries in conflict 2065</th><th class="num">Democracy 2065</th></tr></thead><tbody>` +
+    rows.map(k => { const s_ = SCEN[k], base = k.endsWith("nodamage") ? null : nd; const kk = k.replace("_nodamage", "");
+      return `<tr><td>${SSP_NAMES[kk]} ${k.endsWith("nodamage") ? '<span class="muted">· no damage</span>' : `<span class="muted">· ${SSP_LONG[kk]}</span>`}</td><td class="num">+${pw(kk).toFixed(1)} °C</td>
+      <td class="num">${money(s_.world_gdp_q[2][yi])}</td><td class="num">${money(s_.world_gdp_q[0][yi])} – ${money(s_.world_gdp_q[4][yi])}</td>
+      <td class="num">${base ? ((s_.world_gdp_q[2][yi] / base.world_gdp_q[2][yi] - 1) * 100).toFixed(0) + "%" : "–"}</td>
+      <td class="num">${pct(s_.world_conflict_q[2][yi])}</td><td class="num">${s_.world_dem_q[2][yi].toFixed(2)}</td></tr>`; }).join("") +
+    `</tbody><caption style="caption-side:bottom;text-align:left;padding:8px 10px" class="footnote">* Population-weighted mean change in annual temperature, 2065 vs 2015–2024 (CMIP6 ensemble median).</caption>`;
+}
+
+/* ---------- United States ---------- */
+let UST = "unemployment_surge";
+function usInit() {
+  if (!USD) { document.getElementById("s-us").closest("section").hidden = true; return; }
+  const sel = document.getElementById("us-select");
+  sel.innerHTML = `<option value="">(national only)</option>` + USD.states.slice().sort((a, b) => a.name.localeCompare(b.name)).map(s => `<option value="${s.code}">${s.name}</option>`).join("");
+  sel.value = "TX"; sel.onchange = usStress;
+  const opts = Object.entries(USD.tasks).filter(([k]) => (USD.calibration[k] || {}).skill !== "none").concat([["warming", "Warming by 2065"]]);
+  seg("us-seg", opts.map(([k, v]) => [k, v]), UST, k => { UST = k; usMap(); usTable(); });
+}
+function usStress() {
+  const yrs = USD.stress_years, code = document.getElementById("us-select").value, st = USD.states.find(s => s.code === code);
+  const peak = yrs[USD.us_stress.indexOf(d3.max(USD.us_stress))];
+  document.getElementById("us-stress-sub").textContent = `Mean z-score of ${USD.stress_components.map(c => c.replaceAll("_", " ")).join(", ")} (0 = 1999–2024 average). National peak: ${peak}.`;
+  fanChart(document.getElementById("c-us-stress"), {hist: {years: yrs, values: USD.us_stress}, histLabel: "United States", fmt: d3.format("+.2f"), w: 1040, h: 260,
+    extra: st ? [{years: yrs, values: st.stress, color: "--fan", label: st.name}] : [], label: "Structural stress index"});
+}
+function usVal(s) {
+  if (UST === "warming") return s.climate && s.climate[SSP] ? s.climate[SSP].median["2065"] - s.temp_base : null;
+  return s[UST];
+}
+function usMap() {
+  const el = document.getElementById("c-usmap"); el.innerHTML = "";
+  const w = 960, h = 560, feats = topojson.feature(USTOPO, USTOPO.objects.states).features;
+  const byF = Object.fromEntries(USD.states.map(s => [String(s.fips).padStart(2, "0"), s]));
+  const path = d3.geoPath(d3.geoAlbersUsa().fitSize([w, h], {type: "FeatureCollection", features: feats}));
+  const vals = USD.states.map(usVal).filter(v => v != null);
+  const color = UST === "warming" ? d3.scaleSequential(d3.interpolateRgb(css("--seq-lo"), css("--up"))).domain([d3.min(vals) * 0.9, d3.max(vals)])
+    : d3.scaleSequential(d3.interpolateRgb(css("--seq-lo"), css("--seq-hi"))).domain([0, d3.max(vals)]);
+  const svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${w} ${h}`).attr("role", "img").attr("aria-label", "US state map");
+  const tip = tipFor(el);
+  const fmt = v => UST === "warming" ? `+${v.toFixed(1)} °C` : pct(v);
+  svg.selectAll("path").data(feats).join("path").attr("d", path)
+    .attr("fill", f => { const s = byF[f.id], v = s ? usVal(s) : null; return v == null ? css("--nodata") : color(v); })
+    .attr("stroke", css("--surface")).attr("stroke-width", .8)
+    .on("pointermove", (ev, f) => {
+      const s = byF[f.id], r = el.getBoundingClientRect(); if (!s) return;
+      const g = s[UST + "_groups"], top = g ? Object.entries(g).sort((a, b) => b[1] - a[1]).slice(0, 2).filter(d => d[1] > 0).map(d => d[0]) : [];
+      tip.show(`<b>${s.name}</b><br>${UST === "warming" ? `Warming by 2065 (${SSP_NAMES[SSP]}): <span class="num">${fmt(usVal(s))}</span><br><span class="muted">models ${(s.climate[SSP].p10["2065"] - s.temp_base).toFixed(1)}–${(s.climate[SSP].p90["2065"] - s.temp_base).toFixed(1)} °C; local trend ×${s.warming_scale}</span>`
+        : `${USD.tasks[UST]}, 2025–29: <span class="num">${pct(s[UST])}</span><br><span class="muted">model range ${pct(s[UST + "_lo"])}–${pct(s[UST + "_hi"])}${top.length ? "<br>raised by: " + top.join(", ") : ""}</span>`}`, ev.clientX - r.left, ev.clientY - r.top);
+    }).on("pointerleave", () => tip.hide());
+  const d = color.domain(), stops = d3.range(0, 1.0001, .25).map(t => d[0] + t * (d[1] - d[0]));
+  const sk = (USD.calibration[UST] || {});
+  document.getElementById("usmap-legend").innerHTML = `<span>${UST === "warming" ? "Warming by 2065, " + SSP_NAMES[SSP] : USD.tasks[UST] + " within 5 years"}:</span>` +
+    stops.map(v => `<span><i style="background:${color(v)}"></i>${fmt(v)}</span>`).join("") + (UST !== "warming" ? `<span class="muted">Historical base rate ${pct(USD.base_rates[UST])}.</span>` : "");
+  document.getElementById("us-skill-note").innerHTML = UST === "warming"
+    ? "State warming = the national CMIP6 change scaled by each state's own 1970–2024 warming trend relative to the nation (0.5–2×). Change the scenario in the climate section above."
+    : `Backtest skill: <span class="pill">${sk.skill || "–"}</span> (AUC ${sk.auc ? sk.auc.toFixed(2) : "–"}). ` + ({
+      unemployment_surge: "Low unemployment has preceded every recent recession (2001, 2008, 2020), so with unemployment near record lows the model expects a sizeable rise somewhere in the next five years. That rests on three national episodes.",
+      mass_shooting: "Mostly a matter of population: large states see more public mass shootings. The ranking is reliable, the per-state level less so.",
+      income_shock: "Weak skill: national recessions, which drive most shocks, are hard to time.",
+      housing_bust: "Weak skill: the data hold essentially one national housing bust (2007–2011)."}[UST] || "");
+}
+function usTable() {
+  if (UST === "warming") {
+    const rows = USD.states.slice().sort((a, b) => usVal(b) - usVal(a));
+    document.getElementById("us-table").innerHTML = `<thead><tr><th>State</th><th>Region</th><th class="num">Mean temp 2015–24</th><th class="num">Warming by 2065</th><th class="num">Model range</th><th class="num">Local trend factor</th></tr></thead><tbody>` +
+      rows.map(s => `<tr><td>${s.name}</td><td class="muted">${s.region}</td><td class="num">${s.temp_base == null ? "–" : s.temp_base.toFixed(1) + " °C"}</td><td class="num">+${usVal(s).toFixed(1)} °C</td><td class="num">${(s.climate[SSP].p10["2065"] - s.temp_base).toFixed(1)}–${(s.climate[SSP].p90["2065"] - s.temp_base).toFixed(1)}</td><td class="num">×${s.warming_scale}</td></tr>`).join("") + "</tbody>";
+    return;
+  }
+  const rows = USD.states.filter(s => s[UST] != null).sort((a, b) => b[UST] - a[UST]);
+  const mx = d3.max(rows, s => s[UST + "_hi"]) || 1;
+  document.getElementById("us-table").innerHTML = `<thead><tr><th class="num">#</th><th>State</th><th>Region</th><th class="num">5-year risk</th><th>Range</th><th class="num">Unemployment 2024</th><th class="num">Overdoses /100k</th><th class="num">2024 margin</th></tr></thead><tbody>` +
+    rows.map((s, i) => `<tr><td class="num">${i + 1}</td><td>${s.name}</td><td class="muted">${s.region}</td><td class="num">${pct(s[UST], 1)}</td>
+      <td><div class="bar" aria-hidden="true"><span style="width:${100 * s[UST] / mx}%"></span><em style="left:${100 * s[UST + "_lo"] / mx}%;width:${100 * (s[UST + "_hi"] - s[UST + "_lo"]) / mx}%"></em></div></td>
+      <td class="num">${s.unemployment.toFixed(1)}%</td><td class="num">${s.overdose > 0 ? s.overdose.toFixed(0) : "–"}</td>
+      <td class="num">${s.margin > 0 ? "D+" : "R+"}${Math.abs(100 * s.margin).toFixed(0)}</td></tr>`).join("") + "</tbody>";
+}
+function usBacktest() {
+  const recs = USD.backtest, tasks = Object.keys(USD.tasks);
+  const get = (t, m) => recs.find(r => r.task === t && r.model === m);
+  document.getElementById("t-us-bt").innerHTML = `<thead><tr><th>Outcome</th><th class="num">Events</th><th class="num">Logit</th><th class="num">GBM</th><th class="num">Average</th><th class="num">Brier skill</th><th>Verdict</th></tr></thead><tbody>` +
+    tasks.map(t => { const a = get(t, "Average") || {}, c = USD.calibration[t] || {};
+      return `<tr><td>${USD.tasks[t]}</td><td class="num">${a.events ?? "–"}</td><td class="num">${(get(t, "Logit") || {}).auc?.toFixed(3) ?? "–"}</td><td class="num">${(get(t, "GBM") || {}).auc?.toFixed(3) ?? "–"}</td>
+      <td class="num">${a.auc?.toFixed(3) ?? "–"}</td><td class="num">${c.bss != null && c.skill !== "none" ? c.bss.toFixed(3) : "–"}</td><td><span class="pill">${c.skill || "–"}</span></td></tr>`; }).join("") + "</tbody>";
+}
+
+
+/* ---------- world system / interstate / AI / panel ---------- */
+const INT = DATA.interstate || null, AI = DATA.ai || null, PANEL = /*__PANEL__*/null;
+const AI_COL = {uncertain: "#2a78d6", none: "#eb6834", "2027": "#1baf7a", "2030": "#eda100", "2035": "#e87ba4", alliances_1914: "#008300"};   // reference categorical slots 1-6, in fixed order
+const AI_LBL = {uncertain: "Headline: AI arrival uncertain", none: "No AI shock", "2027": "Near-free cognition 2027", "2030": "Near-free cognition 2030", "2035": "Near-free cognition 2035", alliances_1914: "1914-style alliances"};
+function systemTable() {
+  const rows = [
+    ["Civil conflict, coups, collapse, autocratization", "learned", "Six-model ensemble on ~130 structural features; backtests 1980–2015, lockbox 2010–2015, fresh 2020–2023"],
+    ["Growth and democracy dynamics", "learned", "Transition equations with conditional convergence; shocks resampled from history (world, region, country, year)"],
+    ["Interstate war between pairs", "learned", "Dyad model, 1850–2024 (UCDP, GML MIDs, capabilities, alliances, rivalries, nuclear status); duration table for wars in progress"],
+    ["Alliance cascades", "calibrated", "Defence-pact allies join war-level conflicts with probability fitted to 1995–2024 hindcasts; 1914-style stress test"],
+    ["Climate", "assumed", "CMIP6 projections (4 scenarios) with weather noise; Burke–Hsiang–Miguel damage at population-weighted temperature"],
+    ["Food", "assumed", "Cereal yields: country trend, −5% per °C of warming, AI agronomy; calories follow income and yields"],
+    ["Energy market", "learned", "Real oil price replays 1950–2024 moves without their trend, reverts weakly to its 1995–2024 average, jumps 18% when a major exporter enters a war; exporters' growth tracks the price (all estimated, 1950–2024)"],
+    ["Energy transition", "fitted + assumed", "Wind and solar share of world primary energy on an S-curve fitted to 2005–2024 (ceiling unknown, drawn 40–90%); fossil fuels displaced pro rata; oil price falls half as fast as demand (assumed); petrostates lose price and volume; AI speeds the transition"],
+    ["War damage", "learned", "Countries where a war is fought lose 9% of output in each war year and recover half two years later (1951–2023 estimate); trade partners lose in proportion to the war-site share of world GDP above its historical level (assumed)"],
+    ["Technology diffusion", "learned", "Historical adoption lags (CHAT, 1800–2000) halve every ~80 years; extrapolated to ~10 years for a 2025 technology, with ~12 years between early and late adopters — the basis of the AI adoption lags"],
+    ["Space", "not modelled", "Satellite internet and military space are discussed, not simulated: no data link them to the crises forecast here"],
+    ["Pandemics", "assumed", "COVID-scale shocks ~2% a year; AI raises misuse risk and speeds countermeasures"],
+    ["AI: near-free cognition", "assumed", "Arrival year and adoption speed by country readiness; eight channels listed below"],
+    ["Demography", "external", "UN World Population Prospects medium variant"],
+  ];
+  document.getElementById("t-system").innerHTML = "<thead><tr><th>Subsystem</th><th>Kind</th><th>How</th></tr></thead><tbody>" +
+    rows.map(r => `<tr><td>${r[0]}</td><td><span class="pill">${r[1]}</span></td><td style="white-space:normal">${r[2]}</td></tr>`).join("") + "</tbody>";
+}
+function interSection() {
+  if (!INT) { document.getElementById("s-inter").closest("section").hidden = true; return; }
+  const bt = INT.backtest.interstate_5y || {};
+  document.getElementById("inter-sub").textContent = `${INT.n_pairs} politically relevant pairs of countries (neighbours, rivals, pairs within 1,000 km, and pairs involving a major power), 1850–${M.origin}. Five-year risk from the model (${M.origin + 1}–${M.origin + 5}) of an armed conflict (≥ 25 battle deaths in a year) and, more broadly, of any use of force (strikes, clashes, seizures, with or without deaths); then the share of simulated worlds in which the pair fights at least once by each date (headline worlds, AI arrival uncertain). Fighting already recorded in ${M.origin + 1} (UCDP candidate events to September) counts as certain. Wars in progress continue with historical duration statistics.`;
+  const base = (AI && (AI.uncertain || AI.none) && (AI.uncertain || AI.none).watch) || {}, ai30 = (AI && AI["2030"] && AI["2030"].watch) || {},
+        noai = (AI && AI.uncertain && AI.none && AI.none.watch) || null;
+  const watchNames = Object.keys(base);
+  const direct = Object.fromEntries((INT.watch || []).map(w => [`${w.a}-${w.b}`, w]));
+  const nameToKey = {"China-Taiwan": "CHN-TWN", "China-United States": "CHN-USA", "China-India": "CHN-IND", "China-Japan": "CHN-JPN", "China-Philippines": "CHN-PHL",
+    "India-Pakistan": "IND-PAK", "Iran-Israel": "IRN-ISR", "Iran-United States": "IRN-USA", "North-South Korea": "KOR-PRK", "Russia-Ukraine": "RUS-UKR",
+    "Russia-United States": "RUS-USA", "Russia-Poland": "POL-RUS", "Armenia-Azerbaijan": "ARM-AZE", "Ethiopia-Eritrea": "ERI-ETH", "Venezuela-Guyana": "GUY-VEN",
+    "Greece-Turkey": "GRC-TUR", "Saudi Arabia-Iran": "IRN-SAU"};
+  const yrs = watchNames.length ? Object.keys(base[watchNames[0]]) : [];
+  const panelBy = PANEL ? Object.fromEntries(PANEL.questions.map(q => [q.id, q])) : {};
+  document.getElementById("t-watch").innerHTML = `<thead><tr><th>Pair</th><th class="num">Conflict, ${M.origin + 1}–${String(M.origin + 5).slice(2)}</th><th class="num">Any use of force, ${M.origin + 1}–${String(M.origin + 5).slice(2)}</th>${yrs.map(y => `<th class="num">Sim by ${y}</th>`).join("")}${noai ? `<th class="num">No AI shock, by ${yrs.at(-1) || ""}</th>` : ""}<th class="num">AI from 2030, by ${yrs.at(-1) || ""}</th>${PANEL ? '<th class="num">Analyst A</th><th class="num">Analyst B</th>' : ""}</tr></thead><tbody>` +
+    watchNames.sort((a, b) => (base[b][yrs.at(-1)] || 0) - (base[a][yrs.at(-1)] || 0)).map(n => {
+      const d = direct[nameToKey[n]] || {}, pq = panelBy[`interstate:${nameToKey[n]}`] || {panel: {}};
+      return `<tr><td>${n}${d.observed ? ` <span class="pill">fighting in ${M.origin + 1}</span>` : d.ongoing ? ` <span class="pill">fighting in ${M.origin}</span>` : ""}</td><td class="num">${pct(d.p_conflict_5y, 1)}</td><td class="num">${pct(d.p_force_5y, 1)}</td>${yrs.map(y => `<td class="num">${pct(base[n][y])}</td>`).join("")}
+        ${noai ? `<td class="num">${pct((noai[n] || {})[yrs.at(-1)])}</td>` : ""}<td class="num">${pct((ai30[n] || {})[yrs.at(-1)])}</td>${PANEL ? `<td class="num">${pct((pq.panel["Analyst A"] || {}).p)}</td><td class="num">${pct((pq.panel["Analyst B"] || {}).p)}</td>` : ""}</tr>`; }).join("") + "</tbody>";
+  const ww = INT.world_wars || {};
+  document.getElementById("t-ww").innerHTML = "<thead><tr><th>Test</th><th>Actual belligerent pair</th><th class=num>Rank</th></tr></thead><tbody>" +
+    Object.entries(ww).map(([k, v]) => v.belligerent_ranks.filter((r, i) => i < 7 || (r.a === "DEU" && r.b === "GBR")).map((r, i) => `<tr><td>${i === 0 ? `${k}<br><span class="muted">${v.n_pairs} pairs; median rank ${v.median_rank}</span>` : ""}</td><td>${r.a}–${r.b}</td><td class="num">${r.rank}</td></tr>`).join("")).join("") + "</tbody>";
+  const hv = (DATA.validation || {}).interstate_hindcast || [];
+  document.getElementById("t-inter-val").innerHTML = `<tbody><tr><td>Five-year backtest, 1975–2015 (AUC)</td><td class="num">${bt.avg ? bt.avg.auc.toFixed(3) : "–"}</td></tr>
+    <tr><td>Brier skill</td><td class="num">${bt.avg ? bt.avg.bss.toFixed(3) : "–"}</td></tr>
+    <tr><td>Naive benchmark (past fighting + rivalry), AUC</td><td class="num">${bt.naive ? bt.naive.auc.toFixed(3) : "–"}</td></tr>` +
+    hv.map(h => `<tr><td>Hindcast ${h.origin}→${h.end}: conflicts per year, simulated vs actual</td><td class="num">${h.active_per_year_sim.toFixed(2)} vs ${h.active_per_year_real.toFixed(2)}</td></tr>
+      <tr><td>Hindcast ${h.origin}→${h.end}: pairs that fought, simulated vs actual (ranking AUC)</td><td class="num">${h.pairs_fought_sim.toFixed(1)} vs ${h.pairs_fought_real} (${h.pair_auc.toFixed(2)})</td></tr>` +
+      (h.battle_deaths_real != null ? `<tr><td>Hindcast ${h.origin}→${h.end}: interstate battle deaths, actual (percentile of simulated worlds)</td><td class="num">${d3.format(",.0f")(h.battle_deaths_real)} (${pct(h.battle_deaths_real_pctile)})</td></tr>` : "")).join("") + "</tbody>";
+  const HS = AI && (AI.uncertain || AI.none);
+  if (HS && HS.watch_war && HS.battle_deaths_q) {
+    const wy = Object.keys(HS.watch[Object.keys(HS.watch)[0]] || {}).at(-1), T = HS.battle_deaths_total, big = HS.largest_war_p_over;
+    const fmtD = v => v >= 1e6 ? (v / 1e6).toFixed(1) + " million" : d3.format(",.0f")(Math.round(v / 1000) * 1000);
+    document.getElementById("scale-sub").textContent = `Share of headline worlds by ${wy}: any armed clash (≥ 25 battle deaths in a year), a war (≥ 1,000 a year), and a war whose battle deaths pass 100,000 or 1 million. Each war's yearly toll is drawn from wars of the same kind since 1816 (Correlates of War, UCDP): wars between two major powers have killed a median of about 55,000 a year, others about 4,000. Total interstate battle deaths ${M.origin + 1}–${wy}: median ${fmtD(T.q[2])} (90% band ${fmtD(T.q[0])}–${fmtD(T.q[4])}); a single war passes 1 million deaths in ${pct(big["1M"])} of worlds and 10 million in ${pct(big["10M"], 1)}. Nuclear use is not modelled.`;
+    const names = Object.keys(HS.watch_war).sort((a, b) => (HS.watch[b][wy] || 0) - (HS.watch[a][wy] || 0));
+    const bw = HS.blocs_war || {};
+    document.getElementById("t-scale").innerHTML = `<thead><tr><th>Pair</th><th class="num">Any clash</th><th class="num">War</th><th class="num">&gt; 100k deaths</th><th class="num">&gt; 1M deaths</th></tr></thead><tbody>` +
+      names.map(n => `<tr><td>${n}</td><td class="num">${pct(HS.watch[n][wy])}</td><td class="num">${pct(HS.watch_war[n][wy])}</td><td class="num">${pct(HS.watch_bigwar[n]["100k"], 1)}</td><td class="num">${pct(HS.watch_bigwar[n]["1M"], 1)}</td></tr>`).join("") +
+      Object.keys(bw).map(k => `<tr><td><i>${k.replace("Any armed clash between", "Any of")}</i></td><td class="num">${pct(HS.blocs[k])}</td><td class="num">${pct(bw[k])}</td><td class="num">–</td><td class="num">–</td></tr>`).join("") + "</tbody>";
+    fanChart(document.getElementById("c-deaths"), {fan: {years: W.years, q: HS.battle_deaths_q.map(r => r.map(v => Math.max(v, 100)))}, fmt: d => d3.format("~s")(d), log: true, ymin: 100, label: "Battle deaths"});
+  } else document.getElementById("grid-scale").hidden = true;
+  const H0 = AI && (AI.uncertain || AI.none);
+  if (H0 && H0.blocs) {
+    const relabel = k => k === "Any war between nuclear powers" ? "Any armed clash between nuclear-armed states" : k;
+    const bk = Object.keys(H0.blocs), last = v => Array.isArray(v) ? v.at(-1) : v;
+    const cols = [["Headline", H0], ["No AI shock", AI.uncertain ? AI.none : null], ["AI from 2030", AI["2030"]], ["1914-style alliances", AI.alliances_1914]].filter(c => c[1]);
+    document.getElementById("t-inter-val").closest(".tablewrap").insertAdjacentHTML("afterend", `<h3 style="margin-top:18px">Blocs: at least one conflict (≥ 25 battle deaths in a year) by 2065</h3><div class="tablewrap"><table class="wraptext"><thead><tr><th>Bloc</th>${cols.map(c => `<th class="num">${c[0]}</th>`).join("")}</tr></thead><tbody>` +
+      bk.map(k => `<tr><td>${relabel(k)}</td>${cols.map(c => `<td class="num">${pct(last(c[1].blocs[k]))}</td>`).join("")}</tr>`).join("") +
+      `<tr><td>Great-power war (≥ 1,000 deaths)</td>${cols.map(c => `<td class="num">${pct(c[1].great_power_war_by.at(-1))}</td>`).join("")}</tr></tbody></table></div>`);
+  }
+  if (AI && AI.none) {
+    const ks = ["uncertain", "none", "2030", "alliances_1914"].filter(k => AI[k]);
+    fanChart(document.getElementById("c-wars"), {fmt: d => pct(d), ymin: 0, w: 1040, h: 260, label: "Great-power war",
+      extra: ks.map(k => ({years: W.years, values: AI[k].great_power_war_by, stroke: AI_COL[k], label: AI_LBL[k]}))});
+    document.getElementById("wars-legend").innerHTML = ks.map(k => `<span><i style="background:${AI_COL[k]}"></i>${AI_LBL[k]}</span>`).join("");
+  }
+}
+function risksCard() {
+  const H = (DATA.ai || {}).uncertain, R = H && H.risks;
+  if (!R) { document.getElementById("card-risks").hidden = true; return; }
+  const wy = DATA.world.years.at(-1);
+  const fmtN = v => v >= 1e6 ? (v / 1e6).toFixed(1) + " million" : d3.format(",.0f")(Math.round(v / 1000) * 1000);
+  const sg = v => (v >= 0 ? "+" : "−") + Math.abs(100 * v).toFixed(1) + "%";
+  const top = Object.entries(R.new_nuclear_by_country || {}).sort((a, b) => b[1] - a[1]).slice(0, 6)
+    .map(([c, v]) => `${byCode[c] ? byCode[c].name : c} ${pct(v)}`).join(", ");
+  const dq = R.nuclear_deaths_given_use_q, eq = R.excess_deaths_q, pq = R.pop_dev_q;
+  document.getElementById("risks-sub").textContent = `Headline worlds, ${M.origin + 1}–${wy}. All of these are assumptions with sampled ranges (there is too little history to estimate them), except the share of new weapons states, which is in line with the historical pace (two or three new nuclear-armed states per 40 years since 1970).`;
+  const rows = [
+    ["Nuclear weapon used in a war", pct(R.nuclear_use_p, 1), "Yearly chance in a war-level conflict: 0.2–3% between nuclear-armed states, 0.05–1% against a non-nuclear state (no use in some 80 such war-years since 1945)"],
+    ["Large nuclear exchange between major powers", pct(R.nuclear_large_p, 1), "10–200 million deaths; belligerents lose half their output, the world 5–30%"],
+    ["Deaths if nuclear weapons are used", dq ? `${fmtN(dq[2])} (90%: ${fmtN(dq[0])}–${fmtN(dq[4])})` : "–", "Median and 90% band across worlds with any use"],
+    ["A new nuclear-armed state", pct(R.new_nuclear_p), `Most likely: ${top}. Programs can be struck and set back (Iran 2025); a rival's weapon makes neighbours likelier to follow`],
+    ["Carrington-class solar storm", pct(R.solar_p), "Grid-dependent economies lose 1–8% of output that year"],
+    ["Large volcanic eruption (VEI 6+)", pct(R.volcano_p), "World cereal yields fall 3–12% for two years; grain prices react"],
+    ["Excess deaths from wars and pandemics", eq ? `${fmtN(eq[2])} (90%: ${fmtN(eq[0])}–${fmtN(eq[4])})` : "–", "Battle deaths × civilian multiplier, nuclear and pandemic deaths, taken off the UN population path"],
+    ["World population against the UN projection", pq ? `${sg(pq[2])} (90%: ${sg(pq[0])} to ${sg(pq[4])})` : "–", "Deaths, plus fertility responding to income (−0.035 per unit change in log income, estimated)"],
+    ["Country-years under Western sanctions", R.sanction_country_years_mean != null ? R.sanction_country_years_mean.toFixed(1) : "–", "Mean per world: a non-Western state at war with a Western one loses 0–4% of output a year × its Western trade share"]];
+  document.getElementById("t-risks").innerHTML = `<thead><tr><th>By ${wy}</th><th class="num">Share of worlds</th><th>How it is modelled</th></tr></thead><tbody>` +
+    rows.map(r => `<tr><td>${r[0]}</td><td class="num">${r[1]}</td><td class="muted">${r[2]}</td></tr>`).join("") + "</tbody>";
+}
+function waterCard() {
+  const AI = DATA.ai || {}, off = AI.water_off, ref = AI.water_ref, hi = AI.water_high, H = AI.uncertain;
+  if (!off || !ref || !hi || !H || !H.water_change) { document.getElementById("grid-water").hidden = true; return; }
+  const wy = Object.keys(ref.watch_war[Object.keys(ref.watch_war)[0]] || {}).at(-1);
+  const pairs = ["India-Pakistan", "China-India", "Egypt-Ethiopia", "Afghanistan-Iran", "Iraq-Turkey"].filter(n => ref.watch_war[n]);
+  const cell = (o, n) => `${pct(o.watch_war[n][wy])} <span class="muted">(${pct(o.watch[n][wy])})</span>`;
+  document.getElementById("water-sub").textContent = `War (≥ 1,000 battle deaths in a year) by ${wy}, and in brackets any armed clash, in the same 4,000 worlds with the water effects off, at their sampled values, and with live disputes, water-loss tension and the yield response at the top of their ranges (the Indus stress test). Shared rivers and past water disputes added nothing to the pair model's backtests, so these effects are assumptions; the ranges include zero.`;
+  document.getElementById("t-water").innerHTML = `<thead><tr><th>Pair</th><th class="num">Water off</th><th class="num">Sampled</th><th class="num">Top of range</th></tr></thead><tbody>` +
+    pairs.map(n => `<tr><td>${n.replace("-", "–")}</td><td class="num">${cell(off, n)}</td><td class="num">${cell(ref, n)}</td><td class="num">${cell(hi, n)}</td></tr>`).join("") +
+    `<tr><td><i>Great-power war</i></td><td class="num">${pct(off.great_power_war_by.at(-1))}</td><td class="num">${pct(ref.great_power_war_by.at(-1))}</td><td class="num">${pct(hi.great_power_war_by.at(-1))}</td></tr></tbody>`;
+  const ks = ["PAK", "AFG", "UZB", "TJK", "KGZ", "TKM", "KAZ", "IND", "NPL", "BGD", "CHE"].filter(c => H.water_change[c]);
+  const sg = v => v == null ? "–" : (v >= 0 ? "+" : "−") + Math.abs(100 * v).toFixed(1) + "%";
+  document.getElementById("glacier-sub").textContent = "Water supply against 2025 in the median headline world: glacier runoff (a hump around each basin's peak-water year, Wimberly et al. 2025: Indus about 2056, Aral Sea and Tarim about 2052–2056, Ganges–Brahmaputra about 2029, Mekong and Salween about 2025) times the glacier share of river flow, plus precipitation change (CMIP6, SSP2-4.5). Where water is scarce, yields move with it.";
+  document.getElementById("t-glacier").innerHTML = `<thead><tr><th>Country</th><th class="num">2035</th><th class="num">2050</th><th class="num">2065</th></tr></thead><tbody>` +
+    ks.map(c => `<tr><td>${byCode[c] ? byCode[c].name : c}</td>${H.water_change[c].map(v => `<td class="num">${sg(v)}</td>`).join("")}</tr>`).join("") + "</tbody>";
+}
+function gulfCard() {
+  const G = (EX || {}).gulf;
+  if (!G) { document.getElementById("card-gulf").hidden = true; return; }
+  const A = G.A_recorded, B = G.B_no_gulf_war, yi = y => G.years.indexOf(y), r = (a, b) => a / b - 1;
+  const sg = v => (v >= 0 ? "+" : "−") + Math.abs(100 * v).toFixed(1) + "%";
+  document.getElementById("gulf-sub").textContent = "UCDP's preliminary 2026 data record war between Iran and Israel and the United States, and fighting involving Iraq; crude oil averaged $87 a barrel in January–September 2026 against $67 in 2025 (World Bank), and the oil-supply shock of early 2026 is the largest in the Baumeister–Hamilton series. Same 4,000 worlds with the recorded war and oil price, and without the Gulf war (oil simulated).";
+  const rows = [["Oil price index (2025 = 100), 2026", A.oil_median_2025eq100[yi(2026)].toFixed(0), B.oil_median_2025eq100[yi(2026)].toFixed(0)],
+    ["World GDP per person, 2027", sg(r(A.world_gdp_median[yi(2027)], B.world_gdp_median[yi(2027)])), "–"],
+    ["World GDP per person, 2035", sg(r(A.world_gdp_median[yi(2035)], B.world_gdp_median[yi(2035)])), "–"],
+    ...[["IRN", "Iran"], ["ISR", "Israel"], ["IRQ", "Iraq"], ["KOR", "South Korea"], ["BGD", "Bangladesh"], ["JPN", "Japan"], ["IND", "India"], ["SAU", "Saudi Arabia"]].map(([c, n]) =>
+      [`GDP per person 2027: ${n}`, sg(r(A.gdp_country_median[c][yi(2027)], B.gdp_country_median[c][yi(2027)])), "–"]),
+    ["Iran–Saudi war by 2035", pct(A.pairs_any_by_end["IRN-SAU"]), pct(B.pairs_any_by_end["IRN-SAU"])],
+    ["Great-power war by 2035", pct(A.gpw_by.at(-1)), pct(B.gpw_by.at(-1))]];
+  document.getElementById("t-gulf").innerHTML = `<thead><tr><th>Outcome</th><th class="num">With the war</th><th class="num">Without</th></tr></thead><tbody>` +
+    rows.map(x => `<tr><td>${x[0]}</td><td class="num">${x[1]}</td><td class="num">${x[2]}</td></tr>`).join("") + "</tbody>";
+}
+function aiSection() {
+  if (!AI || !AI["2030"]) { document.getElementById("s-ai").closest("section").hidden = true; return; }
+  const yi = W.years.indexOf(2065), keys = ["none", "uncertain", "2027", "2030", "2035"].filter(k => AI[k]);
+  const g = k => AI[k].world_gdp_q[2][yi];
+  const U = AI.uncertain, sh = U && U.arrival_share_by;
+  const tiles = [
+    ...(U ? [{k: "Headline: AI arrival uncertain, world GDP per person 2065", v: money(g("uncertain")), s: `×${(g("uncertain") / g("none")).toFixed(1)} the no-AI path; near-free cognition arrives by 2030 in ${pct(sh["2030"])} of worlds, by 2040 in ${pct(sh["2040"])}, by 2065 in ${pct(sh["2065"])}`},
+             {k: "Headline: great-power war by 2065", v: pct(U.great_power_war_by.at(-1)), s: `no AI shock ${pct(AI.none.great_power_war_by.at(-1))}${U.great_power_war_cow_by ? `; without India as a great power ${pct(U.great_power_war_cow_by.at(-1))}` : ""}`},
+             {k: "Headline: democracy index 2065", v: U.world_dem_q[2][yi].toFixed(2), s: `no AI shock ${AI.none.world_dem_q[2][yi].toFixed(2)}`}] : []),
+    {k: "World GDP per person 2065, near-free cognition 2030", v: money(g("2030")), s: `no AI shock ${money(g("none"))} (×${(g("2030") / g("none")).toFixed(1)})`},
+    {k: "Countries in civil conflict 2065, AI in 2030", v: pct(AI["2030"].world_conflict_q[2][yi]), s: `no AI shock ${pct(AI.none.world_conflict_q[2][yi])}`},
+    {k: "Great-power war by 2065, AI in 2030", v: pct(AI["2030"].great_power_war_by.at(-1)), s: `no AI shock ${pct(AI.none.great_power_war_by.at(-1))}; 1914-style alliances ${pct((AI.alliances_1914 || AI.none).great_power_war_by.at(-1))}`},
+    {k: `Pandemics per world, ${M.origin + 1}–2065, AI in 2030`, v: AI["2030"].pandemics_mean.toFixed(1), s: `no AI shock ${AI.none.pandemics_mean.toFixed(1)}`},
+    {k: "Democracy index 2065, AI in 2030", v: AI["2030"].world_dem_q[2][yi].toFixed(2), s: `no AI shock ${AI.none.world_dem_q[2][yi].toFixed(2)}`},
+    {k: "Coup attempts per year, 2045–2065, AI in 2030", v: d3.format(".1f")(d3.mean(AI["2030"].coups_q[2].slice(20))), s: `no AI shock ${d3.format(".1f")(d3.mean(AI.none.coups_q[2].slice(20)))}`},
+  ];
+  document.getElementById("ai-tiles").innerHTML = tiles.map(d => `<div class="tile"><span class="k">${d.k}</span><span class="v num">${d.v}</span><span class="s">${d.s}</span></div>`).join("");
+  const line = (id, f, fmt, log, ymin, ymax) => fanChart(document.getElementById(id), {fan: {years: W.years, q: AI.none[f]}, fmt, log, ymin, ymax, ml: 52,
+    extra: keys.filter(k => k !== "none").map(k => ({years: W.years, values: AI[k][f][2], stroke: AI_COL[k], label: AI_LBL[k]})), label: id});
+  line("c-ai-gdp", "world_gdp_q", d => "$" + d3.format("~s")(d), true);
+  line("c-ai-conf", "world_conflict_q", d => pct(d), false, 0);
+  line("c-ai-dem", "world_dem_q", d3.format(".2f"), false, 0, 1);
+  fanChart(document.getElementById("c-ai-adopt"), {fmt: d => pct(d), ymin: 0, ymax: 1, extra: keys.filter(k => k !== "none").map(k => ({years: W.years, values: AI[k].ai_adoption, stroke: AI_COL[k], label: AI_LBL[k]})), label: "AI adoption"});
+  if (AI.uncertain && AI.uncertain.robot_adoption) {
+    const rs = AI.uncertain.robot_share_by;
+    if (rs) document.getElementById("robots-sub").textContent += `. General-purpose robots arrive by 2030 in ${pct(rs["2030"])} of headline worlds, by 2040 in ${pct(rs["2040"])}, by 2065 in ${pct(rs["2065"])}.`;
+    fanChart(document.getElementById("c-robots"), {fmt: d => pct(d), ymin: 0, ymax: 1, label: "Robot adoption",
+      extra: [...keys.filter(k => k !== "none" && AI[k].robot_adoption).map(k => ({years: W.years, values: AI[k].robot_adoption, stroke: AI_COL[k], label: AI_LBL[k]})),
+              {years: W.years, values: AI.uncertain.mil_autonomy, stroke: AI_COL.uncertain, dash: "5 4", label: "Military autonomy"}]});
+  } else document.getElementById("card-robots").hidden = true;
+  document.getElementById("ai-legend").innerHTML = keys.map(k => `<span><i style="background:${AI_COL[k]}"></i>${AI_LBL[k]}</span>`).join("") + '<span class="muted">fan: no AI shock</span>';
+  // winners and losers map
+  const el = document.getElementById("c-ai-map"); el.innerHTML = "";
+  const w = 960, h = 470, feats = topojson.feature(TOPO, TOPO.objects.countries).features.filter(f => f.id !== "ATA");
+  const path = d3.geoPath(d3.geoNaturalEarth1().fitSize([w, h], {type: "FeatureCollection", features: feats}));
+  const val = c => (c.ai && c.ai["2030"] && c.ai.none && c.ai.none.gdp_end) ? 100 * (c.ai["2030"].gdp_end / c.ai.none.gdp_end - 1) : null;
+  const vals = DATA.countries.map(val).filter(v => v != null).sort(d3.ascending);
+  const lim = d3.quantile(vals, 0.95) || 1, neg = Math.min(-5, d3.quantile(vals, 0.02));
+  const color = d3.scaleDiverging(t => d3.interpolateRgbBasis([css("--up"), css("--nodata"), css("--down")])(t)).domain([neg, 0, lim]).clamp(true);
+  const svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${w} ${h}`), tip = tipFor(el);
+  svg.selectAll("path").data(feats).join("path").attr("d", path).attr("stroke", css("--surface")).attr("stroke-width", .6)
+    .attr("fill", f => { const c = byCode[f.id], v = c ? val(c) : null; return v == null ? css("--nodata") : color(v); })
+    .on("pointermove", (ev, f) => { const c = byCode[f.id], r = el.getBoundingClientRect(); if (!c) return;
+      const v = val(c); tip.show(`<b>${c.name}</b><br>GDP per person 2065 with near-free cognition from 2030: <span class="num">${v == null ? "–" : (v > 0 ? "+" : "") + v.toFixed(0) + "%"}</span> vs no AI shock`, ev.clientX - r.left, ev.clientY - r.top); })
+    .on("pointerleave", () => tip.hide());
+  document.getElementById("ai-map-legend").innerHTML = [neg, 0, lim / 4, lim / 2, lim].map(v => `<span><i style="background:${color(v)}"></i>${v > 0 ? "+" : ""}${v.toFixed(0)}%</span>`).join("");
+  const P = (DATA.meta.ai_scenarios || {})["2030"] || {};
+  const desc = {growth_dividend: "Extra growth per person at full adoption (frontier, before the energy cap)", displacement_unemp: "Unemployment points added at the steepest point of adoption",
+    top1_rise: "Points of top-1% income share at full adoption (halved where fiscal capacity is strong)", polarization_rise: "Rise in political polarization in democracies (V-Dem units)",
+    surveillance: "Cut in coup and rebellion log-odds in autocracies", autocracy_drift: "Yearly democracy erosion outside democracies", ladder_penalty: "Growth lost by middle-income exporters at the steepest point",
+    capacity_gain: "Yearly gain in rule of law and impartial administration", health_gain: "Extra yearly fall in log child mortality", yield_gain: "Extra yearly crop-yield growth",
+    clean_energy_gain: "Extra yearly growth of energy per person (cheap clean energy)", bio_risk: "Pandemic probability multiplier (misuse)", bio_response: "Pandemic damage multiplier (faster countermeasures)",
+    finance_mult: "Financial-crisis probability multiplier (extra crises cost 1.7% + 1.2% of growth, estimated)", adoption_years: "Years from 10% to 90% adoption at the frontier", lag_years: "Extra delay for the least-ready country",
+    arrival_sd: "Spread of the arrival year across worlds (years, sd)", open_lag: "Years by which open-weight/API diffusion trails the frontier hubs (range 0.5–4)", export_lag: "Extra years for China, Russia, Iran, North Korea under export controls (0–3)",
+    hub_rent: "Extra share of the dividend captured by frontier hubs (0–0.5)", chip_pause: "Share of a year of frontier progress lost while Taiwan or Korea is a war site (0.5–1)", chip_gdp: "World output hit in such a year, × cognitive share (2–5%)",
+    dc_share: "Energy taken by data centres at the steepest adoption (2–8%)", robot_lag: "Years by which general-purpose robotics follows near-free cognition at the latest (3–8)", robot_years: "Years from 10% to 90% robot deployment at the frontier (8–20)",
+    robot_corr: "Correlation between the robotics and AI arrival years (normal scores)", phys_dividend: "Extra growth per person at full robot adoption × non-cognitive share of output (0–5 pt)",
+    drone_onset: "Military autonomy: log-odds added to interstate onset (−0.3 to +0.5)", drone_persist: "Military autonomy: log-odds added to the continuation of war-level conflicts (0–0.8)",
+    drone_reach: "Military autonomy: share of war-site losses reaching expeditionary powers (0–0.2)", drone_civil: "Military autonomy: cut in civil-war termination log-odds (−0.2 to +0.4)", robot_aging: "Growth offset from robots in ageing societies (0–0.5 pt)",
+    dem_erosion: "Yearly erosion in democracies at the steepest adoption, scaled by graduate numbers (0–0.006)", ai_war_beta: "Log-odds of war between rivals per unit gap in AI adoption (0–2)", nuc_beta: "Log-odds added for nuclear rivals at the steepest part (0–1)",
+    eng_pandemic: "Yearly probability of an engineered pandemic at full adoption (0.2–1%)", natural_cut: "Cut in natural pandemic frequency at full adoption (20–60%)"};
+  document.getElementById("t-ai-params").innerHTML = "<thead><tr><th>Channel (assumption)</th><th class=num>Value</th></tr></thead><tbody>" +
+    Object.entries(desc).map(([k, d]) => `<tr><td style="white-space:normal">${d}</td><td class="num">${P[k] ?? "–"}</td></tr>`).join("") + "</tbody>";
+}
+function panelSection() {
+  if (!PANEL) { document.getElementById("s-panel").closest("section").hidden = true; return; }
+  const nice = id => { const [t, x] = id.split(":"); return {civil_conflict_5y: "Civil war onset", coup_5y: "Coup attempt", autocratization_5y: "Autocratization", econ_collapse_5y: "Economic collapse", interstate: "Interstate conflict"}[t] + " · " + x.split("-").map(c => byCode[c] ? byCode[c].name : c).join("–"); };
+  document.getElementById("panel-sub").textContent += ` Reviewed on ${PANEL.date}.`;
+  const done = PANEL.questions.filter(q => PANEL.models.every(m => ((q.panel[m] || {}).p || 0) >= 0.85));
+  if (done.length) document.getElementById("panel-sub").insertAdjacentHTML("afterend", `<p class="muted">Both panelists report that these events have <b>already happened</b> since the data end, so they are a first out-of-sample check on the model's 2024 view: ` +
+    done.map(q => `${nice(q.id).split(" · ")[1]} (${nice(q.id).split(" · ")[0].toLowerCase()}; model gave ${pct(q.model_p, 1)})`).join(", ") +
+    `. The model saw the wars already under way, and the India–Pakistan and Afghanistan–Pakistan rivalries, but gave almost no chance to a US–Iran clash or to the Thailand–Cambodia border war: structural models are weakest on sudden escalations between pairs with no recent fighting.</p>`);
+  document.getElementById("t-panel").innerHTML = `<thead><tr><th>Question (2025–2029, asked on ${PANEL.date})</th><th class="num">Model</th>${PANEL.models.map(m => `<th class="num">${m}</th>`).join("")}<th>Reasons (${PANEL.models[0]})</th></tr></thead><tbody>` +
+    PANEL.questions.map(q => `<tr><td>${nice(q.id)}</td><td class="num">${pct(q.model_p)}</td>${PANEL.models.map(m => `<td class="num">${pct((q.panel[m] || {}).p)}</td>`).join("")}<td style="white-space:normal;min-width:260px" class="muted">${((q.panel[PANEL.models[0]] || {}).reasons || "")}</td></tr>`).join("") + "</tbody>";
+}
+
+
+/* ---------- 2025 scorecard, crisis explorer, chronicles, long cycles ---------- */
+const EX = /*__EXTRA__*/null;
+function scoreSection() {
+  const S = EX && EX.score_2025;
+  if (!S) { document.getElementById("s-score25").closest("section").hidden = true; return; }
+  const f = (o, k = "auc") => o && o[k] != null ? o[k].toFixed(3) : "–";
+  const rows = [
+    ["New civil wars (countries at peace in 2024)", `${S.civil_onset.model.events} onset (${S.civil_onset.onsets.map(o => (byCode[o.code] || {}).name || o.code).join(", ")}), ranked ${1 + S.civil_onset.top10.findIndex(t => t.happened)} of ${S.civil_onset.model.n}`, f(S.civil_onset.model), f(S.civil_onset.naive)],
+    ["Countries in civil conflict in 2025", `${S.civil_incidence.model.events} of ${S.civil_incidence.model.n}`, f(S.civil_incidence.model), f(S.civil_incidence.persistence) + " (last year's status)"],
+    ["Coup attempts", `${S.coups.events.map(c => (byCode[c] || {}).name || c).join(", ")}: ranked ${Object.entries(S.coups.ranks).filter(([c]) => S.coups.events.includes(c)).map(([c, r]) => r).join(" and ")} of 175`, f(S.coups.model), f(S.coups.naive)],
+    ["Democratic decline of 0.10 or more in a single year", `${S.autocratization_early.events.map(c => (byCode[c] || {}).name || c).join(", ")} (model's 5-year risk ${pct(S.autocratization_early.biggest_falls[0][2])})`, f(S.autocratization_early.model_5y_risk_auc), "–"],
+    ["Interstate conflict between pairs (all 2,117 pairs)", `${S.interstate.all_pairs.events} pairs fought`, f(S.interstate.all_pairs), "–"],
+    ["Interstate conflict, new pairs only", Object.entries(S.interstate.pair_probs).filter(([k]) => ["IND-PAK", "ISR-SYR", "KHM-THA"].includes(k)).map(([k, v]) => `${k} ${pct(v, 1)}`).join(", "), f(S.interstate.new_only), "–"],
+  ];
+  const V = S.views_head_to_head;
+  document.getElementById("t-score25").innerHTML = `<thead><tr><th>Test</th><th>What happened</th><th class="num">Model AUC</th><th class="num">Baseline AUC</th></tr></thead><tbody>` +
+    rows.map(r => `<tr><td>${r[0]}</td><td style="white-space:normal">${r[1]}</td><td class="num">${r[2]}</td><td class="num">${r[3]}</td></tr>`).join("") +
+    `<tr><td colspan="4" style="background:var(--surface-2,transparent);font-weight:600">Head to head with ViEWS (${V.n} countries, ${V.views.events} with fighting)</td></tr>` +
+    [["ViEWS", V.views], ["Seldon", V.seldon], ["Average of the two", V.average], ["Last year's status", V.persistence]].map(([n, o]) =>
+      `<tr><td>${n}</td><td>Brier ${o.brier.toFixed(3)} (lower is better)</td><td class="num">${o.auc.toFixed(3)}</td><td class="num">–</td></tr>`).join("") +
+    (EX.monthly ? `<tr><td colspan="4" style="font-weight:600">Monthly forecasts for each month of 2025, issued from December 2024 (${EX.monthly.all.n} country-months, ${EX.monthly.all.events} with 25+ deaths)</td></tr>` +
+      [["ViEWS (run fatalities002_2024_12_t01)", EX.monthly.all.views], ["Seldon monthly model", EX.monthly.all.seldon], ["Average of the two", EX.monthly.all.average]].map(([n, o]) =>
+        `<tr><td>${n}</td><td>Brier ${o.brier.toFixed(4)}, log loss ${o.logloss.toFixed(3)}</td><td class="num">${o.auc.toFixed(3)}</td><td class="num">–</td></tr>`).join("") +
+      (S.views_head_to_head.seldon_blend_monthly ? `<tr><td>Annual model blended with the monthly model (12-month probability)</td><td>Brier ${S.views_head_to_head.seldon_blend_monthly.brier.toFixed(4)}</td><td class="num">${S.views_head_to_head.seldon_blend_monthly.auc.toFixed(3)}</td><td class="num">–</td></tr>` : "") +
+      `<tr><td>Countries with no 25-death month in 2024 (${EX.monthly.new_cases.events} later events)</td><td>ViEWS Brier ${EX.monthly.new_cases.views.brier.toFixed(4)}, Seldon ${EX.monthly.new_cases.seldon.brier.toFixed(4)}</td><td class="num">${EX.monthly.new_cases.seldon.auc.toFixed(3)}</td><td class="num">${EX.monthly.new_cases.views.auc.toFixed(3)} (ViEWS)</td></tr>` : "") +
+    `<tr><td>New cases only (${V.new_cases_only.events} of ${V.new_cases_only.n})</td><td>ViEWS Brier ${V.new_cases_only.views.brier.toFixed(3)}, Seldon ${V.new_cases_only.seldon.brier.toFixed(3)}</td><td class="num">${V.new_cases_only.seldon.auc.toFixed(3)}</td><td class="num">${V.new_cases_only.views.auc.toFixed(3)} (ViEWS)</td></tr></tbody>`;
+  const CB = (EX || {}).crowd;
+  if (CB && CB.open) {
+    const o = CB.open, m = CB.mid;
+    document.getElementById("crowd-sub").textContent = `${o.n} resolved questions from Metaculus, Good Judgment Open and INFER (2015–2026) about the use of force between two named states (${o.pairs} pairs, ${o.events} resolved yes) — the only questions that match something the model forecasts. Model: its use-of-force forecast with data from the year before the question opened, scaled to the time left until the deadline stated in the question (wars already under way get next year's continuation as a floor). Crowd: a week after opening, and at mid-life. Lower Brier is better.`;
+    document.getElementById("t-crowd").innerHTML = `<thead><tr><th>Forecaster</th><th class="num">Brier, a week in</th><th class="num">Brier, mid-life</th></tr></thead><tbody>
+      <tr><td>Crowd</td><td class="num">${o.brier_crowd.toFixed(3)}</td><td class="num">${m.brier_crowd.toFixed(3)}</td></tr>
+      <tr><td>Model</td><td class="num">${o.brier_model.toFixed(3)}</td><td class="num">${m.brier_model.toFixed(3)}</td></tr>
+      <tr><td>Always the base rate (${pct(o.base_rate)})</td><td class="num">${o.brier_base_rate.toFixed(3)}</td><td class="num">${m.brier_base_rate.toFixed(3)}</td></tr>
+      <tr><td>Crowd and model blended (leave one pair out)</td><td class="num">${o.brier_blend_loo.toFixed(3)}</td><td class="num">${m.brier_blend_loo.toFixed(3)}</td></tr>
+      ${EX.leaders && EX.leaders.open ? `<tr><td colspan="3" style="font-weight:600;white-space:normal">Leaders leaving office: ${EX.leaders.open.n} questions on ${EX.leaders.open.countries} countries (${EX.leaders.open.events} resolved yes), against a yearly leader-exit model fitted for each question on data known before it opened</td></tr>
+      <tr><td>Crowd</td><td class="num">${EX.leaders.open.brier_crowd.toFixed(3)}</td><td class="num">${EX.leaders.mid.brier_crowd.toFixed(3)}</td></tr>
+      <tr><td>Leader-exit model</td><td class="num">${EX.leaders.open.brier_model.toFixed(3)}</td><td class="num">${EX.leaders.mid.brier_model.toFixed(3)}</td></tr>
+      <tr><td>Always the base rate (${pct(EX.leaders.open.base_rate)})</td><td class="num">${EX.leaders.open.brier_base_rate.toFixed(3)}</td><td class="num">${EX.leaders.mid.brier_base_rate.toFixed(3)}</td></tr>` : ""}
+      <tr><td colspan="3" style="white-space:normal" class="muted">The crowd wins clearly and the model adds nothing to it. The leader-exit model ranks all countries reasonably (AUC 0.71 on 2015–2025), but crowds ask about leaders already in trouble. Crowds ask about hot spots at hot moments (Russia before 2022, Gulf states and Iran in 2026), which a structural model fed last year's data cannot see: it averaged ${pct(o.mean_model)} against ${pct(o.base_rate)} realised. For the next few months of a crisis already in the news, trust the crowd; the model's value is the long horizon and the countries no crowd is watching.</td></tr></tbody>`;
+  } else document.getElementById("card-crowd").hidden = true;
+  document.getElementById("score25-notes").textContent = "AUC: the chance that a country where the event happened was ranked above one where it did not (0.5 = coin flip). With one civil-war onset and two coups in 2025, single-year scores are anecdotes, not proof; they are kept to be pooled as more years arrive. ViEWS ranks about as well and is better calibrated month by month; averaging the two ranks best. The monthly model uses only the data available in January 2025 (UCDP's preliminary 2024 events) and was run once, without tuning on 2025; it beats ViEWS at 6 and 12 months ahead and loses at one month. The annual model's clearest miss was the United States, whose electoral democracy index fell from 0.84 to 0.74.";
+}
+function benchSection() {
+  const P = EX && EX.predcomp, G = EX && EX.predcomp_pgm, V = EX && EX.views_archive, C = EX && EX.crowd_live;
+  if (!P && !G && !V && !C) { document.getElementById("sec-bench").hidden = true; return; }
+  document.getElementById("bench-sub").textContent = "The country forecasts' monthly fatality layer, run under the rules of the 2023/24 VIEWS Prediction Challenge (Hegre et al. 2025) and scored with its code's metrics on its participants' published forecasts, and against ViEWS's archived production runs. Every one of our forecasts is trained only on data that existed at its origin; settings were tuned on 2010–2017, years no table here scores.";
+  const show = (rows, ours) => rows.filter(r => !r.model.startsWith("OURS_") || r.model === ours);
+  const nm = m => m.startsWith("OURS_") ? "<b>Seldon (this model)</b>" : m.startsWith("bm_") ? `<i>Benchmark: ${m.slice(3)}</i>` : m.replace(/^submission_final_/, "").replace(/^submission_/, "");
+  const lb = (P, ours, tid, sid, unit, dig) => {
+    if (!P) { document.getElementById(tid).closest(".card").hidden = true; return; }
+    const H = show(P.historical_mean, ours), med = d3.median(H, r => r.crps);
+    const ok = H.filter(r => r.crps < 10 * med).sort((a, b) => a.crps - b.crps);
+    const L = Object.fromEntries(show(P.live, ours).map(r => [r.model, r]));
+    const rk = ok.findIndex(r => r.model === ours) + 1;
+    const live = Object.values(L).filter(r => r.Y2024 != null && r.Y2025 != null && r.Y2024 < 10 * med);
+    const lm = r => (r.Y2024 + r.Y2025) / 2, lsorted = live.sort((a, b) => lm(a) - lm(b)), lrk = lsorted.findIndex(r => r.model === ours) + 1;
+    document.getElementById(sid).textContent = `Mean CRPS (the error of a full predictive distribution, in ${unit}; lower is better) over the six yearly windows 2018–2023, each forecast from data to the October before; ignorance score and 90% interval score alongside. Seldon ranks ${rk} of ${ok.length} historically` + (lrk ? ` and ${lrk} of ${lsorted.length} in the live window (July 2024 – June 2025, forecast from data to April 2024).` : ".") + (H.length > ok.length ? ` ${H.length - ok.length} entries whose forecasts diverged are left out.` : "");
+    const f = v => v == null ? "–" : v.toFixed(dig);
+    document.getElementById(tid).innerHTML = `<thead><tr><th>#</th><th>Model</th><th class="num">CRPS 2018–23</th><th class="num">Ignorance</th><th class="num">90% interval</th><th class="num">Live 2024</th><th class="num">Live 2025</th></tr></thead><tbody>` +
+      ok.map((r, i) => `<tr${r.model === ours ? ' style="background:var(--surface-2,rgba(127,127,127,.12))"' : ""}><td class="num">${i + 1}</td><td>${nm(r.model)}</td><td class="num">${f(r.crps)}</td><td class="num">${r.ign.toFixed(3)}</td><td class="num">${r.mis.toFixed(dig > 2 ? 2 : 0)}</td><td class="num">${f(L[r.model] && L[r.model].Y2024)}</td><td class="num">${f(L[r.model] && L[r.model].Y2025)}</td></tr>`).join("") + "</tbody>";
+  };
+  const pick = (P, pre) => P ? (P.historical_mean.map(r => r.model).filter(m => m.startsWith(pre)).sort().at(-1)) : null;
+  lb(P, pick(P, "OURS_seldon_v"), "t-pc-cm", "pc-cm-sub", "deaths per country-month", 2);
+  lb(G, pick(G, "OURS_"), "t-pc-pgm", "pc-pgm-sub", "deaths per cell-month", 4);
+  if (V && V.all) {
+    const row = (lab, o) => `<tr><td>${lab}</td><td class="num">${o.n.toLocaleString()} / ${o.events.toLocaleString()}</td><td class="num">${o.views.brier.toFixed(4)}</td><td class="num">${o.ours.brier.toFixed(4)}</td><td class="num">${o.mse_ln.views.toFixed(3)}</td><td class="num">${o.mse_ln.ours.toFixed(3)}</td></tr>`;
+    const a = V.all;
+    document.getElementById("varch-sub").textContent = `All ${a.origins} archived ViEWS production runs (fatalities001–003, December 2021 – December 2024 origins), 1–12 months ahead, scored on final UCDP data. Seldon is retrained for every run on the data that existed at its origin. Brier: the chance of a month with 25 or more battle deaths; MSE: squared error of log(1 + deaths), ViEWS's own metric. Lower is better on both. 90% intervals for the difference (pair-clustered bootstrap): Brier ${a.diff_brier_90ci.map(v => v.toFixed(4)).join(" to ")}, MSE ${a.diff_mse_ln_90ci.map(v => v.toFixed(3)).join(" to ")} (negative favours Seldon).`;
+    document.getElementById("t-varch").innerHTML = `<thead><tr><th>Subset</th><th class="num">Months / events</th><th class="num">Brier ViEWS</th><th class="num">Brier Seldon</th><th class="num">MSE ViEWS</th><th class="num">MSE Seldon</th></tr></thead><tbody>` +
+      row("All runs, 1–12 months", a) + ["h1", "h3", "h6", "h12"].filter(k => V[k]).map(k => row(`${k.slice(1)} month${k === "h1" ? "" : "s"} ahead`, V[k])).join("") + "</tbody>";
+  } else document.getElementById("card-varch").hidden = true;
+  if (C && C.matched && C.matched.length) {
+    const w = C.weights || {};
+    const ms = C.matched.slice().sort((a, b) => (b.volume || 0) - (a.volume || 0)).slice(0, 30);
+    document.getElementById("crowdlive-sub").textContent = `${C.n_open} open questions on Polymarket and Manifold (fetched ${C.fetched.slice(0, 10)}); ${C.matched.length} ask about something the model forecasts. On ${w.n} resolved use-of-force questions the crowd's Brier was ${w.brier_crowd != null ? w.brier_crowd.toFixed(3) : "–"} against the model's ${w.brier_model != null ? w.brier_model.toFixed(3) : "–"}, and the best blend gave the model a weight of ${w.w_model != null ? w.w_model.toFixed(2) : "–"}: where a liquid market or crowd exists, the report's number for that question is the crowd's. Largest markets first.`;
+    document.getElementById("t-crowdlive").innerHTML = `<thead><tr><th>Question</th><th class="num">Crowd</th><th class="num">Model</th><th>Source</th></tr></thead><tbody>` +
+      ms.map(q => `<tr><td>${q.question}</td><td class="num"><b>${pct(q.p, 1)}</b></td><td class="num muted">${q.model != null ? pct(q.model, 1) : "–"}</td><td>${q.source}${q.volume ? ` <span class="muted">$${d3.format(".2s")(q.volume).replace("G", "B")}</span>` : ""}</td></tr>`).join("") + "</tbody>";
+  } else document.getElementById("card-crowdlive").hidden = true;
+}
+function whatIf() {
+  const E = EX && EX.crisis_explorer;
+  if (!E) { document.getElementById("s-whatif").closest("section").hidden = true; return; }
+  const keys = Object.keys(E.scenarios);
+  const seg = document.getElementById("whatif-seg");
+  seg.innerHTML = keys.map((k, i) => `<button aria-pressed="${i === 0}" data-k="${k}">${E.scenarios[k].name.replace(/, \d{4}$/, "")}</button>`).join("");
+  const draw = k => {
+    seg.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === k));
+    const sc = E.scenarios[k], yrs = E.years, y0 = sc.forced[0][2], i3 = yrs.indexOf(Math.min(y0 + 3, yrs.at(-1))), i10 = yrs.indexOf(Math.min(y0 + 10, yrs.at(-1)));
+    const oilPeak = sc.oil_rel ? d3.max(sc.oil_rel.slice(yrs.indexOf(y0), yrs.indexOf(y0) + 3)) : null;
+    const tiles = [
+      {k: `World GDP per person, ${y0 + 3}`, v: (sc.world_gdp_rel[i3] * 100).toFixed(1) + "%", s: `${y0 + 10}: ${(sc.world_gdp_rel[i10] * 100).toFixed(1)}% vs no war`},
+      {k: "Chance of a great-power war by 2035", v: (sc.gpw_diff[yrs.indexOf(2035)] >= 0.005 ? "+" : "") + pct(Math.abs(sc.gpw_diff[yrs.indexOf(2035)]) < 0.005 ? 0 : sc.gpw_diff[yrs.indexOf(2035)]), s: `baseline ${pct(E.baseline.gpw[yrs.indexOf(2035)])}`},
+      {k: "Real oil price, peak in the first three years", v: oilPeak == null ? "–" : (oilPeak >= 0 ? "+" : "") + (oilPeak * 100).toFixed(0) + "%", s: "against the same worlds without the war"},
+    ];
+    document.getElementById("whatif-tiles").innerHTML = tiles.map(d => `<div class="tile"><span class="k">${d.k}</span><span class="v num">${d.v}</span><span class="s">${d.s}</span></div>`).join("");
+    const el = document.getElementById("c-whatif-map"); el.innerHTML = "";
+    const w = 640, h = 330, feats = topojson.feature(TOPO, TOPO.objects.countries).features.filter(f => f.id !== "ATA");
+    const path = d3.geoPath(d3.geoNaturalEarth1().fitSize([w, h], {type: "FeatureCollection", features: feats}));
+    const val = c => sc.by_country[c] ? 100 * sc.by_country[c].gdp_3y : null;
+    const lim = Math.max(5, d3.max(Object.values(sc.by_country).map(d => -100 * d.gdp_3y)) || 5);
+    const color = d3.scaleDiverging(t => d3.interpolateRgbBasis([css("--up"), css("--nodata"), css("--down")])(t)).domain([-lim, 0, lim / 4]).clamp(true);
+    const svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${w} ${h}`), tip = tipFor(el);
+    svg.selectAll("path").data(feats).join("path").attr("d", path).attr("stroke", css("--surface")).attr("stroke-width", .5)
+      .attr("fill", f => { const v = val(f.id); return v == null ? css("--nodata") : color(v); })
+      .on("pointermove", (ev, f) => { const v = val(f.id), r = el.getBoundingClientRect(); if (v == null) return;
+        tip.show(`<b>${(byCode[f.id] || {}).name || f.id}</b><br>GDP per person ${y0 + 3}: <span class="num">${v.toFixed(1)}%</span><br>civil conflict: <span class="num">${(100 * sc.by_country[f.id].civil_conflict_3y).toFixed(1)} pts</span>`, ev.clientX - r.left, ev.clientY - r.top); })
+      .on("pointerleave", () => tip.hide());
+    document.getElementById("whatif-legend").innerHTML = [-lim, -lim / 2, -lim / 10, 0].map(v => `<span><i style="background:${color(v)}"></i>${v.toFixed(0)}%</span>`).join("");
+    const nm = c => (byCode[c] || {}).name || c;
+    const drawn = sc.drawn_in.filter(d => d.dp >= 0.03);
+    document.getElementById("t-whatif-drawn").innerHTML = "<thead><tr><th>Pair</th><th class=num>Change</th></tr></thead><tbody>" +
+      (drawn.length ? drawn.map(d => `<tr><td>${nm(d.a)} – ${nm(d.b)}</td><td class="num">+${pct(d.dp, 1)}</td></tr>`).join("") : `<tr><td colspan=2 class="muted">No pair rises by 3 points or more (smaller changes are within simulation noise)</td></tr>`) + "</tbody>";
+  };
+  seg.addEventListener("click", ev => { const b = ev.target.closest("button"); if (b) draw(b.dataset.k); });
+  draw(keys[0]);
+}
+function chronicles() {
+  const C = EX && EX.chronicles;
+  if (!C || !C.length) { document.getElementById("s-chron").closest("section").hidden = true; return; }
+  const lab = {typical: "A typical world", calm: "The calmest world", great_power_war: "A world with a great-power war", ai_typical: "A typical world with near-free cognition"};
+  document.getElementById("chron-cards").innerHTML = C.map(c => `<div class="card"><span class="eyebrow">${lab[c.kind] || c.kind}</span><h3>${c.title}</h3>
+    <p class="sub">World GDP per person in 2065: ${money(c.world_gdp_2065)}; average share of countries in civil conflict ${pct(c.conflict_mean)}${c.great_power_war ? "; great-power war" : ""}</p>
+    <div class="prose">${c.body.split(/\n\s*\n/).map(t => `<p>${t.replace(/</g, "&lt;")}</p>`).join("")}</div></div>`).join("");
+}
+function climateRisk() {
+  const CR = EX && EX.climate;
+  if (!CR) { document.getElementById("clim-risk").hidden = true; return; }
+  const H = CR.history, V = CR.harvest, f1 = d3.format(".1f"), sg = v => (v > 0 ? "+" : "") + f1(v) + "%";
+  document.getElementById("clim-risk-sub").textContent = `${d3.format(",")(CR.n)} headline worlds (SSP2-4.5, uncertain AI, every assumption sampled). Hindcasts cannot tell the damage estimates apart (past warming is too small), so each world draws one of them; tipping points and the climate–war link are stated assumptions with ranges that include small effects.`;
+  document.getElementById("t-cdmg").innerHTML = `<thead><tr><th>Damage estimate</th><th class="num">Share of worlds</th><th class="num">World GDP per person, 2065</th></tr></thead><tbody>` +
+    CR.families.map(r => `<tr><td>${r.name}</td><td class="num">${pct(r.share)}</td><td class="num">${money(r.gdp_2065)}</td></tr>`).join("") +
+    `<tr><td><b>All worlds</b></td><td class="num">100%</td><td class="num"><b>${money(CR.gdp_2065)}</b></td></tr></tbody>`;
+  const Y = CR.y2100;
+  if (Y) {
+    const NM = {ssp126: "Low (SSP1-2.6)", ssp245: "Middle (SSP2-4.5)", ssp370: "High (SSP3-7.0)", ssp585: "Very high (SSP5-8.5)"};
+    document.getElementById("t-c2100").innerHTML = `<thead><tr><th>Emissions path</th>${Y.years.map(y => `<th class="num">${y}</th>`).join("")}<th class="num">2100, by estimate (level / growth / global)</th></tr></thead><tbody>` +
+      Object.entries(Y.scenarios).map(([k, v]) => `<tr><td>${NM[k] || k}</td>${Y.years.map(y => { const c = v.loss_pct[y]; return `<td class="num">${sg(c.median)}<br><span class="muted">${sg(c.p5)} to ${sg(c.p95)}</span></td>`; }).join("")}<td class="num">${["level", "bhm_growth", "global_temp"].map(n => sg(v.loss_pct[2100].by_family[n])).join(" / ")}</td></tr>`).join("") +
+      `</tbody><caption class="sub" style="caption-side:bottom;text-align:left">Median and 90% range across worlds. Absolute GDP beyond 2065 is not credible; the paired ratio isolates the damage.</caption>`;
+  } else document.getElementById("t-c2100").closest(".tablewrap").hidden = true;
+  document.getElementById("t-charv").innerHTML = `<thead><tr><th>Event</th><th class="num">1961–2024</th><th class="num">2026–35</th><th class="num">2056–65</th></tr></thead><tbody>
+    <tr><td>US cereal harvest 15%+ below trend (share of years)</td><td class="num">${pct(H.us_bad15, 1)}</td><td class="num">${pct(V.us_bad15_early, 1)}</td><td class="num">${pct(V.us_bad15_late, 1)}</td></tr>
+    <tr><td>Two of the four big maize exporters (US, Brazil, Argentina, Ukraine) 10%+ below trend in the same year</td><td class="num">${pct(H.x4_two, 1)}</td><td class="num">${pct(V.x4_two_early, 1)}</td><td class="num">${pct(V.x4_two_late, 1)}</td></tr>
+    <tr><td>US harvest 25%+ below trend at least once by 2065 (share of worlds)</td><td class="num">–</td><td class="num" colspan="2">${pct(V.us_bad25_any)}</td></tr>
+    <tr><td>World grain price up 50%+ in a year at least once (share of worlds)</td><td class="num">–</td><td class="num" colspan="2">${pct(V.food_spike_any)}</td></tr></tbody>`;
+  document.getElementById("charv-note").textContent = `Each simulated year replays the harvests of a historical year (the same year as its economic shocks), so breadbaskets fail together as they did; bad harvests then deepen by 0–30% per degree of local warming (crop models find larger losses than national data show). Worst US years on record: ${H.us_worst.map(([y, v]) => `${y} (${d3.format(".0%")(v)})`).join(", ")}. Harvests move food prices, calories and import needs; their effect on output is already inside the damage estimates.`;
+  const W = CR.war_test && CR.war_test.logit, wt = W ? W["civil_conflict_5y:warm10_agri"] : null;
+  const rows = [
+    ["Atlantic circulation (AMOC) collapse under way by 2065", pct(CR.amoc_share), "Sahel and West African rain −10 to −30% (South Asia half), north-west Europe output −1 to −5% and harvests −10 to −30%; chance 0–10% per world (assumption)"],
+    ["Fast ice-sheet loss", CR.slr_ice_share != null ? pct(CR.slr_ice_share) : "–", "sea-level path ×1.5–3 (IPCC low-likelihood, high-impact storyline)"],
+    ["Drylands losing cropland", "estimate", "42 countries under 600 mm of rain: cereal area −0.71% per 1% less decade-mean rainfall (s.e. 0.29, 1961–2022); none in wetter countries"],
+    ["Climate emigrants abroad by 2065", `${f1(CR.clim_migrants_m.median)} m (95th pct ${f1(CR.clim_migrants_m.p95)} m)`, "grows with the climate harvest loss × farm share of GDP (assumption)"],
+    ["Civil war from sustained warming", `${pct(CR.clim_conflict.low)} → ${pct(CR.clim_conflict.high)}`, `2065 share of countries at war, worlds at the low vs high end of the assumed effect (0 to +0.3 log-odds per °C × farm share). History fits a link${wt ? ` (+${wt.coef_sd} sd, p ${wt.p})` : ""}, but it made forecasts worse, so it stays an assumption`],
+  ];
+  document.getElementById("t-ctail").innerHTML = `<thead><tr><th>Channel</th><th class="num">Result</th><th>Basis</th></tr></thead><tbody>` +
+    rows.map(r => `<tr><td>${r[0]}</td><td class="num">${r[1]}</td><td class="muted">${r[2]}</td></tr>`).join("") + "</tbody>";
+}
+
+function disasterSection() {
+  const D = EX && EX.disaster;
+  if (!D) { document.getElementById("s-disaster").closest("section").hidden = true; return; }
+  const A = D.outcomes_all, esc = t => String(t).replace(/</g, "&lt;");
+  const KIND = {economic: "Economic collapse", deaths: "Mass war deaths", civil_war: "Age of civil war", autocracy: "Authoritarian age", composite: "All four at once"};
+  const MEAS = {economic: "lowest world GDP per person in 2065", deaths: "most interstate-war and nuclear deaths, 2026-2065", civil_war: "highest average share of countries in civil conflict", autocracy: "lowest world democracy index in 2065", composite: "worst on the four measures combined"};
+  const PN = {ai_arrival: "AI arrival year", robot_arrival: "robotics arrival year", climate_damage: "climate damage multiplier", workforce_beta: "ageing drag on growth",
+    civ_mult: "civilian deaths per battle death", nuclear_war_factor: "war between nuclear powers (vs others)", autocracy_drift: "AI-era drift to autocracy", dem_erosion: "AI-era democratic erosion",
+    growth_dividend: "AI growth dividend", open_lag: "lag before AI spreads", nuc_gdp_large: "output lost to a large nuclear exchange", robot_aging: "robots offsetting ageing",
+    frag_beta: "state fragility effect", breakout_years: "years to a nuclear weapon", pko_decay: "peacekeeping decay", fish_trop: "tropical fish catch", glacier_tau: "glacier runoff width",
+    quasi_RUS_IRN: "Russia defends Iran", volc_p: "big-eruption frequency", pandemic_p: "pandemic frequency", pandemic_mort: "pandemic mortality", cascade_q: "allies joining wars",
+    fin_contagion: "financial contagion", oil_eta: "oil demand elasticity", chip_pause: "chip supply pause", storm_trend: "storm trend", st_debt_beta: "short-term debt effect",
+    dmg_family: "climate damage estimate", clim_response: "climate sensitivity (this world)", harvest_amp: "warming deepens bad harvests", amoc_hit: "Atlantic circulation collapse",
+    clim_conflict: "warming raises civil war", clim_migr: "climate emigration", dry_area_elast: "drylands losing cropland", slr_ice: "fast ice-sheet loss"};
+  const pn = k => PN[k] || k.replace(/_/g, " ");
+  const val = (k, o) => k === "economic" ? money(o.world_gdp_2065) : k === "deaths" ? `${o.deaths_m.toFixed(1)} million` : k === "civil_war" ? pct(o.conflict_mean) : k === "autocracy" ? o.dem_2065.toFixed(2) : `${money(o.world_gdp_2065)}; ${pct(o.conflict_mean)} at war; democracy ${o.dem_2065.toFixed(2)}`;
+  document.getElementById("dis-sub").textContent = `${d3.format(",")(D.n_worlds)} headline worlds (uncertain AI arrival, SSP2-4.5, every assumption sampled), ${D.years[0]}-${D.years[1]}. For each kind of disaster, the worst 1% of worlds is compared with all the others: which sampled assumptions separate them (AUC: 0.5 = no difference; only values beyond the 95% range of random splits are shown), and which shocks happen more often in them. Median world: ${money(A.world_gdp_2065)} per person in 2065, ${pct(A.conflict_mean)} of countries at war on average, ${A.deaths_m.toFixed(1)} million war deaths; world GDP per person ends below its ${D.years[0]} level in ${pct(A.p_gdp_2065_below_2026, 1)} of worlds.`;
+  const rows = Object.entries(D.sets).map(([k, r]) => {
+    const thr = r.auc_null_95;
+    const as = r.assumptions.filter(a => Math.abs(a.auc - 0.5) > thr).slice(0, 4).map(a => `${pn(a.name)} <span class="chip">${a.auc > 0.5 ? "high" : "low"} · ${a.auc.toFixed(2)}</span>`).join("<br>") || "none beyond chance";
+    const ev = r.events.filter(e => e.event !== "world GDP falls 5%+ in a year" && e.share_disaster >= 0.1 && e.ratio >= 1.3).sort((a, b) => b.ratio - a.ratio).slice(0, 4)
+      .map(e => `${e.event} <span class="chip">${pct(e.share_disaster)} vs ${pct(e.share_all)}</span>`).join("<br>") || "none over-represented";
+    const fs = Object.entries(r.first_shock).slice(0, 2).map(([n, c]) => `${n} (${pct(c / r.n)})`).join(", ");
+    return `<tr><td><b>${KIND[k] || k}</b><br><span class="muted">${MEAS[k] || ""}</span></td><td>${val(k, r.outcomes_disaster)}</td><td>${as}</td><td>${ev}</td><td>${fs}</td></tr>`;
+  });
+  document.getElementById("t-dis").innerHTML = `<thead><tr><th>Disaster</th><th>Worst 1% (median)</th><th>Assumptions that separate them</th><th>Shocks more frequent in them</th><th>First shock</th></tr></thead><tbody>${rows.join("")}</tbody>`;
+  const K = D.knockouts;
+  if (K) {
+    const ks = ["economic", "deaths", "civil_war", "autocracy"], base = {economic: -Math.log(A.world_gdp_2065), deaths: A.deaths_m * 1e6, civil_war: A.conflict_mean};
+    const KN = {no_interstate_wars: "No interstate wars", no_nuclear_use: "No nuclear use", no_pandemics: "No pandemics", no_climate_damage: "No climate damage", no_ai: "No near-free AI",
+      no_bubbles: "No AI bubbles", no_alliance_cascades: "No allies joining wars", no_war_spillover: "No war spillover to neighbours", no_financial_contagion: "No financial contagion",
+      no_country_frailty: "No lasting country war-proneness", no_world_mood: "No shared world mood", no_tail_catastrophes: "No solar storms or eruptions", no_climate_tails: "No climate tails (tipping points, harvest amplification, climate–war, emigration)", smallest_climate_damage: "Smallest climate damage estimate in every world"};
+    const cell = (k, v) => {
+      const t = v.tail_share / 0.01;
+      let m = "";
+      if (k === "economic") m = ` <span class="muted">(${d3.format("+.0%")(Math.exp(base.economic - v.median) - 1)})</span>`;
+      else if (k === "civil_war") m = ` <span class="muted">(${d3.format("+.1f")(100 * (v.median - base.civil_war))} pt)</span>`;
+      const strong = t <= 0.6 || t >= 1.6;
+      return `<td class="num${strong ? " best" : ""}">×${t.toFixed(2)}${m}</td>`;
+    };
+    document.getElementById("t-knock").innerHTML = `<thead><tr><th>Mechanism removed</th>${ks.map(k => `<th class="num">${KIND[k]}</th>`).join("")}</tr></thead><tbody>` +
+      Object.entries(K.runs).map(([n, v]) => `<tr><td>${KN[n] || n}</td>${ks.map(k => cell(k, v[k])).join("")}</tr>`).join("") + "</tbody>";
+  } else document.getElementById("t-knock").closest(".tablewrap").hidden = true;
+  const WAR_BIG = /China|United States|Russia|India|Pakistan|Japan|Taiwan|Korea|France|United Kingdom|Germany|Poland|Iran|Israel/;
+  const cards = Object.entries(D.picked).map(([k, w]) => {
+    const ext = Object.entries(w.param_pct).filter(([n, q]) => q <= 0.05 || q >= 0.95).slice(0, 5).map(([n, q]) => `${pn(n)} <span class="chip">${q >= 0.95 ? "top" : "bottom"} ${pct(q >= 0.95 ? 1 - q : q, 0)}</span>`).join(" ");
+    let prev = null, prevOil = null;
+    const tl = w.events.map(e => {
+      const bits = [];
+      const wars = (e.new_interstate || []).filter(x => x.includes("(war)") && WAR_BIG.test(x)).map(x => x.replace(" (war)", ""));
+      if (wars.length) bits.push(`war: ${wars.slice(0, 3).join("; ")}${wars.length > 3 ? "…" : ""}`);
+      if (e.pandemic) bits.push("pandemic");
+      if ((e.onset || []).length >= 9) bits.push(`${e.onset.length} new civil wars`);
+      if (prev && e.world_gdp / prev < 0.97) bits.push(`world GDP ${d3.format("+.0%")(e.world_gdp / prev - 1)}`);
+      if (e.oil_index >= 400 && !(prevOil >= 400)) bits.push(`oil ×${(e.oil_index / 100).toFixed(0)}`);
+      prev = e.world_gdp; prevOil = e.oil_index;
+      return bits.length ? `<li><b>${e.year}</b> ${esc(bits.join(" · "))} <span class="muted">(${money(e.world_gdp)}, ${pct(e.conflict_share)} at war)</span></li>` : "";
+    }).filter(Boolean);
+    return `<div class="card"><span class="eyebrow">${KIND[k] || k}</span><h3>World ${w.world}</h3>
+      <p class="sub">2065: ${money(w.world_gdp_2065)} per person; ${pct(w.conflict_mean)} of countries at war on average; ${w.deaths_m.toFixed(1)} million war deaths; democracy ${w.dem_2065.toFixed(2)}${w.params.ai_arrival >= 2066 ? "; no near-free AI by 2065" : `; near-free AI from ${Math.round(w.params.ai_arrival)}`}</p>
+      <p style="font-size:13px"><b>Extreme assumptions:</b> ${ext || "none"}</p>
+      <ul style="font-size:13px;padding-left:18px;max-height:260px;overflow:auto">${tl.join("") || "<li>no single turning point: a slow slide</li>"}</ul></div>`;
+  });
+  document.getElementById("dis-cards").innerHTML = cards.join("");
+}
+function cycles() {
+  const U = EX && EX.us_history, Sh = EX && EX.seshat;
+  if (!U) { document.getElementById("s-cycles").closest("section").hidden = true; return; }
+  const yrs = U.years, dec = Object.entries(U.violence_decades).map(([d, v]) => ({d: +d, v}));
+  const sm = (k, n) => U.series[k].map((_, i, a) => { const sl = a.slice(Math.max(0, i - n + 1), i + 1).filter(v => v != null); return sl.length ? d3.mean(sl) : null; });
+  fanChart(document.getElementById("c-us-viol"), {extra: [{years: yrs, values: sm("violence", 10), stroke: css("--down"), label: "Violence, 10-year mean"}], fmt: d3.format(".1f"), ymin: 0, h: 150, w: 520, label: "US political violence"});
+  fanChart(document.getElementById("c-us-pol"), {extra: [{years: yrs, values: U.series.polarization, stroke: css("--fan"), label: "Polarization"}], fmt: d3.format(".2f"), h: 150, w: 520, label: "Congressional polarization"});
+  fanChart(document.getElementById("c-us-imm"), {extra: [{years: yrs, values: U.series.immiseration, stroke: css("--hist"), label: "Immiseration"}], fmt: d3.format(".2f"), h: 150, w: 520, label: "Worker immiseration"});
+  const lc = U.lead_corr_violence, vt = U.violence_tests, dt = U.democracy_tests;
+  let t = `<p><b>United States.</b> Political violence over the next decade tracks worker immiseration (correlation ${lc.immiseration.toFixed(2)}) and congressional polarization (${lc.polarization.toFixed(2)}). But debt and elite numbers trend the other way, so a Turchin-style stress index correlates only ${lc.stress.toFixed(2)}, and out of sample no decade forecast beat "the same as the last decade" (skill ${vt["stress+recent violence"].skill.toFixed(2)}). Stress does a little better than no-change for democratic decline (skill ${dt.stress.skill.toFixed(2)}). Detrended violence shows no 50-year cycle (autocorrelation at 50 years: ${U.violence_autocorr["50"].toFixed(2)}). Polarization in 2024 (${U.now.polarization.toFixed(2)}) is the highest on record, above 1858 (${U.past["1858"].polarization.toFixed(2)}).</p>`;
+  if (Sh) {
+    const g = Sh.gaps;
+    t += `<p><b>Four thousand years (Seshat).</b> Within a region, crises are a median ${Math.round(g.median)} years apart, but no more regular than random timing (variation ${g.cv.toFixed(2)} against ${g.cv_random_mean.toFixed(2)} for random dates). A state faces about ${Sh.crises_per_polity_century.toFixed(2)} major crises per century, only weakly more often as it ages. After centuries of fast population growth, crises followed ${pct(Sh.pop_growth.crisis_rate_high_growth)} of the time against ${pct(Sh.pop_growth.crisis_rate_low_growth)} after slow growth (${Sh.pop_growth.n} cases). Half of all crises involved civil war; ${pct(Sh.ends_polity)} ended the state.</p>
+      <p class="muted">Verdict: the ingredients Turchin points to (immiseration, polarization, population pressure) do move with instability, but neither data set shows clockwork cycles. The engine treats them as risk factors, not timers.</p>`;
+    const el = document.getElementById("c-seshat-age"); el.innerHTML = "";
+    const data = Sh.hazard_by_age.filter(d => d.per_century != null && d.polity_years > 1000), w = 520, h = 180, m = {t: 10, r: 10, b: 28, l: 44};
+    const x = d3.scaleBand().domain(data.map(d => d.age)).range([m.l, w - m.r]).padding(.3), y = d3.scaleLinear().domain([0, d3.max(data, d => d.per_century) * 1.15]).range([h - m.b, m.t]);
+    const svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${w} ${h}`);
+    svg.append("g").attr("class", "axis").attr("transform", `translate(0,${h - m.b})`).call(d3.axisBottom(x).tickSizeOuter(0));
+    svg.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4)).select(".domain").remove();
+    svg.selectAll("rect").data(data).join("rect").attr("x", d => x(d.age)).attr("width", x.bandwidth()).attr("y", d => y(d.per_century)).attr("height", d => y(0) - y(d.per_century)).attr("rx", 3).attr("fill", css("--fan"))
+      .append("title").text(d => `${d.age} years: ${d.per_century.toFixed(2)} crises per century (${d.crises} crises)`);
+  }
+  document.getElementById("cycles-text").innerHTML = t;
+}
+function cleanChart() {
+  if (!AI || !AI.none || !AI.none.clean_share_q) return;
+  fanChart(document.getElementById("c-clean"), {fan: {years: W.years, q: AI.none.clean_share_q}, fmt: d => pct(d), ymin: 0, ymax: 1, label: "Clean energy share",
+    extra: AI["2030"] && AI["2030"].clean_share_q ? [{years: W.years, values: AI["2030"].clean_share_q[2], stroke: AI_COL["2030"], label: AI_LBL["2030"]}] : []});
+}
+function oilChart() {
+  if (!AI || !AI.none || !AI.none.oil_price_q) return;
+  fanChart(document.getElementById("c-oil"), {fan: {years: W.years, q: AI.none.oil_price_q}, fmt: d3.format(".0f"), ymin: 0, label: "Real oil price",
+    extra: AI["2030"] && AI["2030"].oil_price_q ? [{years: W.years, values: AI["2030"].oil_price_q[2], stroke: AI_COL["2030"], label: AI_LBL["2030"]}] : []});
+}
+
+
+function scorecardSection() {
+  const S = EX && EX.scorecard;
+  if (!S) { document.getElementById("card-scorecard").hidden = true; return; }
+  const f4 = v => v == null ? "–" : v.toFixed(4);
+  const rows = [];
+  const M = S.monthly || {};
+  const mAll = M.all;
+  rows.push(["Monthly conflict model: P(25+ battle deaths) per country and month, 12 months ahead",
+    Object.keys(M.ledgers || {}).length + " monthly ledger(s), data to " + (M.data_to || "–"),
+    mAll ? `${mAll.n.toLocaleString()} forecasts, ${mAll.events} events: Brier ${f4(mAll.brier_model)} vs persistence ${f4(mAll.brier_persistence)} (skill ${pct(mAll.skill_vs_persistence)})` : "First months mature as UCDP publishes them (about the 20th of each month)"]);
+  const A = S.annual;
+  if (A && typeof A === "object" && A.score) {
+    const V = A.score.versions || {};
+    const done = Object.values(V).filter(v => typeof v === "object");
+    const sc = done.flatMap(v => Object.entries(v)).map(([y, r]) => `${y}: Brier ${f4(r.brier_model)} vs persistence ${f4(r.brier_persistence)}; world share ${pct(r.share_observed)} ${r.share_in_90 ? "inside" : "outside"} the 90% fan`);
+    rows.push(["Simulator: P(in conflict) per country and year 2026–2030, coups and new conflicts by 2030, world fans",
+      Object.keys(V).length + " frozen model version(s) (code and forecast hashed)",
+      sc.length ? sc.join("<br>") : `Year 2026 is scored when its December data arrive (early 2027); data complete through ${A.score.complete_through}`]);
+  }
+  const C = S.crowd || {};
+  rows.push(["Prediction markets: model, crowd and a fixed 90/10 crowd–model pool on every matched Polymarket / Manifold question",
+    `${C.questions ?? "–"} questions logged`, C.resolved ? `${C.resolved} resolved: Brier crowd ${f4(C.brier_crowd)}, model ${f4(C.brier_model)}, pool ${f4(C.brier_pool)}` : "None resolved yet"]);
+  rows.push(["AI analyst panel: five-year questions", "Logged 2025", "Resolves in 2030"]);
+  document.getElementById("scorecard-sub").textContent = `Every forecast below was saved before its outcome was known and is never changed; each new model version is logged separately, so a later improvement cannot rewrite the record. Updated ${S.run.slice(0, 10)} by the monthly job (scripts/prospective.py). Past-data validation can be overfit; this cannot.`;
+  document.getElementById("t-scorecard").innerHTML = "<thead><tr><th>Ledger</th><th>Logged</th><th>Score so far</th></tr></thead><tbody>" +
+    rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("") + "</tbody>";
+}
+
+function ledgerSection() {
+  scorecardSection();
+  const L = EX && EX.ledger;
+  if (!L) { document.getElementById("s-ledger").closest("section").hidden = true; return; }
+  document.getElementById("ledger-sub").textContent = `Issued ${L.issued} with UCDP events to ${L.data_to}, for ${L.months}: ${L.n_rows.toLocaleString()} country-month forecasts saved unchanged in outputs/ledger and scored as UCDP publishes each month (scripts/monthly_ledger.py score). This is the test that cannot be overfit.`;
+  const nm = c => (byCode[c] || {}).name || c;
+  document.getElementById("t-ledger").innerHTML = "<thead><tr><th>Country</th><th class=num>Next 12 months</th></tr></thead><tbody>" +
+    Object.entries(L.annual_new).slice(0, 25).map(([c, v]) => `<tr><td>${nm(c)}</td><td class="num">${pct(v)}</td></tr>`).join("") + "</tbody>";
+  document.getElementById("ledger-card-sub").textContent += ` (${L.n_active} countries had such fighting in the past year and are near-certain to again).`;
+  const A = AI && AI.none && AI.none.attribution, A2 = AI && AI.uncertain && AI.uncertain.attribution;
+  if (!A) return;
+  const lab = {cascade_q: "Alliance joining rate", war_spillover: "Trade spillover from wars", war_site_loss: "Output loss at war sites",
+    oil_eta: "Oil price response to demand", oil_war_jump: "Oil spike when exporters fight", pandemic_p: "Pandemic frequency",
+    climate_damage: "Climate damage (×BHM)", growth_dividend: "AI growth dividend", autocracy_drift: "AI autocracy drift", other: "Other (shocks, wars, politics)",
+    bubble_p: "Chance of an AI investment bust", bubble_cost: "Cost of the bust", arrival_sd: "AI arrival year", ai_arrival: "AI arrival year", speed_mult: "AI adoption speed", open_lag: "Open-model diffusion lag",
+    export_lag: "Export-control lag", hub_rent: "Rents captured by AI hubs", chip_pause: "Chip-war slowdown", chip_gdp: "Chip-war output hit", dc_share: "Data-centre energy",
+    robot_lag: "Robotics lag", robot_aging: "Robots offsetting ageing", robot_arrival: "Robotics arrival year (correlated with AI arrival)",
+    robot_years: "Robot deployment speed", phys_dividend: "Physical-automation dividend", drone_onset: "Autonomy and war onset", drone_persist: "Autonomy and war duration",
+    drone_reach: "Long-range strikes on expeditionary powers", drone_civil: "Rebel drones and civil-war duration", dem_erosion: "AI-era democratic erosion", ai_war_beta: "AI-gap war risk", nuc_beta: "Nuclear-stability erosion",
+    eng_pandemic: "Engineered pandemics", natural_cut: "AI cut in natural pandemics",
+    water_dispute: "Live water disputes", water_scarcity_k: "Water loss and war between basin partners", yield_water: "Yield response to water supply",
+    glacier_tau: "Speed of glacier-runoff decline", peak_shift: "Peak-water timing", glacier_flow_mult: "Glacier share of river flow",
+    cascade_hop2: "Allies of allies joining", quasi_USA_TWN: "US joining a war over Taiwan", quasi_USA_ISR: "US joining a war against Israel",
+    quasi_RUS_IRN: "Russia joining a war against Iran", quasi_CHN_PAK: "China joining a war against Pakistan", intl_beta: "Foreign intervention and civil-war length",
+    prolif_mult: "Pace of new weapons programs", prolif_cascade: "Proliferation chain reactions", iran_pursuit0: "Iran pursuing a weapon in 2025",
+    breakout_years: "Years to build a weapon", prevent_beta: "Preventive-war risk during a breakout", nuc_use_both: "Nuclear use between nuclear powers",
+    nuc_use_one: "Nuclear use against a non-nuclear state", nuc_escalate: "Escalation to a large exchange", nuc_gdp_large: "World output lost in a large exchange",
+    sanction_loss: "Cost of Western sanctions", mineral_elast: "Critical-minerals windfall", china_pause: "China clean-tech chokepoint", civ_mult: "Civilian war deaths",
+    pandemic_mort: "Pandemic death rate", slr_mult: "Sea-level rise", slr_cost: "Cost of sea-level rise", storm_trend: "Storms and warming", storm_loss: "Cost of a damaging storm",
+    solar_p: "Solar-storm frequency", solar_loss: "Cost of a solar storm", volc_p: "Large-eruption frequency", volc_yield: "Harvest loss after an eruption", cyber_loss: "Wartime infrastructure attacks",
+    nuclear_war_factor: "War between nuclear-armed states (vs others)", dmg_family: "Climate damage estimate (level / growth / global)", clim_response: "Climate sensitivity", harvest_amp: "Warming deepens bad harvests", amoc_p: "Chance of an AMOC collapse", amoc_hit: "AMOC collapse", amoc_eu_loss: "AMOC cost to Europe", amoc_eu_yield: "AMOC harvest loss in Europe", amoc_rain: "AMOC drying of the Sahel",
+    slr_ice: "Fast ice-sheet loss", slr_ice_mult: "Size of fast ice-sheet loss", dry_area_elast: "Drylands losing cropland", clim_conflict: "Warming and civil war", clim_migr: "Climate emigration",
+    workforce_beta: "Ageing drag on growth", articles_beta: "Science capacity and growth", frag_beta: "Rebel fragmentation and war length", fin_contagion: "Financial contagion through trade", dividend_fade: "AI dividend fading",
+    pko_beta: "Peacekeepers and war ending", st_debt_beta: "Short-term debt and banking crises", peer_coup: "Coups among peers", commod_coup: "Food-export prices and coups", tariff_pass: "Tariff pass-through", fish_trop: "Tropical fish catch"};
+  const outs = [["world_gdp_2065", "World GDP per person"], ["conflict_2065", "Countries in civil conflict"], ["democracy_2065", "Democracy"], ["great_power_war", "Great-power war"], ["oil_2065", "Oil price"], ["war_India-Pakistan", "India–Pakistan war"], ["war_China-India", "China–India war"], ["war_Egypt-Ethiopia", "Egypt–Ethiopia war"], ["nuclear_use", "Nuclear use"]];
+  const top = (o) => { const t = Object.entries(o).filter(([k, v]) => k !== "other" && v >= 0.01).sort((a, b) => b[1] - a[1]).slice(0, 2);
+    return t.length ? t.map(([k, v]) => `${lab[k] || k} ${pct(v)}`).join("; ") : '<span class="muted">none above 1%</span>'; };
+  document.getElementById("t-attr").innerHTML = `<thead><tr><th>Outcome, 2065</th><th>No AI shock</th>${A2 ? '<th>Headline: AI arrival uncertain</th>' : ""}</tr></thead><tbody>` +
+    outs.filter(([k]) => A[k]).map(([k, n]) => `<tr><td>${n}</td><td style="white-space:normal">${top(A[k])}</td>${A2 && A2[k] ? `<td style="white-space:normal">${top(A2[k])}</td>` : ""}</tr>`).join("") + "</tbody>";
+  const U = EX && EX.uncertainty;
+  if (U && U.attribution) {
+    const OUT = {log_world_gdp_2065: "World GDP per person, 2065", log_world_gdp_2045: "World GDP per person, 2045", world_conflict_2065: "Countries in civil conflict, 2065", world_democracy_2065: "Democracy, 2065",
+      great_power_war: "Great-power war by 2065", nuclear_use: "Nuclear use by 2065", "war_China-India": "China–India war", "war_India-Pakistan": "India–Pakistan war"};
+    const G = ["AI and robot timing", "climate", "nuclear"];
+    document.getElementById("attr2-sub").textContent = `${d3.format(",")(U.n)} headline worlds. Shares of the spread explained by each group of assumptions together (a gradient-boosted surrogate, cross-validated; a group's share is what is lost when the whole group is left out, so correlated assumptions are credited together). Binary outcomes have small shares by construction; the second table shows how far their probability moves.`;
+    document.getElementById("t-attr2").innerHTML = `<thead><tr><th>Outcome</th><th class="num">All assumptions</th>${G.map(g => `<th class="num">${g[0].toUpperCase() + g.slice(1)}</th>`).join("")}</tr></thead><tbody>` +
+      Object.entries(OUT).filter(([k]) => U.attribution[k]).map(([k, n]) => { const a = U.attribution[k]; return `<tr><td>${n}</td><td class="num">${pct(a.assumptions_all)}</td>${G.map(g => `<td class="num">${a.groups && a.groups[g] != null ? pct(a.groups[g]) : "–"}</td>`).join("")}</tr>`; }).join("") + "</tbody>";
+    const R = U.ranges || {}, fmt = (k, v) => k.startsWith("log_world_gdp") ? money(v) : k.startsWith("world_democracy") ? v.toFixed(2) : pct(v);
+    document.getElementById("t-attr3").innerHTML = `<thead><tr><th>Outcome</th><th>Assumption</th><th class="num">Lowest fifth of its range</th><th class="num">Highest fifth</th></tr></thead><tbody>` +
+      Object.entries(OUT).filter(([k]) => R[k]).flatMap(([k, n]) => Object.entries(R[k].drivers).slice(0, 2).map(([d, v], i) => `<tr><td>${i ? "" : n}</td><td>${lab[d] || d}</td><td class="num">${fmt(k, v.low_fifth)}</td><td class="num">${fmt(k, v.high_fifth)}</td></tr>`)).join("") + "</tbody>";
+  } else document.getElementById("t-attr2").closest(".tablewrap").hidden = true;
+  document.getElementById("t-attr").insertAdjacentHTML("afterend", '<p class="sub" style="margin-top:8px">Everything not listed is "other": history\'s replayed shocks and the simulated wars, coups and elections, typically 95–99% of the spread without an AI shock and about half for world output with one.</p>');
+}
+
+/* ---------- boot ---------- */
+function renderAll() {
+  hero(); tiles(); worldFans(); try { gulfCard(); } catch (e) { console.error(e); document.getElementById("card-gulf").hidden = true; } crisis(); riskMap(); riskTable(); explorer(document.getElementById("country-select").value);
+  backtestTable(); try { splitTable(); } catch (e) { console.error(e); } calChart(); hindTable(); ablationTable();
+  climMap(); scenCharts();
+  systemTable(); interSection(); try { waterCard(); } catch (e) { console.error(e); document.getElementById("grid-water").hidden = true; } try { risksCard(); } catch (e) { console.error(e); document.getElementById("card-risks").hidden = true; } aiSection(); panelSection();
+  scoreSection(); try { benchSection(); } catch (e) { console.error(e); document.getElementById("sec-bench").hidden = true; } whatIf(); chronicles(); try { disasterSection(); } catch (e) { console.error(e); document.getElementById("s-disaster").closest("section").hidden = true; } try { climateRisk(); } catch (e) { console.error(e); document.getElementById("clim-risk").hidden = true; } cycles(); oilChart(); cleanChart(); ledgerSection();
+  if (USD) { usStress(); usMap(); usTable(); usBacktest(); }
+  hindcast(document.querySelector("#hind-seg button[aria-pressed=true]")?.dataset.k);
+}
+(function boot() {
+  const sel = document.getElementById("country-select");
+  const sorted = DATA.countries.slice().sort((a, b) => a.name.localeCompare(b.name));
+  sel.innerHTML = sorted.map(c => `<option value="${c.code}">${c.name}</option>`).join("");
+  const big = DATA.countries.filter(c => c.pop_m > 50 && c.civil_conflict_5y != null).sort((a, b) => b.civil_conflict_5y - a.civil_conflict_5y)[0];
+  const ongoing = DATA.countries.filter(c => c.in_conflict).length;
+  sel.value = big ? big.code : sorted[0].code;
+  sel.onchange = () => explorer(sel.value);
+  seg("task-seg", Object.entries(TASKS), TASK, k => { TASK = k; riskMap(); riskTable(); });
+  seg("cal-seg", Object.entries(TASKS).map(([k, v]) => [k, v.split(" (")[0]]), CAL, k => { CAL = k; calChart(); });
+  const origins = Object.keys(V.hindcast_fans || {});
+  seg("hind-seg", origins.map(o => [o, o]), origins.at(-1), k => hindcast(k));
+  document.getElementById("risk-search").oninput = riskTable;
+  seg("ssp-seg", Object.entries(SSP_NAMES), SSP, k => { SSP = k; climMap(); if (USD && UST === "warming") { usMap(); usTable(); } });
+  seg("clim-var-seg", Object.entries(CVARS).map(([k, v]) => [k, v[0]]), CVAR, k => { CVAR = k; climMap(); });
+  usInit();
+  document.getElementById("footnote").textContent = `Generated from outputs/forecast.json · origin ${M.origin} · ${d3.format(",")(M.n_scenarios)} scenarios · ensemble of logistic regression, LightGBM and a 10-member neural ensemble.`;
+  renderAll();
+  let t; const rerender = () => { clearTimeout(t); t = setTimeout(renderAll, 60); };
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", rerender);
+  new MutationObserver(rerender).observe(document.documentElement, {attributes: true, attributeFilter: ["data-theme"]});
+})();
+</script>

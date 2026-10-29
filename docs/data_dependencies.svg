@@ -1,0 +1,523 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2454" height="2630" viewBox="0 0 2454 2630" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif">
+<defs><marker id="a0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#5b6b82"/></marker><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#0f8a8a"/></marker><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#7247b8"/></marker><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#c2410c"/></marker><marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#2f7d32"/></marker><marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#1d5fbf"/></marker><marker id="a6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#334155"/></marker><marker id="a7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#b7791f"/></marker></defs>
+<rect width="2454" height="2630" fill="#fbfbf9"/>
+<text x="40" y="52" font-size="28" font-weight="700" fill="#1f2937">Psychohistory engine: data dependencies</text>
+<text x="40" y="80" font-size="14.5" fill="#4b5563">What data goes in, how it is processed and modelled, and which results it produces. Arrows run left to right; dashed arrows are estimates fed back into earlier stages.</text>
+<text x="40" y="118" font-size="15" font-weight="700" fill="#5b6b82" letter-spacing=".4">RAW DATA</text>
+<rect x="40" y="126" width="262" height="3" rx="1.5" fill="#5b6b82"/>
+<text x="392" y="118" font-size="15" font-weight="700" fill="#0f8a8a" letter-spacing=".4">PROCESSING</text>
+<rect x="392" y="126" width="262" height="3" rx="1.5" fill="#0f8a8a"/>
+<text x="744" y="118" font-size="15" font-weight="700" fill="#7247b8" letter-spacing=".4">MODELS &amp; ESTIMATES</text>
+<rect x="744" y="126" width="262" height="3" rx="1.5" fill="#7247b8"/>
+<text x="1096" y="118" font-size="15" font-weight="700" fill="#c2410c" letter-spacing=".4">SIMULATION</text>
+<rect x="1096" y="126" width="262" height="3" rx="1.5" fill="#c2410c"/>
+<text x="1448" y="118" font-size="15" font-weight="700" fill="#2f7d32" letter-spacing=".4">VALIDATION &amp; BENCHMARKS</text>
+<rect x="1448" y="126" width="262" height="3" rx="1.5" fill="#2f7d32"/>
+<text x="1800" y="118" font-size="15" font-weight="700" fill="#1d5fbf" letter-spacing=".4">RESULT FILES</text>
+<rect x="1800" y="126" width="262" height="3" rx="1.5" fill="#1d5fbf"/>
+<text x="2152" y="118" font-size="15" font-weight="700" fill="#334155" letter-spacing=".4">PUBLISHED</text>
+<rect x="2152" y="126" width="262" height="3" rx="1.5" fill="#334155"/>
+<path d="M302,211.8 C362,211.8 330,687.2 390,687.2" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,304.2 C362,304.2 330,693.3 390,693.3" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,392.5 C362,392.5 330,699.5 390,699.5" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,465.5 C362,465.5 330,705.7 390,705.7" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,538.5 C362,538.5 330,711.8 390,711.8" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,593.2 C362,593.2 330,718.0 390,718.0" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,742.2 C362,742.2 330,724.2 390,724.2" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,976.2 C362,976.2 330,730.3 390,730.3" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1050.0 C362,1050.0 330,736.5 390,736.5" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1114.3 C362,1114.3 330,742.7 390,742.7" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1387.2 C362,1387.2 330,748.8 390,748.8" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M654,689.2 C714,689.2 330,797.5 390,797.5" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M302,1411.6 C362,1411.6 330,1514.5 390,1514.5" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,844.5 C362,844.5 330,1095.3 390,1095.3" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,605.4 C362,605.4 330,1058.3 390,1058.3" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,772.8 C362,772.8 330,1083.0 390,1083.0" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M654,722.1 C714,722.1 330,1070.7 390,1070.7" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M654,1152.3 C714,1152.3 330,1107.7 390,1107.7" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M302,1478.5 C362,1478.5 330,1172.7 390,1172.7" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,233.5 C362,233.5 330,1152.3 390,1152.3" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1179.0 C362,1179.0 330,1367.6 390,1367.6" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1322.3 C362,1322.3 330,1382.4 390,1382.4" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,629.8 C362,629.8 330,1352.8 390,1352.8" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1399.4 C362,1399.4 330,1397.2 390,1397.2" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,925.0 C362,925.0 330,1245.7 390,1245.7" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,617.6 C362,617.6 330,1225.3 390,1225.3" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1066.0 C362,1066.0 330,1314.0 390,1314.0" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1006.8 C362,1006.8 330,1302.0 390,1302.0" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,255.2 C362,255.2 330,1290.0 390,1290.0" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1134.7 C362,1134.7 330,945.0 390,945.0" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M654,705.7 C714,705.7 330,929.0 390,929.0" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M654,697.4 C714,697.4 330,870.5 390,870.5" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M302,1258.5 C362,1258.5 330,1448.0 390,1448.0" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,674.3 C362,674.3 330,988.2 390,988.2" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,757.5 C362,757.5 330,1018.8 390,1018.8" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M654,713.9 C714,713.9 330,1003.5 390,1003.5" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M654,787.3 C714,787.3 682,797.5 742,797.5" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M654,807.7 C714,807.7 682,885.0 742,885.0" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M654,1083.0 C714,1083.0 682,1083.0 742,1083.0" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M654,1448.0 C714,1448.0 682,1621.5 742,1621.5" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M302,1191.0 C500.0,1191.0 544.0,1606.2 742,1606.2" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M654,730.3 C714,730.3 682,1591.0 742,1591.0" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M654,738.6 C714,738.6 682,1675.2 742,1675.2" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M302,1342.7 C500.0,1342.7 544.0,1693.8 742,1693.8" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1423.8 C500.0,1423.8 544.0,1712.2 742,1712.2" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1551.5 C500.0,1551.5 544.0,1894.8 742,1894.8" fill="none" stroke="#b7791f" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a7)"/>
+<path d="M654,1003.5 C714,1003.5 682,1171.5 742,1171.5" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M302,694.7 C500.0,694.7 544.0,1523.8 742,1523.8" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,2360.0 C500.0,2360.0 544.0,1539.8 742,1539.8" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1619.3 C362,1619.3 330,1632.0 390,1632.0" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1707.3 C362,1707.3 330,1710.1 390,1710.1" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1799.7 C362,1799.7 330,1727.9 390,1727.9" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1896.3 C362,1896.3 330,1745.7 390,1745.7" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1203.0 C362,1203.0 330,1692.3 390,1692.3" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1732.7 C500.0,1732.7 544.0,1794.2 742,1794.2" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1829.3 C500.0,1829.3 544.0,1805.1 742,1805.1" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1921.7 C500.0,1921.7 544.0,1816.0 742,1816.0" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1997.0 C500.0,1997.0 544.0,1826.9 742,1826.9" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,1644.7 C500.0,1644.7 544.0,1783.4 742,1783.4" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M654,746.8 C714,746.8 682,1772.5 742,1772.5" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M302,319.5 C500.0,319.5 544.0,1761.6 742,1761.6" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M654,1632.0 C852.0,1632.0 896.0,1330.5 1094,1330.5" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M654,1719.0 C852.0,1719.0 896.0,1346.9 1094,1346.9" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M302,2085.0 C500.0,2085.0 544.0,1976.2 742,1976.2" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,2165.5 C500.0,2165.5 544.0,1988.3 742,1988.3" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,2232.0 C500.0,2232.0 544.0,2000.5 742,2000.5" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M302,334.8 C500.0,334.8 544.0,1964.0 742,1964.0" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M1006,816.1 C1066,816.1 1034,1232.4 1094,1232.4" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M1006,885.0 C1066,885.0 1034,1248.8 1094,1248.8" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M654,870.5 C852.0,870.5 896.0,1240.6 1094,1240.6" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M654,1514.5 C852.0,1514.5 896.0,1314.2 1094,1314.2" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M1006,1083.0 C1066,1083.0 1034,1273.3 1094,1273.3" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M654,1172.7 C852.0,1172.7 896.0,1281.5 1094,1281.5" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M654,1375.0 C852.0,1375.0 896.0,1306.0 1094,1306.0" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M654,1235.5 C852.0,1235.5 896.0,1289.6 1094,1289.6" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M654,1302.0 C852.0,1302.0 896.0,1297.8 1094,1297.8" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M654,937.0 C852.0,937.0 896.0,1256.9 1094,1256.9" fill="none" stroke="#0f8a8a" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a1)"/>
+<path d="M1006,1606.2 C1066,1606.2 1034,1322.4 1094,1322.4" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M1006,1693.8 C1066,1693.8 1034,1338.7 1094,1338.7" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M1006,1894.8 C1066,1894.8 1034,1355.1 1094,1355.1" fill="none" stroke="#b7791f" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a7)"/>
+<path d="M302,991.5 C658.4000000000001,991.5 737.5999999999999,1265.1 1094,1265.1" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M1358,1303.7 C1418,1303.7 1034,1413.7 1094,1413.7" fill="none" stroke="#c2410c" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a3)"/>
+<path d="M1006,766.4 C1204.0,766.4 1248.0,797.5 1446,797.5" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M1006,778.9 C1204.0,778.9 1248.0,872.0 1446,872.0" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M1358,1263.9 C1418,1263.9 1386,1198.5 1446,1198.5" fill="none" stroke="#c2410c" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a3)"/>
+<path d="M1006,1072.8 C1204.0,1072.8 1248.0,1178.2 1446,1178.2" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M1006,828.6 C1204.0,828.6 1248.0,1413.3 1446,1413.3" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M1006,1093.2 C1204.0,1093.2 1248.0,1422.9 1446,1422.9" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M1006,1531.8 C1204.0,1531.8 1248.0,1432.5 1446,1432.5" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M302,2298.5 C816.8000000000001,2298.5 931.1999999999999,1442.1 1446,1442.1" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M1006,1158.8 C1204.0,1158.8 1248.0,1767.2 1446,1767.2" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M302,2379.0 C816.8000000000001,2379.0 931.1999999999999,1783.2 1446,1783.2" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M1006,1184.2 C1204.0,1184.2 1248.0,1835.2 1446,1835.2" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M302,2398.0 C816.8000000000001,2398.0 931.1999999999999,1851.2 1446,1851.2" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M1006,1103.3 C1204.0,1103.3 1248.0,1600.1 1446,1600.1" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M302,2459.5 C816.8000000000001,2459.5 931.1999999999999,1624.1 1446,1624.1" fill="none" stroke="#5b6b82" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a0)"/>
+<path d="M1358,1323.5 C1418,1323.5 1386,1612.1 1446,1612.1" fill="none" stroke="#c2410c" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a3)"/>
+<path d="M1358,1343.4 C1418,1343.4 1386,1686.6 1446,1686.6" fill="none" stroke="#c2410c" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a3)"/>
+<path d="M1358,1244.1 C1556.0,1244.1 1600.0,1121.1 1798,1121.1" fill="none" stroke="#c2410c" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a3)"/>
+<path d="M1358,1413.7 C1556.0,1413.7 1600.0,1129.8 1798,1129.8" fill="none" stroke="#c2410c" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a3)"/>
+<path d="M1006,1062.7 C1362.4,1062.7 1441.6,1103.7 1798,1103.7" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M1006,791.3 C1362.4,791.3 1441.6,1086.3 1798,1086.3" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M1710,872.0 C1770,872.0 1738,1095.0 1798,1095.0" fill="none" stroke="#2f7d32" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a4)"/>
+<path d="M1710,1188.4 C1770,1188.4 1738,1112.4 1798,1112.4" fill="none" stroke="#2f7d32" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a4)"/>
+<path d="M1006,803.7 C1362.4,803.7 1441.6,1182.6 1798,1182.6" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M1358,1283.8 C1556.0,1283.8 1600.0,1293.7 1798,1293.7" fill="none" stroke="#c2410c" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a3)"/>
+<path d="M1710,1427.7 C1770,1427.7 1738,1648.6 1798,1648.6" fill="none" stroke="#2f7d32" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a4)"/>
+<path d="M1710,1775.2 C1770,1775.2 1738,1679.1 1798,1679.1" fill="none" stroke="#2f7d32" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a4)"/>
+<path d="M1710,1843.2 C1770,1843.2 1738,1689.3 1798,1689.3" fill="none" stroke="#2f7d32" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a4)"/>
+<path d="M1710,1612.1 C1770,1612.1 1738,1658.8 1798,1658.8" fill="none" stroke="#2f7d32" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a4)"/>
+<path d="M1710,1686.6 C1770,1686.6 1738,1669.0 1798,1669.0" fill="none" stroke="#2f7d32" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a4)"/>
+<path d="M1006,1982.2 C1362.4,1982.2 1441.6,1982.2 1798,1982.2" fill="none" stroke="#7247b8" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a2)"/>
+<path d="M2062,1097.9 C2122,1097.9 2090,1431.1 2150,1431.1" fill="none" stroke="#1d5fbf" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a5)"/>
+<path d="M2062,1182.6 C2122,1182.6 2090,1439.1 2150,1439.1" fill="none" stroke="#1d5fbf" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a5)"/>
+<path d="M2062,1293.7 C2122,1293.7 2090,1447.1 2150,1447.1" fill="none" stroke="#1d5fbf" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a5)"/>
+<path d="M2062,1658.8 C2122,1658.8 2090,1455.1 2150,1455.1" fill="none" stroke="#1d5fbf" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a5)"/>
+<path d="M2062,1982.2 C2122,1982.2 2090,1463.1 2150,1463.1" fill="none" stroke="#1d5fbf" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a5)"/>
+<path d="M2062,1118.2 C2122,1118.2 2090,1511.4 2150,1511.4" fill="none" stroke="#1d5fbf" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a5)"/>
+<path d="M2062,1679.1 C2122,1679.1 2090,1531.8 2150,1531.8" fill="none" stroke="#1d5fbf" stroke-opacity=".42" stroke-width="1.6" marker-end="url(#a5)"/>
+<path d="M822.6,1837.8 C822.6,1846.8 901.2,1846.8 901.2,1855.8" fill="none" stroke="#7247b8" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#a2)"/>
+<text x="868" y="1847" font-size="11.5" font-style="italic" fill="#7247b8" text-anchor="middle" paint-order="stroke" stroke="#fbfbf9" stroke-width="4">estimates &amp; ranges</text>
+<path d="M1579.0,830.0 C1579.0,893.0 940.5,893.0 940.5,843.0" fill="none" stroke="#2f7d32" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#a4)"/>
+<text x="1260" y="876" font-size="11.5" font-style="italic" fill="#2f7d32" text-anchor="middle" paint-order="stroke" stroke="#fbfbf9" stroke-width="4">model selection</text>
+<path d="M822.6,1636.8 C822.6,1746.2 901.2,1746.2 901.2,1855.8" fill="none" stroke="#7247b8" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#a2)"/>
+<text x="868" y="1746" font-size="11.5" font-style="italic" fill="#7247b8" text-anchor="middle" paint-order="stroke" stroke="#fbfbf9" stroke-width="4">β → fin_contagion</text>
+<path d="M875.0,1732.8 C875.0,1782.8 588.5,1782.8 588.5,1414.0" fill="none" stroke="#7247b8" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#a2)"/>
+<text x="732" y="1612" font-size="11.5" font-style="italic" fill="#7247b8" text-anchor="middle" paint-order="stroke" stroke="#fbfbf9" stroke-width="4">constants</text>
+<g><title>OWID / World Bank / UN series: GDP (Maddison, WB), population &amp; UN projections, age, fertility, schooling, inequality, gov. spending, tax, military, health, internet, warheads</title><rect x="40" y="190.0" width="262" height="87" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="190.0" width="5" height="87" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="209.0" font-size="13" font-weight="650" fill="#111827">OWID / World Bank / UN series</text>
+<text x="54" y="226.0" font-size="11" fill="#4b5563">GDP (Maddison, WB), population &amp; UN</text>
+<text x="54" y="239.0" font-size="11" fill="#4b5563">projections, age, fertility, schooling,</text>
+<text x="54" y="252.0" font-size="11" fill="#4b5563">inequality, gov. spending, tax, military,</text>
+<text x="54" y="265.0" font-size="11" fill="#4b5563">health, internet, warheads</text>
+</g>
+<g><title>V-Dem v15: democracy, liberties, corruption, coups; pre-1946 history</title><rect x="40" y="289.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="289.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="308.0" font-size="13" font-weight="650" fill="#111827">V-Dem v15</text>
+<text x="54" y="325.0" font-size="11" fill="#4b5563">democracy, liberties, corruption, coups;</text>
+<text x="54" y="338.0" font-size="11" fill="#4b5563">pre-1946 history</text>
+</g>
+<g><title>Global Macro Database: public debt; banking / currency crises (Laeven-Valencia)</title><rect x="40" y="362.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="362.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="381.0" font-size="13" font-weight="650" fill="#111827">Global Macro Database</text>
+<text x="54" y="398.0" font-size="11" fill="#4b5563">public debt; banking / currency crises</text>
+<text x="54" y="411.0" font-size="11" fill="#4b5563">(Laeven-Valencia)</text>
+</g>
+<g><title>EPR · WRP religion · REIGN: ethnic power relations, religious composition, leaders</title><rect x="40" y="435.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="435.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="454.0" font-size="13" font-weight="650" fill="#111827">EPR · WRP religion · REIGN</text>
+<text x="54" y="471.0" font-size="11" fill="#4b5563">ethnic power relations, religious</text>
+<text x="54" y="484.0" font-size="11" fill="#4b5563">composition, leaders</text>
+</g>
+<g><title>Political datasets: Archigos, GWF, MMP, NAVCO, NELDA, V-Party, WhoGov</title><rect x="40" y="508.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="508.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="527.0" font-size="13" font-weight="650" fill="#111827">Political datasets</text>
+<text x="54" y="544.0" font-size="11" fill="#4b5563">Archigos, GWF, MMP, NAVCO, NELDA, V-Party,</text>
+<text x="54" y="557.0" font-size="11" fill="#4b5563">WhoGov</text>
+</g>
+<g><title>UCDP ACD 26.1 · BRD / NS / OS 25.1: armed-conflict years, battle deaths, non-state &amp; one-sided violence</title><rect x="40" y="581.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="581.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="600.0" font-size="13" font-weight="650" fill="#111827">UCDP ACD 26.1 · BRD / NS / OS 25.1</text>
+<text x="54" y="617.0" font-size="11" fill="#4b5563">armed-conflict years, battle deaths, non-</text>
+<text x="54" y="630.0" font-size="11" fill="#4b5563">state &amp; one-sided violence</text>
+</g>
+<g><title>UCDP GED 26.1 + Candidate monthly: geolocated events; data vintages as forecasters had them</title><rect x="40" y="654.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="654.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="673.0" font-size="13" font-weight="650" fill="#111827">UCDP GED 26.1 + Candidate monthly</text>
+<text x="54" y="690.0" font-size="11" fill="#4b5563">geolocated events; data vintages as</text>
+<text x="54" y="703.0" font-size="11" fill="#4b5563">forecasters had them</text>
+</g>
+<g><title>Event data: ICEWS, POLECAT, GDELT: country-year, country-month and dyad event counts (GDELT through 2025)</title><rect x="40" y="727.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="727.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="746.0" font-size="13" font-weight="650" fill="#111827">Event data: ICEWS, POLECAT, GDELT</text>
+<text x="54" y="763.0" font-size="11" fill="#4b5563">country-year, country-month and dyad event</text>
+<text x="54" y="776.0" font-size="11" fill="#4b5563">counts (GDELT through 2025)</text>
+</g>
+<g><title>COW, ATOP, MID, rivalries, NMC, ICB, UNGA: states, majors, contiguity, alliances, disputes, capabilities, crises, UN voting alignment</title><rect x="40" y="800.0" width="262" height="89" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="800.0" width="5" height="89" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="819.0" font-size="13" font-weight="650" fill="#111827">COW, ATOP, MID, rivalries, NMC,</text>
+<text x="54" y="834.0" font-size="13" font-weight="650" fill="#111827">ICB, UNGA</text>
+<text x="54" y="851.0" font-size="11" fill="#4b5563">states, majors, contiguity, alliances,</text>
+<text x="54" y="864.0" font-size="11" fill="#4b5563">disputes, capabilities, crises, UN voting</text>
+<text x="54" y="877.0" font-size="11" fill="#4b5563">alignment</text>
+</g>
+<g><title>COW Inter-State War v4: battle deaths per war</title><rect x="40" y="901.0" width="262" height="48" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="901.0" width="5" height="48" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="920.0" font-size="13" font-weight="650" fill="#111827">COW Inter-State War v4</text>
+<text x="54" y="937.0" font-size="11" fill="#4b5563">battle deaths per war</text>
+</g>
+<g><title>Energy &amp; geopolitical risk: WDI fuel trade, Caldara-Iacoviello GPR, EI oil, WB Pink Sheet prices</title><rect x="40" y="961.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="961.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="980.0" font-size="13" font-weight="650" fill="#111827">Energy &amp; geopolitical risk</text>
+<text x="54" y="997.0" font-size="11" fill="#4b5563">WDI fuel trade, Caldara-Iacoviello GPR, EI</text>
+<text x="54" y="1010.0" font-size="11" fill="#4b5563">oil, WB Pink Sheet prices</text>
+</g>
+<g><title>Food: FAO balances, grain prices: calories, imports, food CPI, WB grain index</title><rect x="40" y="1034.0" width="262" height="48" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="1034.0" width="5" height="48" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="1053.0" font-size="13" font-weight="650" fill="#111827">Food: FAO balances, grain prices</text>
+<text x="54" y="1070.0" font-size="11" fill="#4b5563">calories, imports, food CPI, WB grain index</text>
+</g>
+<g><title>Migration: UNHCR, UN DESA: refugees by origin-destination, migrant stock, remittances</title><rect x="40" y="1094.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="1094.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="1113.0" font-size="13" font-weight="650" fill="#111827">Migration: UNHCR, UN DESA</text>
+<text x="54" y="1130.0" font-size="11" fill="#4b5563">refugees by origin-destination, migrant</text>
+<text x="54" y="1143.0" font-size="11" fill="#4b5563">stock, remittances</text>
+</g>
+<g><title>CEPII BACI trade + Gravity: bilateral trade 2015-2021</title><rect x="40" y="1167.0" width="262" height="48" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="1167.0" width="5" height="48" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="1186.0" font-size="13" font-weight="650" fill="#111827">CEPII BACI trade + Gravity</text>
+<text x="54" y="1203.0" font-size="11" fill="#4b5563">bilateral trade 2015-2021</text>
+</g>
+<g><title>BIS consolidated banking statistics: bilateral bank claims 1983-2025</title><rect x="40" y="1227.0" width="262" height="63" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="1227.0" width="5" height="63" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="1246.0" font-size="13" font-weight="650" fill="#111827">BIS consolidated banking</text>
+<text x="54" y="1261.0" font-size="13" font-weight="650" fill="#111827">statistics</text>
+<text x="54" y="1278.0" font-size="11" fill="#4b5563">bilateral bank claims 1983-2025</text>
+</g>
+<g><title>World Bank WDI extras: mineral rents, population below 5 m elevation</title><rect x="40" y="1302.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="1302.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="1321.0" font-size="13" font-weight="650" fill="#111827">World Bank WDI extras</text>
+<text x="54" y="1338.0" font-size="11" fill="#4b5563">mineral rents, population below 5 m</text>
+<text x="54" y="1351.0" font-size="11" fill="#4b5563">elevation</text>
+</g>
+<g><title>Climate: ERA5 + CMIP6 (WB CCKP): observed and SSP1-2.6…5-8.5 temp, precip, dry spells, heat; BHM damage function</title><rect x="40" y="1375.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="1375.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="1394.0" font-size="13" font-weight="650" fill="#111827">Climate: ERA5 + CMIP6 (WB CCKP)</text>
+<text x="54" y="1411.0" font-size="11" fill="#4b5563">observed and SSP1-2.6…5-8.5 temp, precip,</text>
+<text x="54" y="1424.0" font-size="11" fill="#4b5563">dry spells, heat; BHM damage function</text>
+</g>
+<g><title>Water: TFDD basins &amp; events: shared basins, Basins-at-Risk events; glacier peak water (Wimberly 2025)</title><rect x="40" y="1448.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="1448.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="1467.0" font-size="13" font-weight="650" fill="#111827">Water: TFDD basins &amp; events</text>
+<text x="54" y="1484.0" font-size="11" fill="#4b5563">shared basins, Basins-at-Risk events;</text>
+<text x="54" y="1497.0" font-size="11" fill="#4b5563">glacier peak water (Wimberly 2025)</text>
+</g>
+<g><title>AI &amp; robotics timelines: Metaculus, AI Impacts survey; IFR robot counts</title><rect x="40" y="1521.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#b7791f" stroke-width="1.4"/><rect x="40" y="1521.0" width="5" height="61" rx="2.5" fill="#b7791f"/>
+<text x="54" y="1540.0" font-size="13" font-weight="650" fill="#111827">AI &amp; robotics timelines</text>
+<text x="54" y="1557.0" font-size="11" fill="#4b5563">Metaculus, AI Impacts survey; IFR robot</text>
+<text x="54" y="1570.0" font-size="11" fill="#4b5563">counts</text>
+</g>
+<g><title>Ocean food: FAO fisheries (OWID), IFCD: catch, aquaculture, fish in diets; fishery conflicts 1974-2016</title><rect x="40" y="1594.0" width="262" height="76" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="1594.0" width="5" height="76" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="1613.0" font-size="13" font-weight="650" fill="#111827">Ocean food: FAO fisheries (OWID),</text>
+<text x="54" y="1628.0" font-size="13" font-weight="650" fill="#111827">IFCD</text>
+<text x="54" y="1645.0" font-size="11" fill="#4b5563">catch, aquaculture, fish in diets; fishery</text>
+<text x="54" y="1658.0" font-size="11" fill="#4b5563">conflicts 1974-2016</text>
+</g>
+<g><title>Innovation: PWT 11, WDI R&amp;D, OECD MSTI, NSF, Epoch AI: TFP, R&amp;D, researchers, articles, patents; US frontier since 1929; AI compute</title><rect x="40" y="1682.0" width="262" height="76" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="1682.0" width="5" height="76" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="1701.0" font-size="13" font-weight="650" fill="#111827">Innovation: PWT 11, WDI R&amp;D, OECD</text>
+<text x="54" y="1716.0" font-size="13" font-weight="650" fill="#111827">MSTI, NSF, Epoch AI</text>
+<text x="54" y="1733.0" font-size="11" fill="#4b5563">TFP, R&amp;D, researchers, articles, patents; US</text>
+<text x="54" y="1746.0" font-size="11" fill="#4b5563">frontier since 1929; AI compute</text>
+</g>
+<g><title>UN peacekeeping, OECD/US aid, commodity exports: UN Data Hub personnel 1990-2026; ODA; 2025 USAID cut; export shares; tariffs (Census, Yale)</title><rect x="40" y="1770.0" width="262" height="89" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="1770.0" width="5" height="89" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="1789.0" font-size="13" font-weight="650" fill="#111827">UN peacekeeping, OECD/US aid,</text>
+<text x="54" y="1804.0" font-size="13" font-weight="650" fill="#111827">commodity exports</text>
+<text x="54" y="1821.0" font-size="11" fill="#4b5563">UN Data Hub personnel 1990-2026; ODA; 2025</text>
+<text x="54" y="1834.0" font-size="11" fill="#4b5563">USAID cut; export shares; tariffs (Census,</text>
+<text x="54" y="1847.0" font-size="11" fill="#4b5563">Yale)</text>
+</g>
+<g><title>UCDP dyadic &amp; ESD, EPR-TEK, CCP, SSF, ECI, WDI IDS: rebel groups, outside support, ethnic kin, term limits, coup-proofing, external debt</title><rect x="40" y="1871.0" width="262" height="76" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="1871.0" width="5" height="76" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="1890.0" font-size="13" font-weight="650" fill="#111827">UCDP dyadic &amp; ESD, EPR-TEK, CCP,</text>
+<text x="54" y="1905.0" font-size="13" font-weight="650" fill="#111827">SSF, ECI, WDI IDS</text>
+<text x="54" y="1922.0" font-size="11" fill="#4b5563">rebel groups, outside support, ethnic kin,</text>
+<text x="54" y="1935.0" font-size="11" fill="#4b5563">term limits, coup-proofing, external debt</text>
+</g>
+<g><title>BoC-BoE defaults, Martinez lights, alliance reliability, IVS: sovereign defaults, night lights vs GDP, honored alliances, public trust</title><rect x="40" y="1959.0" width="262" height="76" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="1959.0" width="5" height="76" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="1978.0" font-size="13" font-weight="650" fill="#111827">BoC-BoE defaults, Martinez lights,</text>
+<text x="54" y="1993.0" font-size="13" font-weight="650" fill="#111827">alliance reliability, IVS</text>
+<text x="54" y="2010.0" font-size="11" fill="#4b5563">sovereign defaults, night lights vs GDP,</text>
+<text x="54" y="2023.0" font-size="11" fill="#4b5563">honored alliances, public trust</text>
+</g>
+<g><title>US states: BEA, BLS, FHFA, CDC, NOAA…: income, jobs, housing, overdoses, shootings, elections, climate</title><rect x="40" y="2047.0" width="262" height="76" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="2047.0" width="5" height="76" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="2066.0" font-size="13" font-weight="650" fill="#111827">US states: BEA, BLS, FHFA, CDC,</text>
+<text x="54" y="2081.0" font-size="13" font-weight="650" fill="#111827">NOAA…</text>
+<text x="54" y="2098.0" font-size="11" fill="#4b5563">income, jobs, housing, overdoses, shootings,</text>
+<text x="54" y="2111.0" font-size="11" fill="#4b5563">elections, climate</text>
+</g>
+<g><title>US history: USPVD, Voteview, JST: political violence 1780-, polarisation, macro history</title><rect x="40" y="2135.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="2135.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="2154.0" font-size="13" font-weight="650" fill="#111827">US history: USPVD, Voteview, JST</text>
+<text x="54" y="2171.0" font-size="11" fill="#4b5563">political violence 1780-, polarisation,</text>
+<text x="54" y="2184.0" font-size="11" fill="#4b5563">macro history</text>
+</g>
+<g><title>Seshat CrisisDB: crises of historical polities</title><rect x="40" y="2208.0" width="262" height="48" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="2208.0" width="5" height="48" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="2227.0" font-size="13" font-weight="650" fill="#111827">Seshat CrisisDB</text>
+<text x="54" y="2244.0" font-size="11" fill="#4b5563">crises of historical polities</text>
+</g>
+<g><title>2025 outcomes: UCDP 2025, V-Dem v16, GDP 2025: held out for scoring</title><rect x="40" y="2268.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="2268.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="2287.0" font-size="13" font-weight="650" fill="#111827">2025 outcomes</text>
+<text x="54" y="2304.0" font-size="11" fill="#4b5563">UCDP 2025, V-Dem v16, GDP 2025: held out for</text>
+<text x="54" y="2317.0" font-size="11" fill="#4b5563">scoring</text>
+</g>
+<g><title>VIEWS Prediction Challenge 2023/24 · ViEWS archive: actuals, benchmark &amp; participant draws; 48 archived ViEWS runs</title><rect x="40" y="2341.0" width="262" height="76" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="2341.0" width="5" height="76" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="2360.0" font-size="13" font-weight="650" fill="#111827">VIEWS Prediction Challenge 2023/24</text>
+<text x="54" y="2375.0" font-size="13" font-weight="650" fill="#111827">· ViEWS archive</text>
+<text x="54" y="2392.0" font-size="11" fill="#4b5563">actuals, benchmark &amp; participant draws; 48</text>
+<text x="54" y="2405.0" font-size="11" fill="#4b5563">archived ViEWS runs</text>
+</g>
+<g><title>Crowd forecasts: Metaculus / GJOpen / INFER archive; Polymarket &amp; Manifold live</title><rect x="40" y="2429.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="2429.0" width="5" height="61" rx="2.5" fill="#5b6b82"/>
+<text x="54" y="2448.0" font-size="13" font-weight="650" fill="#111827">Crowd forecasts</text>
+<text x="54" y="2465.0" font-size="11" fill="#4b5563">Metaculus / GJOpen / INFER archive;</text>
+<text x="54" y="2478.0" font-size="11" fill="#4b5563">Polymarket &amp; Manifold live</text>
+</g>
+<g><title>data.py → country-year panel: ~200 countries, 1850-2025: economy, demography, regime, conflict, crises, events, climate</title><rect x="392" y="681.0" width="262" height="74" rx="7" fill="#ffffff" stroke="#0f8a8a" stroke-width="1.4"/><rect x="392" y="681.0" width="5" height="74" rx="2.5" fill="#0f8a8a"/>
+<text x="406" y="700.0" font-size="13" font-weight="650" fill="#111827">data.py → country-year panel</text>
+<text x="406" y="717.0" font-size="11" fill="#4b5563">~200 countries, 1850-2025: economy,</text>
+<text x="406" y="730.0" font-size="11" fill="#4b5563">demography, regime, conflict, crises,</text>
+<text x="406" y="743.0" font-size="11" fill="#4b5563">events, climate</text>
+</g>
+<g><title>features.py: 11-year windows + current state → X; labels for 7 tasks; spatial neighbour weights</title><rect x="392" y="767.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#0f8a8a" stroke-width="1.4"/><rect x="392" y="767.0" width="5" height="61" rx="2.5" fill="#0f8a8a"/>
+<text x="406" y="786.0" font-size="13" font-weight="650" fill="#111827">features.py</text>
+<text x="406" y="803.0" font-size="11" fill="#4b5563">11-year windows + current state → X; labels</text>
+<text x="406" y="816.0" font-size="11" fill="#4b5563">for 7 tasks; spatial neighbour weights</text>
+</g>
+<g><title>climate.py: bias-corrected SSP paths, population-weighted</title><rect x="392" y="1484.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#0f8a8a" stroke-width="1.4"/><rect x="392" y="1484.0" width="5" height="61" rx="2.5" fill="#0f8a8a"/>
+<text x="406" y="1503.0" font-size="13" font-weight="650" fill="#111827">climate.py</text>
+<text x="406" y="1520.0" font-size="11" fill="#4b5563">bias-corrected SSP paths, population-</text>
+<text x="406" y="1533.0" font-size="11" fill="#4b5563">weighted</text>
+</g>
+<g><title>interstate.build → dyad-years: every pair of states from 1850: power, distance, alliances, rivalry, alignment, events, regime</title><rect x="392" y="1046.0" width="262" height="74" rx="7" fill="#ffffff" stroke="#0f8a8a" stroke-width="1.4"/><rect x="392" y="1046.0" width="5" height="74" rx="2.5" fill="#0f8a8a"/>
+<text x="406" y="1065.0" font-size="13" font-weight="650" fill="#111827">interstate.build → dyad-years</text>
+<text x="406" y="1082.0" font-size="11" fill="#4b5563">every pair of states from 1850: power,</text>
+<text x="406" y="1095.0" font-size="11" fill="#4b5563">distance, alliances, rivalry, alignment,</text>
+<text x="406" y="1108.0" font-size="11" fill="#4b5563">events, regime</text>
+</g>
+<g><title>water.py: pair basins, binding scarcity, glacier-fed share</title><rect x="392" y="1132.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#0f8a8a" stroke-width="1.4"/><rect x="392" y="1132.0" width="5" height="61" rx="2.5" fill="#0f8a8a"/>
+<text x="406" y="1151.0" font-size="13" font-weight="650" fill="#111827">water.py</text>
+<text x="406" y="1168.0" font-size="11" fill="#4b5563">pair basins, binding scarcity, glacier-fed</text>
+<text x="406" y="1181.0" font-size="11" fill="#4b5563">share</text>
+</g>
+<g><title>risks.py: trade weights, distances, correlated weather factors, internationalised wars, sea-level rise</title><rect x="392" y="1338.0" width="262" height="74" rx="7" fill="#ffffff" stroke="#0f8a8a" stroke-width="1.4"/><rect x="392" y="1338.0" width="5" height="74" rx="2.5" fill="#0f8a8a"/>
+<text x="406" y="1357.0" font-size="13" font-weight="650" fill="#111827">risks.py</text>
+<text x="406" y="1374.0" font-size="11" fill="#4b5563">trade weights, distances, correlated weather</text>
+<text x="406" y="1387.0" font-size="11" fill="#4b5563">factors, internationalised wars, sea-level</text>
+<text x="406" y="1400.0" font-size="11" fill="#4b5563">rise</text>
+</g>
+<g><title>war_size.py: battle-death pools: major-vs-major, other wars, minor clashes</title><rect x="392" y="1205.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#0f8a8a" stroke-width="1.4"/><rect x="392" y="1205.0" width="5" height="61" rx="2.5" fill="#0f8a8a"/>
+<text x="406" y="1224.0" font-size="13" font-weight="650" fill="#111827">war_size.py</text>
+<text x="406" y="1241.0" font-size="11" fill="#4b5563">battle-death pools: major-vs-major, other</text>
+<text x="406" y="1254.0" font-size="11" fill="#4b5563">wars, minor clashes</text>
+</g>
+<g><title>food.py: world food price, calories, demand</title><rect x="392" y="1278.0" width="262" height="48" rx="7" fill="#ffffff" stroke="#0f8a8a" stroke-width="1.4"/><rect x="392" y="1278.0" width="5" height="48" rx="2.5" fill="#0f8a8a"/>
+<text x="406" y="1297.0" font-size="13" font-weight="650" fill="#111827">food.py</text>
+<text x="406" y="1314.0" font-size="11" fill="#4b5563">world food price, calories, demand</text>
+</g>
+<g><title>migration.py: refugee flows and host shares</title><rect x="392" y="913.0" width="262" height="48" rx="7" fill="#ffffff" stroke="#0f8a8a" stroke-width="1.4"/><rect x="392" y="913.0" width="5" height="48" rx="2.5" fill="#0f8a8a"/>
+<text x="406" y="932.0" font-size="13" font-weight="650" fill="#111827">migration.py</text>
+<text x="406" y="949.0" font-size="11" fill="#4b5563">refugee flows and host shares</text>
+</g>
+<g><title>dynamics.py: slow variables (debt, education, age, urban…) and party systems</title><rect x="392" y="840.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#0f8a8a" stroke-width="1.4"/><rect x="392" y="840.0" width="5" height="61" rx="2.5" fill="#0f8a8a"/>
+<text x="406" y="859.0" font-size="13" font-weight="650" fill="#111827">dynamics.py</text>
+<text x="406" y="876.0" font-size="11" fill="#4b5563">slow variables (debt, education, age,</text>
+<text x="406" y="889.0" font-size="11" fill="#4b5563">urban…) and party systems</text>
+</g>
+<g><title>bis_build.py: bank claims by lender → borrower</title><rect x="392" y="1424.0" width="262" height="48" rx="7" fill="#ffffff" stroke="#0f8a8a" stroke-width="1.4"/><rect x="392" y="1424.0" width="5" height="48" rx="2.5" fill="#0f8a8a"/>
+<text x="406" y="1443.0" font-size="13" font-weight="650" fill="#111827">bis_build.py</text>
+<text x="406" y="1460.0" font-size="11" fill="#4b5563">bank claims by lender → borrower</text>
+</g>
+<g><title>ocean.py: fish share of calories, wild share, catch value / GDP, latitude band</title><rect x="392" y="1601.5" width="262" height="61" rx="7" fill="#ffffff" stroke="#0f8a8a" stroke-width="1.4"/><rect x="392" y="1601.5" width="5" height="61" rx="2.5" fill="#0f8a8a"/>
+<text x="406" y="1620.5" font-size="13" font-weight="650" fill="#111827">ocean.py</text>
+<text x="406" y="1637.5" font-size="11" fill="#4b5563">fish share of calories, wild share, catch</text>
+<text x="406" y="1650.5" font-size="11" fill="#4b5563">value / GDP, latitude band</text>
+</g>
+<g><title>innovation.py · intervention.py · structure.py: science beyond income, peacekeepers, aid &amp; tariff hits, food-export exposure, rebel groups, short-term debt, language peers</title><rect x="392" y="1674.5" width="262" height="89" rx="7" fill="#ffffff" stroke="#0f8a8a" stroke-width="1.4"/><rect x="392" y="1674.5" width="5" height="89" rx="2.5" fill="#0f8a8a"/>
+<text x="406" y="1693.5" font-size="13" font-weight="650" fill="#111827">innovation.py · intervention.py ·</text>
+<text x="406" y="1708.5" font-size="13" font-weight="650" fill="#111827">structure.py</text>
+<text x="406" y="1725.5" font-size="11" fill="#4b5563">science beyond income, peacekeepers, aid &amp;</text>
+<text x="406" y="1738.5" font-size="11" fill="#4b5563">tariff hits, food-export exposure, rebel</text>
+<text x="406" y="1751.5" font-size="11" fill="#4b5563">groups, short-term debt, language peers</text>
+</g>
+<g><title>cm / pgm deaths by vintage: country-month and 55 km grid-month deaths, final GED + Candidate months</title><rect x="392" y="973.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#0f8a8a" stroke-width="1.4"/><rect x="392" y="973.0" width="5" height="61" rx="2.5" fill="#0f8a8a"/>
+<text x="406" y="992.0" font-size="13" font-weight="650" fill="#111827">cm / pgm deaths by vintage</text>
+<text x="406" y="1009.0" font-size="11" fill="#4b5563">country-month and 55 km grid-month deaths,</text>
+<text x="406" y="1022.0" font-size="11" fill="#4b5563">final GED + Candidate months</text>
+</g>
+<g><title>SeldonEnsemble: GBM, PsychoNet, Forest, Logit → civil conflict, economic collapse, autocratization, coup (5 y); onset, termination, coup (1 y); structural spread</title><rect x="744" y="754.0" width="262" height="87" rx="7" fill="#ffffff" stroke="#7247b8" stroke-width="1.4"/><rect x="744" y="754.0" width="5" height="87" rx="2.5" fill="#7247b8"/>
+<text x="758" y="773.0" font-size="13" font-weight="650" fill="#111827">SeldonEnsemble</text>
+<text x="758" y="790.0" font-size="11" fill="#4b5563">GBM, PsychoNet, Forest, Logit → civil</text>
+<text x="758" y="803.0" font-size="11" fill="#4b5563">conflict, economic collapse,</text>
+<text x="758" y="816.0" font-size="11" fill="#4b5563">autocratization, coup (5 y); onset,</text>
+<text x="758" y="829.0" font-size="11" fill="#4b5563">termination, coup (1 y); structural spread</text>
+</g>
+<g><title>Growth &amp; Δdemocracy transitions: fitted yearly dynamics</title><rect x="744" y="861.0" width="262" height="48" rx="7" fill="#ffffff" stroke="#7247b8" stroke-width="1.4"/><rect x="744" y="861.0" width="5" height="48" rx="2.5" fill="#7247b8"/>
+<text x="758" y="880.0" font-size="13" font-weight="650" fill="#111827">Growth &amp; Δdemocracy transitions</text>
+<text x="758" y="897.0" font-size="11" fill="#4b5563">fitted yearly dynamics</text>
+</g>
+<g><title>DyadModel (logit + GBM): interstate conflict 1 y / 5 y, fatal MID, use of force; alliance cascade calibration</title><rect x="744" y="1052.5" width="262" height="61" rx="7" fill="#ffffff" stroke="#7247b8" stroke-width="1.4"/><rect x="744" y="1052.5" width="5" height="61" rx="2.5" fill="#7247b8"/>
+<text x="758" y="1071.5" font-size="13" font-weight="650" fill="#111827">DyadModel (logit + GBM)</text>
+<text x="758" y="1088.5" font-size="11" fill="#4b5563">interstate conflict 1 y / 5 y, fatal MID,</text>
+<text x="758" y="1101.5" font-size="11" fill="#4b5563">use of force; alliance cascade calibration</text>
+</g>
+<g><title>contagion_test.py: trade contagion β = 4.26 ± 0.56; bank-lending link rejected</title><rect x="744" y="1575.8" width="262" height="61" rx="7" fill="#ffffff" stroke="#7247b8" stroke-width="1.4"/><rect x="744" y="1575.8" width="5" height="61" rx="2.5" fill="#7247b8"/>
+<text x="758" y="1594.8" font-size="13" font-weight="650" fill="#111827">contagion_test.py</text>
+<text x="758" y="1611.8" font-size="11" fill="#4b5563">trade contagion β = 4.26 ± 0.56; bank-</text>
+<text x="758" y="1624.8" font-size="11" fill="#4b5563">lending link rejected</text>
+</g>
+<g><title>extra_estimates.py: financial-crisis hazard &amp; cost, mineral rents, fertility vs income, yields vs weather</title><rect x="744" y="1656.8" width="262" height="74" rx="7" fill="#ffffff" stroke="#7247b8" stroke-width="1.4"/><rect x="744" y="1656.8" width="5" height="74" rx="2.5" fill="#7247b8"/>
+<text x="758" y="1675.8" font-size="13" font-weight="650" fill="#111827">extra_estimates.py</text>
+<text x="758" y="1692.8" font-size="11" fill="#4b5563">financial-crisis hazard &amp; cost, mineral</text>
+<text x="758" y="1705.8" font-size="11" fill="#4b5563">rents, fertility vs income, yields vs</text>
+<text x="758" y="1718.8" font-size="11" fill="#4b5563">weather</text>
+</g>
+<g><title>Sampled assumptions: PARAM / WATER / EXTRA ranges, AI &amp; robot arrival CDFs, nuclear, cyber, tail catastrophes</title><rect x="744" y="1857.8" width="262" height="74" rx="7" fill="#ffffff" stroke="#b7791f" stroke-width="1.4"/><rect x="744" y="1857.8" width="5" height="74" rx="2.5" fill="#b7791f"/>
+<text x="758" y="1876.8" font-size="13" font-weight="650" fill="#111827">Sampled assumptions</text>
+<text x="758" y="1893.8" font-size="11" fill="#4b5563">PARAM / WATER / EXTRA ranges, AI &amp; robot</text>
+<text x="758" y="1906.8" font-size="11" fill="#4b5563">arrival CDFs, nuclear, cyber, tail</text>
+<text x="758" y="1919.8" font-size="11" fill="#4b5563">catastrophes</text>
+</g>
+<g><title>Fatality quantile models (LightGBM): cm: change from 3-month level; pgm: local tail bound; 1,000 draws each</title><rect x="744" y="1133.5" width="262" height="76" rx="7" fill="#ffffff" stroke="#7247b8" stroke-width="1.4"/><rect x="744" y="1133.5" width="5" height="76" rx="2.5" fill="#7247b8"/>
+<text x="758" y="1152.5" font-size="13" font-weight="650" fill="#111827">Fatality quantile models</text>
+<text x="758" y="1167.5" font-size="13" font-weight="650" fill="#111827">(LightGBM)</text>
+<text x="758" y="1184.5" font-size="11" fill="#4b5563">cm: change from 3-month level; pgm: local</text>
+<text x="758" y="1197.5" font-size="11" fill="#4b5563">tail bound; 1,000 draws each</text>
+</g>
+<g><title>History tests of candidates: workforce, succession, ocean, innovation, intervention, structure, political economy, ethnic kin: estimates kept, failures rejected</title><rect x="744" y="1750.8" width="262" height="87" rx="7" fill="#ffffff" stroke="#7247b8" stroke-width="1.4"/><rect x="744" y="1750.8" width="5" height="87" rx="2.5" fill="#7247b8"/>
+<text x="758" y="1769.8" font-size="13" font-weight="650" fill="#111827">History tests of candidates</text>
+<text x="758" y="1786.8" font-size="11" fill="#4b5563">workforce, succession, ocean, innovation,</text>
+<text x="758" y="1799.8" font-size="11" fill="#4b5563">intervention, structure, political economy,</text>
+<text x="758" y="1812.8" font-size="11" fill="#4b5563">ethnic kin: estimates kept, failures</text>
+<text x="758" y="1825.8" font-size="11" fill="#4b5563">rejected</text>
+</g>
+<g><title>monthly.py: P(≥25 deaths) per country-month</title><rect x="744" y="1507.8" width="262" height="48" rx="7" fill="#ffffff" stroke="#7247b8" stroke-width="1.4"/><rect x="744" y="1507.8" width="5" height="48" rx="2.5" fill="#7247b8"/>
+<text x="758" y="1526.8" font-size="13" font-weight="650" fill="#111827">monthly.py</text>
+<text x="758" y="1543.8" font-size="11" fill="#4b5563">P(≥25 deaths) per country-month</text>
+</g>
+<g><title>US &amp; long-cycle models: US state crisis models, US structural stress, Seshat cycle tests</title><rect x="744" y="1951.8" width="262" height="61" rx="7" fill="#ffffff" stroke="#7247b8" stroke-width="1.4"/><rect x="744" y="1951.8" width="5" height="61" rx="2.5" fill="#7247b8"/>
+<text x="758" y="1970.8" font-size="13" font-weight="650" fill="#111827">US &amp; long-cycle models</text>
+<text x="758" y="1987.8" font-size="11" fill="#4b5563">US state crisis models, US structural</text>
+<text x="758" y="2000.8" font-size="11" fill="#4b5563">stress, Seshat cycle tests</text>
+</g>
+<g><title>Monte Carlo world simulator: simulate.py + world.py, 10,000 worlds 2025→2065 on GPU: country hazards, interstate onsets &amp; alliance cascades, war size, oil, food, water, climate damage, AI &amp; robots, trade contagion, proliferation &amp; nuclear use, tail catastrophes, workforce, leader deaths &amp; succession, peacekeepers, fisheries, tariffs, dynamic great powers</title><rect x="1096" y="1224.2" width="262" height="139" rx="7" fill="#ffffff" stroke="#c2410c" stroke-width="1.4"/><rect x="1096" y="1224.2" width="5" height="139" rx="2.5" fill="#c2410c"/>
+<text x="1110" y="1243.2" font-size="13" font-weight="650" fill="#111827">Monte Carlo world simulator</text>
+<text x="1110" y="1260.2" font-size="11" fill="#4b5563">simulate.py + world.py, 10,000 worlds</text>
+<text x="1110" y="1273.2" font-size="11" fill="#4b5563">2025→2065 on GPU: country hazards,</text>
+<text x="1110" y="1286.2" font-size="11" fill="#4b5563">interstate onsets &amp; alliance cascades, war</text>
+<text x="1110" y="1299.2" font-size="11" fill="#4b5563">size, oil, food, water, climate damage, AI &amp;</text>
+<text x="1110" y="1312.2" font-size="11" fill="#4b5563">robots, trade contagion, proliferation &amp;</text>
+<text x="1110" y="1325.2" font-size="11" fill="#4b5563">nuclear use, tail catastrophes, workforce,</text>
+<text x="1110" y="1338.2" font-size="11" fill="#4b5563">leader deaths &amp; succession, peacekeepers,</text>
+<text x="1110" y="1351.2" font-size="11" fill="#4b5563">fisheries, tariffs, dynamic great powers</text>
+</g>
+<g><title>Scenario runs: SSP 1-2.6…5-8.5, AI none / 2027 / 2030 / 2035, 1914 alliances, water low / ref / high</title><rect x="1096" y="1383.2" width="262" height="61" rx="7" fill="#ffffff" stroke="#c2410c" stroke-width="1.4"/><rect x="1096" y="1383.2" width="5" height="61" rx="2.5" fill="#c2410c"/>
+<text x="1110" y="1402.2" font-size="13" font-weight="650" fill="#111827">Scenario runs</text>
+<text x="1110" y="1419.2" font-size="11" fill="#4b5563">SSP 1-2.6…5-8.5, AI none / 2027 / 2030 /</text>
+<text x="1110" y="1432.2" font-size="11" fill="#4b5563">2035, 1914 alliances, water low / ref / high</text>
+</g>
+<g><title>Dev / lockbox evaluation: origins 1975-2005, fresh 2020-23, ablation → model selection</title><rect x="1448" y="767.0" width="262" height="61" rx="7" fill="#ffffff" stroke="#2f7d32" stroke-width="1.4"/><rect x="1448" y="767.0" width="5" height="61" rx="2.5" fill="#2f7d32"/>
+<text x="1462" y="786.0" font-size="13" font-weight="650" fill="#111827">Dev / lockbox evaluation</text>
+<text x="1462" y="803.0" font-size="11" fill="#4b5563">origins 1975-2005, fresh 2020-23, ablation →</text>
+<text x="1462" y="816.0" font-size="11" fill="#4b5563">model selection</text>
+</g>
+<g><title>Backtest &amp; calibration: origins 1975-2015</title><rect x="1448" y="848.0" width="262" height="48" rx="7" fill="#ffffff" stroke="#2f7d32" stroke-width="1.4"/><rect x="1448" y="848.0" width="5" height="48" rx="2.5" fill="#2f7d32"/>
+<text x="1462" y="867.0" font-size="13" font-weight="650" fill="#111827">Backtest &amp; calibration</text>
+<text x="1462" y="884.0" font-size="11" fill="#4b5563">origins 1975-2015</text>
+</g>
+<g><title>Hindcasts: world paths from 1995 / 2004; WWI &amp; WWII retrodiction</title><rect x="1448" y="1157.9" width="262" height="61" rx="7" fill="#ffffff" stroke="#2f7d32" stroke-width="1.4"/><rect x="1448" y="1157.9" width="5" height="61" rx="2.5" fill="#2f7d32"/>
+<text x="1462" y="1176.9" font-size="13" font-weight="650" fill="#111827">Hindcasts</text>
+<text x="1462" y="1193.9" font-size="11" fill="#4b5563">world paths from 1995 / 2004; WWI &amp; WWII</text>
+<text x="1462" y="1206.9" font-size="11" fill="#4b5563">retrodiction</text>
+</g>
+<g><title>2025 scorecard: out-of-sample on 2025 outcomes</title><rect x="1448" y="1403.7" width="262" height="48" rx="7" fill="#ffffff" stroke="#2f7d32" stroke-width="1.4"/><rect x="1448" y="1403.7" width="5" height="48" rx="2.5" fill="#2f7d32"/>
+<text x="1462" y="1422.7" font-size="13" font-weight="650" fill="#111827">2025 scorecard</text>
+<text x="1462" y="1439.7" font-size="11" fill="#4b5563">out-of-sample on 2025 outcomes</text>
+</g>
+<g><title>VIEWS Challenge leaderboards: cm and pgm, historical + live windows</title><rect x="1448" y="1751.2" width="262" height="48" rx="7" fill="#ffffff" stroke="#2f7d32" stroke-width="1.4"/><rect x="1448" y="1751.2" width="5" height="48" rx="2.5" fill="#2f7d32"/>
+<text x="1462" y="1770.2" font-size="13" font-weight="650" fill="#111827">VIEWS Challenge leaderboards</text>
+<text x="1462" y="1787.2" font-size="11" fill="#4b5563">cm and pgm, historical + live windows</text>
+</g>
+<g><title>ViEWS archive head-to-head: Brier &amp; MSE vs 48 runs</title><rect x="1448" y="1819.2" width="262" height="48" rx="7" fill="#ffffff" stroke="#2f7d32" stroke-width="1.4"/><rect x="1448" y="1819.2" width="5" height="48" rx="2.5" fill="#2f7d32"/>
+<text x="1462" y="1838.2" font-size="13" font-weight="650" fill="#111827">ViEWS archive head-to-head</text>
+<text x="1462" y="1855.2" font-size="11" fill="#4b5563">Brier &amp; MSE vs 48 runs</text>
+</g>
+<g><title>Crowd benchmarks: archive questions + live markets</title><rect x="1448" y="1588.1" width="262" height="48" rx="7" fill="#ffffff" stroke="#2f7d32" stroke-width="1.4"/><rect x="1448" y="1588.1" width="5" height="48" rx="2.5" fill="#2f7d32"/>
+<text x="1462" y="1607.1" font-size="13" font-weight="650" fill="#111827">Crowd benchmarks</text>
+<text x="1462" y="1624.1" font-size="11" fill="#4b5563">archive questions + live markets</text>
+</g>
+<g><title>AI analyst panel: two independent AI analysts, logged for prospective scoring</title><rect x="1448" y="1656.1" width="262" height="61" rx="7" fill="#ffffff" stroke="#2f7d32" stroke-width="1.4"/><rect x="1448" y="1656.1" width="5" height="61" rx="2.5" fill="#2f7d32"/>
+<text x="1462" y="1675.1" font-size="13" font-weight="650" fill="#111827">AI analyst panel</text>
+<text x="1462" y="1692.1" font-size="11" fill="#4b5563">two independent AI analysts, logged for</text>
+<text x="1462" y="1705.1" font-size="11" fill="#4b5563">prospective scoring</text>
+</g>
+<g><title>forecast.json: world, countries, scenarios, AI, interstate, validation</title><rect x="1800" y="1077.6" width="262" height="61" rx="7" fill="#ffffff" stroke="#1d5fbf" stroke-width="1.4"/><rect x="1800" y="1077.6" width="5" height="61" rx="2.5" fill="#1d5fbf"/>
+<text x="1814" y="1096.6" font-size="13" font-weight="650" fill="#111827">forecast.json</text>
+<text x="1814" y="1113.6" font-size="11" fill="#4b5563">world, countries, scenarios, AI, interstate,</text>
+<text x="1814" y="1126.6" font-size="11" fill="#4b5563">validation</text>
+</g>
+<g><title>country_forecasts.csv: per-country risks with ranges &amp; drivers</title><rect x="1800" y="1158.6" width="262" height="48" rx="7" fill="#ffffff" stroke="#1d5fbf" stroke-width="1.4"/><rect x="1800" y="1158.6" width="5" height="48" rx="2.5" fill="#1d5fbf"/>
+<text x="1814" y="1177.6" font-size="13" font-weight="650" fill="#111827">country_forecasts.csv</text>
+<text x="1814" y="1194.6" font-size="11" fill="#4b5563">per-country risks with ranges &amp; drivers</text>
+</g>
+<g><title>chronicles &amp; crisis explorer: narrated sample worlds</title><rect x="1800" y="1269.7" width="262" height="48" rx="7" fill="#ffffff" stroke="#1d5fbf" stroke-width="1.4"/><rect x="1800" y="1269.7" width="5" height="48" rx="2.5" fill="#1d5fbf"/>
+<text x="1814" y="1288.7" font-size="13" font-weight="650" fill="#111827">chronicles &amp; crisis explorer</text>
+<text x="1814" y="1305.7" font-size="11" fill="#4b5563">narrated sample worlds</text>
+</g>
+<g><title>benchmark JSONs: leaderboards, archive, score_2025, crowd, ledger</title><rect x="1800" y="1638.5" width="262" height="61" rx="7" fill="#ffffff" stroke="#1d5fbf" stroke-width="1.4"/><rect x="1800" y="1638.5" width="5" height="61" rx="2.5" fill="#1d5fbf"/>
+<text x="1814" y="1657.5" font-size="13" font-weight="650" fill="#111827">benchmark JSONs</text>
+<text x="1814" y="1674.5" font-size="11" fill="#4b5563">leaderboards, archive, score_2025, crowd,</text>
+<text x="1814" y="1687.5" font-size="11" fill="#4b5563">ledger</text>
+</g>
+<g><title>us_states / us_history / seshat JSON: </title><rect x="1800" y="1960.2" width="262" height="44" rx="7" fill="#ffffff" stroke="#1d5fbf" stroke-width="1.4"/><rect x="1800" y="1960.2" width="5" height="44" rx="2.5" fill="#1d5fbf"/>
+<text x="1814" y="1979.2" font-size="13" font-weight="650" fill="#111827">us_states / us_history / seshat</text>
+<text x="1814" y="1994.2" font-size="13" font-weight="650" fill="#111827">JSON</text>
+</g>
+<g><title>Seldon report (artifact): seldon_report_artifact.html</title><rect x="2152" y="1423.1" width="262" height="48" rx="7" fill="#ffffff" stroke="#334155" stroke-width="1.4"/><rect x="2152" y="1423.1" width="5" height="48" rx="2.5" fill="#334155"/>
+<text x="2166" y="1442.1" font-size="13" font-weight="650" fill="#111827">Seldon report (artifact)</text>
+<text x="2166" y="1459.1" font-size="11" fill="#4b5563">seldon_report_artifact.html</text>
+</g>
+<g><title>Narrative &amp; methodology: narrative.md, docs/world_system.md, methodology document</title><rect x="2152" y="1491.1" width="262" height="61" rx="7" fill="#ffffff" stroke="#334155" stroke-width="1.4"/><rect x="2152" y="1491.1" width="5" height="61" rx="2.5" fill="#334155"/>
+<text x="2166" y="1510.1" font-size="13" font-weight="650" fill="#111827">Narrative &amp; methodology</text>
+<text x="2166" y="1527.1" font-size="11" fill="#4b5563">narrative.md, docs/world_system.md,</text>
+<text x="2166" y="1540.1" font-size="11" fill="#4b5563">methodology document</text>
+</g>
+<rect x="40" y="2560" width="14" height="14" rx="3" fill="#fff" stroke="#5b6b82" stroke-width="2"/><rect x="40" y="2560" width="4" height="14" rx="2" fill="#5b6b82"/><text x="62" y="2571.5" font-size="12.5" fill="#374151">Raw data</text>
+<rect x="127.6" y="2560" width="14" height="14" rx="3" fill="#fff" stroke="#0f8a8a" stroke-width="2"/><rect x="127.6" y="2560" width="4" height="14" rx="2" fill="#0f8a8a"/><text x="149.6" y="2571.5" font-size="12.5" fill="#374151">Processing</text>
+<rect x="229.6" y="2560" width="14" height="14" rx="3" fill="#fff" stroke="#7247b8" stroke-width="2"/><rect x="229.6" y="2560" width="4" height="14" rx="2" fill="#7247b8"/><text x="251.6" y="2571.5" font-size="12.5" fill="#374151">Models &amp; estimates</text>
+<rect x="389.2" y="2560" width="14" height="14" rx="3" fill="#fff" stroke="#c2410c" stroke-width="2"/><rect x="389.2" y="2560" width="4" height="14" rx="2" fill="#c2410c"/><text x="411.2" y="2571.5" font-size="12.5" fill="#374151">Simulation</text>
+<rect x="491.2" y="2560" width="14" height="14" rx="3" fill="#fff" stroke="#2f7d32" stroke-width="2"/><rect x="491.2" y="2560" width="4" height="14" rx="2" fill="#2f7d32"/><text x="513.2" y="2571.5" font-size="12.5" fill="#374151">Validation &amp; benchmarks</text>
+<rect x="686.8" y="2560" width="14" height="14" rx="3" fill="#fff" stroke="#1d5fbf" stroke-width="2"/><rect x="686.8" y="2560" width="4" height="14" rx="2" fill="#1d5fbf"/><text x="708.8" y="2571.5" font-size="12.5" fill="#374151">Result files</text>
+<rect x="803.1999999999999" y="2560" width="14" height="14" rx="3" fill="#fff" stroke="#334155" stroke-width="2"/><rect x="803.1999999999999" y="2560" width="4" height="14" rx="2" fill="#334155"/><text x="825.1999999999999" y="2571.5" font-size="12.5" fill="#374151">Published</text>
+<rect x="897.9999999999999" y="2560" width="14" height="14" rx="3" fill="#fff" stroke="#b7791f" stroke-width="2"/><rect x="897.9999999999999" y="2560" width="4" height="14" rx="2" fill="#b7791f"/><text x="919.9999999999999" y="2571.5" font-size="12.5" fill="#374151">Sampled assumptions (not estimated)</text>
+<text x="40" y="2600" font-size="11.5" fill="#6b7280">Arrow colour follows the source node. Generated by scripts/draw_dependencies.py from the code paths in psychohistory/ and scripts/.</text>
+</svg>

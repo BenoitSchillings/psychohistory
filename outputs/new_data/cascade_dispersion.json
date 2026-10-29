@@ -1,0 +1,149 @@
+{
+ "onset_1y": {
+  "dispersion": 1.57,
+  "n_years": 45,
+  "obs_over_exp": 1.26,
+  "largest": [
+   {
+    "origin": 1985,
+    "year": 1989,
+    "obs": 9,
+    "exp": 2.8,
+    "z": 3.8
+   },
+   {
+    "origin": 1985,
+    "year": 1988,
+    "obs": 9,
+    "exp": 3.1,
+    "z": 3.5
+   },
+   {
+    "origin": 1990,
+    "year": 1990,
+    "obs": 8,
+    "exp": 3.2,
+    "z": 2.7
+   },
+   {
+    "origin": 2015,
+    "year": 2015,
+    "obs": 8,
+    "exp": 3.3,
+    "z": 2.7
+   },
+   {
+    "origin": 1975,
+    "year": 1978,
+    "obs": 7,
+    "exp": 3.3,
+    "z": 2.1
+   },
+   {
+    "origin": 1995,
+    "year": 1996,
+    "obs": 8,
+    "exp": 4.1,
+    "z": 2.0
+   }
+  ]
+ },
+ "coup_1y": {
+  "dispersion": 1.22,
+  "n_years": 45,
+  "obs_over_exp": 0.708,
+  "largest": [
+   {
+    "origin": 1995,
+    "year": 1997,
+    "obs": 1,
+    "exp": 6.3,
+    "z": -2.2
+   },
+   {
+    "origin": 2005,
+    "year": 2006,
+    "obs": 0,
+    "exp": 4.5,
+    "z": -2.2
+   },
+   {
+    "origin": 2000,
+    "year": 2003,
+    "obs": 1,
+    "exp": 5.7,
+    "z": -2.0
+   },
+   {
+    "origin": 2015,
+    "year": 2017,
+    "obs": 0,
+    "exp": 3.5,
+    "z": -1.9
+   },
+   {
+    "origin": 1975,
+    "year": 1978,
+    "obs": 4,
+    "exp": 8.9,
+    "z": -1.7
+   },
+   {
+    "origin": 1990,
+    "year": 1992,
+    "obs": 4,
+    "exp": 8.6,
+    "z": -1.7
+   }
+  ]
+ },
+ "termination_1y": {
+  "dispersion": 1.15,
+  "n_years": 45,
+  "obs_over_exp": 0.99,
+  "largest": [
+   {
+    "origin": 1990,
+    "year": 1990,
+    "obs": 8,
+    "exp": 4.1,
+    "z": 2.1
+   },
+   {
+    "origin": 1995,
+    "year": 1996,
+    "obs": 7,
+    "exp": 3.8,
+    "z": 1.8
+   },
+   {
+    "origin": 1985,
+    "year": 1985,
+    "obs": 0,
+    "exp": 2.6,
+    "z": -1.7
+   },
+   {
+    "origin": 2005,
+    "year": 2007,
+    "obs": 1,
+    "exp": 4.0,
+    "z": -1.7
+   },
+   {
+    "origin": 2000,
+    "year": 2004,
+    "obs": 7,
+    "exp": 4.0,
+    "z": 1.7
+   },
+   {
+    "origin": 1990,
+    "year": 1992,
+    "obs": 8,
+    "exp": 4.7,
+    "z": 1.7
+   }
+  ]
+ }
+}

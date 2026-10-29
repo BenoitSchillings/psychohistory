@@ -1,0 +1,101 @@
+{
+ "tag": "frO50_test",
+ "kwargs": {
+  "align_longrun_w": 0.5,
+  "align_longrun_targets": "o"
+ },
+ "consts": {},
+ "by_origin": {
+  "2000": {
+   "conflict_brier": 0.06295060818740499,
+   "onset_auc": 0.9049539170506912,
+   "world_share_crps": 0.006928840511682233,
+   "diag_share_ratio": 0.9622317925095558,
+   "diag_onsets_ratio": 1.1580666666666668,
+   "diag_ends_ratio": 1.188579365079365,
+   "onsets_crps": 4.931551777777777,
+   "gdp_crps": 0.17741838475803914,
+   "gdp_in90": 0.9320987654320988,
+   "world_gdp_crps": 0.09359054410105594,
+   "dem_crps": 0.06336301184945917
+  },
+  "2002": {
+   "conflict_brier": 0.06681280656620064,
+   "onset_auc": 0.8828502415458938,
+   "world_share_crps": 0.009596092165302446,
+   "diag_share_ratio": 0.9481067321030422,
+   "diag_onsets_ratio": 1.0521666666666667,
+   "diag_ends_ratio": 1.0482619047619048,
+   "onsets_crps": 4.093762666666667,
+   "gdp_crps": 0.1581858550968652,
+   "gdp_in90": 0.9382716049382716,
+   "world_gdp_crps": 0.09132771430761712,
+   "dem_crps": 0.060858560407393035
+  },
+  "2004": {
+   "conflict_brier": 0.06420207633349037,
+   "onset_auc": 0.8507317073170731,
+   "world_share_crps": 0.006123996051389668,
+   "diag_share_ratio": 0.9928402990216084,
+   "diag_onsets_ratio": 1.1064961240310076,
+   "diag_ends_ratio": 1.193315789473684,
+   "onsets_crps": 4.791688444444444,
+   "gdp_crps": 0.1423037288117597,
+   "gdp_in90": 0.9567901234567902,
+   "world_gdp_crps": 0.052854432517947886,
+   "dem_crps": 0.06506224823598361
+  },
+  "2006": {
+   "conflict_brier": 0.06777529025699999,
+   "onset_auc": 0.8255159474671669,
+   "world_share_crps": 0.00822775334742271,
+   "diag_share_ratio": 0.9358073549067721,
+   "diag_onsets_ratio": 1.1793262411347518,
+   "diag_ends_ratio": 1.469,
+   "onsets_crps": 5.0849342222222225,
+   "gdp_crps": 0.15249670016141412,
+   "gdp_in90": 0.9567901234567902,
+   "world_gdp_crps": 0.03687195902771108,
+   "dem_crps": 0.06337863975132693
+  },
+  "2008": {
+   "conflict_brier": 0.06957256985487717,
+   "onset_auc": 0.8642195295794726,
+   "world_share_crps": 0.006021233758947203,
+   "diag_share_ratio": 0.9968919467193682,
+   "diag_onsets_ratio": 1.0748550724637682,
+   "diag_ends_ratio": 1.1175968992248062,
+   "onsets_crps": 4.948965,
+   "gdp_crps": 0.15952626034266118,
+   "gdp_in90": 0.9444444444444444,
+   "world_gdp_crps": 0.0358708494431355,
+   "dem_crps": 0.062273805190426634
+  },
+  "2010": {
+   "conflict_brier": 0.07115059222493725,
+   "onset_auc": 0.9,
+   "world_share_crps": 0.01475550363352664,
+   "diag_share_ratio": 0.8661965767924602,
+   "diag_onsets_ratio": 0.8859455782312925,
+   "diag_ends_ratio": 1.0518771929824562,
+   "onsets_crps": 3.094305333333333,
+   "gdp_crps": 0.16893533638050773,
+   "gdp_in90": 0.9629629629629629,
+   "world_gdp_crps": 0.05918436926530571,
+   "dem_crps": 0.06820621739804177
+  },
+  "2012": {
+   "conflict_brier": 0.06872632001130334,
+   "onset_auc": 0.8840939153439152,
+   "world_share_crps": 0.024622112148981107,
+   "diag_share_ratio": 0.7917780929536962,
+   "diag_onsets_ratio": 0.9095744680851063,
+   "diag_ends_ratio": 1.0883783783783785,
+   "onsets_crps": 2.453350111111111,
+   "gdp_crps": 0.15166954446027597,
+   "gdp_in90": 0.9629629629629629,
+   "world_gdp_crps": 0.04489684657934262,
+   "dem_crps": 0.07307946913788395
+  }
+ }
+}

@@ -1,0 +1,384 @@
+{
+ "coverage": {
+  "log_reserves_months": 0.148,
+  "current_account": 0.158,
+  "credit_boom_5y": 0.141,
+  "depreciation_1y": 0.227,
+  "depreciation_3y": 0.218,
+  "log_stdebt_reserves": 0.102,
+  "tot_change_3y": 0.066
+ },
+ "logit": {
+  "onset_1y:log_reserves_months": {
+   "coef_sd": 0.044,
+   "se": 0.13,
+   "p": 0.736,
+   "n": 4977,
+   "events": 124
+  },
+  "onset_1y:current_account": {
+   "coef_sd": -0.122,
+   "se": 0.146,
+   "p": 0.401,
+   "n": 5329,
+   "events": 150
+  },
+  "onset_1y:credit_boom_5y": {
+   "coef_sd": -0.225,
+   "se": 0.102,
+   "p": 0.027,
+   "n": 4713,
+   "events": 153
+  },
+  "onset_1y:depreciation_1y": {
+   "coef_sd": -0.058,
+   "se": 0.047,
+   "p": 0.214,
+   "n": 7345,
+   "events": 228
+  },
+  "onset_1y:depreciation_3y": {
+   "coef_sd": -0.017,
+   "se": 0.055,
+   "p": 0.757,
+   "n": 7097,
+   "events": 223
+  },
+  "onset_1y:log_stdebt_reserves": {
+   "coef_sd": -0.011,
+   "se": 0.099,
+   "p": 0.913,
+   "n": 3019,
+   "events": 140
+  },
+  "onset_1y:tot_change_3y": {
+   "coef_sd": 0.068,
+   "se": 0.122,
+   "p": 0.578,
+   "n": 2215,
+   "events": 64
+  },
+  "civil_conflict_5y:log_reserves_months": {
+   "coef_sd": 0.111,
+   "se": 0.133,
+   "p": 0.402,
+   "n": 4521,
+   "events": 415
+  },
+  "civil_conflict_5y:current_account": {
+   "coef_sd": 0.048,
+   "se": 0.13,
+   "p": 0.712,
+   "n": 4847,
+   "events": 497
+  },
+  "civil_conflict_5y:credit_boom_5y": {
+   "coef_sd": -0.301,
+   "se": 0.101,
+   "p": 0.003,
+   "n": 4268,
+   "events": 519
+  },
+  "civil_conflict_5y:depreciation_1y": {
+   "coef_sd": -0.01,
+   "se": 0.055,
+   "p": 0.858,
+   "n": 6852,
+   "events": 794
+  },
+  "civil_conflict_5y:depreciation_3y": {
+   "coef_sd": -0.001,
+   "se": 0.066,
+   "p": 0.988,
+   "n": 6606,
+   "events": 755
+  },
+  "civil_conflict_5y:log_stdebt_reserves": {
+   "coef_sd": 0.004,
+   "se": 0.122,
+   "p": 0.977,
+   "n": 2767,
+   "events": 457
+  },
+  "civil_conflict_5y:tot_change_3y": {
+   "coef_sd": 0.07,
+   "se": 0.093,
+   "p": 0.453,
+   "n": 1707,
+   "events": 169
+  },
+  "coup_1y:log_reserves_months": {
+   "coef_sd": -0.11,
+   "se": 0.119,
+   "p": 0.352,
+   "n": 5962,
+   "events": 122
+  },
+  "coup_1y:current_account": {
+   "coef_sd": 0.087,
+   "se": 0.09,
+   "p": 0.334,
+   "n": 6377,
+   "events": 146
+  },
+  "coup_1y:credit_boom_5y": {
+   "coef_sd": -0.301,
+   "se": 0.106,
+   "p": 0.005,
+   "n": 5652,
+   "events": 195
+  },
+  "coup_1y:depreciation_1y": {
+   "coef_sd": 0.027,
+   "se": 0.057,
+   "p": 0.633,
+   "n": 8738,
+   "events": 309
+  },
+  "coup_1y:depreciation_3y": {
+   "coef_sd": -0.022,
+   "se": 0.058,
+   "p": 0.705,
+   "n": 8476,
+   "events": 283
+  },
+  "coup_1y:log_stdebt_reserves": {
+   "coef_sd": 0.122,
+   "se": 0.083,
+   "p": 0.139,
+   "n": 4033,
+   "events": 160
+  },
+  "coup_1y:tot_change_3y": {
+   "coef_sd": 0.017,
+   "se": 0.181,
+   "p": 0.924,
+   "n": 2669,
+   "events": 34
+  },
+  "econ_collapse_5y:log_reserves_months": {
+   "coef_sd": 0.034,
+   "se": 0.121,
+   "p": 0.779,
+   "n": 5472,
+   "events": 518
+  },
+  "econ_collapse_5y:current_account": {
+   "coef_sd": -0.123,
+   "se": 0.116,
+   "p": 0.288,
+   "n": 5857,
+   "events": 585
+  },
+  "econ_collapse_5y:credit_boom_5y": {
+   "coef_sd": 0.08,
+   "se": 0.116,
+   "p": 0.493,
+   "n": 5170,
+   "events": 614
+  },
+  "econ_collapse_5y:depreciation_1y": {
+   "coef_sd": 0.169,
+   "se": 0.051,
+   "p": 0.001,
+   "n": 8234,
+   "events": 952
+  },
+  "econ_collapse_5y:depreciation_3y": {
+   "coef_sd": 0.124,
+   "se": 0.072,
+   "p": 0.086,
+   "n": 7960,
+   "events": 933
+  },
+  "econ_collapse_5y:log_stdebt_reserves": {
+   "coef_sd": 0.22,
+   "se": 0.107,
+   "p": 0.039,
+   "n": 3696,
+   "events": 490
+  },
+  "econ_collapse_5y:tot_change_3y": {
+   "coef_sd": -0.229,
+   "se": 0.065,
+   "p": 0.0,
+   "n": 2070,
+   "events": 211
+  },
+  "autocratization_5y:log_reserves_months": {
+   "coef_sd": 0.267,
+   "se": 0.097,
+   "p": 0.006,
+   "n": 5153,
+   "events": 339
+  },
+  "autocratization_5y:current_account": {
+   "coef_sd": 0.037,
+   "se": 0.151,
+   "p": 0.804,
+   "n": 5503,
+   "events": 398
+  },
+  "autocratization_5y:credit_boom_5y": {
+   "coef_sd": -0.038,
+   "se": 0.09,
+   "p": 0.669,
+   "n": 4699,
+   "events": 406
+  },
+  "autocratization_5y:depreciation_1y": {
+   "coef_sd": 0.002,
+   "se": 0.064,
+   "p": 0.979,
+   "n": 7430,
+   "events": 589
+  },
+  "autocratization_5y:depreciation_3y": {
+   "coef_sd": -0.071,
+   "se": 0.071,
+   "p": 0.319,
+   "n": 7186,
+   "events": 556
+  },
+  "autocratization_5y:log_stdebt_reserves": {
+   "coef_sd": -0.116,
+   "se": 0.133,
+   "p": 0.385,
+   "n": 3504,
+   "events": 328
+  },
+  "autocratization_5y:tot_change_3y": {
+   "coef_sd": 0.104,
+   "se": 0.092,
+   "p": 0.26,
+   "n": 1999,
+   "events": 248
+  }
+ },
+ "gbm_backtest": {
+  "base:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.8128,
+    "bss": 0.1284
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6479,
+    "bss": 0.0705
+   },
+   "autocratization_5y": {
+    "auc": 0.8393,
+    "bss": 0.0933
+   },
+   "coup_5y": {
+    "auc": 0.8282,
+    "bss": 0.1919
+   },
+   "onset_1y": {
+    "auc": 0.8383,
+    "bss": 0.0557
+   },
+   "termination_1y": {
+    "auc": 0.7327,
+    "bss": 0.1007
+   },
+   "coup_1y": {
+    "auc": 0.8481,
+    "bss": 0.0832
+   },
+   "score": 0.9031
+  },
+  "base:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9104,
+    "bss": 0.25
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7917,
+    "bss": 0.096
+   },
+   "autocratization_5y": {
+    "auc": 0.7295,
+    "bss": 0.0699
+   },
+   "coup_5y": {
+    "auc": 0.8446,
+    "bss": 0.2577
+   },
+   "onset_1y": {
+    "auc": 0.9158,
+    "bss": 0.0951
+   },
+   "termination_1y": {
+    "auc": 0.7388,
+    "bss": 0.1292
+   },
+   "coup_1y": {
+    "auc": 0.8366,
+    "bss": 0.0925
+   },
+   "score": 0.9875
+  },
+  "macro:dev": {
+   "civil_conflict_5y": {
+    "auc": 0.814,
+    "bss": 0.13
+   },
+   "econ_collapse_5y": {
+    "auc": 0.6395,
+    "bss": 0.0653
+   },
+   "autocratization_5y": {
+    "auc": 0.8376,
+    "bss": 0.0939
+   },
+   "coup_5y": {
+    "auc": 0.829,
+    "bss": 0.1928
+   },
+   "onset_1y": {
+    "auc": 0.8403,
+    "bss": 0.0554
+   },
+   "termination_1y": {
+    "auc": 0.723,
+    "bss": 0.0942
+   },
+   "coup_1y": {
+    "auc": 0.8491,
+    "bss": 0.0834
+   },
+   "score": 0.9005
+  },
+  "macro:lock": {
+   "civil_conflict_5y": {
+    "auc": 0.9132,
+    "bss": 0.2507
+   },
+   "econ_collapse_5y": {
+    "auc": 0.7969,
+    "bss": 0.0956
+   },
+   "autocratization_5y": {
+    "auc": 0.7307,
+    "bss": 0.0718
+   },
+   "coup_5y": {
+    "auc": 0.8454,
+    "bss": 0.2577
+   },
+   "onset_1y": {
+    "auc": 0.9156,
+    "bss": 0.0914
+   },
+   "termination_1y": {
+    "auc": 0.7334,
+    "bss": 0.1254
+   },
+   "coup_1y": {
+    "auc": 0.8294,
+    "bss": 0.0917
+   },
+   "score": 0.9905
+  }
+ }
+}

@@ -1,0 +1,46 @@
+{
+ "current:dev": {
+  "score": 0.919,
+  "civil_conflict_5y": {
+   "auc": 0.8151,
+   "bss": 0.1282
+  },
+  "onset_1y": {
+   "auc": 0.8393,
+   "bss": 0.0554
+  }
+ },
+ "current:lock": {
+  "score": 1.0043,
+  "civil_conflict_5y": {
+   "auc": 0.9165,
+   "bss": 0.2568
+  },
+  "onset_1y": {
+   "auc": 0.9132,
+   "bss": 0.0925
+  }
+ },
+ "religion_to_conflict:dev": {
+  "score": 0.918,
+  "civil_conflict_5y": {
+   "auc": 0.811,
+   "bss": 0.1285
+  },
+  "onset_1y": {
+   "auc": 0.84,
+   "bss": 0.0563
+  }
+ },
+ "religion_to_conflict:lock": {
+  "score": 1.002,
+  "civil_conflict_5y": {
+   "auc": 0.9134,
+   "bss": 0.2508
+  },
+  "onset_1y": {
+   "auc": 0.913,
+   "bss": 0.0901
+  }
+ }
+}

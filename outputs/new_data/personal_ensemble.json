@@ -1,0 +1,178 @@
+{
+ "base:dev": {
+  "civil_conflict_5y": {
+   "auc": 0.8215,
+   "bss": 0.1485,
+   "n": 4755,
+   "events": 542
+  },
+  "econ_collapse_5y": {
+   "auc": 0.7264,
+   "bss": 0.1098,
+   "n": 5568,
+   "events": 851
+  },
+  "autocratization_5y": {
+   "auc": 0.8535,
+   "bss": 0.1283,
+   "n": 5353,
+   "events": 260
+  },
+  "coup_5y": {
+   "auc": 0.8302,
+   "bss": 0.2062,
+   "n": 5637,
+   "events": 652
+  },
+  "onset_1y": {
+   "auc": 0.8491,
+   "bss": 0.07,
+   "n": 4755,
+   "events": 148
+  },
+  "termination_1y": {
+   "auc": 0.7469,
+   "bss": 0.1194,
+   "n": 987,
+   "events": 149
+  },
+  "coup_1y": {
+   "auc": 0.8433,
+   "bss": 0.0913,
+   "n": 5636,
+   "events": 184
+  }
+ },
+ "base:lock": {
+  "civil_conflict_5y": {
+   "auc": 0.9177,
+   "bss": 0.2749,
+   "n": 1439,
+   "events": 137
+  },
+  "econ_collapse_5y": {
+   "auc": 0.8065,
+   "bss": 0.1422,
+   "n": 1616,
+   "events": 184
+  },
+  "autocratization_5y": {
+   "auc": 0.7603,
+   "bss": 0.0838,
+   "n": 1684,
+   "events": 204
+  },
+  "coup_5y": {
+   "auc": 0.83,
+   "bss": 0.2473,
+   "n": 1730,
+   "events": 90
+  },
+  "onset_1y": {
+   "auc": 0.9171,
+   "bss": 0.1151,
+   "n": 1439,
+   "events": 49
+  },
+  "termination_1y": {
+   "auc": 0.7555,
+   "bss": 0.1307,
+   "n": 310,
+   "events": 38
+  },
+  "coup_1y": {
+   "auc": 0.8206,
+   "bss": 0.0921,
+   "n": 1730,
+   "events": 19
+  }
+ },
+ "personal:dev": {
+  "civil_conflict_5y": {
+   "auc": 0.8242,
+   "bss": 0.1486,
+   "n": 4755,
+   "events": 542
+  },
+  "econ_collapse_5y": {
+   "auc": 0.728,
+   "bss": 0.1107,
+   "n": 5568,
+   "events": 851
+  },
+  "autocratization_5y": {
+   "auc": 0.8543,
+   "bss": 0.1305,
+   "n": 5353,
+   "events": 260
+  },
+  "coup_5y": {
+   "auc": 0.8294,
+   "bss": 0.2065,
+   "n": 5637,
+   "events": 652
+  },
+  "onset_1y": {
+   "auc": 0.846,
+   "bss": 0.0709,
+   "n": 4755,
+   "events": 148
+  },
+  "termination_1y": {
+   "auc": 0.7521,
+   "bss": 0.1224,
+   "n": 987,
+   "events": 149
+  },
+  "coup_1y": {
+   "auc": 0.8409,
+   "bss": 0.0889,
+   "n": 5636,
+   "events": 184
+  }
+ },
+ "personal:lock": {
+  "civil_conflict_5y": {
+   "auc": 0.9167,
+   "bss": 0.2792,
+   "n": 1439,
+   "events": 137
+  },
+  "econ_collapse_5y": {
+   "auc": 0.809,
+   "bss": 0.1406,
+   "n": 1616,
+   "events": 184
+  },
+  "autocratization_5y": {
+   "auc": 0.762,
+   "bss": 0.0815,
+   "n": 1684,
+   "events": 204
+  },
+  "coup_5y": {
+   "auc": 0.8328,
+   "bss": 0.2491,
+   "n": 1730,
+   "events": 90
+  },
+  "onset_1y": {
+   "auc": 0.9159,
+   "bss": 0.1213,
+   "n": 1439,
+   "events": 49
+  },
+  "termination_1y": {
+   "auc": 0.7596,
+   "bss": 0.1281,
+   "n": 310,
+   "events": 38
+  },
+  "coup_1y": {
+   "auc": 0.8202,
+   "bss": 0.0906,
+   "n": 1730,
+   "events": 19
+  }
+ }
+}
