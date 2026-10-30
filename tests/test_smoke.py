@@ -102,6 +102,6 @@ def test_uncertain_ai_arrival(panel):
               LAST_OBS_YEAR, S, "cpu", torch.Generator().manual_seed(0))
     arr = W.arrival_w.numpy().ravel()
     assert abs(np.isinf(arr).mean() - (1 - ARRIVAL_CDF[-1][1])) < 0.03
-    assert abs((arr <= 2032.5).mean() - 0.375) < 0.03
+    assert abs((arr <= 2032.5).mean() - dict(ARRIVAL_CDF)[2032.5]) < 0.03
     A, _, fr = W.adoption(LAST_OBS_YEAR + 40)
     assert float(A[torch.isinf(W.arrival_w).ravel()].max()) == 0.0

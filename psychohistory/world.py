@@ -185,6 +185,9 @@ class WorldConfig:
     iran_pursuit0: float = 0.35       # share of worlds in which Iran is pursuing a weapon at the origin
     breakout_years: float = 4.0       # years from the start of a program to a weapon
     prevent_beta: float = 0.75        # onset log-odds between a state pursuing a weapon and a nuclear-armed rival or patron
+    busy_beta: float = 0.4            # onset log-odds lost when either side is already fighting another interstate conflict
+                                      # (force budget; scripts/force_budget_test.py: -0.78 in 1946-94, -0.54 in 1995-2023, not
+                                      # significant either time; range 0 to 0.8 in EXTRA_RANGES)
     nuc_use_both: float = 0.01        # yearly chance of nuclear use in a war-level conflict between nuclear-armed states
     nuc_use_one: float = 0.003        # ... between a nuclear-armed state and one without
     nuc_escalate: float = 0.2         # chance a use between two major powers becomes a large exchange
@@ -208,7 +211,7 @@ class WorldConfig:
     # published families; the rest are tails and channels with their evidence noted at the range
     dmg_family: float = 1.0           # 0 level effect (BHM coefficients on the level), 1 BHM growth effect, 2 global temperature (Bilal-Kaenzig)
     clim_tail_df: float = 4.0         # Student-t degrees of freedom of the per-world climate-response draw (0 = normal)
-    amoc_p: float = 0.0               # chance that an AMOC collapse's effects begin before 2065
+    amoc_p: float = 0.05              # chance that an AMOC collapse's effects begin before 2065
     amoc_eu_loss: float = 0.03        # north-west European output level lost once its effects are complete
     amoc_eu_yield: float = 0.2        # north-west European cereal-yield loss
     amoc_rain: float = 0.2            # rainfall loss in the Sahel and West Africa (half in South Asia)
@@ -216,8 +219,12 @@ class WorldConfig:
     slr_ice_mult: float = 2.0
     harvest_amp: float = 0.15         # bad harvests deepen by this share per degC of local warming
     dry_area_elast: float = 0.71      # dryland cereal area per unit log change in decade-mean rainfall
-    clim_conflict: float = 0.0        # civil-war onset log-odds per degC of local warming since the origin, x farm share / 0.3
-    clim_migr: float = 0.0            # emigration as a share of the climate harvest loss x farm share (stock)
+    clim_conflict: float = 0.15       # civil-war onset log-odds per degC of local warming since the origin, x farm share / 0.3
+    clim_migr: float = 0.2            # emigration as a share of the climate harvest loss x farm share (stock)
+    ev_war_feedback: bool = False     # simulated conflicts raise the pair's event hostility (interstate.sim_inputs ev_war)
+    demog_uncertainty: bool = True    # draw fertility within the UN WPP 2024 probabilistic intervals (data/wpp_prob.npz)
+    ai_exposure_data: bool = True     # cognitive share of output from occupation data (data/ai_exposure.npz)
+    trade_gravity: bool = False       # every 5 years, trade shares move with partners' simulated GDP (World.update_trade)
     # financial contagion through trade (scripts/contagion_test.py, BIS + Laeven-Valencia 1985-2024, year effects):
     # a banking-crisis start is likelier the larger the share of a country's trade with partners in crisis that
     # year, logit coefficient 4.26 (s.e. 0.56); exposure to crisis-hit *bank lenders* added nothing (-0.79, s.e. 0.60)
@@ -329,7 +336,7 @@ WATER_RANGES = {
 # further assumptions added 2026-10-26 (alliances, proliferation, nuclear use, sanctions, minerals, demography,
 # coasts, tail catastrophes): drawn from a third generator, so the earlier draws are unchanged
 EXTRA_RANGES = {
-    "cascade_hop2": ("u", 0.0, 1.0),
+    "cascade_hop2": ("u", 0.0, 1.0), "busy_beta": ("u", 0.0, 0.8),
     "quasi_USA_TWN": ("u", 0.25, 0.75), "quasi_USA_ISR": ("u", 0.1, 0.5),
     "quasi_RUS_IRN": ("u", 0.0, 0.1), "quasi_CHN_PAK": ("u", 0.0, 0.1),
     "intl_beta": ("n", -0.42, 0.20),
@@ -408,6 +415,16 @@ def _contagion_table(Wt, p, n=4000, seed=5):
 
 class World:
     """Holds the state of the world-system layer during one simulate() call."""
+
+    def update_trade(self, lg, lpop):
+        """gravity update of the trade network: each partner's share moves with its GDP against the origin (elasticity
+        1, Head & Mayer 2014), from the median world (one network for all worlds); rows sum to 1"""
+        gdp = torch.exp(lg + lpop).nan_to_num().median(0).values
+        r = (gdp / self.trade_gdp0.clamp(min=1e-6)).clamp(0.05, 20)
+        r = torch.where(self.trade_gdp0 > 0, r, torch.ones_like(r))
+        w = self.trade_w0 * r[None, :]
+        self.trade_w = w / w.sum(1, keepdim=True).clamp(min=1e-12)
+        self.cont_grid, self.cont_scale = _contagion_table(self.trade_w.cpu().numpy(), 0.065)
 
     def contagion_scale(self):
         """[S, 1] (or scalar) first-round crisis scale for this world's contagion strength"""
@@ -532,7 +549,16 @@ class World:
         R = np.nanmean(np.stack(parts), 0)
         R = np.nan_to_num((np.argsort(np.argsort(np.nan_to_num(R, nan=-9))) + 0.5) / C, nan=0.2)
         self.readiness = f(R)
-        self.cog_share = f(0.3 + 0.5 * R)              # cognitive share of output rises with readiness
+        cog = 0.3 + 0.5 * R                            # cognitive share of output rises with readiness
+        # measured instead where available: employment in the occupations most exposed to generative AI (ISCO 1-4,
+        # ILO modelled estimates), mapped to the same mean and spread (scripts/build_ai_exposure.py)
+        import os as _os
+        _f = _os.path.join(_os.path.dirname(__file__), "..", "data", "ai_exposure.npz")
+        if cfg.ai_exposure_data and _os.path.exists(_f):
+            _z = np.load(_f)
+            if list(_z["codes"]) == list(p.codes):
+                cog = np.where(np.isfinite(_z["cog_share"]), _z["cog_share"], cog)
+        self.cog_share = f(cog)
         trade = np.nan_to_num(base["trade"][:, t0], nan=60)
         self.exporter = f(np.clip(trade / 100, 0, 1.5))
         self.fiscal = f(np.clip(np.nan_to_num(base["fiscal_capacity"][:, t0]) / 3 + 0.5, 0, 1))
@@ -610,6 +636,7 @@ class World:
         gdp0 = np.exp(base["lg"][:, t0] + base["lpop"][:, t0])
         Wt = R_.trade_weights(list(p.codes), gdp0)
         self.trade_w = f(Wt)
+        self.trade_w0, self.trade_gdp0 = self.trade_w.clone(), f(np.nan_to_num(gdp0, nan=0.0))
         # first-round crisis scale for each contagion strength, solved so that the two-round process keeps the
         # crisis rate it starts from (World.contagion_scale); historical exposure includes contagion's own
         # clustering, so dividing by it would undershoot
@@ -681,6 +708,9 @@ class World:
         self.ev_decay = {c: (torch.where(torch.isfinite(f(d["ev_mean"][c])), f(d["ev_mean"][c]), self.static[c]), float(d["ev_rho"][c]))
                          for c in d.get("ev_mean", {}) if c in self.static}
         S = self.S
+        # event hostility per world: deviation from the pair's mean, raised by simulated conflicts (interstate.sim_inputs)
+        self.ev_war = {c: d["ev_war"][c] for c in self.ev_decay if c in d.get("ev_war", {})} if self.cfg.ev_war_feedback else {}
+        self.ev_dev = {c: (self.static[c] - self.ev_decay[c][0])[None].repeat(S, 1).clone() for c in self.ev_war}
         rep = lambda k: torch.nan_to_num(self.static[k])[None].repeat(S, 1).clone()
         self.ongoing = rep("ongoing")
         self.war = rep("war_now")
@@ -801,12 +831,12 @@ class World:
         wf = war.float()
         both_n = (self.nuclear[:, self.ia] & self.nuclear[:, self.ib]).float()
         one_n = (self.nuclear[:, self.ia] ^ self.nuclear[:, self.ib]).float()
-        # nuclear use: limited (10,000 to 1 million deaths, the belligerents lose 5% of output) or, between two major
-        # powers, a large exchange (10 to 200 million deaths, belligerents lose half their output, the world
+        # nuclear use: limited (10,000 to 1 million deaths, the belligerents lose 5% of output) or, between two great
+        # powers (the changing set, _great_powers), a large exchange (10 to 200 million deaths, belligerents lose half their output, the world
         # nuc_gdp_large through trade, finance and climate effects)
         p_use = wf * (both_n * self.prm("nuc_use_both") + one_n * self.prm("nuc_use_one"))
         use = torch.rand(S, self.P, device=dev, generator=g) < p_use
-        large = use & (self.major_pair[None] > 0) & (both_n > 0) & (torch.rand(S, self.P, device=dev, generator=g) < self.prm("nuc_escalate"))
+        large = use & (self.gp_pair > 0) & (both_n > 0) & (torch.rand(S, self.P, device=dev, generator=g) < self.prm("nuc_escalate"))
         lim_d = 10 ** (4 + 2 * torch.rand(S, self.P, device=dev, generator=g))
         big_d = 10 ** (7 + 1.3 * torch.rand(S, self.P, device=dev, generator=g))
         nd = torch.where(large, big_d, torch.where(use, lim_d, torch.zeros_like(lim_d)))
@@ -849,7 +879,7 @@ class World:
         self.pursuit_t = torch.where(struck & self.pursuit, torch.zeros_like(self.pursuit_t), self.pursuit_t)
         self.pursuit &= ~drop
         # great-power war: infrastructure and cyber attacks on both sides
-        gp = wf * self.major_pair[None]
+        gp = wf * self.gp_pair
         self.cyber = (torch.zeros(S, Cn, device=dev).index_add_(1, self.ia, gp).index_add_(1, self.ib, gp) > 0).float()
 
     def _join(self, new_war, q, joiners_only=False, exclude=None):
@@ -974,7 +1004,10 @@ class World:
         na, nb = nuc[:, self.ia], nuc[:, self.ib]
         feats["both_nuclear"], feats["one_nuclear"] = (na & nb).float(), (na ^ nb).float()
         for c_, (m_, rho_) in self.ev_decay.items():      # event hostility fades toward the pair's own mean
-            feats[c_] = (m_ + (self.static[c_] - m_) * rho_ ** (self.k_now - 1))[None].expand(n, -1)
+            if c_ in self.ev_dev:
+                feats[c_] = m_[None] + self.ev_dev[c_][sl]
+            else:
+                feats[c_] = (m_ + (self.static[c_] - m_) * rho_ ** (self.k_now - 1))[None].expand(n, -1)
         # missing values take the training mean (z = 0), as in DyadModel._z
         X = torch.stack([feats[k] for k in DYAD_FEATS], -1)
         return torch.nan_to_num(((X - self.mu) / self.sd).clamp(-6, 6), nan=0.0)
@@ -1064,6 +1097,10 @@ class World:
         riv_ = torch.nan_to_num(self.static["rival"])[None] * (1 - torch.nan_to_num(self.static["allied"])[None])
         prev_ = (pa * nb_ + pb * na_).clamp(max=1) * riv_
         logit_onset = logit_onset + self.prm("prevent_beta") * prev_
+        # a state already fighting another interstate conflict starts new ones less often (force budget, assumption)
+        busy_c = torch.zeros(S, self.nuclear.shape[1], device=dev).index_add_(1, self.ia, self.ongoing).index_add_(1, self.ib, self.ongoing)
+        busy_p = ((busy_c[:, self.ia] + busy_c[:, self.ib] - 2 * self.ongoing) > 0).float()
+        logit_onset = logit_onset - self.prm("busy_beta") * busy_p
         p_on = torch.sigmoid(logit_onset)
         p_cont = self.cont[self.run.clamp(0, 3).long()]
         lgt = lambda q_: torch.logit(torch.as_tensor(q_, device=dev).clamp(1e-6, 1 - 1e-6))
@@ -1183,6 +1220,8 @@ class World:
         self.since = torch.where(prev, torch.ones_like(self.since), self.since + 1)
         self.ever = torch.maximum(self.ever, prev.float())
         self.ongoing, self.war = af, war.float()
+        for c_, (rho_, b0_, b1_) in self.ev_war.items():
+            self.ev_dev[c_] = rho_ * self.ev_dev[c_] + b0_ * af + b1_ * prev.float()
         self.lgdp_hist = torch.cat([self.lgdp_hist[..., 1:], (lg + lpop)[..., None]], -1)
         # records
         self.rec["wars"].append((war.float().sum(-1)))

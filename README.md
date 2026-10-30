@@ -180,8 +180,10 @@ All numbers are out-of-sample. See the report's *Validation* section or the CSVs
 * Interstate war (e.g. Russia–Ukraine) is not an outcome; the conflict target is civil conflict.
 * In hindcasts the median GDP path ran ~12% too high after 20 years (−8% to +36% by era); rich
   economies grow too fast and growth miracles (China 1995–2015) too slowly. Fans cover most outcomes.
-* Slow variables are frozen at their last value; UN demographic projections carry no
-  uncertainty of their own.
+* Population follows the UN WPP 2024 probabilistic projections (each world draws its own fertility and
+  migration path); slow variables (education, urbanisation, institutions) evolve by fitted equations.
+* Over 15–30 years countries drift apart more than they did historically, world recessions are too rare, and the
+  post-2000 democratic decline sits at the edge of the simulated range (docs/world_system.md, limits round).
 * The GDP fan width (`growth_regime_scale`) and the world-mood volatility were tuned on the
   same hindcasts used to check them, so their coverage is mildly optimistic.
 

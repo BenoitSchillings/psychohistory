@@ -1,0 +1,40 @@
+{
+ "n": 4996,
+ "starts": 325,
+ "fit_1975_2004_test_2005_2024": {
+  "base": {
+   "coef": {
+    "const": -0.832,
+    "collapse_prev": 0.74,
+    "lg": -0.186
+   },
+   "t": {
+    "const": -1.54,
+    "collapse_prev": 3.44,
+    "lg": -2.83
+   },
+   "test_logloss": 0.18321,
+   "test_auc": 0.4531
+  },
+  "credit": {
+   "coef": {
+    "const": -0.817,
+    "collapse_prev": 0.739,
+    "lg": -0.188,
+    "boom5": 0.062
+   },
+   "t": {
+    "const": -1.41,
+    "collapse_prev": 3.43,
+    "lg": -2.61,
+    "boom5": 0.12
+   },
+   "test_logloss": 0.18302,
+   "test_auc": 0.4594
+  }
+ },
+ "year_effects": {
+  "boom5": 0.514,
+  "t": 2.19
+ }
+}

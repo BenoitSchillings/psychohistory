@@ -165,15 +165,27 @@ Climate damage has no settled estimate, so each world draws one of three publish
 
 | Component | Basis | Result in the headline worlds |
 | --- | --- | --- |
-| Damage: level effect, Burke–Hsiang–Miguel growth effect, or global temperature (Bilal & Känzig 2024: −0.35 log output per °C of global warming, 5-year lag), one per world, ×0.5–1.5 | Hindcasts cannot separate them; equal weights | World GDP per person 2065: $41.2k / $35.4k / $29.2k. Against the same worlds without damage, SSP2-4.5: −14% in 2065, −26% in 2100 (90%: 0 to −51%); SSP5-8.5: −21% and −43% |
+| Damage: level effect, Burke–Hsiang–Miguel growth effect, or global temperature (Bilal & Känzig 2024: −0.35 log output per °C of global warming, 5-year lag), one per world, ×0.5–1.5 | Hindcasts cannot separate them; equal weights | World GDP per person 2065: $40.9k / $34.9k / $28.5k. Against the same worlds without damage, SSP2-4.5: −14% in 2065, −27% in 2100 (90%: 0 to −52%); SSP5-8.5: −21% and −44% |
 | Climate response | Student-t (4 df) draw keeping the CMIP6 10–90% range | Heavier hot tail |
 | Harvests | Replay the historical yield residual (FAOSTAT 1961–2024) of the same year as the growth shocks; bad years deepen 0–30% per °C of local warming. The old weather terms gave a 1% US yield spread against 7.6% observed | US harvest 15%+ below trend: 6.2% of years 1961–2024, 5.6% in 2026–35, 8.4% in 2056–65. Two of the four big maize exporters together: 1.6% / 1.4% / 4.6% |
 | Drylands (estimate) | 42 countries under 600 mm: cereal area elasticity to decade-mean rainfall 0.71 (s.e. 0.29), 1961–2022; none in wetter countries | Each dryland follows its own CMIP6 rainfall path |
 | Tipping points (assumptions) | AMOC collapse effects from 2035–2065 with chance 0–10% (Sahel rain −10 to −30%, north-west Europe output −1 to −5%); fast ice-sheet loss in 10% of worlds (sea level ×1.5–3) | AMOC in 4.7% of worlds by 2065 |
 | Climate and civil war (assumption) | Sustained warming × farm share fits onsets (+0.34 sd, p 0.018) but made the risk models' forecasts worse (dev 0.9185 → 0.9144, lockbox 1.0038 → 0.9941); sampled 0 to +0.3 log-odds per °C × farm share / 0.3 | 2065 share at war 21.1% vs 21.7% between the low and high ends |
-| Climate emigration (assumption) | Stock grows with the climate harvest loss × farm share; scaled to World Bank Groundswell | 21 m abroad by 2065 (95th percentile 43 m) |
+| Climate emigration (assumption) | Stock grows with the climate harvest loss × farm share; scaled to World Bank Groundswell | 19 m abroad by 2065 (95th percentile 38 m) |
 
-In the disaster analysis, climate damage is now a fifth of the economic-collapse gap; without it 90% of the worst 1% disappear, and with the smallest estimate 88%. Removing the climate tails and channels shrinks the civil-war tail by 16%. The report's Method text had said damage does not reach the political models; it does, through the GDP they see.
+In the disaster analysis, climate damage is now a fifth of the economic-collapse gap; without it, or with the smallest estimate, 94% of the worst 1% disappear. Removing the climate tails and channels shrinks the civil-war tail by 7%. The report's Method text had said damage does not reach the political models; it does, through the GDP they see.
+
+## Limits round (29 October 2026, evening)
+
+A review of the model's limits produced a ranked list of fixes, tests and data sources; each was done or tested under the usual rule (kept only if it improves the hindcasts on development origins and holds on test origins).
+
+- **Full-system hindcasts.** The whole simulator (wars between states, finance, oil, food, migration, pandemics, every assumption sampled; AI off) was run from seven origins (1980–2009, 15 years) and three (1975, 1985, 1994, 30 years). World growth over 30 years shows no consistent bias (the actual at the 9th, 62nd and 73rd percentiles). Emulators of ten world statistics explain only 7–12% of their spread from the sampled assumptions, and weighting worlds by their fit to history moved no assumption range by more than 0.22 sd while helping some statistics and hurting others on the test origins. History cannot narrow the assumption ranges, so they are unchanged.
+- **A runaway poverty trap, fixed.** The 30-year hindcasts from 1994 sent the countries then at war (Afghanistan, DR Congo, Liberia, Rwanda, Angola) down 95–99.7% in the median world; all of them grew. The growth equation's squared distance-to-frontier term was extrapolated below any observed income. Its inputs are now held to their 0.5–99.5% training range: country GDP scores improved 1.2% on development (14 of 15 origins) and 0.8% on test (7 of 7), and the 30-year spread across countries fell from 1.43 to 0.93 (actual 0.48).
+- **Bugs.** Storm damage used global instead of local warming; the climate-conflict, fisheries and climate-migration channels switched off whenever their assumption was fixed; harvest amplification was counted twice in climate emigration while dryland losses never reached it; world population ignored simulated migration and deaths; nuclear damage compounded every year; two great-power lists disagreed; hindcasts before 1995 failed on the oil price's anchor.
+- **New data.** UN probabilistic population projections give each world its own fertility and migration path (simulated spread matches the UN's). Leader ages after 2020 come from Wikidata birth years (161 of 167 leaders). AI exposure is the share of jobs in managerial, professional, technical and clerical occupations (ILO, 174 countries) instead of a guess from income. Cyclone exposure is the share of land hit by hurricane-force winds since 1980 (IBTrACS).
+- **Wars between states.** A force budget (states already fighting start fewer new wars) has the same sign on development and test but is not significant (p 0.15, 0.57); it enters as an assumption. Letting wars raise the event-data hostility of the pair, and letting trade weights follow simulated GDP, made no difference in hindcasts; both stay off.
+- **Rejected sources.** IMF private and corporate debt (strong on development, t 7.1, nothing on the lockbox, p 0.61) and the ethnicity of leaders (PLAD; t −4.3, lockbox p 0.8).
+- **Benchmark.** The RFF Socioeconomic Projections (no climate damage, no AI) put world GDP per person in 2065 at 1.86 times 2025 (90%: 0.87–3.97). This model gives 1.36 (0.81–2.23) without AI and with climate damage, 1.91 (0.94–5.00) with AI uncertain, and 2.25 with AI uncertain and no damage.
 
 ## Code review (28–29 October 2026)
 
@@ -193,16 +205,16 @@ The report traces the worst 1% of 8,000 headline worlds on four measures to thei
 
 | Disaster (worst 1%) | Root cause | Largest knockouts (tail size, 1 = unchanged) |
 | --- | --- | --- |
-| Economic collapse: world GDP per person in 2065 about a quarter below 2025 | A slow slide: 78% of the gap to a median world is weaker underlying growth (China, the United States, India) and 21% climate damage; late or no AI and the largest damage estimate | No climate damage 0.10, smallest damage estimate 0.12, no pandemics 0.46; no AI 2.6 |
-| Mass war deaths: median about 40 million | A great-power war in every world; nuclear use in a third | No alliance cascades 0.51, no AI 0.55, no interstate wars 0 |
-| Age of civil war: over 40% of countries at war | A wave of new wars; no single shock is over-represented | No world mood 0.59, no climate tails 0.84, no country frailty 0.88 |
-| Authoritarian age | Early AI and the assumed autocratic drift during the transition | No AI 0.19 |
+| Economic collapse: world GDP per person in 2065 about a quarter below 2025 | A slow slide: 77% of the gap to a median world is weaker underlying growth (China, the United States, India) and 22% climate damage; late or no AI and the largest damage estimate | No climate damage 0.06, smallest damage estimate 0.06, no pandemics 0.43; no AI 2.5 |
+| Mass war deaths: median about 40 million | A great-power war in every world; nuclear use in a third | No alliance cascades 0.55, no AI 0.61, no interstate wars 0 |
+| Age of civil war: over 40% of countries at war | A wave of new wars; no single shock is over-represented | No world mood 0.60, no climate tails 0.93, no country frailty 0.95 |
+| Authoritarian age | Early AI and the assumed autocratic drift during the transition | No AI 0.23 |
 
 Two model weaknesses surfaced. The structural-uncertainty term pushes very-low-risk countries (the Nordic and Baltic states) into war together in the civil-war tail. The oil price wanders too far: by 2065 its 5–95% range runs from 0.13 to 7 times the 2025 price.
 
 ## What drives the uncertainty
 
-To see which assumptions matter, 48,000 headline worlds were simulated with every assumption drawn from its range (rerun on 29 October 2026 with climate damage, structural uncertainty and the climate update), and a gradient-boosted surrogate of each outcome was fitted on the assumptions (cross-validated). Correlated assumptions are credited as groups: a group's share is what the surrogate loses when the whole group is left out. Together the assumptions explain 67% of the spread in world GDP per person in 2065 and 27% in 2045. The rest is luck inside the simulator: replayed shocks, wars, coups and pandemics. For wars they explain only 2–6% of the variance, but they still move the probabilities by up to 33 points.
+To see which assumptions matter, 48,000 headline worlds were simulated with every assumption drawn from its range (rerun on 29 October 2026 after the climate update and again after the limits round), and a gradient-boosted surrogate of each outcome was fitted on the assumptions (cross-validated). Correlated assumptions are credited as groups: a group's share is what the surrogate loses when the whole group is left out. Together the assumptions explain 67% of the spread in world GDP per person in 2065 and 27% in 2045. The rest is luck inside the simulator: replayed shocks, wars, coups and pandemics. For wars they explain only 2–6% of the variance, but they still move the probabilities by up to 30 points.
 
 | Outcome | All assumptions | AI and robot timing | Climate | Nuclear |
 | --- | --- | --- | --- | --- |
@@ -214,14 +226,14 @@ To see which assumptions matter, 48,000 headline worlds were simulated with ever
 
 | Outcome | Assumption | Lowest fifth of its range | Highest fifth |
 | --- | --- | --- | --- |
-| World GDP per person, 2065 | AI arrival year (early vs late) | $56.6k | $25.2k |
-| World GDP per person, 2065 | AI growth dividend | $30.3k | $40.5k |
-| World GDP per person, 2045 | Climate damage estimate (level vs global) | $23.8k | $20.2k |
-| Great-power war by 2065 | Nuclear-pair war factor | 36% | 58% |
-| China–India war | Nuclear-pair war factor | 14% | 38% |
-| India–Pakistan war | Nuclear-pair war factor | 22% | 55% |
-| Nuclear use | Use against a non-nuclear state | 8% | 20% |
-| Countries in civil conflict, 2065 | Rebel drones and war length | 20% | 23% |
+| World GDP per person, 2065 | AI arrival year (early vs late) | $56.3k | $24.9k |
+| World GDP per person, 2065 | AI growth dividend | $30.4k | $40.4k |
+| World GDP per person, 2045 | Climate damage estimate (level vs global) | $23.9k | $20.2k |
+| Great-power war by 2065 | Nuclear-pair war factor | 33% | 54% |
+| China–India war | Nuclear-pair war factor | 12% | 34% |
+| India–Pakistan war | Nuclear-pair war factor | 20% | 50% |
+| Nuclear use | Use against a non-nuclear state | 7% | 19% |
+| Countries in civil conflict, 2065 | Rebel drones and war length | 21% | 23% |
 
 The nuclear-pair factor (0.1–0.55) remains the largest driver of the war outcomes; China–Taiwan and Russia–Poland hardly depend on any assumption.
 
@@ -242,7 +254,9 @@ Every month a script downloads UCDP's newest preliminary release. It issues a 12
 - **The 2010s rise in wars between states.** Simulated from 2010 and 2014, the simulator expects 0.7–0.9 active interstate conflicts a year against 1.5 and 2.3 recorded. It misses the recent rise two- to threefold, so its interstate risks may be low if that rise persists. It predicts about the right number of pairs that fight; the shortfall is mostly in how long they fight, which the recency-weighted duration table now partly captures. Recurring low-level pairs (India–Pakistan, Iran–Israel) and outside powers' strike campaigns (Yemen) remain unanticipated.
 
 * **Structural noise in the civil-war tail.** Each world shifts every country's log-odds by one shared draw scaled by how much the model families disagree. They disagree most where risks are tiny (Finland, Sweden, Luxembourg), so in the rare worlds with a large draw very peaceful countries go to war together. This term has never been hindcast-tested; replacing it with a draw of which model family is right is the top open item.
-* **Too-volatile world growth and oil.** World GDP per person still falls in about one simulated year in five, against one in thirty historically, and the 2065 oil price ranges from 0.13 to 7 times today's (real oil has stayed within about 0.15–1.6 times since 1861).
+* **Too few world recessions, too-volatile oil.** In 10-year hindcasts simulated world GDP per person falls in 1.4–1.8% of years, against 3% (1970–1998 origins) and 9.5% (2000–2012) recorded; in 15-year full-system hindcasts the median world never has a falling year. The 2065 oil price ranges from 0.13 to 7 times today's (real oil has stayed within about 0.15–1.6 times since 1861).
+* **Countries drift apart too much.** Over 15–30 years the spread of growth across countries in a simulated world is 1.2–2 times the actual, although country bands cover about as often as they should at 15 years (90% bands 88%, 50% bands 52%). Country medians are spread too far: the model separates future winners and losers more sharply than history did.
+* **The democratic recession.** Simulated from 2000–2009, population-weighted democracy rises slightly; it fell, at the 1st–6th percentile of the simulated change.
 
 ## Data sources
 

@@ -67,6 +67,20 @@ Martinez 2022 replication package (contains Freedom House data); alliance reliab
 Election Lab; Shor–McCarty; Boxell, Gentzkow & Shapiro 2024; Seshat CrisisDB consequences (Hoyer et al. 2023) and Qing
 data (Orlandi et al. 2023).
 
+## Added after the data-2026-10-29 release (not in that archive; download pages below)
+
+Used by the 2026-10-29 evening round (docs/world_system.md). The derived files in `data/` built from them are tracked.
+
+| Path under data/raw | Source | Licence | Download | Derived file |
+|---|---|---|---|---|
+| `demography/wpp2024_prob/` | UN DESA WPP 2024 probabilistic projections (`popproj1dt`, `tfrproj1dt`, `countries` from the wpp2024 R package) | CC BY 3.0 IGO | https://github.com/PPgp/wpp2024 | `data/wpp_prob.npz` |
+| `politics/leaders_wikidata.csv` | Wikidata birth dates of heads of government / state (scripts/fetch_leader_ages.py) | CC0 | https://www.wikidata.org/ | `data/leader_birth_wd.npz` |
+| `tech/ilo_occupations/` | ILO modelled estimates, employment by occupation (ISCO-08), via DBnomics | CC BY 4.0 | https://db.nomics.world/ILO | `data/ai_exposure.npz` |
+| `climate/ibtracs/` | NOAA IBTrACS v04r01 tropical cyclone tracks since 1980 (Knapp et al. 2010) | public domain (US government) | https://www.ncei.noaa.gov/products/international-best-track-archive | `data/cyclone_exposure.npz` |
+| `finance_gdd/` | IMF Global Debt Database (tested, not used) | IMF terms (as the WEO above) | https://www.imf.org/external/datamapper/datasets/GDD | — |
+| `politics/plad/` | Political Leaders' Affiliation Database (Dreher, Fuchs, Hodler, Parks, Raschky & Tierney 2024; tested, not used) | CC0 | https://doi.org/10.7910/DVN/YUS575 | — |
+| `benchmarks/rffsps/` | RFF Socioeconomic Projections v5 (Rennert et al. 2022; benchmark only) | CC BY 4.0 | https://zenodo.org/records/6016583 | `outputs/rff_benchmark.json` |
+
 ## Not included: fetch these yourself
 
 Terms forbid redistribution:

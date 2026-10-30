@@ -93,6 +93,8 @@ class Transition:
     size_b: float = 0.0       # log noise scale per unit log population (SIZE_NOISE; 0 = no size scaling)
     size_c: float = 0.0       # (centre of log population)
     size_regime: bool = False
+    z_lo: np.ndarray = None   # training support of each standardised feature (0.5-99.5%): no extrapolation beyond it
+    z_hi: np.ndarray = None
 
     @staticmethod
     def _design(z, ev, sq_idx, xp):
@@ -110,6 +112,8 @@ class Transition:
         mu, sd = np.nanmean(X, 0), np.nanstd(X, 0) + 1e-6
         sq_idx = [cols.index(c) for c in squares]
         Z = Transition._design(np.nan_to_num(np.clip((X - mu) / sd, -6, 6)), ev, sq_idx, np)
+        z_lo, z_hi = ((np.full(len(cols), s_) if SUPPORT_Q is None else np.nan_to_num(np.nanquantile((X - mu) / sd, q, 0), nan=s_))
+                      for q, s_ in ((SUPPORT_Q, -6.0), (1 - (SUPPORT_Q or 0), 6.0)))
         # optional recency weighting: the structural mean leans on recent decades
         w = None if halflife is None else 0.5 ** ((yr.max() - yr) / halflife)
         m = Ridge(alpha=alpha).fit(Z, y, sample_weight=w)
@@ -139,7 +143,7 @@ class Transition:
         keep = n >= 5
         return Transition(cols, list(squares), mu, sd, m.coef_, float(m.intercept_), shocks, grid, bin_col, edges,
                           reg_dec[rn >= 20], _pools(dec[keep], dec_bin[keep], n_bins), _pools(idio, bins, n_bins), lo, hi,
-                          size_b, size_c, size == "both")
+                          size_b, size_c, size == "both", z_lo, z_hi)
 
     @staticmethod
     def _shrunk_means(r, key):
@@ -156,6 +160,8 @@ class Transition:
         self.bi = FEATURES.index(self.bin_col)
         self.si = FEATURES.index("log_pop")
         self.mu_t, self.sd_t, self.w, self.edges_t = f(self.mu), f(self.sd), f(self.coef), f(self.edges)
+        self.zlo_t = f(self.z_lo if self.z_lo is not None else np.full(len(self.cols), -6.0))
+        self.zhi_t = f(self.z_hi if self.z_hi is not None else np.full(len(self.cols), 6.0))
         self.shocks_t, self.eras_t = f(self.year_shocks), f(self.region_eras)
         self.regimes_t, self.resid_t = _Ragged(self.regimes, device), _Ragged(self.resid, device)
         self.decade_t = torch.as_tensor(self.shock_years // 10, device=device)
@@ -188,7 +194,9 @@ class Transition:
         return torch.multinomial(cand, 1, generator=gen)[:, 0]
 
     def step(self, X, events, shock_idx, regime, gen):
-        z = torch.nan_to_num(((X[..., self.ci_t] - self.mu_t) / self.sd_t).clamp(-6, 6))
+        # (held inside the training support: the squared income-gap term would otherwise turn a war-torn economy that
+        # falls below any observed level into an accelerating collapse; 30-year hindcasts from 1994, code review 2026-10-29)
+        z = torch.nan_to_num(torch.minimum(torch.maximum((X[..., self.ci_t] - self.mu_t) / self.sd_t, self.zlo_t), self.zhi_t))
         mean = self._design(z, events, self.sq_t, torch) @ self.w + self.intercept
         eps = self.resid_t.draw(self._bin(X), gen)
         if self.size_b:
@@ -318,6 +326,7 @@ SUCC_COUP = 0.68
 STRUCT_CONVEXITY = 1.0      # (test switches, code review 2026-10-28)
 LREB_MODE = "age"
 SHIFTERS_BEFORE_ALIGN = True   # see the year-1 alignment in simulate()
+SUPPORT_Q = 0.005          # Transition features are clamped to their 0.5-99.5% training range when simulating (None: +/-6 sd)
 WORKFORCE_BETA = 1.22     # growth per unit change in log working-age share (scripts/workforce_test.py; s.e. 0.17)
 WORKFORCE_MEAN = 0.0019   # mean yearly change 1960-2023, already absorbed by the fitted growth equation
 
@@ -492,6 +501,23 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             z_clim = (z_clim / chi.sqrt() * float(n_dist.ppf(0.9) / t_dist.ppf(0.9, df_))).clamp(-4, 4)
         clim_fam = WS.params["dmg_family"] if "dmg_family" in WS.params else torch.full((S, 1), float(WS.cfg.dmg_family), device=device)
         WS.params["clim_response"] = z_clim          # the world's climate-response draw (for the attribution)
+    # demographic uncertainty (UN WPP 2024 probabilistic projections, scripts/build_wpp_prob.py): one persistent fertility
+    # error per world and country, scaled to the UN's 80% interval for that year, moves births through fert_ratio below
+    dem_sig = None
+    if WS is not None and WS.cfg.demog_uncertainty and origin >= 2023:
+        import os as _os
+        _f = _os.path.join(_os.path.dirname(__file__), "..", "data", "wpp_prob.npz")
+        if _os.path.exists(_f):
+            wz = np.load(_f)
+            if list(wz["codes"]) == list(p.codes):
+                dem_sig, dem_y0 = tt(np.nan_to_num(wz["sig_tfr"])), int(wz["years"][0])
+                g_d = torch.Generator(device=device).manual_seed(seed + 611)
+                rho_d = float(wz["rho"])
+                z_dem = np.sqrt(rho_d) * torch.randn(S, 1, device=device, generator=g_d) \
+                    + np.sqrt(1 - rho_d) * torch.randn(S, C, device=device, generator=g_d)
+                # (and the rest of the UN population interval, migration and mortality: a level offset of its own)
+                dem_rest, z_rest = tt(np.nan_to_num(wz["sig_rest"])), torch.randn(S, C, device=device, generator=g_d)
+                rest_prev = torch.zeros(S, C, device=device)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         pw_ = np.exp(np.nan_to_num(base["lpop"][:, t0], nan=-np.inf)) * np.isfinite(clim["tas"]["base"])
@@ -500,6 +526,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     clim_prev = torch.zeros(S, C, device=device)
     amoc_prev = torch.zeros(S, C, device=device)
     dTg_lag = torch.zeros(S, 1, device=device)
+    nuc_cum = torch.zeros(S, C, device=device)          # largest output share lost to nuclear use so far
     clim_ly = torch.zeros(S, C, device=device)          # cumulative climate-driven log harvest change since the origin
     top1_0 = cur["top1"].clone()
     slow = None
@@ -545,7 +572,18 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         warnings.simplefilter("ignore")
         g_ref = tt(np.clip(np.nan_to_num((lgh_[:, -1] - lgh_[:, 0]) / max(lgh_.shape[1] - 1, 1), nan=0.015), -0.01, 0.04))
     lg_ref0 = tt(np.nan_to_num(base["lg"][:, t0]))
-    storm_expo = tt(np.nan_to_num(base["near_coast"][:, t0]) / 100 * (0.5 + 0.5 * np.nan_to_num(base["tropical"][:, t0]) / 100))
+    storm_expo_ = np.nan_to_num(base["near_coast"][:, t0]) / 100 * (0.5 + 0.5 * np.nan_to_num(base["tropical"][:, t0]) / 100)
+    # measured where available: the average share of land under hurricane-force winds per year, IBTrACS 1980-2024
+    # (scripts/build_cyclone_exposure.py), rescaled to the proxy's mean across countries
+    import os as _os
+    _f = _os.path.join(_os.path.dirname(__file__), "..", "data", "cyclone_exposure.npz")
+    if _os.path.exists(_f):
+        _z = np.load(_f)
+        if list(_z["codes"]) == list(p.codes):
+            sh_ = _z["area_share"]
+            ok_ = np.isfinite(sh_)
+            storm_expo_ = np.where(ok_, np.nan_to_num(sh_) * storm_expo_[ok_].mean() / max(sh_[ok_].mean(), 1e-9), storm_expo_)
+    storm_expo = tt(storm_expo_)
     mig = None
     if migration:
         from .migration import fit_refugees, host_shares
@@ -587,7 +625,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         # observed residuals, so those years keep the historical volatility
         rv = np.array(list(wp["resid"].values()))
         rr = np.random.default_rng(origin)
-        res = [wp["resid"].get(int(y) + 1, rv[rr.integers(len(rv))]) for y in growth.shock_years]
+        # (an origin before any observed residual, e.g. 1975 hindcasts, replays none: 0)
+        res = [wp["resid"].get(int(y) + 1, rv[rr.integers(len(rv))] if len(rv) else 0.0) for y in growth.shock_years]
         fd = {"wp": wp, "kc": fit_calories(origin), "dm": fit_demand(origin), "obs": observed_food(origin), "area": area,
               "a_rate": tt(a_rate), "a_cap": tt(a_cap), "res": tt(res),
               "lp": torch.full((S, 1), wp["p0"], device=device), "s": tt(1 - dep0)[None].repeat(S, 1),
@@ -620,7 +659,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     # oil-production exposure (log1p of MWh per person / 10, as in the growth regression) and the major exporters
     oil_expo = tt(np.nan_to_num(np.log1p(base["oil_pc"][:, t0] / 1000) / 10))
     oil_trend = float(np.nanmean(oil_change_t.cpu().numpy()))
-    oil_anchor = float(np.nanmean(oil[p.yi(1995):p.yi(origin) + 1]))
+    # (from 1995; origins before 2014 use the 20 years to the origin, so pre-1995 hindcasts have an anchor)
+    oil_anchor = float(np.nanmean(oil[min(p.yi(1995), p.yi(origin) - 19):p.yi(origin) + 1]))
     oil_spike = torch.zeros(S, 1, device=device)
     site_hist = [torch.zeros(S, C, device=device), torch.zeros(S, C, device=device)]   # war sites 2 and 1 years ago
     war_cum = torch.zeros(S, C, device=device)
@@ -814,7 +854,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             autoc = (h["dem"][..., -1] < 0.4).float()
             haz[..., 0] = haz[..., 0] - ai.surveillance * A * autoc
             haz[..., 2] = haz[..., 2] - ai.surveillance * A * autoc
-            if "clim_conflict" in WS.params:
+            if climate_damage > 0:
                 # sustained local warming since the origin raises civil-war onsets where farming is a large share of
                 # the economy (assumption, range from no effect to a quarter of the untested panel fit)
                 dT_l = torch.nan_to_num(prev_tas - cl["tas"]["base"]).clamp(min=0)
@@ -854,6 +894,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         # interstate wars between country pairs (learned hazard, duration table, alliance cascade)
         if WS is not None and WS.dy is not None:
             mil = (A, fr) if WS.cfg.ai.arrival else None     # (military autonomy is read from WS.mil_auto)
+            if WS.cfg.trade_gravity and k > 1 and k % 5 == 1:
+                WS.update_trade(h["lg"][..., -1], h["lpop"][..., -1])
             inter_next = WS.interstate_step(k, h["lg"][..., -1], h["lpop"][..., -1], h["dem"][..., -1], conf_next,
                                            cur["coup_recent"], mil)
             WS.update_chip_hit()
@@ -964,7 +1006,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             trans_now = WS.prm("solar_loss") * solar[:, None] * WS.readiness[None]
             WS.rec["solar"].append(solar)
             # damaging storms in exposed coastal countries, more frequent with warming (beyond the replayed history)
-            dT_w = torch.nan_to_num(prev_tas - cl["tas"]["base"]).mean(-1, keepdim=True)        # warming since the origin decade
+            # (each country's own warming since the origin decade; none in runs without climate damage)
+            dT_w = torch.nan_to_num(prev_tas - cl["tas"]["base"]) * float(climate_damage > 0)
             p_st = 0.05 * WS.prm("storm_trend") * dT_w.clamp(min=0) * storm_expo[None]
             storm = (torch.rand(S, C, device=device, generator=gen) < p_st).float()
             g = g - WS.prm("storm_loss") * storm
@@ -1045,7 +1088,10 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             war_cum = war_cum - WS.prm("war_site_loss") * site - spill + WS.prm("war_site_loss") * (WS.cfg.war_rebound / WS.cfg.war_site_loss) * site_hist[0] + 0.5 * spill_hist[0]
             # sanctions on a non-Western state at war with the West (x its Western trade share), and nuclear use
             # (sanctions: a growth drag while they last; nuclear damage: a lasting level loss, in log units)
-            war_cum = war_cum - WS.prm("sanction_loss") * WS.west_share[None] * WS.sanctioned + torch.log1p(-WS.nuc_hit.clamp(max=0.9))
+            # (nuclear damage counts once per country: the largest hit so far, not every year of use again)
+            nuc_new = torch.maximum(nuc_cum, WS.nuc_hit.clamp(max=0.9))
+            war_cum = war_cum - WS.prm("sanction_loss") * WS.west_share[None] * WS.sanctioned + torch.log1p(-nuc_new) - torch.log1p(-nuc_cum)
+            nuc_cum = nuc_new
             site_hist = site_hist[1:] + [site]
             spill_hist = spill_hist[1:] + [spill]
         lg_next = h["lg"][..., -1] + g
@@ -1142,7 +1188,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             # refugees and their expected returns, so returns are not added a second time. Capped at half the
             # population before sharing out, so that hosts receive exactly what origins lose
             dep = (stock - mig["stock0"]).clamp(min=0)
-            if WS is not None and "clim_migr" in WS.params:
+            if WS is not None:
                 # climate emigration (assumption): a stock that grows with the climate harvest loss x farm share
                 c_dep = WS.prm("clim_migr") * WS.agri[None] * (-clim_ly).clamp(min=0) * pop_k
                 WS.rec["clim_migrants"].append(c_dep.sum(-1) / 1e6)
@@ -1161,8 +1207,14 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             # (income against the country's own pre-origin trend path, which UN projections broadly assume, and after
             # war and climate damage; not against the other simulated worlds)
             fert_ratio = torch.exp(R_.FERT_INCOME * torch.nan_to_num(lg_next + dmg_cum + war_cum - (lg_ref0 + g_ref * k)))
+            if dem_sig is not None:
+                fert_ratio = fert_ratio * torch.exp(z_dem * dem_sig[:, min(year - dem_y0, dem_sig.shape[1] - 1)][None])
+                rest_now = z_rest * dem_rest[:, min(year - dem_y0, dem_rest.shape[1] - 1)][None].nan_to_num(0.0)
+                pop_off = pop_off + rest_now - rest_prev
+                rest_prev = rest_now
             births = R_.CBR_PER_TFR * exo["fertility"][:, k] * (fert_ratio - 1)
-            pop_off = pop_off + torch.log1p(births - dshare)
+            # (bounded: a population 55x (e^4) above or below the UN path is outside any projection; keeps the world sums finite)
+            pop_off = (pop_off + torch.log1p(births - dshare)).nan_to_num(0.0).clamp(-4, 4)
             # (births raise the youth share by b (1 - youth); deaths across all ages leave it unchanged)
             youth_off = youth_off * (14 / 15) + births * (1 - exo["youth"][:, k][None].nan_to_num(0.3))
             pop_un = torch.exp(exo["lpop"][:, k]).nan_to_num()[None]
@@ -1229,7 +1281,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                     amp = WS.prm("harvest_amp") * torch.nan_to_num(smooth["tas"] - cl["tas"]["base"]).clamp(min=0) * r_now.clamp(max=0)
                     r_tot = r_now + amp
                     dly = dly + r_tot - fd["r_prev"]
-                    clim_d = clim_d + amp - fd["amp_prev"]
+                    # (the deepening of this year's bad harvest is weather, not a lasting loss: it stays out of clim_ly)
                     fd["r_prev"], fd["amp_prev"] = r_tot, amp
                     WS.rec["harvest_us"].append(r_tot[:, fd["i_us"]] if fd["i_us"] is not None else torch.zeros(S, device=device))
                     WS.rec["harvest_bad4"].append((r_tot[:, fd["i_x4"]] < -0.10).float().sum(-1))
@@ -1271,19 +1323,22 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                         dlp = fd["obs"] + noise
                     fd["lp"] = fd["lp"] + dlp
                     food_dlp = dlp
-                    area_new = torch.minimum(fd["area"] * torch.exp(fd["a_rate"] * 0.97 ** k), torch.maximum(fd["a_cap"], fd["area"]))
-                    # drylands: cereal area follows decade-mean rainfall (estimate, food.dryland)
+                    # drylands: cereal area follows decade-mean rainfall (estimate, food.dryland), within the arable cap
                     lpr_s = torch.log(torch.nan_to_num(smooth["pr"], nan=1.0).clamp(min=1))
+                    d_dry = torch.zeros_like(fd["area"])
                     if "lpr_prev" in fd:
                         d_dry = WS.prm("dry_area_elast") * WS.dry[None] * (lpr_s - fd["lpr_prev"])
-                        area_new = area_new * torch.exp(d_dry)
-                        clim_d = clim_d + d_dry
                     fd["lpr_prev"] = lpr_s
+                    cap_ = torch.maximum(fd["a_cap"], fd["area"])
+                    area_new = torch.minimum(fd["area"] * torch.exp(fd["a_rate"] * 0.97 ** k + d_dry), cap_)
+                    # (the rainfall-driven part of the area change is a lasting climate harvest change, for migration)
+                    area_nc = torch.minimum(fd["area"] * torch.exp(fd["a_rate"] * 0.97 ** k), cap_)
+                    clim_ly = clim_ly + torch.nan_to_num(torch.log(area_new.clamp(min=1) / area_nc.clamp(min=1)))
                     dla = torch.log(area_new.clamp(min=1) / fd["area"].clamp(min=1))
                     fd["area"] = area_new
                     wprod = (torch.nan_to_num(cur["cereal_yield"]) * fd["area"]).sum(-1, keepdim=True)
-                    wpop = float(torch.nansum(torch.exp(exo["lpop"][:, k])))
-                    fd["sup_dev"] = torch.log(wprod / fd["wprod"]) - np.log(wpop / fd["wpop"]) - wp["supply_mean"]
+                    wpop = (torch.exp(exo["lpop"][:, k]).nan_to_num()[None] * torch.exp(torch.as_tensor(pop_off, device=device)).nan_to_num(1.0)).sum(-1, keepdim=True)
+                    fd["sup_dev"] = torch.log(wprod / fd["wprod"]) - torch.log(wpop / fd["wpop"]) - wp["supply_mean"]
                     fd["wprod"], fd["wpop"] = wprod, wpop
                     # self-sufficiency: harvests against population (after refugee moves) and per-person use, which
                     # grows with income
@@ -1300,7 +1355,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                 # diet and income (next year) by the catch value share of GDP (ocean.py; assumption)
                 band_b = torch.cat([torch.as_tensor(WS.prm(k), device=device, dtype=torch.float32).reshape(-1, 1).expand(S, 1)
                                     for k in ("fish_trop", "fish_mid", "fish_high")], 1)                     # [S, 3]
-                dfish = WS.prm("wild_trend") + band_b[:, WS.fish_band] * 0.7 * torch.nan_to_num(dT)
+                dfish = WS.prm("wild_trend") + band_b[:, WS.fish_band] * 0.7 * torch.nan_to_num(dT) * float(climate_damage > 0)
                 cur["calories"] = (cur["calories"] * torch.exp(WS.fish_cal * WS.fish_wild * dfish)).clamp(1400, 3900)
                 fish_g = WS.fish_gdp * dfish
                 fish_log = fish_log + (dfish * WS.fish_capt).sum(-1) / WS.fish_capt.sum().clamp(min=1)
@@ -1434,7 +1489,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         ever["collapse"] = torch.maximum(ever["collapse"], (lw - peak_w < np.log(0.9)).float())
         lw_hist = lw_hist[-4:] + [lw]
         ever["autoc"] = torch.maximum(ever["autoc"], (dem_next - peak(h["dem"]) <= -0.1).float())
-        popk = pop[:, k] * torch.exp(pop_off)          # (population after simulated deaths and births)
+        popk = torch.exp(new["lpop"])                 # (population after simulated deaths, births and migration)
         gdp = torch.exp(lg_next + dmg_cum + war_cum)  # reported GDP includes climate and war damage
         okg = torch.isfinite(gdp) & torch.isfinite(popk)
         world_gdp = (torch.where(okg, gdp, 0) * torch.where(okg, popk, 0)).sum(-1) / torch.where(okg, popk, 0).sum(-1)

@@ -573,7 +573,7 @@ def crisis_explorer(p, base, net, growth, ddem, origin, end, n_scen, clim_inputs
     return out
 
 
-def step_interstate_hindcast(p, base, X, Yl, origins=((1995, 2015), (2004, 2024)), n_scen=2000):
+def step_interstate_hindcast(p, base, X, Yl, origins=((1995, 2015), (2004, 2024)), n_scen=2000, world_kw=None):
     """run the full simulator with the interstate layer from past origins and compare with what happened."""
     from sklearn.metrics import roc_auc_score
     from . import interstate as INTER
@@ -588,7 +588,7 @@ def step_interstate_hindcast(p, base, X, Yl, origins=((1995, 2015), (2004, 2024)
         growth, ddem = fit_transitions(p, X, base, O)
         dy = INTER.sim_inputs(INTER.run(verbose=False, origin=O, backtests=False, df=df))
         out = simulate(p, base, net, growth, ddem, O, E, n_scen=n_scen, demography="extrapolate",
-                       world=WorldConfig(pandemics=False), dyads=dy)
+                       world=WorldConfig(pandemics=False, **(world_kw or {})), dyads=dy)
         w = out["world"]
         real = df[(df.year > O) & (df.year <= E)].groupby("year").ev_ucdp.apply(lambda s_: (s_ == 1).sum())
         real = real.reindex(range(O + 1, E + 1)).to_numpy()

@@ -370,6 +370,9 @@ NEW_FEATS = ["crisis_past_10y", "crisis_now", "un_dist", "un_dist_change_5y"]
 # origins 2000-2024, AUC 0.965 -> 0.974, Brier skill 0.222 -> 0.252 (pair-clustered bootstrap: Brier gain 90% CI above 0);
 # no gain for the 5-year model (AUC 0.965 -> 0.961), which keeps FEATS. Held at their origin value in simulation.
 EV_FEATS = ["ev_mat3", "ev_fight3", "ev_threat3"]
+# hostility after conflict, 1995-2024 (rho, b ongoing_t, b ongoing_t-1): used where the event history before an origin is
+# too short to estimate it
+EV_WAR_DEFAULT = {"ev_mat3": (0.794, 1.237, -0.323), "ev_fight3": (0.813, 1.341, -0.352), "ev_threat3": (0.791, 0.643, -0.053)}
 LAST_EVENT_YEAR = 2025 if (RAW / "events" / "gdelt_dy.csv").exists() else 2024   # last year of dyadic event data
 FEATS_1Y = FEATS + EV_FEATS
 # the 1-year model is the simulator's onset hazard for pairs at peace (wars in progress use the duration table), so it
@@ -658,7 +661,7 @@ def sim_inputs(r):
     # own 1995..origin mean at the annual rate implied by its 5-year autocorrelation of deviations (0.46-0.62)
     # (event data end in 2024; the origin row of 2025 is a copy and is left out)
     hist = df[(df.year >= 1995) & (df.year <= min(origin, LAST_EVENT_YEAR))].sort_values(["a", "b", "year"])
-    ev_mean, ev_rho = {}, {}
+    ev_mean, ev_rho, ev_war = {}, {}, {}
     for c in EV_FEATS:
         m = hist.groupby(["a", "b"])[c].transform("mean")
         dev = hist[c] - m
@@ -669,6 +672,19 @@ def sim_inputs(r):
         ev_rho[c] = float(max(np.sum(dev[ok] * l5[ok]) / den, 0.0) ** 0.2) if ok.sum() > 100 and den > 0 else 0.55
         pm = hist.groupby(["a", "b"])[c].mean()
         ev_mean[c] = np.array([pm.get((a, b), np.nan) for a, b in zip(now.a, now.b)])
+        # a conflict raises the pair's hostility (estimated 1995-2024: about 2-3 sd above its mean while it lasts):
+        # deviation_t = rho dev_t-1 + b0 ongoing_t + b1 ongoing_t-1, so a simulated war is followed by the hostility
+        # that followed real ones, not by the pair's calm average (independent review 2026-10-29)
+        on = hist.ongoing.astype(float)
+        on1 = on.groupby([hist.a, hist.b]).shift(1)
+        l1 = dev.groupby([hist.a, hist.b]).shift(1)
+        okw = l1.notna() & dev.notna() & on1.notna()
+        if okw.sum() > 1000 and on[okw].sum() >= 30:
+            A_ = np.c_[l1[okw], on[okw], on1[okw], np.ones(int(okw.sum()))]
+            bw = np.linalg.lstsq(A_, dev[okw].to_numpy(float), rcond=None)[0]
+            ev_war[c] = (float(np.clip(bw[0], 0, 0.95)), float(bw[1]), float(bw[2]))
+        else:
+            ev_war[c] = EV_WAR_DEFAULT[c]
     # evaluated with event hostility at each pair's own mean: today's spike is carried by the decaying logit part,
     # the offset keeps only the pair's lasting non-linear risk
     calm = now.copy()
@@ -688,5 +704,5 @@ def sim_inputs(r):
             "hist10": hist10,
             "allies": alliances_2024(list(p.codes), c2i, origin), "onset_rate": new_rate, "onset_rate_long": long_rate,
             "calib_recent": ratio_recent, "calib_long": ratio_long, "observed": observed_after(origin),
-            "ev_mean": ev_mean, "ev_rho": ev_rho,
+            "ev_mean": ev_mean, "ev_rho": ev_rho, "ev_war": ev_war,
             "watch_pairs": [(n, min(a, b), max(a, b)) for n, a, b in WATCH_NAMED], "blocs": blocs}

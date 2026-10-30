@@ -1620,3 +1620,105 @@ under every SSP). Changes, each with its evidence:
 - Fixed: report "Known limits" said war and climate damage do not reach the political hazards (they do, damage_feedback);
   knockouts setting a parameter to its default were still sampled (climate knockouts use 1e-9); a fixed dmg_family fell
   back to BHM.
+
+## Limits round (2026-10-29, evening): fixes, full-system hindcasts, new data
+
+A review of the model's limits produced a ranked list; everything on it was done or tested. Rules as before: a change
+to the simulator is kept only if it improves the hindcasts on the development origins and is confirmed on the test
+origins; a new data source enters a risk model only if it passes the residual screen (development |t| > 3.3, lockbox
+same sign, p < 0.05).
+
+### Bugs fixed (each verified against the code first)
+
+- Storm damage scaled with global-mean warming instead of each country's local warming.
+- The climate-conflict, fisheries and climate-migration channels ran only when their assumption was being sampled, so
+  fixed-setting runs (knockouts, scenarios) silently dropped them; they now follow climate_damage and the world layer.
+  The fixed defaults are now the midpoints of their ranges (amoc_p 0.05, clim_conflict 0.15, clim_migr 0.2).
+- The transient harvest amplification entered the climate yield loss that drives emigration (double counting); the
+  dryland cereal-area change was computed after that loss was accumulated, so it never reached emigration.
+- World population for the food balance and the world averages ignored simulated migration, deaths and births.
+- Nuclear damage compounded each year a country stayed hit; it now applies once, at its worst level.
+- Nuclear escalation and cyber losses used the static COW major-power list instead of the dynamic great powers.
+- Two bugs that only affected hindcasts before 1995 (found by the new full-system hindcasts): the oil price's pull
+  toward its average used 1995-to-origin, empty for earlier origins, which made every country's GDP undefined; 1975
+  origins had no grain-price residual to replay.
+- A stale smoke test (AI arrival share by 2032 after the arrival distribution was revised).
+
+### Growth equation: no extrapolation beyond the data (simulate.SUPPORT_Q)
+
+30-year full-system hindcasts (from 1975, 1985 and 1994; scripts/world_hindcast.py) showed countries at war in 1994
+(Afghanistan, DR Congo, Liberia, Rwanda, Angola) falling by 3 to 6 log points of GDP per person in the median world (95%
+to 99.7%); all of them grew. Cause: the growth equation's squared distance-to-frontier term, fitted where data exist,
+turns into an accelerating collapse once a war-torn economy falls below any observed income (fitted to 1994: -6% a
+year at 4 sd below the mean distance, -16% at 6 sd). Features are now held inside their 0.5-99.5% training range
+(they were clamped at +/-6 sd). 10-year hindcasts: country GDP CRPS -1.2% on development (better at 14 of 15 origins),
+-0.8% on test (7 of 7); world GDP per person CRPS -1.5% / -1.2%; conflict, coups and democracy unchanged. 30-year
+cross-country spread of growth in the median world: 0.76 / 0.82 / 1.43 -> 0.68 / 0.72 / 0.93 (actual 0.57 / 0.56 / 0.48).
+
+Still too wide: the cross-country spread is above the actual at every horizon (15 years from 2000-2009: about 0.53 vs
+0.26-0.35), although country 90% bands cover 88% and 50% bands 52% on average at 15 years, so the excess is mostly the
+spread of country medians, not band width. World recessions are too rare (the median world never has a falling year
+in 15; history had 1-2), and the democratic decline since 2000 falls at the 1st percentile of the simulated change.
+
+### Full-system hindcasts and history matching (scripts/world_hindcast.py, scripts/world_history_match.py)
+
+The simulator with everything on (AI off, every assumption sampled per world) from 1980, 1985, 1990, 1995 (development)
+and 2000, 2005, 2009 (test), 15 years, 2,000 worlds each; ten world statistics (GDP growth, falls, volatility and
+dispersion; share of country-years at war; onsets; coups; democracy change; interstate conflicts; oil price change).
+Ridge emulators of each statistic on the sampled assumptions explain only 7-12% of its spread across worlds: history
+cannot tell the assumption values apart. Weighting worlds by their fit on development moved no range by more than 0.22
+sd, and on the test origins the weights helped coups and onsets but hurt interstate conflicts and oil. The assumption
+ranges are left unchanged.
+
+30-year world GDP growth shows no consistent bias (actual at the 9th, 62nd and 73rd percentile), so there is no ground
+for a growth-trend correction. Benchmark (scripts/rff_benchmark.py): RFF Socioeconomic Projections (no climate
+damage, no AI) world GDP per person 2065/2025 median 1.86 (90%: 0.87-3.97); this model without AI and with climate
+damage 1.36 (0.81-2.23), headline 1.91 (0.94-5.00), SSP2-4.5 without damage (AI uncertain) 2.25.
+
+### Wars between states
+
+- Force budget (scripts/force_budget_test.py): pairs where either side is already fighting another interstate
+  conflict start new ones less often, development -0.78 (p 0.15), test -0.54 (p 0.57): same sign, not significant.
+  Added as an assumption busy_beta u(0, 0.8) on the onset log-odds.
+- War feeding back into the event-data hostility features (ev_war_feedback; persistence and the effect of an ongoing
+  war estimated by least squares on 1995-origin pairs): pair AUC 0.917 vs 0.911 over the 1995-2014 origins (2000
+  better, 2010 worse), no change before 1995 (event data start then). Neutral; kept as an option, off.
+- Trade weights moving with simulated GDP (trade_gravity; partner GDP ratio from the median world every 5 years):
+  every full-system statistic within 0.1% at every origin. Kept as an option, off.
+
+### New data in the simulator
+
+- **Population uncertainty**: UN WPP 2024 probabilistic projections (data/wpp_prob.npz, scripts/build_wpp_prob.py):
+  per country the sd of log total fertility and of the remaining (mortality and migration) error by year, fitted to the
+  UN 80% intervals; one draw per world and country (countries independent: the fitted correlation is 0, which
+  reproduces the UN world interval, 2065 sd 2.4%). Small run: simulated population sd matches the UN, median ratio
+  1.01. A first version used the 95% intervals: for Kuwait and Hong Kong the UN's lower bound reaches zero after 2080,
+  the spread became infinite and two of 2,000 worlds in the 2100 climate runs lost every country's GDP; the spread is now
+  capped at 1.0 log points and the simulated population offset is held within a factor of 55 (e^4) of the UN path.
+- **Leader ages after 2020**: V-Dem leader names joined to Wikidata birth years (161 of 167 spells; five checked by
+  hand), carried to 2025 (data/leader_birth_wd.npz); missing ages in 2025: 3 countries (were most).
+- **AI exposure**: the share of employment in ISCO groups 1-4 (managers, professionals, technicians, clerks; ILO
+  modelled estimates, 174 of 175 countries) replaces the income-based guess (rank correlation 0.885; China 0.63 ->
+  0.53, Vietnam 0.51 -> 0.41, Nigeria 0.41 -> 0.58).
+- **Cyclone exposure**: share of land under hurricane-force winds (64 kt+) in IBTrACS tracks since 1980 (Taiwan 32%,
+  Philippines 14%, USA 0.3%) replaces the latitude proxy, rescaled to the proxy's mean.
+
+### Tested and not used
+
+- IMF Global Debt Database: corporate-debt build-up predicts economic collapse on development (t 7.1) but not on the
+  lockbox (p 0.61); five-year private credit boom (scripts/credit_boom_test.py): t 0.12 (2.19 with year effects), test
+  log loss 0.18321 -> 0.18302.
+- PLAD leader ethnicity: a minority-group leader and autocratization, development t -4.3, lockbox p 0.8.
+- Not done: GDL subnational data and ACLED (registration; ACLED cannot be redistributed); purges (built on WhoGov,
+  already rejected); election calendars (V-Dem covers 2025); SPEI drought (harvests are replayed, no change); Epoch
+  compute shares (China undercounted; AI hubs unchanged); subnational regions and a tree-model simulator (weeks).
+
+### Rerun after the round (forecast, uncertainty, disasters, climate)
+
+World GDP per person 2065 median $34.6k (was $34.7k; 90%: $16.9k-$90.5k); share of countries in civil conflict 2065
+median 22.9% (22.3%); democracy unchanged. Climate (paired worlds): SSP2-4.5 -14% in 2065, -27% in 2100 (90%: 0 to
+-52%); SSP5-8.5 -44% in 2100; by family 2065 $40.9k / $34.9k / $28.5k; climate emigrants 19 m median (95th
+percentile 38 m). With climate damage off, conflict in 2100 is now the same under every SSP (21.1%; the climate
+channels used to keep running in the no-damage worlds). Attribution: assumptions 67% of the 2065 GDP spread (AI and
+robot timing 49%, climate 9%). Disaster knockouts: no climate damage or the smallest estimate removes 94% of the
+economic-collapse tail (was 88-90%).

@@ -432,12 +432,26 @@ def base_arrays(p: Panel) -> dict[str, np.ndarray]:
     la, lm, le = x["leader_age"].copy(), x["leader_military"].copy(), x["leader_elected"].copy()
     irr, loss = x["months_since_irregular"].copy(), x["months_since_loss"].copy()
     lc = x["leader_change"]
+    # leaders who took office after REIGN ends: birth years from Wikidata (scripts/build_leader_ages.py)
+    import os as _os
+    _f = _os.path.join(_os.path.dirname(__file__), "..", "data", "leader_birth_wd.npz")
+    bw = None
+    if _os.path.exists(_f):
+        _z = np.load(_f)
+        if list(_z["codes"]) == list(p.codes) and len(_z["years"]) == la.shape[1]:
+            bw = _z["birth"]
     for t in range(1, la.shape[1]):
-        if not (2021 < p.years[t] <= LAST_OBS_YEAR):
+        if not (2021 <= p.years[t] <= LAST_OBS_YEAR):
+            continue
+        if p.years[t] == 2021:
+            if bw is not None:
+                la[:, t] = np.where(np.isnan(la[:, t]) & np.isfinite(bw[:, t]), p.years[t] - bw[:, t], la[:, t])
             continue
         same, changed = lc[:, t] == 0, lc[:, t] == 1
         coup = np.nan_to_num(x["coups"][:, t]) > 0
         la[:, t] = np.where(same, la[:, t - 1] + 1, np.nan)
+        if bw is not None:
+            la[:, t] = np.where(np.isnan(la[:, t]) & np.isfinite(bw[:, t]), p.years[t] - bw[:, t], la[:, t])
         lm[:, t] = np.where(same, lm[:, t - 1], np.where(changed & coup, 1.0, np.nan))
         le[:, t] = np.where(same, le[:, t - 1], np.where(changed & coup, 0.0, np.nan))
         irr[:, t] = np.where(coup, np.log(6), np.log(np.exp(irr[:, t - 1]) + 12))
