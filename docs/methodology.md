@@ -2,7 +2,7 @@
 
 29 October 2026 · Benoit Schillings
 
-This study was conceived and directed by **Benoit Schillings**. Interactive report: [seldon-psychohistory.netlify.app](https://seldon-psychohistory.netlify.app). Every input is listed in the [data source tree](https://seldon-psychohistory.netlify.app/data_sources.html).
+This study was conceived and directed by **Benoit Schillings**. Interactive report: [benoitschillings.github.io/psychohistory](https://benoitschillings.github.io/psychohistory/). Every input is listed in the [data source tree](https://benoitschillings.github.io/psychohistory/data_sources.html).
 
 ## Abstract
 
@@ -260,7 +260,7 @@ Every month a script downloads UCDP's newest preliminary release. It issues a 12
 
 ## Data sources
 
-Every raw input is listed, with what it measures, its coverage and how it enters the models, in the [data source tree](https://seldon-psychohistory.netlify.app/data_sources.html), together with a diagram of how data flows from sources to models, simulation, validation and the published report.
+Every raw input is listed, with what it measures, its coverage and how it enters the models, in the [data source tree](https://benoitschillings.github.io/psychohistory/data_sources.html), together with a diagram of how data flows from sources to models, simulation, validation and the published report.
 
 ## Credits
 

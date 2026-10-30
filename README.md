@@ -7,9 +7,9 @@ large populations; it cannot foresee individual events or leaders (the "Mule").
 
 A study conceived and directed by Benoit Schillings.
 
-- Interactive report: https://seldon-psychohistory.netlify.app
-- Methodology: https://seldon-psychohistory.netlify.app/methodology.html (source: `docs/methodology.md`)
-- Data sources: https://seldon-psychohistory.netlify.app/data_sources.html
+- Interactive report: https://benoitschillings.github.io/psychohistory
+- Methodology: https://benoitschillings.github.io/psychohistory/methodology.html (source: `docs/methodology.md`)
+- Data sources: https://benoitschillings.github.io/psychohistory/data_sources.html
 - Engineering log of every test, change and rejected idea: `docs/world_system.md`
 
 ## Data
