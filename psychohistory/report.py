@@ -14,6 +14,8 @@ from .data import RAW, ROOT
 
 OUT = ROOT / "outputs"
 TEMPLATE = ROOT / "psychohistory" / "report_template.html"
+# bump on every published change to the report (version 39 follows the 38 earlier published revisions)
+VERSION = ("39", "30 October 2026")
 
 
 def _world_topology():
@@ -72,7 +74,7 @@ def build(path=None) -> str:
     fc = json.loads((OUT / "forecast.json").read_text())
     narrative = OUT / "narrative.md"
     review = OUT / "review_response.md"
-    page = TEMPLATE.read_text()
+    page = TEMPLATE.read_text().replace("<!--__VERSION__-->", "Version %s · %s" % VERSION)
     page = page.replace("/*__DATA__*/null", json.dumps(fc, separators=(",", ":")))
     page = page.replace("/*__TOPO__*/null", json.dumps(_world_topology(), separators=(",", ":")))
     panel = OUT / "llm_panel.json"

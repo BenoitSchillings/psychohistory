@@ -102,6 +102,7 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
 .toc a { color: var(--ink-2, inherit); text-decoration: none; border-bottom: 1px solid var(--rule); }
 .credit { font-size: 14px; color: var(--ink-2); max-width: 70ch; margin: 0; }
 .credit a { color: inherit; }
+.credit.version { font-size: 12.5px; color: var(--ink-3, var(--ink-2)); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
 .toc a:hover { border-bottom-color: currentColor; }
 </style>
 
@@ -112,6 +113,7 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
       <h1>Seldon Report<br><em>2026–2065</em></h1>
       <p class="lede">A statistical forecast of civil conflict, coups, economic collapse and democratic decline for every country, built from 80 years of history and 10,000 simulated futures. It speaks in probabilities about large populations, never in certainties about single events.</p>
       <p class="credit">A study conceived and directed by <b>Benoit Schillings</b>. <a href="https://seldon-psychohistory.netlify.app/methodology.html" target="_blank" rel="noopener">Methodology</a> · <a href="https://seldon-psychohistory.netlify.app/data_sources.html" target="_blank" rel="noopener">Data source tree</a></p>
+      <p class="credit version"><!--__VERSION__--></p>
     </div>
     <figure class="hero-paths" style="margin:0">
       <div class="chart" id="hero-chart"></div>
@@ -391,7 +393,7 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
         </ul>
       </div>
     </div>
-    <p class="credit">The full methodology, with every test and its result, is in the <a href="https://seldon-psychohistory.netlify.app/methodology.html" target="_blank" rel="noopener">methodology document</a>; every input is listed in the <a href="https://seldon-psychohistory.netlify.app/data_sources.html" target="_blank" rel="noopener">data source tree</a>. Study conceived and directed by Benoit Schillings.</p>
+    <p class="credit">The full methodology, with every test and its result, is in the <a href="https://seldon-psychohistory.netlify.app/methodology.html" target="_blank" rel="noopener">methodology document</a>; every input is listed in the <a href="https://seldon-psychohistory.netlify.app/data_sources.html" target="_blank" rel="noopener">data source tree</a>. Study conceived and directed by Benoit Schillings. <!--__VERSION__-->.</p>
     <p class="footnote" id="footnote"></p>
   </section>
 
