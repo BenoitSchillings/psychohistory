@@ -36,6 +36,12 @@ class AIScenario:
     displacement_unemp: float = 6.0   # unemployment points added at the steepest part of adoption (fades as labour reallocates)
     top1_rise: float = 8.0            # points of top-1% income share at full adoption (halved by strong fiscal capacity)
     polarization_rise: float = 1.0    # V-Dem polarization units in democracies at full adoption
+    # who captures AI rents (assumption, 2026-10-31): the share kept by the firms that own the frontier models, chips
+    # and compute, and the yearly rate at which states take it back (tax, antitrust, nationalization), per year of full
+    # adoption. Capture scales the top-1% rise, the frontier hubs' extra rent (the firms' home states gain) and half of
+    # the polarization rise; at the mean capture (0.55, no clawback) every channel is as before
+    firm_capture: float = 0.55
+    clawback: float = 0.04
     surveillance: float = 0.4         # log-odds cut in coup / rebellion hazards in autocracies at full adoption
     autocracy_drift: float = 0.004    # yearly democracy-index erosion in non-democracies at full adoption
     ladder_penalty: float = 0.012     # growth lost by middle-income export economies at the steepest part of adoption
@@ -327,6 +333,7 @@ PARAM_RANGES = {
     "robot_years": ("u", 8.0, 20.0), "phys_dividend": ("u", 0.005, 0.04),   # floor: industrial robots ~0.36 pp/yr (Graetz & Michaels 2018)
     "drone_onset": ("u", -0.3, 0.5), "drone_persist": ("u", 0.0, 0.8), "drone_reach": ("u", 0.0, 0.2), "drone_civil": ("u", -0.2, 0.4),
 }
+CAPTURE_RANGES = {"firm_capture": ("u", 0.2, 0.9), "clawback": ("u", 0.0, 0.1)}   # AI scenarios only (assumptions)
 # water assumptions: drawn from their own generator, so adding them left every earlier parameter's draws unchanged
 WATER_RANGES = {
     "water_dispute": ("u", 0.0, 0.5), "water_scarcity_k": ("u", 0.0, 4.0), "yield_water": ("u", 0.1, 0.7),
@@ -433,6 +440,11 @@ class World:
         sc = np.interp(bb, self.cont_grid, self.cont_scale)
         return torch.as_tensor(sc, dtype=torch.float32, device=self.trade_w.device)[:, None] if torch.is_tensor(b) else float(sc[0])
 
+    def capture(self):
+        """firms' share of AI rents relative to the mean assumption (1 = as before the rent-capture split), falling as
+        states claw rents back with every year of full adoption"""
+        return self.prm("firm_capture") * torch.exp(-self.prm("clawback") * self.cum_A) / 0.55
+
     def prm(self, name):
         """per-world draw [S, 1] when sampling, else the configured scalar"""
         if name in self.params:
@@ -478,6 +490,13 @@ class World:
             if getattr(self.cfg, k) != getattr(defaults, k):
                 continue
             self.params[k] = a + (b - a) * r_ if kind == "u" else a + b * r_
+        # rent capture: its own generator (seed + 503), so adding it left every earlier draw unchanged
+        gr = torch.Generator(device=device).manual_seed(seed + 503)
+        for k, (kind, a, b) in (CAPTURE_RANGES.items() if self.cfg.sample_params else ()):
+            r_ = torch.rand(S, 1, device=device, generator=gr)
+            if not self.cfg.ai.arrival or getattr(self.cfg.ai, k) != getattr(defaults.ai, k):
+                continue
+            self.params[k] = a + (b - a) * r_
         gc = torch.Generator(device=device).manual_seed(seed + 401)
         for k, (kind, a, b) in (CLIMATE_RANGES.items() if self.cfg.sample_params else ()):
             r_ = torch.rand(S, 1, device=device, generator=gc) if kind == "u" else torch.randn(S, 1, device=device, generator=gc)

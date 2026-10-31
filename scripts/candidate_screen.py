@@ -5,7 +5,8 @@ development and the lockbox coefficient has the same sign with p < 0.05. A passi
 backtests before it enters a model.
 
 python -P scripts/candidate_screen.py SOURCE [SOURCE ...] -> outputs/candidate_screen_<SOURCES>.json
-SOURCE: gdd (IMF Global Debt Database: private, household and corporate debt), plad (leaders' ethnic groups)"""
+SOURCE: gdd (IMF Global Debt Database: private, household and corporate debt), plad (leaders' ethnic groups),
+labour (Penn World Table labour share)"""
 import json
 import os
 import sys
@@ -93,7 +94,17 @@ def plad(p):
     return {"plad_eth_change3": change, "plad_leader_group_size": gsize, "plad_leader_minority": (gsize < 0.5).astype(float) * np.where(np.isfinite(gsize), 1, np.nan)}
 
 
-SOURCES = {"gdd": gdd, "plad": plad}
+def labour(p):
+    """Penn World Table 10.01 labour share of GDP (to 2019, carried 3 years) and its 5-year change: a falling labour share
+    is the measurable trace of rents moving to capital and to the firms that own it"""
+    import pandas as pd
+    d = pd.read_csv(RAW / "newdata" / "pwt" / "pwt1001_cy.csv", usecols=["countrycode", "year", "labsh"])
+    a = pd.DataFrame(d.pivot_table(index="countrycode", columns="year", values="labsh").reindex(
+        index=list(p.codes), columns=list(p.years)).to_numpy(float)).T.ffill(limit=3).T.to_numpy(float)
+    return {"labour_share": a, "labour_share_chg5": _change(a, 5)}
+
+
+SOURCES = {"gdd": gdd, "plad": plad, "labour": labour}
 
 
 def main():

@@ -347,6 +347,39 @@ class NNQuantile(QuantileModel):
         return np.maximum.accumulate(np.clip(np.sort(Q, 1), 0, None), 1)
 
 
+# analog (trajectory-matching) member, adopted 2026-10-31 (scripts/cm_analog.py; the ShapeFinder idea): each country's
+# last ANALOG_L months of log deaths (half-life 6 months) matched to the ANALOG_K nearest windows of any country's history
+# known at the origin; their change h months later, applied to the country's 3-month mean. Chosen on 2010-2017 (CRPS
+# 15.76 -> 15.34, interval score 202 -> 192, ignorance 0.505 -> 0.518; weight 1.0 had the best CRPS but cost 8% in
+# ignorance); challenge test 2018-2023 (seldon_v10): CRPS 46.19 -> 45.61 (2nd of 21, 0.51 behind ShapeFinder, was 1.09),
+# ignorance and interval score still 1st; live 2024 28.75 -> 27.61, 2025 29.32 -> 28.91
+ANALOG_BLEND, ANALOG_L, ANALOG_K, ANALOG_HALF = 0.5, 12, 100, 6.0
+
+
+def analog_draws(D, origin, months, L=None, K=None, start=mid(1990, 1), n_draws=1000, seed=0):
+    """{month_id: [C, n_draws]} analog draws from the deaths matrix D known at `origin`"""
+    L, K = L or ANALOG_L, K or ANALOG_K
+    rng = np.random.default_rng(seed + origin)
+    ld = np.log1p(D[:, :origin + 1]).astype(np.float32)
+    C = ld.shape[0]
+    wl = (0.5 ** ((L - 1 - np.arange(L)) / ANALOG_HALF)).astype(np.float32)
+    sw = np.sqrt(wl / wl.sum())
+    q = ld[:, origin - L + 1:origin + 1] * sw
+    m3_q = ld[:, origin - 2:origin + 1].mean(1)
+    out = {}
+    for tm in months:
+        h = tm - origin
+        ts = np.arange(start + L - 1, origin - h + 1)           # window ends whose outcome is known at the origin
+        lib = (ld[:, ts[:, None] + np.arange(-L + 1, 1)[None]] * sw).reshape(-1, L)
+        r = (ld[:, ts + h] - ld[:, ts[:, None] + np.arange(-2, 1)[None]].mean(-1)).reshape(-1)
+        d = (q ** 2).sum(1)[:, None] + (lib ** 2).sum(1)[None] - 2 * q @ lib.T
+        d = d + rng.random(d.shape, dtype=np.float32) * 1e-6     # ties (all-zero histories) broken at random
+        nn = np.argpartition(d, K, axis=1)[:, :K]
+        pick = nn[np.arange(C)[:, None], rng.integers(0, K, (C, n_draws))]
+        out[tm] = np.expm1(np.clip(m3_q[:, None] + r[pick], 0, None))
+    return out
+
+
 def train_and_forecast(origin, target_months, final_through=None, start=mid(1995, 1), quants=QUANTS, params=None, correct_w=None):
     """train on every (t, h) with t + h <= origin, forecast the months in target_months from the origin.
     Returns {month_id: [C, 1000] draws}"""
@@ -374,4 +407,8 @@ def train_and_forecast(origin, target_months, final_through=None, start=mid(1995
         if mn is not None:
             out[tm] = np.expm1((1 - NN_BLEND) * np.log1p(np.sort(out[tm], 1))
                                + NN_BLEND * np.log1p(np.sort(mn.sample(Xt, base=base([origin]) if RESID else None), 1)))
+    if ANALOG_BLEND:
+        ad = analog_draws(D, origin, target_months)
+        for tm in target_months:
+            out[tm] = np.expm1((1 - ANALOG_BLEND) * np.log1p(np.sort(out[tm], 1)) + ANALOG_BLEND * np.log1p(np.sort(ad[tm], 1)))
     return out, m

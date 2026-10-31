@@ -100,12 +100,16 @@ def neighbours():
 
 @functools.lru_cache(maxsize=1)
 def cell_country():
-    """each cell's ViEWS country (most deaths-weighted GED country id seen there; else nearest country centroid)"""
-    e = pd.read_csv(CF.O / "ucdp" / "ged261-csv" / "GEDEvent_v26_1.csv", usecols=["priogrid_gid", "country_id"])
-    m = e.groupby("priogrid_gid").country_id.agg(lambda s: s.value_counts().index[0])
+    """each cell's ViEWS country from static 1:10m Natural Earth polygons (fallback: GED modal country)"""
     g, lat, lon = cells()
     cs = CF.countries()
     gw2i = {x: i for i, x in enumerate(cs.gwcode)}
+    p = CF.RAW / "priogrid_country.csv"
+    if p.exists():
+        st = pd.read_csv(p).set_index("gid").gwcode
+        return np.array([gw2i.get(int(st.get(x, -1)), -1) for x in g])
+    e = pd.read_csv(CF.O / "ucdp" / "ged261-csv" / "GEDEvent_v26_1.csv", usecols=["priogrid_gid", "country_id"])
+    m = e.groupby("priogrid_gid").country_id.agg(lambda s: s.value_counts().index[0])
     out = np.full(len(g), -1)
     for i, x in enumerate(g):
         if x in m.index and m[x] in gw2i:
@@ -139,7 +143,7 @@ def features(D, Dc):
     F["ring12"] = np.log1p(np.nan_to_num(ring @ np.nan_to_num(d12)))
     F["wide12"] = np.log1p(np.nan_to_num(wide @ np.nan_to_num(d12)))
     F["ring1"] = np.log1p(ring @ D)
-    cc = cell_country()
+    cc = np.where(D.sum(1) > 0, cell_country(), -1)
     Dc12 = np.nan_to_num(pd.DataFrame(Dc).T.rolling(12, min_periods=1).mean().T.to_numpy())
     F["cty12"] = np.where(cc[:, None] >= 0, np.log1p(Dc12[np.clip(cc, 0, None)]), 0).astype(np.float32)
     F["cty1"] = np.where(cc[:, None] >= 0, np.log1p(Dc[np.clip(cc, 0, None)]), 0).astype(np.float32)
@@ -202,6 +206,6 @@ def train_and_forecast(origin, target_months, final_through=None, start=CF.mid(1
         Xt = np.stack([F[f][:, origin] for f in names] + [np.full(N, tm - origin, np.float32)], 1)
         dr = m.sample(Xt)
         if mn is not None:
-            dr = (1 - NN_BLEND) * np.sort(dr, 1) + NN_BLEND * np.sort(mn.sample(Xt), 1)
+            dr = np.expm1((1 - NN_BLEND) * np.log1p(np.sort(dr, 1)) + NN_BLEND * np.log1p(np.sort(mn.sample(Xt), 1)))
         out[tm] = np.minimum(dr, bound).astype(np.float32)
     return out, m, (len(y), names)

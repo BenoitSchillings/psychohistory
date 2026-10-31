@@ -7,6 +7,18 @@
    "mis": 812.5492
   },
   {
+   "model": "OURS_seldon_v10x",
+   "crps": 45.3506,
+   "ign": 0.6229,
+   "mis": 767.9961
+  },
+  {
+   "model": "OURS_seldon_v10",
+   "crps": 45.6112,
+   "ign": 0.5858,
+   "mis": 765.4923
+  },
+  {
    "model": "OURS_seldon_v9",
    "crps": 46.1926,
    "ign": 0.5692,
@@ -179,6 +191,16 @@
    "model": "Neg_Bin_GLMM",
    "Y2024": 26.438,
    "Y2025": 26.876
+  },
+  {
+   "model": "OURS_seldon_v10",
+   "Y2024": 27.61,
+   "Y2025": 28.915
+  },
+  {
+   "model": "OURS_seldon_v10x",
+   "Y2024": 26.783,
+   "Y2025": 29.309
   },
   {
    "model": "OURS_seldon_v2",
@@ -507,6 +529,24 @@
    "draws": 1000
   },
   {
+   "model": "OURS_seldon_v10",
+   "window": "Y2018",
+   "crps": 11.7884,
+   "ign": 0.5858,
+   "mis": 85.6498,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v10x",
+   "window": "Y2018",
+   "crps": 12.1243,
+   "ign": 0.6371,
+   "mis": 99.3966,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
    "model": "OURS_seldon_v2",
    "window": "Y2018",
    "crps": 11.3216,
@@ -755,6 +795,24 @@
    "crps": 9.319,
    "ign": 0.5505,
    "mis": 83.3188,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v10",
+   "window": "Y2019",
+   "crps": 7.1561,
+   "ign": 0.5473,
+   "mis": 65.9972,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v10x",
+   "window": "Y2019",
+   "crps": 7.3031,
+   "ign": 0.5749,
+   "mis": 74.2105,
    "n": 2292,
    "draws": 1000
   },
@@ -1011,6 +1069,24 @@
    "draws": 1000
   },
   {
+   "model": "OURS_seldon_v10",
+   "window": "Y2020",
+   "crps": 20.9587,
+   "ign": 0.529,
+   "mis": 321.14,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v10x",
+   "window": "Y2020",
+   "crps": 21.3493,
+   "ign": 0.567,
+   "mis": 326.2502,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
    "model": "OURS_seldon_v2",
    "window": "Y2020",
    "crps": 19.9682,
@@ -1259,6 +1335,24 @@
    "crps": 76.2586,
    "ign": 0.6099,
    "mis": 1402.2518,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v10",
+   "window": "Y2021",
+   "crps": 75.1931,
+   "ign": 0.628,
+   "mis": 1377.4098,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v10x",
+   "window": "Y2021",
+   "crps": 75.0399,
+   "ign": 0.681,
+   "mis": 1374.2897,
    "n": 2292,
    "draws": 1000
   },
@@ -1515,6 +1609,24 @@
    "draws": 1000
   },
   {
+   "model": "OURS_seldon_v10",
+   "window": "Y2022",
+   "crps": 119.2007,
+   "ign": 0.6364,
+   "mis": 2240.8862,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v10x",
+   "window": "Y2022",
+   "crps": 119.283,
+   "ign": 0.6591,
+   "mis": 2248.9701,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
    "model": "OURS_seldon_v2",
    "window": "Y2022",
    "crps": 123.1353,
@@ -1767,6 +1879,24 @@
    "draws": 1000
   },
   {
+   "model": "OURS_seldon_v10",
+   "window": "Y2023",
+   "crps": 39.3702,
+   "ign": 0.5885,
+   "mis": 501.8709,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v10x",
+   "window": "Y2023",
+   "crps": 37.0038,
+   "ign": 0.6183,
+   "mis": 484.8595,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
    "model": "OURS_seldon_v2",
    "window": "Y2023",
    "crps": 45.6665,
@@ -2006,6 +2136,24 @@
    "crps": 57.0227,
    "ign": 1.6495,
    "mis": 1140.4538,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v10",
+   "window": "Y2024",
+   "crps": 27.6105,
+   "ign": 0.5201,
+   "mis": 301.8629,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v10x",
+   "window": "Y2024",
+   "crps": 26.7832,
+   "ign": 0.5347,
+   "mis": 305.8104,
    "n": 1146,
    "draws": 1000
   },
@@ -2267,6 +2415,24 @@
    "crps": 56.123,
    "ign": 1.8843,
    "mis": 1122.4607,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v10",
+   "window": "Y2025",
+   "crps": 28.9147,
+   "ign": 0.6984,
+   "mis": 364.8131,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v10x",
+   "window": "Y2025",
+   "crps": 29.3094,
+   "ign": 0.7092,
+   "mis": 383.33,
    "n": 1146,
    "draws": 1000
   },

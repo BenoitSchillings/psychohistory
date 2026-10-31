@@ -977,7 +977,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                 e_front = torch.quantile(e_pc, 0.9, dim=1, keepdim=True)
                 e_eff = e_pc * (1 - WS.prm("dc_share") * 4 * A * (1 - A))
                 e_cap = (e_eff / e_front).clamp(0.09, 1) ** 0.5
-                rent = 1 + WS.prm("hub_rent") * (WS.hub - 0.3 * (1 - WS.hub))
+                rent = 1 + WS.prm("hub_rent") * WS.capture() * (WS.hub - 0.3 * (1 - WS.hub))
                 # a transfer between hubs and others: rescaled so the output-weighted world dividend is unchanged
                 div = A * WS.cog_share * e_cap
                 gw = torch.exp(h["lg"][..., -1] + h["lpop"][..., -1]).nan_to_num()
@@ -1283,8 +1283,9 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             ai = WS.cfg.ai
             # cognitive-labour displacement: a transitional rise, largest where adoption is steepest
             u_target = unemp_target + ai.displacement_unemp * 4 * A * (1 - A) * WS.cog_share
-            ai_top1 = ai.top1_rise * A * WS.cog_share * (1 - 0.5 * WS.fiscal)
-            ai_pol = ai.polarization_rise * dA.clamp(min=0) * (dem_next > 0.5).float()
+            cap = WS.capture() if ai.arrival else 1.0      # who keeps the rents: firms (capture) or everyone (world.py)
+            ai_top1 = ai.top1_rise * A * WS.cog_share * (1 - 0.5 * WS.fiscal) * cap
+            ai_pol = ai.polarization_rise * dA.clamp(min=0) * (dem_next > 0.5).float() * (0.5 + 0.5 * cap)
             if slow is None:
                 cur["top1"] = top1_0 + ai_top1
             else:

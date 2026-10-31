@@ -42,6 +42,16 @@ def main():
         X = np.concatenate([X, np.stack(list(new.values()), -1)], -1)
         names += list(new)
         cands = list(new) + [list(new)[:2]]
+    if "labour" in sys.argv:
+        import pandas as pd
+        d = pd.read_csv(os.path.join(ROOT, "data", "raw", "newdata", "pwt", "pwt1001_cy.csv"), usecols=["countrycode", "year", "labsh"])
+        ls = pd.DataFrame(d.pivot_table(index="countrycode", columns="year", values="labsh").reindex(
+            index=list(p.codes), columns=list(p.years)).to_numpy(float)).T.ffill(limit=3).T.to_numpy(float)
+        lag5 = np.concatenate([np.full((ls.shape[0], 5), np.nan), ls[:, :-5]], 1)
+        new = {"labour_share": ls, "labour_share_change_5y": ls - lag5}
+        X = np.concatenate([X, np.stack(list(new.values()), -1)], -1)
+        names += list(new)
+        cands = list(new) + [list(new)]
     lg = base["lg"]
     C, T, F = X.shape
     yrs = np.asarray(p.years)
@@ -104,7 +114,7 @@ def main():
     print("best on 10-year growth (dev):")
     for c, v in best10:
         print(f"  {c:28s} {v}")
-    json.dump(res, open(os.path.join(ROOT, "outputs", "growth_screen_invest.json" if "invest" in sys.argv else "growth_screen.json"), "w"), indent=1)
+    json.dump(res, open(os.path.join(ROOT, "outputs", "growth_screen_invest.json" if "invest" in sys.argv else "growth_screen_labour.json" if "labour" in sys.argv else "growth_screen.json"), "w"), indent=1)
 
 
 if __name__ == "__main__":

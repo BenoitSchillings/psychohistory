@@ -45,7 +45,8 @@ GROUPS = {"AI and robot timing": ["ai_arrival", "robot_arrival", "robot_lag", "a
           "climate": ["clim_response", "dmg_family", "climate_damage", "amoc_p", "amoc_hit", "amoc_eu_loss",
                       "amoc_eu_yield", "amoc_rain", "slr_ice", "slr_ice_mult", "slr_mult", "slr_cost", "storm_trend",
                       "storm_loss", "harvest_amp", "dry_area_elast", "clim_conflict", "clim_migr"],
-          "nuclear": ["nuclear_war_factor", "nuc_use_both", "nuc_use_one", "nuc_escalate", "nuc_gdp_large", "nuc_beta"]}
+          "nuclear": ["nuclear_war_factor", "nuc_use_both", "nuc_use_one", "nuc_escalate", "nuc_gdp_large", "nuc_beta"],
+          "AI rent capture": ["firm_capture", "clawback"]}
 out = {}
 for k, y in Y.items():
     ok = np.isfinite(y) & np.isfinite(Xa).all(1)

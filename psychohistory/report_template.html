@@ -1060,7 +1060,7 @@ function aiSection() {
     clean_energy_gain: "Extra yearly growth of energy per person (cheap clean energy)", bio_risk: "Pandemic probability multiplier (misuse)", bio_response: "Pandemic damage multiplier (faster countermeasures)",
     finance_mult: "Financial-crisis probability multiplier (extra crises cost 1.7% + 1.2% of growth, estimated)", adoption_years: "Years from 10% to 90% adoption at the frontier", lag_years: "Extra delay for the least-ready country",
     arrival_sd: "Spread of the arrival year across worlds (years, sd)", open_lag: "Years by which open-weight/API diffusion trails the frontier hubs (range 0.5–4)", export_lag: "Extra years for China, Russia, Iran, North Korea under export controls (0–3)",
-    hub_rent: "Extra share of the dividend captured by frontier hubs (0–0.5)", chip_pause: "Share of a year of frontier progress lost while Taiwan or Korea is a war site (0.5–1)", chip_gdp: "World output hit in such a year, × cognitive share (2–5%)",
+    hub_rent: "Extra share of the dividend captured by frontier hubs (0–0.5)", firm_capture: "Share of AI rents kept by the firms that own frontier models, chips and compute (0.2–0.9)", clawback: "Yearly rate at which states take AI rents back through tax, antitrust or nationalization (0–0.1)", chip_pause: "Share of a year of frontier progress lost while Taiwan or Korea is a war site (0.5–1)", chip_gdp: "World output hit in such a year, × cognitive share (2–5%)",
     dc_share: "Energy taken by data centres at the steepest adoption (2–8%)", robot_lag: "Years by which general-purpose robotics follows near-free cognition at the latest (3–8)", robot_years: "Years from 10% to 90% robot deployment at the frontier (8–20)",
     robot_corr: "Correlation between the robotics and AI arrival years (normal scores)", phys_dividend: "Extra growth per person at full robot adoption × non-cognitive share of output (0–5 pt)",
     drone_onset: "Military autonomy: log-odds added to interstate onset (−0.3 to +0.5)", drone_persist: "Military autonomy: log-odds added to the continuation of war-level conflicts (0–0.8)",
@@ -1146,7 +1146,10 @@ function benchSection() {
       ok.map((r, i) => `<tr${r.model === ours ? ' style="background:var(--surface-2,rgba(127,127,127,.12))"' : ""}><td class="num">${i + 1}</td><td>${nm(r.model)}</td><td class="num">${f(r.crps)}</td><td class="num">${r.ign.toFixed(3)}</td><td class="num">${r.mis.toFixed(dig > 2 ? 2 : 0)}</td><td class="num">${f(L[r.model] && L[r.model].Y2024)}</td><td class="num">${f(L[r.model] && L[r.model].Y2025)}</td></tr>`).join("") + "</tbody>";
   };
   const pick = (P, pre) => P ? (P.historical_mean.map(r => r.model).filter(m => m.startsWith(pre)).sort().at(-1)) : null;
-  lb(P, pick(P, "OURS_seldon_v"), "t-pc-cm", "pc-cm-sub", "deaths per country-month", 2);
+  // the production submission: the highest plain version number (seldon_v10 after seldon_v9; lettered variants are tests)
+  const pickV = P => P ? P.historical_mean.map(r => r.model).filter(m => /^OURS_seldon_v\d+$/.test(m))
+    .sort((a, b) => +a.match(/\d+$/)[0] - +b.match(/\d+$/)[0]).at(-1) : null;
+  lb(P, pickV(P), "t-pc-cm", "pc-cm-sub", "deaths per country-month", 2);
   lb(G, pick(G, "OURS_"), "t-pc-pgm", "pc-pgm-sub", "deaths per cell-month", 4);
   if (V && V.all) {
     const row = (lab, o) => `<tr><td>${lab}</td><td class="num">${o.n.toLocaleString()} / ${o.events.toLocaleString()}</td><td class="num">${o.views.brier.toFixed(4)}</td><td class="num">${o.ours.brier.toFixed(4)}</td><td class="num">${o.mse_ln.views.toFixed(3)}</td><td class="num">${o.mse_ln.ours.toFixed(3)}</td></tr>`;
@@ -1386,7 +1389,7 @@ function ledgerSection() {
     oil_eta: "Oil price response to demand", oil_war_jump: "Oil spike when exporters fight", pandemic_p: "Pandemic frequency",
     climate_damage: "Climate damage (×BHM)", growth_dividend: "AI growth dividend", autocracy_drift: "AI autocracy drift", other: "Other (shocks, wars, politics)",
     bubble_p: "Chance of an AI investment bust", bubble_cost: "Cost of the bust", arrival_sd: "AI arrival year", ai_arrival: "AI arrival year", speed_mult: "AI adoption speed", open_lag: "Open-model diffusion lag",
-    export_lag: "Export-control lag", hub_rent: "Rents captured by AI hubs", chip_pause: "Chip-war slowdown", chip_gdp: "Chip-war output hit", dc_share: "Data-centre energy",
+    export_lag: "Export-control lag", hub_rent: "Rents captured by AI hubs", firm_capture: "AI rents kept by firms", clawback: "States claw rents back", chip_pause: "Chip-war slowdown", chip_gdp: "Chip-war output hit", dc_share: "Data-centre energy",
     robot_lag: "Robotics lag", robot_aging: "Robots offsetting ageing", robot_arrival: "Robotics arrival year (correlated with AI arrival)",
     robot_years: "Robot deployment speed", phys_dividend: "Physical-automation dividend", drone_onset: "Autonomy and war onset", drone_persist: "Autonomy and war duration",
     drone_reach: "Long-range strikes on expeditionary powers", drone_civil: "Rebel drones and civil-war duration", dem_erosion: "AI-era democratic erosion", ai_war_beta: "AI-gap war risk", nuc_beta: "Nuclear-stability erosion",

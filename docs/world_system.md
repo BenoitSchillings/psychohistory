@@ -1787,3 +1787,117 @@ far too wide from 1992 on (1.3-1.9 times), with 90% GDP bands covering 77-88% of
 Real economies, above all developing ones, became much calmer after the 1990s; the simulator draws country noise from
 all history before the origin, and no history before a 2000 origin foretells that. No setting fixes both splits, so
 it stays a stated limit; for the 2026 forecast the pools include 2000-2024, but the calmer era is a minority of them.
+
+## Out-of-sample accuracy upgrades (2026-10-30)
+
+Three out-of-sample improvements in the monthly fatality, grid-month and country-crisis layers, each selected on
+development windows and confirmed on held-out test/lockbox splits:
+
+### Adopted
+
+- **Log-space quantile blending for country-month fatalities (`psychohistory/cm_fatal.py`, `psychohistory/pgm_fatal.py`,
+  `scripts/cm_nn_test.py`, submission `seldon_v9`):** Both `QuantileModel` (LightGBM) and `NNQuantile` (MLP) predict
+  quantiles on $\log(1 + \text{deaths})$ and exponentiate via `expm1`, but `cm_fatal.py` previously blended their
+  sorted draws in level space (`(1 - w) * q_1 + w * q_2`). By Jensen's inequality, arithmetic averaging after
+  exponentiation systematically inflates upper tails whenever the two models disagree. Blending rank-by-rank in the
+  native $\log(1 + y)$ scale (`expm1((1 - w) * log1p(q_1) + w * log1p(q_2))`, zero new parameters, keeping $w = 0.5$):
+  - **Development (2010–2017, 8 annual windows):** CRPS `15.7918 -> 15.7510` (`-0.0408`, better in 5/8 years),
+    Ignorance `0.5052 -> 0.5051`, 90% MIS `287.5 -> 286.6`.
+  - **2023/24 VIEWS Prediction Challenge Historical Test (2018–2023, 6 annual windows):** Mean CRPS
+    `46.3306 -> 46.1926` (`-0.1380`), Ignorance `0.5697 -> 0.5692`, 90% MIS `773.05 -> 770.28` (`seldon_v9`).
+    **Overtakes `submission_final_omm` (`46.2900`) to move from 3rd place to 2nd place overall in the challenge on
+    CRPS**, while remaining **1st overall on Ignorance** and **1st overall on 90% Interval Score**.
+  - **Challenge Live Test (July 2024 – June 2025):** `Y2024` CRPS `28.878 -> 28.748` (`-0.130`, MIS `326.3 -> 320.6`),
+    `Y2025` CRPS `29.601 -> 29.323` (`-0.278`, MIS `372.4 -> 365.6`).
+- **4-family nonlinear default for `SeldonEnsemble` (`psychohistory/models.py`):** `SeldonEnsemble.DEFAULT` was frozen
+  at `{"w": {"G": 0.5, "N": 0.5}, "mode": "prob"}` on Oct 23 before the `Personal rule` and `Regime coalition`
+  (`TASK_ONLY`) features were added, before pre-1946 civil conflicts and coups were patched for `G60` (`1860+`), and
+  before the Oct 28 fix where `ForestModel` (`F`) ignored `TASK_ONLY`. On the current 147-feature panel, `F` is the
+  strongest single family on `civil_conflict_5y` (`0.974` dev, `1.204` lockbox), `onset_1y` (`0.939` dev, `1.041`
+  lockbox), and `termination_1y` (`0.915` dev), and `G60` beats `G` on all three conflict tasks, yet both had zero
+  weight on all 5 default tasks. Replacing the 2-family default with an equal 4-family average across the four
+  nonlinear families (`{"w": {"G": 0.25, "G60": 0.25, "N": 0.25, "F": 0.25}, "mode": "prob"}`, zero per-task weights):
+  - **Development (1975–2005, 7 origins):** 4-task headline score `0.9669 -> 0.9723` (`+0.0054`, paired
+    country-clustered 90% CI `[+0.0010, +0.0097]`, `P(gain > 0) = 0.980`); 7-task score `0.9447 -> 0.9532` (`+0.0084`,
+    `99.9%` positive).
+  - **Lockbox (2010–2015):** 4-task headline score `1.0293 -> 1.0396` (`+0.0102`, paired country-clustered 90% CI
+    `[+0.0036, +0.0169]`, `P(gain > 0) = 0.992`); 7-task score `0.9958 -> 1.0020` (`+0.0061`).
+  - **Untouched 2015 origin:** 4-task headline score `1.0146 -> 1.0279` (`+0.0134`, paired country-clustered 90% CI
+    `[+0.0054, +0.0210]`, `P(gain > 0) = 0.999`); 7-task score `0.9934 -> 1.0039` (`+0.0105`).
+  - Independent re-run (scripts not kept with the original; psychohistory/evaluate.py origins, members 8, both
+    defaults scored on the same fits): headline 0.9670 -> 0.9716 dev (+0.0046), 1.0274 -> 1.0366 lockbox (+0.0093),
+    2015 +0.0119; better at 8 of 9 origins (1985 -0.0035). Gains in civil conflict, coups and onset; one-year war
+    ending worse on the lockbox (AUC 0.752 -> 0.744, BSS 0.126 -> 0.117), which the simulator takes from PsychoNet.
+    The 2015 origin is the untouched check, reported here, not used for the choice.
+- **Leak-free PRIO-GRID cell-to-country mapping (`psychohistory/pgm_fatal.py`, `data/raw/predcomp/priogrid_country.csv`):**
+  `pgm_fatal.cell_country()` previously aggregated all years (`1989–2025`) of `GEDEvent_v26_1.csv`, which leaked future
+  event locations into historical backtests and misassigned 64 cells in South Sudan to Sudan, 12 in Eritrea to
+  Ethiopia, and 9 in Namibia to South Africa (where pre-independence events outnumbered post-independence ones). Built
+  `data/raw/predcomp/priogrid_country.csv` from 1:10m Natural Earth country polygons (largest area intersection for all
+  13,110 cells) and gated `cty12`/`cty1` in `features(D, Dc)` strictly by pre-origin cell activity (`D.sum(1) > 0`).
+  Giving uninhabited zero-history cells (`D.sum(1) == 0`) their country's conflict totals was also tested on 2014–2017
+  dev (`IGN 0.08418 -> 0.08069`, `-4.1%`, but `MIS 5.604 -> 5.820` and `CRPS 0.36632 -> 0.36641` because 95th-percentile
+  trees assign small positive intervals to uninhabited desert cells in warring states), so the pre-origin activity gate
+  is kept.
+
+### Pending: model-family draws for structural hazard uncertainty
+
+Proposed (patch kept aside, not adopted): replace the Gaussian structural draw (`z_struct * struct_sd`) with a
+per-world, per-hazard draw of which model family is right (`net.struct_fam`, each family's log-odds offset from
+PsychoNet). It removes the worst-1% Nordic civil-war tails (Finland 87.5% -> 35%, Sweden 87.5% -> 25% in 4,000-world
+runs). Not adopted yet because it also moves the central forecast: the six families (logit and quantile net included)
+are drawn with equal probability and the year-1 alignment restores only the world total, so country risk is
+redistributed in every world (Nordic 40-year war risk 21-27% -> 12-15%), and it has no hindcast test. Next: draw
+families with the ensemble's own weights, so the mean matches the published ensemble, and hindcast it.
+
+### Tested and rejected
+
+- **Adding nonlinear peace-decay (`1 / (1 + years_since_conflict)`) and contiguity–rivalry interactions to
+  `interstate.DyadModel`:** Improved `Logit` AUC on `interstate_5y` (`0.8805 -> 0.8926` dev, `0.9036 -> 0.9225` test)
+  and `interstate_1y` (`0.9031 -> 0.9206` dev, `0.9514 -> 0.9662` test), and improved `DyadModel` 5-year test BSS
+  (`0.1456 -> 0.1612`), but diluted `LGBMClassifier` feature subsampling (`colsample_bytree=0.6`) on 1-year onset dev
+  (`BSS 0.0563 -> 0.0533`) and reduced 1-year `Logit` dev BSS (`0.0479 -> 0.0398`). Not adopted because `world.py`
+  uses `model_1y.lr` on the GPU.
+- **Per-task Platt scaling / temperature sharpening / logit-mode blending on the 4-family country ensemble:** Adding
+  `L` (`+0.05..0.10`), `F60`, or logit-mode blending did not beat the parameter-free equal 4-family probability average
+  (`0.25 G + 0.25 G60 + 0.25 N + 0.25 F`) on both dev and lockbox.
+
+
+## Analog member, AI rent capture, labour share (2026-10-31)
+
+### Monthly fatalities: an analog (trajectory-matching) member (adopted)
+
+The 2023/24 VIEWS challenge leader on CRPS, ShapeFinder, matches each country's recent course against similar past
+episodes. Our gap to it was all 2023 (42.75 against 33.51; we led 2018-2021): very large wars that kept escalating,
+where the production model expects large wars to fade. cm_fatal.analog_draws: each country's last 12 months of
+log(1 + deaths), weighted with a 6-month half-life, matched to the 100 nearest windows of any country's history whose
+outcome is known at the origin (ties among all-zero histories broken at random); each analog's change h months later
+(from its own 3-month mean, the production model's residual target) is applied to the country's 3-month mean.
+Blended rank by rank in log(1 + deaths) with the production draws (scripts/cm_analog.py).
+
+- Development 2010-2017 (settings and weight chosen here): production CRPS 15.76; analog alone 14.97 (12 months, 100
+  neighbours; 25 or 200 neighbours and 24-month windows were worse), better in 4 of 8 years, mostly 2013-14 (Syria,
+  Iraq). Ignorance worsens with the analog weight (0.505 -> 0.518 at 0.5, 0.546 alone) while CRPS and the interval
+  score improve (202 -> 192 at 0.5, 185 alone); weight 0.5 chosen as the balance before any test window was scored.
+- Challenge test 2018-2023 (seldon_v10): CRPS 46.19 -> 45.61 (2nd of 21; the gap to ShapeFinder 1.09 -> 0.51), 2023
+  42.75 -> 39.37; ignorance 0.569 -> 0.586 and interval score 770 -> 765, both still 1st. Live 2024 28.75 -> 27.61,
+  2025 29.32 -> 28.91. The analog alone (seldon_v10x, scored for information): CRPS 45.35, ignorance 2nd.
+
+### AI rent capture (assumption)
+
+Who keeps the rents of near-free cognition, the firms that own the frontier models, chips and compute, or everyone?
+Two per-world assumptions (own random generator, so earlier draws are unchanged): firm_capture U(0.2, 0.9), the firms'
+share, and clawback U(0, 0.1), the yearly rate at which states take it back (tax, antitrust, nationalization) per year
+of full adoption. Capture relative to its mean (0.55) scales the top-1% rise, the frontier hubs' extra rent (the
+firms' home states gain) and half of the polarization rise; at the mean with no clawback every channel is as before.
+Same 2,000 worlds, AI from 2030 (scripts/capture_test.py), 2065: top-1% share (population-weighted) 17.6% / 18.9% /
+20.2% at capture 0.2 / 0.55 / 0.9 (17.2% at 0.9 with fast clawback; 15.2% without AI); polarization in democracies
+1.15 / 1.36 / 1.56; the hubs' log GDP lead over the rest 1.26 / 1.32 / 1.36; world GDP per person $55.0k / $54.4k /
+$53.9k; world democracy and civil conflict within 0.006. There is no history to estimate it from.
+
+### Labour share (rejected)
+
+Penn World Table 10.01 labour share and its 5-year change, the measurable trace of rents moving to capital: crisis
+models 0 of 14 pass development (largest |t| 1.6, scripts/candidate_screen.py labour); growth equation 10-year
+development MSE +1.4%; democracy equation 10-year development -0.45% but test +0.17%. FDI inflows had already failed
+the growth screen (growth_screen.py invest).

@@ -1,56 +1,57 @@
 {
  "log_world_gdp_2065": {
   "n": 48000,
-  "mean": 10.4971,
-  "assumptions_all": 0.6661,
-  "luck": 0.3339,
+  "mean": 10.4982,
+  "assumptions_all": 0.6668,
+  "luck": 0.3332,
   "interactions": 0.0,
   "first_order": {
-   "ai_arrival": 0.4012,
-   "robot_arrival": 0.3476,
-   "dmg_family": 0.065,
+   "ai_arrival": 0.403,
+   "robot_arrival": 0.3491,
+   "dmg_family": 0.0648,
    "growth_dividend": 0.0482,
-   "articles_beta": 0.0101,
-   "phys_dividend": 0.0091,
-   "workforce_beta": 0.0083,
+   "articles_beta": 0.0102,
+   "phys_dividend": 0.009,
    "climate_damage": 0.0083,
+   "workforce_beta": 0.0082,
    "robot_aging": 0.0045,
    "dividend_fade": 0.0037,
-   "robot_years": 0.0027,
+   "robot_years": 0.0028,
    "clim_response": 0.0019
   },
   "total": {
-   "ai_arrival": 0.0991,
-   "robot_arrival": 0.0305,
-   "dmg_family": 0.0752,
+   "ai_arrival": 0.0983,
+   "robot_arrival": 0.03,
+   "dmg_family": 0.075,
    "growth_dividend": 0.088,
-   "articles_beta": 0.0121,
-   "phys_dividend": 0.0179,
-   "workforce_beta": 0.0095,
-   "climate_damage": 0.0143,
-   "robot_aging": 0.0095,
-   "dividend_fade": 0.0127,
-   "robot_years": 0.0066,
-   "clim_response": 0.0053
+   "articles_beta": 0.0114,
+   "phys_dividend": 0.0174,
+   "climate_damage": 0.013,
+   "workforce_beta": 0.0087,
+   "robot_aging": 0.0086,
+   "dividend_fade": 0.0122,
+   "robot_years": 0.0058,
+   "clim_response": 0.0048
   },
   "groups": {
-   "AI and robot timing": 0.4895,
-   "climate": 0.0869,
-   "nuclear": 0.0
+   "AI and robot timing": 0.4904,
+   "climate": 0.0859,
+   "nuclear": 0.0,
+   "AI rent capture": 0.0
   }
  },
  "log_world_gdp_2045": {
   "n": 48000,
   "mean": 10.0206,
-  "assumptions_all": 0.266,
-  "luck": 0.734,
+  "assumptions_all": 0.267,
+  "luck": 0.733,
   "interactions": 0.0,
   "first_order": {
    "dmg_family": 0.1007,
-   "ai_arrival": 0.0916,
+   "ai_arrival": 0.0919,
    "robot_arrival": 0.0555,
    "articles_beta": 0.0128,
-   "workforce_beta": 0.0119,
+   "workforce_beta": 0.0118,
    "climate_damage": 0.0072,
    "growth_dividend": 0.0064,
    "clim_response": 0.001,
@@ -60,35 +61,35 @@
    "aid_mult": 0.0
   },
   "total": {
-   "dmg_family": 0.1101,
-   "ai_arrival": 0.0455,
-   "robot_arrival": 0.0023,
-   "articles_beta": 0.0126,
-   "workforce_beta": 0.0116,
-   "climate_damage": 0.0139,
-   "growth_dividend": 0.0213,
-   "clim_response": 0.0031,
-   "pandemic_p": 0.0018,
-   "war_site_loss": 0.0,
-   "ai_war_beta": 0.0,
-   "aid_mult": 0.0
+   "dmg_family": 0.1098,
+   "ai_arrival": 0.0471,
+   "robot_arrival": 0.0039,
+   "articles_beta": 0.0127,
+   "workforce_beta": 0.0124,
+   "climate_damage": 0.0146,
+   "growth_dividend": 0.0227,
+   "clim_response": 0.0039,
+   "pandemic_p": 0.003,
+   "war_site_loss": 0.001,
+   "ai_war_beta": 0.0009,
+   "aid_mult": 0.0008
   },
   "groups": {
-   "AI and robot timing": 0.1138,
-   "climate": 0.1186,
-   "nuclear": 0.0
+   "AI and robot timing": 0.1163,
+   "climate": 0.1202,
+   "nuclear": 0.0,
+   "AI rent capture": 0.0
   }
  },
  "world_conflict_2065": {
   "n": 48000,
-  "mean": 0.2329,
-  "assumptions_all": 0.0201,
-  "luck": 0.9799,
-  "interactions": 0.0002,
+  "mean": 0.2327,
+  "assumptions_all": 0.0205,
+  "luck": 0.9795,
+  "interactions": 0.0007,
   "first_order": {
    "drone_civil": 0.0194,
-   "clim_conflict": 0.0005,
-   "robot_arrival": 0.0,
+   "clim_conflict": 0.0004,
    "ai_arrival": 0.0,
    "ai_war_beta": 0.0,
    "aid_mult": 0.0,
@@ -97,33 +98,35 @@
    "amoc_hit": 0.0,
    "amoc_p": 0.0,
    "amoc_rain": 0.0,
-   "articles_beta": 0.0
+   "articles_beta": 0.0,
+   "autocracy_drift": 0.0
   },
   "total": {
-   "drone_civil": 0.0201,
-   "clim_conflict": 0.0018,
-   "robot_arrival": 0.0022,
-   "ai_arrival": 0.001,
-   "ai_war_beta": 0.0,
-   "aid_mult": 0.0,
-   "amoc_eu_loss": 0.0004,
+   "drone_civil": 0.0205,
+   "clim_conflict": 0.0017,
+   "ai_arrival": 0.0023,
+   "ai_war_beta": 0.0016,
+   "aid_mult": 0.0009,
+   "amoc_eu_loss": 0.0018,
    "amoc_eu_yield": 0.0,
    "amoc_hit": 0.0,
-   "amoc_p": 0.0,
-   "amoc_rain": 0.0009,
-   "articles_beta": 0.0007
+   "amoc_p": 0.0005,
+   "amoc_rain": 0.0005,
+   "articles_beta": 0.0001,
+   "autocracy_drift": 0.0005
   },
   "groups": {
-   "AI and robot timing": 0.0047,
-   "climate": 0.0004,
-   "nuclear": 0.0002
+   "AI and robot timing": 0.0063,
+   "climate": 0.0022,
+   "nuclear": 0.0,
+   "AI rent capture": 0.0
   }
  },
  "world_democracy_2065": {
   "n": 48000,
   "mean": 0.402,
-  "assumptions_all": 0.0903,
-  "luck": 0.9097,
+  "assumptions_all": 0.0901,
+  "luck": 0.9099,
   "interactions": 0.0,
   "first_order": {
    "ai_arrival": 0.0596,
@@ -140,38 +143,39 @@
    "breakout_years": 0.0
   },
   "total": {
-   "ai_arrival": 0.0291,
-   "robot_arrival": 0.0009,
-   "autocracy_drift": 0.0378,
-   "ai_war_beta": 0.0005,
-   "aid_mult": 0.0005,
-   "amoc_eu_loss": 0.0002,
-   "amoc_eu_yield": 0.0009,
+   "ai_arrival": 0.0307,
+   "robot_arrival": 0.0004,
+   "autocracy_drift": 0.0372,
+   "ai_war_beta": 0.001,
+   "aid_mult": 0.0009,
+   "amoc_eu_loss": 0.0009,
+   "amoc_eu_yield": 0.0005,
    "amoc_hit": 0.0005,
-   "amoc_p": 0.0007,
-   "amoc_rain": 0.0,
+   "amoc_p": 0.0006,
+   "amoc_rain": 0.0003,
    "articles_beta": 0.0003,
-   "breakout_years": 0.0009
+   "breakout_years": 0.0008
   },
   "groups": {
-   "AI and robot timing": 0.0781,
-   "climate": 0.0005,
-   "nuclear": 0.0
+   "AI and robot timing": 0.0787,
+   "climate": 0.0,
+   "nuclear": 0.0004,
+   "AI rent capture": 0.0008
   }
  },
  "great_power_war": {
   "n": 48000,
-  "mean": 0.464,
-  "assumptions_all": 0.0297,
-  "luck": 0.9703,
-  "interactions": 0.0,
+  "mean": 0.4618,
+  "assumptions_all": 0.0296,
+  "luck": 0.9704,
+  "interactions": 0.0007,
   "first_order": {
-   "nuclear_war_factor": 0.0228,
-   "cascade_q": 0.0029,
-   "drone_onset": 0.0028,
+   "nuclear_war_factor": 0.0212,
+   "drone_onset": 0.0025,
+   "cascade_q": 0.0024,
    "ai_arrival": 0.0017,
-   "water_dispute": 0.0006,
-   "robot_arrival": 0.0005,
+   "robot_arrival": 0.0008,
+   "water_dispute": 0.0002,
    "ai_war_beta": 0.0,
    "aid_mult": 0.0,
    "amoc_eu_loss": 0.0,
@@ -180,74 +184,77 @@
    "amoc_p": 0.0
   },
   "total": {
-   "nuclear_war_factor": 0.023,
-   "cascade_q": 0.0039,
-   "drone_onset": 0.0045,
-   "ai_arrival": 0.0003,
-   "water_dispute": 0.0013,
+   "nuclear_war_factor": 0.022,
+   "drone_onset": 0.0052,
+   "cascade_q": 0.0031,
+   "ai_arrival": 0.0,
    "robot_arrival": 0.0,
-   "ai_war_beta": 0.0002,
-   "aid_mult": 0.0,
-   "amoc_eu_loss": 0.0009,
+   "water_dispute": 0.0011,
+   "ai_war_beta": 0.0001,
+   "aid_mult": 0.0001,
+   "amoc_eu_loss": 0.0,
    "amoc_eu_yield": 0.0,
    "amoc_hit": 0.0,
    "amoc_p": 0.0
   },
   "groups": {
-   "AI and robot timing": 0.0035,
+   "AI and robot timing": 0.0036,
    "climate": 0.0,
-   "nuclear": 0.0226
+   "nuclear": 0.0228,
+   "AI rent capture": 0.0002
   }
  },
  "great_power_war_cow": {
   "n": 48000,
-  "mean": 0.2495,
-  "assumptions_all": 0.0043,
-  "luck": 0.9957,
+  "mean": 0.2481,
+  "assumptions_all": 0.004,
+  "luck": 0.996,
   "interactions": 0.0,
   "first_order": {
-   "cascade_q": 0.0043,
-   "drone_onset": 0.0019,
-   "ai_arrival": 0.0001,
-   "amoc_hit": 0.0,
+   "cascade_q": 0.0038,
+   "drone_onset": 0.0013,
+   "ai_arrival": 0.0,
    "ai_war_beta": 0.0,
    "aid_mult": 0.0,
    "amoc_eu_loss": 0.0,
    "amoc_eu_yield": 0.0,
+   "amoc_hit": 0.0,
    "amoc_p": 0.0,
    "amoc_rain": 0.0,
    "articles_beta": 0.0,
    "autocracy_drift": 0.0
   },
   "total": {
-   "cascade_q": 0.0043,
-   "drone_onset": 0.0036,
+   "cascade_q": 0.004,
+   "drone_onset": 0.0022,
    "ai_arrival": 0.0,
-   "amoc_hit": 0.0,
-   "ai_war_beta": 0.0,
+   "ai_war_beta": 0.0002,
    "aid_mult": 0.0,
-   "amoc_eu_loss": 0.0,
+   "amoc_eu_loss": 0.0001,
    "amoc_eu_yield": 0.0,
+   "amoc_hit": 0.0,
    "amoc_p": 0.0,
-   "amoc_rain": 0.0,
-   "articles_beta": 0.0002,
+   "amoc_rain": 0.0003,
+   "articles_beta": 0.0,
    "autocracy_drift": 0.0
   },
   "groups": {
-   "AI and robot timing": 0.0016,
+   "AI and robot timing": 0.0021,
    "climate": 0.0,
-   "nuclear": 0.0004
+   "nuclear": 0.0017,
+   "AI rent capture": 0.0011
   }
  },
  "nuclear_use": {
   "n": 48000,
-  "mean": 0.1377,
-  "assumptions_all": 0.0109,
-  "luck": 0.9891,
+  "mean": 0.1376,
+  "assumptions_all": 0.0114,
+  "luck": 0.9886,
   "interactions": 0.0,
   "first_order": {
    "nuc_use_one": 0.0138,
-   "nuc_use_both": 0.0013,
+   "nuc_use_both": 0.0012,
+   "nuclear_war_factor": 0.0001,
    "ai_arrival": 0.0,
    "ai_war_beta": 0.0,
    "aid_mult": 0.0,
@@ -256,42 +263,42 @@
    "amoc_hit": 0.0,
    "amoc_p": 0.0,
    "amoc_rain": 0.0,
-   "articles_beta": 0.0,
-   "autocracy_drift": 0.0
+   "articles_beta": 0.0
   },
   "total": {
-   "nuc_use_one": 0.0109,
-   "nuc_use_both": 0.0028,
-   "ai_arrival": 0.0,
+   "nuc_use_one": 0.0114,
+   "nuc_use_both": 0.0016,
+   "nuclear_war_factor": 0.0008,
+   "ai_arrival": 0.0011,
    "ai_war_beta": 0.0,
-   "aid_mult": 0.0,
-   "amoc_eu_loss": 0.0,
-   "amoc_eu_yield": 0.0,
-   "amoc_hit": 0.0,
-   "amoc_p": 0.0,
-   "amoc_rain": 0.0,
-   "articles_beta": 0.0,
-   "autocracy_drift": 0.0
+   "aid_mult": 0.0014,
+   "amoc_eu_loss": 0.0001,
+   "amoc_eu_yield": 0.0004,
+   "amoc_hit": 0.0003,
+   "amoc_p": 0.0007,
+   "amoc_rain": 0.0002,
+   "articles_beta": 0.0004
   },
   "groups": {
-   "AI and robot timing": 0.0012,
+   "AI and robot timing": 0.0009,
    "climate": 0.0,
-   "nuclear": 0.0109
+   "nuclear": 0.0114,
+   "AI rent capture": 0.0
   }
  },
  "log_battle_deaths": {
   "n": 48000,
-  "mean": 13.7577,
-  "assumptions_all": 0.0404,
-  "luck": 0.9596,
+  "mean": 13.7575,
+  "assumptions_all": 0.0374,
+  "luck": 0.9626,
   "interactions": 0.0,
   "first_order": {
-   "cascade_q": 0.0105,
-   "drone_onset": 0.0096,
-   "ai_arrival": 0.0086,
-   "robot_arrival": 0.0084,
-   "nuclear_war_factor": 0.006,
-   "busy_beta": 0.0007,
+   "cascade_q": 0.01,
+   "drone_onset": 0.0089,
+   "ai_arrival": 0.0082,
+   "robot_arrival": 0.008,
+   "nuclear_war_factor": 0.0058,
+   "busy_beta": 0.0006,
    "ai_war_beta": 0.0,
    "aid_mult": 0.0,
    "amoc_eu_loss": 0.0,
@@ -300,37 +307,38 @@
    "amoc_p": 0.0
   },
   "total": {
-   "cascade_q": 0.0123,
-   "drone_onset": 0.0148,
-   "ai_arrival": 0.0026,
-   "robot_arrival": 0.0033,
-   "nuclear_war_factor": 0.0084,
-   "busy_beta": 0.0018,
-   "ai_war_beta": 0.0008,
-   "aid_mult": 0.0014,
-   "amoc_eu_loss": 0.0012,
-   "amoc_eu_yield": 0.0011,
-   "amoc_hit": 0.0009,
-   "amoc_p": 0.001
+   "cascade_q": 0.0107,
+   "drone_onset": 0.0143,
+   "ai_arrival": 0.0021,
+   "robot_arrival": 0.0012,
+   "nuclear_war_factor": 0.006,
+   "busy_beta": 0.0013,
+   "ai_war_beta": 0.0007,
+   "aid_mult": 0.0,
+   "amoc_eu_loss": 0.0,
+   "amoc_eu_yield": 0.0,
+   "amoc_hit": 0.0,
+   "amoc_p": 0.0
   },
   "groups": {
-   "AI and robot timing": 0.0156,
-   "climate": 0.001,
-   "nuclear": 0.0086
+   "AI and robot timing": 0.0143,
+   "climate": 0.0,
+   "nuclear": 0.0056,
+   "AI rent capture": 0.0
   }
  },
  "war_China-India": {
   "n": 48000,
-  "mean": 0.251,
-  "assumptions_all": 0.037,
-  "luck": 0.963,
-  "interactions": 0.0,
+  "mean": 0.2503,
+  "assumptions_all": 0.04,
+  "luck": 0.96,
+  "interactions": 0.0003,
   "first_order": {
-   "nuclear_war_factor": 0.0342,
+   "nuclear_war_factor": 0.0343,
+   "ai_arrival": 0.0022,
    "water_dispute": 0.002,
-   "ai_arrival": 0.0018,
-   "drone_onset": 0.001,
-   "robot_arrival": 0.0003,
+   "drone_onset": 0.0008,
+   "robot_arrival": 0.0004,
    "dmg_family": 0.0,
    "ai_war_beta": 0.0,
    "aid_mult": 0.0,
@@ -340,23 +348,24 @@
    "amoc_p": 0.0
   },
   "total": {
-   "nuclear_war_factor": 0.0349,
-   "water_dispute": 0.0029,
-   "ai_arrival": 0.0009,
-   "drone_onset": 0.0005,
-   "robot_arrival": 0.0,
-   "dmg_family": 0.0,
-   "ai_war_beta": 0.0003,
-   "aid_mult": 0.0,
-   "amoc_eu_loss": 0.0,
-   "amoc_eu_yield": 0.0,
-   "amoc_hit": 0.0,
-   "amoc_p": 0.0
+   "nuclear_war_factor": 0.0388,
+   "ai_arrival": 0.0028,
+   "water_dispute": 0.0051,
+   "drone_onset": 0.0038,
+   "robot_arrival": 0.0021,
+   "dmg_family": 0.0026,
+   "ai_war_beta": 0.0033,
+   "aid_mult": 0.0015,
+   "amoc_eu_loss": 0.0027,
+   "amoc_eu_yield": 0.0022,
+   "amoc_hit": 0.0017,
+   "amoc_p": 0.0018
   },
   "groups": {
-   "AI and robot timing": 0.0039,
-   "climate": 0.0,
-   "nuclear": 0.0358
+   "AI and robot timing": 0.0054,
+   "climate": 0.0021,
+   "nuclear": 0.0391,
+   "AI rent capture": 0.0016
   }
  },
  "war_China-Taiwan": {
@@ -396,17 +405,18 @@
   "groups": {
    "AI and robot timing": 0.0,
    "climate": 0.0,
-   "nuclear": 0.0
+   "nuclear": 0.0,
+   "AI rent capture": 0.0
   }
  },
  "war_Russia-Poland": {
   "n": 48000,
-  "mean": 0.0294,
+  "mean": 0.0288,
   "assumptions_all": 0.0,
   "luck": 1.0,
   "interactions": 0.0,
   "first_order": {
-   "cascade_q": 0.0006,
+   "cascade_q": 0.0001,
    "ai_arrival": 0.0,
    "ai_war_beta": 0.0,
    "aid_mult": 0.0,
@@ -436,21 +446,22 @@
   "groups": {
    "AI and robot timing": 0.0,
    "climate": 0.0,
-   "nuclear": 0.0
+   "nuclear": 0.0,
+   "AI rent capture": 0.0
   }
  },
  "war_India-Pakistan": {
   "n": 48000,
-  "mean": 0.3754,
-  "assumptions_all": 0.0622,
-  "luck": 0.9378,
+  "mean": 0.3753,
+  "assumptions_all": 0.062,
+  "luck": 0.938,
   "interactions": 0.0,
   "first_order": {
-   "nuclear_war_factor": 0.0557,
-   "water_dispute": 0.0025,
+   "nuclear_war_factor": 0.0556,
+   "water_dispute": 0.0026,
    "ai_arrival": 0.002,
    "drone_onset": 0.0014,
-   "robot_arrival": 0.0007,
+   "robot_arrival": 0.0008,
    "busy_beta": 0.0006,
    "slr_ice": 0.0,
    "ai_war_beta": 0.0,
@@ -460,23 +471,24 @@
    "amoc_hit": 0.0
   },
   "total": {
-   "nuclear_war_factor": 0.0593,
-   "water_dispute": 0.0045,
-   "ai_arrival": 0.0011,
-   "drone_onset": 0.0043,
-   "robot_arrival": 0.0,
-   "busy_beta": 0.0016,
-   "slr_ice": 0.0001,
+   "nuclear_war_factor": 0.0588,
+   "water_dispute": 0.0043,
+   "ai_arrival": 0.0014,
+   "drone_onset": 0.0052,
+   "robot_arrival": 0.0008,
+   "busy_beta": 0.0031,
+   "slr_ice": 0.0008,
    "ai_war_beta": 0.0016,
-   "aid_mult": 0.0011,
-   "amoc_eu_loss": 0.0003,
-   "amoc_eu_yield": 0.0003,
-   "amoc_hit": 0.0012
+   "aid_mult": 0.0012,
+   "amoc_eu_loss": 0.0011,
+   "amoc_eu_yield": 0.0008,
+   "amoc_hit": 0.0014
   },
   "groups": {
-   "AI and robot timing": 0.0054,
-   "climate": 0.0009,
-   "nuclear": 0.0582
+   "AI and robot timing": 0.0055,
+   "climate": 0.0,
+   "nuclear": 0.0593,
+   "AI rent capture": 0.0003
   }
  }
 }
