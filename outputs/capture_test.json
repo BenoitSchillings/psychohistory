@@ -1,0 +1,42 @@
+{
+ "capture 0.2": {
+  "world_gdp_2065": 54978.921875,
+  "hubs_vs_rest_log": 1.2641552255997768,
+  "world_dem_2065": 0.37752506136894226,
+  "top1_pw": 17.63610061779145,
+  "polarization_democracies": 1.1512734801311924,
+  "conflict_2065": 0.21142856776714325
+ },
+ "capture 0.55": {
+  "world_gdp_2065": 54408.83984375,
+  "hubs_vs_rest_log": 1.317247913154051,
+  "world_dem_2065": 0.3774528503417969,
+  "top1_pw": 18.93790856527545,
+  "polarization_democracies": 1.3582362147966893,
+  "conflict_2065": 0.21714285016059875
+ },
+ "capture 0.9": {
+  "world_gdp_2065": 53906.828125,
+  "hubs_vs_rest_log": 1.3603481800608366,
+  "world_dem_2065": 0.3778102695941925,
+  "top1_pw": 20.217281770820662,
+  "polarization_democracies": 1.5545905644635145,
+  "conflict_2065": 0.21714285016059875
+ },
+ "capture 0.9, fast clawback": {
+  "world_gdp_2065": 54604.703125,
+  "hubs_vs_rest_log": 1.2822423929306703,
+  "world_dem_2065": 0.37715375423431396,
+  "top1_pw": 17.218072266923674,
+  "polarization_democracies": 1.4584225673228817,
+  "conflict_2065": 0.21142856776714325
+ },
+ "no AI": {
+  "world_gdp_2065": 24730.8203125,
+  "hubs_vs_rest_log": 0.7690791212276098,
+  "world_dem_2065": 0.42262232303619385,
+  "top1_pw": 15.164222417461234,
+  "polarization_democracies": 0.7633617194896984,
+  "conflict_2065": 0.21714285016059875
+ }
+}

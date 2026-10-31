@@ -1,0 +1,90 @@
+{
+ "uncertain_base": {
+  "great_power_war": 0.46024999022483826,
+  "great_power_war_cow": 0.24799999594688416,
+  "nuclear_use": 0.1274999976158142,
+  "nuclear_large": 0.0044999998062849045,
+  "conflict_2065": 0.22285714745521545,
+  "democracy_2065": 0.4003103971481323,
+  "gdp_2065": 34415.8046875,
+  "war_China-United States": 0.09800000488758087,
+  "war_Russia-United States": 0.05050000175833702,
+  "war_China-India": 0.24775001406669617,
+  "war_China-Taiwan": 0.09025000780820847
+ },
+ "uncertain_space": {
+  "great_power_war": 0.4507499933242798,
+  "great_power_war_cow": 0.2407499998807907,
+  "nuclear_use": 0.13199999928474426,
+  "nuclear_large": 0.0035000001080334187,
+  "conflict_2065": 0.22285714745521545,
+  "democracy_2065": 0.4041595458984375,
+  "gdp_2065": 34446.71875,
+  "war_China-United States": 0.09600000083446503,
+  "war_Russia-United States": 0.048750001937150955,
+  "war_China-India": 0.24525001645088196,
+  "war_China-Taiwan": 0.08950000256299973
+ },
+ "uncertain_space_deters": {
+  "great_power_war": 0.44743430614471436,
+  "great_power_war_cow": 0.23779724538326263,
+  "nuclear_use": 0.11952440440654755,
+  "nuclear_large": 0.0018773466581478715,
+  "conflict_2065": 0.22285714745521545,
+  "democracy_2065": 0.40501469373703003,
+  "gdp_2065": 34641.1640625
+ },
+ "uncertain_space_destabilises": {
+  "great_power_war": 0.44453853368759155,
+  "great_power_war_cow": 0.2387806922197342,
+  "nuclear_use": 0.14902624487876892,
+  "nuclear_large": 0.005080440081655979,
+  "conflict_2065": 0.22285714745521545,
+  "democracy_2065": 0.40332382917404175,
+  "gdp_2065": 34666.546875
+ },
+ "none_base": {
+  "great_power_war": 0.41475000977516174,
+  "great_power_war_cow": 0.22499999403953552,
+  "nuclear_use": 0.11275000125169754,
+  "nuclear_large": 0.0037499999161809683,
+  "conflict_2065": 0.21714285016059875,
+  "democracy_2065": 0.42040830850601196,
+  "gdp_2065": 24641.00390625,
+  "war_China-United States": 0.08250000327825546,
+  "war_Russia-United States": 0.04125000163912773,
+  "war_China-India": 0.20800000429153442,
+  "war_China-Taiwan": 0.0820000022649765
+ },
+ "none_space": {
+  "great_power_war": 0.4177500009536743,
+  "great_power_war_cow": 0.22325000166893005,
+  "nuclear_use": 0.11299999803304672,
+  "nuclear_large": 0.0032500000670552254,
+  "conflict_2065": 0.21714285016059875,
+  "democracy_2065": 0.420626699924469,
+  "gdp_2065": 24655.9765625,
+  "war_China-United States": 0.08675000071525574,
+  "war_Russia-United States": 0.042750000953674316,
+  "war_China-India": 0.21000000834465027,
+  "war_China-Taiwan": 0.08150000125169754
+ },
+ "none_space_deters": {
+  "great_power_war": 0.4180225133895874,
+  "great_power_war_cow": 0.22465582191944122,
+  "nuclear_use": 0.10075093805789948,
+  "nuclear_large": 0.0031289111357182264,
+  "conflict_2065": 0.21714285016059875,
+  "democracy_2065": 0.4234714210033417,
+  "gdp_2065": 24331.9296875
+ },
+ "none_space_destabilises": {
+  "great_power_war": 0.4089754521846771,
+  "great_power_war_cow": 0.22777307033538818,
+  "nuclear_use": 0.1261642724275589,
+  "nuclear_large": 0.003386960132047534,
+  "conflict_2065": 0.22285714745521545,
+  "democracy_2065": 0.4174196124076843,
+  "gdp_2065": 24896.23828125
+ }
+}

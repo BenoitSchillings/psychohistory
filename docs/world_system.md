@@ -1901,3 +1901,62 @@ Penn World Table 10.01 labour share and its 5-year change, the measurable trace 
 models 0 of 14 pass development (largest |t| 1.6, scripts/candidate_screen.py labour); growth equation 10-year
 development MSE +1.4%; democracy equation 10-year development -0.45% but test +0.17%. FDI inflows had already failed
 the growth screen (growth_screen.py invest).
+
+## Cheap space and technology breakthroughs (2026-10-31; scenarios, not in the headline)
+
+### Cheap space (world.WorldConfig.cheap_space; scripts/space_scenario.py)
+
+Launch costs falling 10-100x, with constellations, space-based sensors and interceptors, satellite internet and orbital
+compute deploying 2028-2040. Per-world assumptions (own generator): space_war U(-0.5, 0.7) on the log-odds of war onset
+and on nuclear use for the United States against a nuclear-armed rival (negative: dominance deters; positive: eroding
+second-strike confidence and anti-satellite races destabilise); sat_open U(0, 0.5), the share of AI surveillance's
+protection of autocracies and of the AI drift to autocracy removed (censorship-resistant connectivity); orbit_dc
+U(0, 0.5), the share of data centres' energy draw on Earth removed. Same 4,000 worlds with and without: every headline
+within noise (great-power war 46.0% -> 45.1% with AI uncertain; democracy 0.400 -> 0.404); nuclear use 12.0% where
+space dominance deters against 14.9% where it destabilises (no AI: 10.1% / 12.6%). Wars between the United States and
+China or Russia happen in only 5-10% of worlds, so even a large shift on those pairs barely moves world totals.
+
+### Technology registry (psychohistory/tech.py; scripts/tech_scenarios.py)
+
+Seventeen technologies besides those already modelled (near-free cognition, general-purpose robots, autonomous
+weapons, the solar-and-wind S-curve). Each has a chance of working at scale by 2040 and 2065, anchored where possible on
+forecaster markets, expert surveys and agency outlooks (sources in tech.py; Metaculus values from undated snapshots,
+several Manifold markets with few forecasters; judgement for green hydrogen and cheap ammonia). The anchors are
+unconditional, so each technology's no-AI curve is calibrated so that its average over the model's AI arrival
+distribution matches them (without AI, fusion at scale by 2065 falls from 25% to 10%). Per world: arrival through a
+shared science-pace factor (correlation 0.5), the remaining wait divided by 1 + U(0, 1) once near-free cognition
+arrives, prerequisites (space solar needs cheap launch), logistic adoption, and magnitudes drawn per world on existing
+levers: the clean-energy S-curve's rate and ceiling (and so oil demand), energy access, the warming since the origin
+(carbon removal, geoengineering, and clean energy beyond SSP2-4.5's own), yields and harvest swings, the world grain
+price, water losses, pandemic losses and deaths, engineered pandemics, the working-age share, leaders' mortality,
+banking-crisis odds at arrival, and war onset among rivals in monsoon Asia (geoengineering). Cheaper oil lifts no
+importer's growth (their 1966-2023 response was to price rises only), so energy technologies help mainly through
+warming and energy access and hurt exporters.
+
+A first run had three faults, fixed before these results: civil conflict and coups were summarised by medians of
+near-discrete counts (no change could show; now means), energy technologies had no climate effect (they lowered world
+GDP), and longevity assumed people work through most of their extra healthy years (+14% world GDP; the range was halved).
+
+All seventeen drawn against none (2 x 4,000 worlds, AI uncertain, 2065): world GDP per person +5.2% ($34.6k -> $36.4k;
++4.9% without AI), oil price -16%, clean share 64% -> 76%, world grain price -11%, the Sahel and East Africa +9.7%,
+petrostates +2.7%; civil conflict, coups, democracy and great-power war within noise. Attribution in the drawn worlds
+(arrival by 2045 as regressors): technologies explain 4% of the spread of world GDP and under 1% of conflict, war,
+coups or democracy.
+
+One technology forced to arrive in 2035 against never (the same 4,000 worlds, everything else drawn), 2065:
+
+| Technology | World GDP | Oil | Grain | Other |
+|---|---|---|---|---|
+| Geoengineering | +8.6% | 0% | -1.2% | Sahel +15%; great-power war +2.3 pt (monsoon-Asia rivalry); no termination shock |
+| Longevity | +7.6% | | | working-age share |
+| 100-day vaccines | +1.3% | | | excess deaths -81 million |
+| Fusion | +0.3% | -15% | | petrostates -1.8%, clean share +17 pt |
+| Advanced fission | +0.3% | -7.7% | | petrostates -0.7% |
+| Long-duration storage | +0.3% | -6.7% | | clean share +6 pt |
+| Engineered crops | +0.1% | | -5.1% | |
+| New protein | 0% | | -2.1% | |
+| Quantum code-breaking | -0.2% | | | crises carry no direct output cost here |
+| Engineered pathogens | -1.0% | | | excess deaths +213 million |
+
+Civil conflict moved by at most 0.3 points and coups by under 0.2 a year for any technology: in this model,
+technology changes economies, not the political drivers of crises.

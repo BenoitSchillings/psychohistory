@@ -15,7 +15,7 @@ from .data import RAW, ROOT
 OUT = ROOT / "outputs"
 TEMPLATE = ROOT / "psychohistory" / "report_template.html"
 # bump on every published change to the report (version 39 follows the 38 earlier published revisions)
-VERSION = ("42", "31 October 2026")
+VERSION = ("43", "31 October 2026")
 
 
 def _world_topology():
@@ -89,6 +89,11 @@ def build(path=None) -> str:
                     ("scorecard", "prospective_scorecard.json"), ("climate", "climate_risk.json")]:
         if (OUT / fn).exists():
             extra[key] = json.loads((OUT / fn).read_text())
+    ts = OUT / "tech_scenarios.json"
+    if ts.exists():
+        from .tech import TECHS
+        extra["tech"] = {"scen": json.loads(ts.read_text()),
+                         "registry": {k: [v[0], v[1], sorted(v[4])] for k, v in TECHS.items()}}
     ua, ur = OUT / "uncertainty_attribution.json", OUT / "uncertainty_ranges.json"
     if ua.exists():
         att = json.loads(ua.read_text())

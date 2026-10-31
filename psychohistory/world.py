@@ -167,6 +167,20 @@ class WorldConfig:
     # nothing to the pair model's backtests, and drought x farming x ethnic exclusion nothing to civil conflict
     # forecasts, so every effect here is an assumption whose range includes zero (WATER_RANGES)
     water: bool = True
+    # cheap space (scenario, off by default; 2026-10-31): launch costs fall 10-100x and constellations, space-based sensors
+    # and interceptors, satellite internet and orbital compute deploy from 2028 to 2040. Per-world assumptions
+    # (SPACE_RANGES): space_war shifts war onset and nuclear use for the United States against a nuclear-armed rival
+    # (negative: dominance deters; positive: eroding second-strike confidence and anti-satellite races destabilise);
+    # sat_open removes that share of AI surveillance's protection of autocracies and of the AI drift to autocracy
+    # (censorship-resistant connectivity); orbit_dc removes that share of data centres' energy draw on Earth
+    cheap_space: bool = False
+    # technology breakthroughs (tech.py; scenario, off by default): each world draws which arrive and when, and their
+    # conditional effects; tech_force = {name: year or None} fixes an arrival in every world (paired comparisons)
+    tech: bool = False
+    tech_force: dict | None = None
+    space_war: float = 0.1
+    sat_open: float = 0.25
+    orbit_dc: float = 0.25
     water_dispute: float = 0.25       # onset log-odds for pairs in a live water dispute (water.WATER_DISPUTES)
     water_scarcity_k: float = 2.0     # onset log-odds per unit water lost by the worse-off member of a basin pair
     yield_water: float = 0.4          # cereal yield change per unit change in water supply, x how binding water is
@@ -334,6 +348,8 @@ PARAM_RANGES = {
     "drone_onset": ("u", -0.3, 0.5), "drone_persist": ("u", 0.0, 0.8), "drone_reach": ("u", 0.0, 0.2), "drone_civil": ("u", -0.2, 0.4),
 }
 CAPTURE_RANGES = {"firm_capture": ("u", 0.2, 0.9), "clawback": ("u", 0.0, 0.1)}   # AI scenarios only (assumptions)
+SPACE_RANGES = {"space_war": ("u", -0.5, 0.7), "sat_open": ("u", 0.0, 0.5), "orbit_dc": ("u", 0.0, 0.5)}   # cheap space only
+SPACE_START, SPACE_FULL = 2028, 2040
 # water assumptions: drawn from their own generator, so adding them left every earlier parameter's draws unchanged
 WATER_RANGES = {
     "water_dispute": ("u", 0.0, 0.5), "water_scarcity_k": ("u", 0.0, 4.0), "yield_water": ("u", 0.1, 0.7),
@@ -440,6 +456,14 @@ class World:
         sc = np.interp(bb, self.cont_grid, self.cont_scale)
         return torch.as_tensor(sc, dtype=torch.float32, device=self.trade_w.device)[:, None] if torch.is_tensor(b) else float(sc[0])
 
+    def space_ramp(self, year):
+        """deployment of cheap space, 0 before SPACE_START to 1 from SPACE_FULL (0 without the scenario)"""
+        if self.tech is not None and "cheap_launch" in self.tech.arrival:
+            return self.tech.adoption("cheap_launch", year)            # [S, 1]: when cheap launch arrives in each world
+        if not self.cfg.cheap_space:
+            return 0.0
+        return float(np.clip((year - SPACE_START) / (SPACE_FULL - SPACE_START), 0.0, 1.0))
+
     def capture(self):
         """firms' share of AI rents relative to the mean assumption (1 = as before the rent-capture split), falling as
         states claw rents back with every year of full adoption"""
@@ -490,6 +514,11 @@ class World:
             if getattr(self.cfg, k) != getattr(defaults, k):
                 continue
             self.params[k] = a + (b - a) * r_ if kind == "u" else a + b * r_
+        gs = torch.Generator(device=device).manual_seed(seed + 601)       # cheap space: its own generator too
+        for k, (kind, a, b) in (SPACE_RANGES.items() if self.cfg.sample_params else ()):
+            r_ = torch.rand(S, 1, device=device, generator=gs)
+            if (self.cfg.cheap_space or self.cfg.tech) and getattr(self.cfg, k) == getattr(defaults, k):
+                self.params[k] = a + (b - a) * r_
         # rent capture: its own generator (seed + 503), so adding it left every earlier draw unchanged
         gr = torch.Generator(device=device).manual_seed(seed + 503)
         for k, (kind, a, b) in (CAPTURE_RANGES.items() if self.cfg.sample_params else ()):
@@ -552,6 +581,15 @@ class World:
         self.gen_cascade = torch.Generator(device=device)
         self.gen_cascade.manual_seed(int(gen.initial_seed()) + 7919 if gen is not None else 7919)
         self._draw_params(S, device, int(gen.initial_seed()) if hasattr(gen, "initial_seed") else 0)
+        self.tech = None
+        if self.cfg.tech:
+            from .tech import TechState
+            ai_w = None
+            if self.cfg.ai.arrival:
+                ai_w = (self.arrival_w if self.cfg.ai.arrival_cdf else self.cfg.ai.arrival + self.prm("arrival_sd"))
+                ai_w = (ai_w * torch.ones(S, 1, device=device)).cpu().numpy().ravel()
+            self.tech = TechState(S, device, int(gen.initial_seed()) if hasattr(gen, "initial_seed") else 0, ai_w,
+                                  force=self.cfg.tech_force)
         C = len(p.codes)
         t0 = p.yi(origin)
         f = lambda a: torch.as_tensor(np.asarray(a, dtype=np.float32), device=device)
@@ -707,6 +745,8 @@ class World:
         # precipitation where the water comes from: own rain and upstream rain in shared basins (risks.upstream_precip)
         pr_eff = pr_ratio.clamp(0.5, 1.5) @ self.upstream.T
         wc = glac + self.cfg.runoff_elast_pr * (pr_eff - 1)
+        if self.tech is not None:
+            wc = torch.where(wc < 0, wc * (1 - self.tech.lever("water_cut").clamp(max=1)), wc)   # desalination
         d = wc - self.water_change
         self.water_change = wc.expand_as(self.water_change).clone()
         self.rec["water_change"].append(self.water_change.median(0).values)
@@ -854,6 +894,9 @@ class World:
         # powers (the changing set, _great_powers), a large exchange (10 to 200 million deaths, belligerents lose half their output, the world
         # nuc_gdp_large through trade, finance and climate effects)
         p_use = wf * (both_n * self.prm("nuc_use_both") + one_n * self.prm("nuc_use_one"))
+        R_sp = self.space_ramp(self.origin + getattr(self, "k_now", 0))
+        if torch.is_tensor(R_sp) or R_sp:
+            p_use = p_use * torch.exp(self.prm("space_war") * R_sp * both_n * (self.is_usa[self.ia] + self.is_usa[self.ib])[None])
         use = torch.rand(S, self.P, device=dev, generator=g) < p_use
         large = use & (self.gp_pair > 0) & (both_n > 0) & (torch.rand(S, self.P, device=dev, generator=g) < self.prm("nuc_escalate"))
         lim_d = 10 ** (4 + 2 * torch.rand(S, self.P, device=dev, generator=g))
@@ -1120,6 +1163,16 @@ class World:
         busy_c = torch.zeros(S, self.nuclear.shape[1], device=dev).index_add_(1, self.ia, self.ongoing).index_add_(1, self.ib, self.ongoing)
         busy_p = ((busy_c[:, self.ia] + busy_c[:, self.ib] - 2 * self.ongoing) > 0).float()
         logit_onset = logit_onset - self.prm("busy_beta") * busy_p
+        R_sp = self.space_ramp(self.origin + k)
+        if torch.is_tensor(R_sp) or R_sp:
+            # cheap space: the United States against a nuclear-armed rival (scenario assumption)
+            logit_onset = logit_onset + self.prm("space_war") * R_sp * both_n * (self.is_usa[self.ia] + self.is_usa[self.ib])[None]
+        if self.tech is not None:
+            # unilateral climate intervention: rivals in monsoon Asia (assumption)
+            if not hasattr(self, "monsoon_pair"):
+                ms = torch.as_tensor([c in SOUTH_ASIA + ("CHN",) for c in self.codes], device=dev).float()
+                self.monsoon_pair = (ms[self.ia] * ms[self.ib])[None] * torch.nan_to_num(self.static["rival"])[None]
+            logit_onset = logit_onset + self.tech.lever("geo_tension") * self.monsoon_pair
         p_on = torch.sigmoid(logit_onset)
         p_cont = self.cont[self.run.clamp(0, 3).long()]
         lgt = lambda q_: torch.logit(torch.as_tensor(q_, device=dev).clamp(1e-6, 1 - 1e-6))

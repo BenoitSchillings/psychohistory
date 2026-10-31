@@ -1,0 +1,1216 @@
+{
+ "A_uncertain_none": {
+  "world_gdp_median": 34566.20046745737,
+  "conflict": 0.23228428294090553,
+  "democracy_median": 0.3999036103487015,
+  "great_power_war": 0.45525,
+  "nuclear_use": 0.12875,
+  "oil_median": 0.902748796657996,
+  "clean_share_median": 0.6368056535720825,
+  "food_price_median": 76.16702738261648,
+  "excess_deaths_m_median": 307.63531494140625,
+  "excess_deaths_m_mean": 757.9545466403961,
+  "gdp_petrostates_median": 25897.851747721616,
+  "gdp_sahel_median": 4423.492385366663,
+  "coups": 42.601375
+ },
+ "A_uncertain_tech": {
+  "world_gdp_median": 36374.513525817725,
+  "conflict": 0.23233356870058924,
+  "democracy_median": 0.4032658040523529,
+  "great_power_war": 0.4665,
+  "nuclear_use": 0.131625,
+  "oil_median": 0.7549900025511889,
+  "clean_share_median": 0.7587608397006989,
+  "food_price_median": 67.64625870607958,
+  "excess_deaths_m_median": 313.7202911376953,
+  "excess_deaths_m_mean": 836.2366287903785,
+  "gdp_petrostates_median": 26595.554326988084,
+  "gdp_sahel_median": 4851.283872991614,
+  "coups": 42.91175
+ },
+ "A_none_none": {
+  "world_gdp_median": 24746.617967214446,
+  "conflict": 0.22874714013631456,
+  "democracy_median": 0.4207659512758255,
+  "great_power_war": 0.41775,
+  "nuclear_use": 0.112,
+  "oil_median": 0.9052051763090271,
+  "clean_share_median": 0.6312176287174225,
+  "food_price_median": 81.10134139829957,
+  "excess_deaths_m_median": 314.5162048339844,
+  "excess_deaths_m_mean": 588.0335655105114,
+  "gdp_petrostates_median": 20110.38490010524,
+  "gdp_sahel_median": 4426.578139160103,
+  "coups": 44.2525
+ },
+ "A_none_tech": {
+  "world_gdp_median": 25969.90982558167,
+  "conflict": 0.22765571163524873,
+  "democracy_median": 0.4200061410665512,
+  "great_power_war": 0.42775,
+  "nuclear_use": 0.11125,
+  "oil_median": 0.7794209941316445,
+  "clean_share_median": 0.726001650094986,
+  "food_price_median": 73.2430546461827,
+  "excess_deaths_m_median": 304.8872375488281,
+  "excess_deaths_m_mean": 627.9775793817043,
+  "gdp_petrostates_median": 20971.560599540087,
+  "gdp_sahel_median": 4746.776897735142,
+  "coups": 44.33425
+ },
+ "B_long_storage_2035": {
+  "world_gdp_median": 36854.31802967096,
+  "conflict": 0.23125285444501786,
+  "democracy_median": 0.40202587842941284,
+  "great_power_war": 0.467,
+  "nuclear_use": 0.13575,
+  "oil_median": 0.7243010875141648,
+  "clean_share_median": 0.7760371565818787,
+  "food_price_median": 67.89660999433525,
+  "excess_deaths_m_median": 333.6134796142578,
+  "excess_deaths_m_mean": 822.4653644772768,
+  "gdp_petrostates_median": 27055.474958968283,
+  "gdp_sahel_median": 4908.7094404031095,
+  "coups": 43.1365
+ },
+ "B_long_storage_never": {
+  "world_gdp_median": 36747.012546427926,
+  "conflict": 0.23143571158964188,
+  "democracy_median": 0.4020937830209732,
+  "great_power_war": 0.468,
+  "nuclear_use": 0.137,
+  "oil_median": 0.7763395155353451,
+  "clean_share_median": 0.7159610688686371,
+  "food_price_median": 67.72108617617786,
+  "excess_deaths_m_median": 333.35325622558594,
+  "excess_deaths_m_mean": 823.3962878853083,
+  "gdp_petrostates_median": 27234.235106101445,
+  "gdp_sahel_median": 4838.383327744972,
+  "coups": 43.12975
+ },
+ "B_fusion_2035": {
+  "world_gdp_median": 36947.91015873435,
+  "conflict": 0.2309528543325141,
+  "democracy_median": 0.40222807228565216,
+  "great_power_war": 0.47625,
+  "nuclear_use": 0.1405,
+  "oil_median": 0.6448726046235497,
+  "clean_share_median": 0.9047176241874695,
+  "food_price_median": 68.10679346204972,
+  "excess_deaths_m_median": 335.49755859375,
+  "excess_deaths_m_mean": 822.9656490629911,
+  "gdp_petrostates_median": 26678.37528136214,
+  "gdp_sahel_median": 5006.069209453987,
+  "coups": 43.16525
+ },
+ "B_fusion_never": {
+  "world_gdp_median": 36845.72558592708,
+  "conflict": 0.231298568662256,
+  "democracy_median": 0.40183138847351074,
+  "great_power_war": 0.47275,
+  "nuclear_use": 0.1365,
+  "oil_median": 0.7612240261263686,
+  "clean_share_median": 0.7336967289447784,
+  "food_price_median": 67.77857405281009,
+  "excess_deaths_m_median": 334.71728515625,
+  "excess_deaths_m_mean": 822.4363249834776,
+  "gdp_petrostates_median": 27176.240646197068,
+  "gdp_sahel_median": 4873.820986079087,
+  "coups": 43.13225
+ },
+ "B_adv_fission_2035": {
+  "world_gdp_median": 36863.01794296695,
+  "conflict": 0.23115285441093147,
+  "democracy_median": 0.40203383564949036,
+  "great_power_war": 0.47475,
+  "nuclear_use": 0.137,
+  "oil_median": 0.7092517404218167,
+  "clean_share_median": 0.7930568158626556,
+  "food_price_median": 67.71722740045058,
+  "excess_deaths_m_median": 337.3823699951172,
+  "excess_deaths_m_mean": 824.4994722248316,
+  "gdp_petrostates_median": 26988.415583418457,
+  "gdp_sahel_median": 4919.913815932999,
+  "coups": 43.14475
+ },
+ "B_adv_fission_never": {
+  "world_gdp_median": 36757.422291167844,
+  "conflict": 0.23138285451196133,
+  "democracy_median": 0.4018825441598892,
+  "great_power_war": 0.472,
+  "nuclear_use": 0.1385,
+  "oil_median": 0.7688184127027492,
+  "clean_share_median": 0.7259595692157745,
+  "food_price_median": 67.76807108030735,
+  "excess_deaths_m_median": 334.0320281982422,
+  "excess_deaths_m_mean": 822.4512059623003,
+  "gdp_petrostates_median": 27180.74117035074,
+  "gdp_sahel_median": 4866.850494188604,
+  "coups": 43.1365
+ },
+ "B_geoengineering_2035": {
+  "world_gdp_median": 39211.5052088155,
+  "conflict": 0.22896285451669246,
+  "democracy_median": 0.40061305463314056,
+  "great_power_war": 0.484,
+  "nuclear_use": 0.13475,
+  "oil_median": 0.7486443873111528,
+  "clean_share_median": 0.747730553150177,
+  "food_price_median": 67.40695453776796,
+  "excess_deaths_m_median": 338.45460510253906,
+  "excess_deaths_m_mean": 827.6720614018441,
+  "gdp_petrostates_median": 28615.98882529711,
+  "gdp_sahel_median": 5410.59923820988,
+  "coups": 43.2605
+ },
+ "B_geoengineering_never": {
+  "world_gdp_median": 36096.84907936,
+  "conflict": 0.23176285447273404,
+  "democracy_median": 0.4022962898015976,
+  "great_power_war": 0.4615,
+  "nuclear_use": 0.13675,
+  "oil_median": 0.7489440104779914,
+  "clean_share_median": 0.747730553150177,
+  "food_price_median": 68.22592151600712,
+  "excess_deaths_m_median": 336.44403076171875,
+  "excess_deaths_m_mean": 828.0217837051154,
+  "gdp_petrostates_median": 26506.663104500527,
+  "gdp_sahel_median": 4695.321873288461,
+  "coups": 43.10075
+ },
+ "B_crops_2035": {
+  "world_gdp_median": 36763.25934707369,
+  "conflict": 0.23113571163266897,
+  "democracy_median": 0.4020775407552719,
+  "great_power_war": 0.465,
+  "nuclear_use": 0.137,
+  "oil_median": 0.7476268010445634,
+  "clean_share_median": 0.7477624118328094,
+  "food_price_median": 66.54285487009821,
+  "excess_deaths_m_median": 336.41131591796875,
+  "excess_deaths_m_mean": 823.3275573056936,
+  "gdp_petrostates_median": 27134.568275706653,
+  "gdp_sahel_median": 4877.428783514461,
+  "coups": 43.11125
+ },
+ "B_crops_never": {
+  "world_gdp_median": 36720.63337362576,
+  "conflict": 0.23164856865629554,
+  "democracy_median": 0.4019819051027298,
+  "great_power_war": 0.47225,
+  "nuclear_use": 0.13775,
+  "oil_median": 0.7482718025649521,
+  "clean_share_median": 0.7477624118328094,
+  "food_price_median": 70.13941774768188,
+  "excess_deaths_m_median": 335.63722229003906,
+  "excess_deaths_m_mean": 822.3625917943716,
+  "gdp_petrostates_median": 27155.70114359715,
+  "gdp_sahel_median": 4877.755347344401,
+  "coups": 43.19125
+ },
+ "B_protein_2035": {
+  "world_gdp_median": 36817.11612816752,
+  "conflict": 0.2312557115862146,
+  "democracy_median": 0.40187400579452515,
+  "great_power_war": 0.46775,
+  "nuclear_use": 0.13675,
+  "oil_median": 0.7482718025649521,
+  "clean_share_median": 0.7477624118328094,
+  "food_price_median": 68.07953544222369,
+  "excess_deaths_m_median": 334.8727569580078,
+  "excess_deaths_m_mean": 822.6740292254686,
+  "gdp_petrostates_median": 27126.18239160112,
+  "gdp_sahel_median": 4883.350175100795,
+  "coups": 43.13875
+ },
+ "B_protein_never": {
+  "world_gdp_median": 36817.11612816752,
+  "conflict": 0.23125999730359764,
+  "democracy_median": 0.40187400579452515,
+  "great_power_war": 0.46775,
+  "nuclear_use": 0.13675,
+  "oil_median": 0.7482718025649521,
+  "clean_share_median": 0.7477624118328094,
+  "food_price_median": 69.51704005933746,
+  "excess_deaths_m_median": 334.8727569580078,
+  "excess_deaths_m_mean": 822.674025654912,
+  "gdp_petrostates_median": 27126.18239160112,
+  "gdp_sahel_median": 4883.350175100795,
+  "coups": 43.131
+ },
+ "B_vaccines_100d_2035": {
+  "world_gdp_median": 37053.16961159314,
+  "conflict": 0.2313228545533493,
+  "democracy_median": 0.40175868570804596,
+  "great_power_war": 0.467,
+  "nuclear_use": 0.132,
+  "oil_median": 0.7489440104779914,
+  "clean_share_median": 0.7477624118328094,
+  "food_price_median": 67.61633152824764,
+  "excess_deaths_m_median": 290.92430114746094,
+  "excess_deaths_m_mean": 788.8402156754732,
+  "gdp_petrostates_median": 27376.425271048385,
+  "gdp_sahel_median": 4917.17045582463,
+  "coups": 43.14675
+ },
+ "B_vaccines_100d_never": {
+  "world_gdp_median": 36570.75883074372,
+  "conflict": 0.23120285448525102,
+  "democracy_median": 0.4020271301269531,
+  "great_power_war": 0.47575,
+  "nuclear_use": 0.13025,
+  "oil_median": 0.7482718025649521,
+  "clean_share_median": 0.747730553150177,
+  "food_price_median": 67.54611274115766,
+  "excess_deaths_m_median": 382.3284149169922,
+  "excess_deaths_m_mean": 869.8883846062422,
+  "gdp_petrostates_median": 26988.830672989134,
+  "gdp_sahel_median": 4819.99194514073,
+  "coups": 43.12075
+ },
+ "B_pathogens_2035": {
+  "world_gdp_median": 36691.19376061234,
+  "conflict": 0.23110571163520216,
+  "democracy_median": 0.4019041061401367,
+  "great_power_war": 0.468,
+  "nuclear_use": 0.1345,
+  "oil_median": 0.7491219576536253,
+  "clean_share_median": 0.7477624118328094,
+  "food_price_median": 67.6232155412506,
+  "excess_deaths_m_median": 357.955810546875,
+  "excess_deaths_m_mean": 912.2940442823171,
+  "gdp_petrostates_median": 27039.73569993941,
+  "gdp_sahel_median": 4837.383170924466,
+  "coups": 43.113
+ },
+ "B_pathogens_never": {
+  "world_gdp_median": 37059.424727658596,
+  "conflict": 0.2314528545131907,
+  "democracy_median": 0.40208256244659424,
+  "great_power_war": 0.472,
+  "nuclear_use": 0.13575,
+  "oil_median": 0.748710007841897,
+  "clean_share_median": 0.747822105884552,
+  "food_price_median": 67.65800100001186,
+  "excess_deaths_m_median": 279.3363952636719,
+  "excess_deaths_m_mean": 699.2113845375776,
+  "gdp_petrostates_median": 27509.419385623532,
+  "gdp_sahel_median": 4967.2765968461,
+  "coups": 43.15075
+ },
+ "B_longevity_2035": {
+  "world_gdp_median": 38756.82103696646,
+  "conflict": 0.23156856871582568,
+  "democracy_median": 0.4014023691415787,
+  "great_power_war": 0.47475,
+  "nuclear_use": 0.137,
+  "oil_median": 0.7491219576536253,
+  "clean_share_median": 0.7477624118328094,
+  "food_price_median": 67.6098995593008,
+  "excess_deaths_m_median": 335.13771057128906,
+  "excess_deaths_m_mean": 823.029528032899,
+  "gdp_petrostates_median": 28607.54789067475,
+  "gdp_sahel_median": 5181.367965721991,
+  "coups": 43.1215
+ },
+ "B_longevity_never": {
+  "world_gdp_median": 36002.95771571466,
+  "conflict": 0.23120714020449668,
+  "democracy_median": 0.4020581543445587,
+  "great_power_war": 0.47075,
+  "nuclear_use": 0.1365,
+  "oil_median": 0.7472554799077633,
+  "clean_share_median": 0.747730553150177,
+  "food_price_median": 67.616218681414,
+  "excess_deaths_m_median": 332.70509338378906,
+  "excess_deaths_m_mean": 822.7352878459692,
+  "gdp_petrostates_median": 26483.4181010796,
+  "gdp_sahel_median": 4745.868968395677,
+  "coups": 43.14175
+ },
+ "B_quantum_crypto_2035": {
+  "world_gdp_median": 36700.502666759814,
+  "conflict": 0.23114428311027588,
+  "democracy_median": 0.40196001529693604,
+  "great_power_war": 0.46825,
+  "nuclear_use": 0.1385,
+  "oil_median": 0.7469444446092959,
+  "clean_share_median": 0.7478042542934418,
+  "food_price_median": 67.64993601850014,
+  "excess_deaths_m_median": 332.27099609375,
+  "excess_deaths_m_mean": 821.2450083292723,
+  "gdp_petrostates_median": 27158.525819226412,
+  "gdp_sahel_median": 4876.398409407366,
+  "coups": 43.13025
+ },
+ "B_quantum_crypto_never": {
+  "world_gdp_median": 36773.55094905628,
+  "conflict": 0.23136714014783502,
+  "democracy_median": 0.4022202640771866,
+  "great_power_war": 0.46975,
+  "nuclear_use": 0.13275,
+  "oil_median": 0.7491219576536253,
+  "clean_share_median": 0.7476969063282013,
+  "food_price_median": 67.62752042073593,
+  "excess_deaths_m_median": 336.0006103515625,
+  "excess_deaths_m_mean": 820.340961804986,
+  "gdp_petrostates_median": 27209.640091882877,
+  "gdp_sahel_median": 4874.867015481063,
+  "coups": 43.1015
+ },
+ "C_attribution_by2045": {
+  "log_world_gdp": {
+   "long_storage": {
+    "coef": 0.05728,
+    "t": 4.8
+   },
+   "adv_fission": {
+    "coef": 0.04991,
+    "t": 3.6
+   },
+   "geothermal": {
+    "coef": 0.04592,
+    "t": 3.3
+   },
+   "fusion": {
+    "coef": 0.02308,
+    "t": 0.8
+   },
+   "green_hydrogen": {
+    "coef": 0.01967,
+    "t": 1.6
+   },
+   "cheap_ammonia": {
+    "coef": 0.00551,
+    "t": 0.4
+   },
+   "cheap_launch": {
+    "coef": 0.02914,
+    "t": 1.7
+   },
+   "space_solar": {
+    "coef": -0.02709,
+    "t": -0.8
+   },
+   "air_capture": {
+    "coef": 0.02596,
+    "t": 1.1
+   },
+   "geoengineering": {
+    "coef": 0.05502,
+    "t": 3.3
+   },
+   "crops": {
+    "coef": -0.00392,
+    "t": -0.3
+   },
+   "protein": {
+    "coef": 0.00911,
+    "t": 0.8
+   },
+   "desalination": {
+    "coef": 0.02868,
+    "t": 2.4
+   },
+   "vaccines_100d": {
+    "coef": 0.01836,
+    "t": 1.5
+   },
+   "pathogens": {
+    "coef": -0.00205,
+    "t": -0.2
+   },
+   "longevity": {
+    "coef": 0.07375,
+    "t": 5.5
+   },
+   "quantum_crypto": {
+    "coef": 0.00332,
+    "t": 0.3
+   },
+   "_r2": 0.029
+  },
+  "conflict": {
+   "long_storage": {
+    "coef": -0.00028,
+    "t": -0.1
+   },
+   "adv_fission": {
+    "coef": 0.00251,
+    "t": 1.0
+   },
+   "geothermal": {
+    "coef": -0.00175,
+    "t": -0.7
+   },
+   "fusion": {
+    "coef": -0.0076,
+    "t": -1.4
+   },
+   "green_hydrogen": {
+    "coef": -0.00143,
+    "t": -0.7
+   },
+   "cheap_ammonia": {
+    "coef": -0.0028,
+    "t": -1.2
+   },
+   "cheap_launch": {
+    "coef": -0.00101,
+    "t": -0.3
+   },
+   "space_solar": {
+    "coef": -0.00315,
+    "t": -0.5
+   },
+   "air_capture": {
+    "coef": 0.00682,
+    "t": 1.6
+   },
+   "geoengineering": {
+    "coef": -0.00105,
+    "t": -0.3
+   },
+   "crops": {
+    "coef": -0.002,
+    "t": -0.9
+   },
+   "protein": {
+    "coef": 0.00295,
+    "t": 1.4
+   },
+   "desalination": {
+    "coef": 0.00158,
+    "t": 0.7
+   },
+   "vaccines_100d": {
+    "coef": 0.00484,
+    "t": 2.2
+   },
+   "pathogens": {
+    "coef": -0.00063,
+    "t": -0.3
+   },
+   "longevity": {
+    "coef": 0.00209,
+    "t": 0.8
+   },
+   "quantum_crypto": {
+    "coef": -0.0032,
+    "t": -1.4
+   },
+   "_r2": 0.002
+  },
+  "democracy": {
+   "long_storage": {
+    "coef": -0.00523,
+    "t": -2.9
+   },
+   "adv_fission": {
+    "coef": -0.00678,
+    "t": -3.3
+   },
+   "geothermal": {
+    "coef": -0.00059,
+    "t": -0.3
+   },
+   "fusion": {
+    "coef": -0.00153,
+    "t": -0.3
+   },
+   "green_hydrogen": {
+    "coef": -0.00214,
+    "t": -1.2
+   },
+   "cheap_ammonia": {
+    "coef": -0.00097,
+    "t": -0.5
+   },
+   "cheap_launch": {
+    "coef": 0.00168,
+    "t": 0.7
+   },
+   "space_solar": {
+    "coef": 0.01343,
+    "t": 2.6
+   },
+   "air_capture": {
+    "coef": -0.00189,
+    "t": -0.5
+   },
+   "geoengineering": {
+    "coef": 0.00324,
+    "t": 1.3
+   },
+   "crops": {
+    "coef": 0.00187,
+    "t": 1.1
+   },
+   "protein": {
+    "coef": -0.00124,
+    "t": -0.7
+   },
+   "desalination": {
+    "coef": 0.00245,
+    "t": 1.4
+   },
+   "vaccines_100d": {
+    "coef": -0.00073,
+    "t": -0.4
+   },
+   "pathogens": {
+    "coef": 0.00093,
+    "t": 0.5
+   },
+   "longevity": {
+    "coef": -0.00025,
+    "t": -0.1
+   },
+   "quantum_crypto": {
+    "coef": -0.00382,
+    "t": -2.0
+   },
+   "_r2": 0.005
+  },
+  "great_power_war": {
+   "long_storage": {
+    "coef": 0.01046,
+    "t": 0.9
+   },
+   "adv_fission": {
+    "coef": 0.00785,
+    "t": 0.6
+   },
+   "geothermal": {
+    "coef": -0.01153,
+    "t": -0.8
+   },
+   "fusion": {
+    "coef": 0.01191,
+    "t": 0.4
+   },
+   "green_hydrogen": {
+    "coef": -0.00383,
+    "t": -0.3
+   },
+   "cheap_ammonia": {
+    "coef": 0.0191,
+    "t": 1.5
+   },
+   "cheap_launch": {
+    "coef": 0.0059,
+    "t": 0.3
+   },
+   "space_solar": {
+    "coef": 0.0284,
+    "t": 0.8
+   },
+   "air_capture": {
+    "coef": 0.00976,
+    "t": 0.4
+   },
+   "geoengineering": {
+    "coef": 0.04564,
+    "t": 2.7
+   },
+   "crops": {
+    "coef": 0.01785,
+    "t": 1.5
+   },
+   "protein": {
+    "coef": 0.00571,
+    "t": 0.5
+   },
+   "desalination": {
+    "coef": 0.00867,
+    "t": 0.7
+   },
+   "vaccines_100d": {
+    "coef": 0.00397,
+    "t": 0.3
+   },
+   "pathogens": {
+    "coef": -0.01727,
+    "t": -1.5
+   },
+   "longevity": {
+    "coef": -0.02228,
+    "t": -1.6
+   },
+   "quantum_crypto": {
+    "coef": -0.00072,
+    "t": -0.1
+   },
+   "_r2": 0.003
+  },
+  "nuclear_use": {
+   "long_storage": {
+    "coef": 0.00743,
+    "t": 0.9
+   },
+   "adv_fission": {
+    "coef": 0.02211,
+    "t": 2.3
+   },
+   "geothermal": {
+    "coef": -0.00272,
+    "t": -0.3
+   },
+   "fusion": {
+    "coef": 0.02871,
+    "t": 1.4
+   },
+   "green_hydrogen": {
+    "coef": -0.00813,
+    "t": -1.0
+   },
+   "cheap_ammonia": {
+    "coef": 0.00423,
+    "t": 0.5
+   },
+   "cheap_launch": {
+    "coef": 0.01241,
+    "t": 1.1
+   },
+   "space_solar": {
+    "coef": 0.01387,
+    "t": 0.6
+   },
+   "air_capture": {
+    "coef": 0.00971,
+    "t": 0.6
+   },
+   "geoengineering": {
+    "coef": -0.00403,
+    "t": -0.4
+   },
+   "crops": {
+    "coef": -0.00673,
+    "t": -0.8
+   },
+   "protein": {
+    "coef": 0.00742,
+    "t": 0.9
+   },
+   "desalination": {
+    "coef": -0.00116,
+    "t": -0.1
+   },
+   "vaccines_100d": {
+    "coef": -0.00565,
+    "t": -0.7
+   },
+   "pathogens": {
+    "coef": -0.01177,
+    "t": -1.5
+   },
+   "longevity": {
+    "coef": 0.0022,
+    "t": 0.2
+   },
+   "quantum_crypto": {
+    "coef": -0.00504,
+    "t": -0.6
+   },
+   "_r2": 0.002
+  },
+  "log_oil": {
+   "long_storage": {
+    "coef": -0.03795,
+    "t": -1.2
+   },
+   "adv_fission": {
+    "coef": -0.03836,
+    "t": -1.1
+   },
+   "geothermal": {
+    "coef": -0.10535,
+    "t": -2.9
+   },
+   "fusion": {
+    "coef": -0.04175,
+    "t": -0.5
+   },
+   "green_hydrogen": {
+    "coef": -0.07926,
+    "t": -2.5
+   },
+   "cheap_ammonia": {
+    "coef": -0.00995,
+    "t": -0.3
+   },
+   "cheap_launch": {
+    "coef": -9e-05,
+    "t": -0.0
+   },
+   "space_solar": {
+    "coef": 0.01098,
+    "t": 0.1
+   },
+   "air_capture": {
+    "coef": 0.12043,
+    "t": 1.9
+   },
+   "geoengineering": {
+    "coef": 0.05793,
+    "t": 1.3
+   },
+   "crops": {
+    "coef": 0.03103,
+    "t": 1.0
+   },
+   "protein": {
+    "coef": -0.05166,
+    "t": -1.7
+   },
+   "desalination": {
+    "coef": -0.02515,
+    "t": -0.8
+   },
+   "vaccines_100d": {
+    "coef": 0.01101,
+    "t": 0.4
+   },
+   "pathogens": {
+    "coef": 0.01617,
+    "t": 0.5
+   },
+   "longevity": {
+    "coef": -0.02064,
+    "t": -0.6
+   },
+   "quantum_crypto": {
+    "coef": 0.01103,
+    "t": 0.3
+   },
+   "_r2": 0.005
+  },
+  "clean_share": {
+   "long_storage": {
+    "coef": 0.04346,
+    "t": 13.5
+   },
+   "adv_fission": {
+    "coef": 0.04391,
+    "t": 11.7
+   },
+   "geothermal": {
+    "coef": 0.03294,
+    "t": 8.8
+   },
+   "fusion": {
+    "coef": 0.08705,
+    "t": 11.0
+   },
+   "green_hydrogen": {
+    "coef": 0.05176,
+    "t": 16.0
+   },
+   "cheap_ammonia": {
+    "coef": 0.00117,
+    "t": 0.3
+   },
+   "cheap_launch": {
+    "coef": 0.00909,
+    "t": 2.0
+   },
+   "space_solar": {
+    "coef": 0.03592,
+    "t": 3.9
+   },
+   "air_capture": {
+    "coef": 0.00635,
+    "t": 1.0
+   },
+   "geoengineering": {
+    "coef": -0.01022,
+    "t": -2.3
+   },
+   "crops": {
+    "coef": 0.0104,
+    "t": 3.2
+   },
+   "protein": {
+    "coef": 0.00388,
+    "t": 1.2
+   },
+   "desalination": {
+    "coef": 0.00383,
+    "t": 1.2
+   },
+   "vaccines_100d": {
+    "coef": 0.00912,
+    "t": 2.9
+   },
+   "pathogens": {
+    "coef": 0.00842,
+    "t": 2.7
+   },
+   "longevity": {
+    "coef": 0.00291,
+    "t": 0.8
+   },
+   "quantum_crypto": {
+    "coef": 0.00573,
+    "t": 1.6
+   },
+   "_r2": 0.179
+  },
+  "log_food_price": {
+   "long_storage": {
+    "coef": -0.00449,
+    "t": -0.6
+   },
+   "adv_fission": {
+    "coef": -0.01054,
+    "t": -1.2
+   },
+   "geothermal": {
+    "coef": -0.01895,
+    "t": -2.1
+   },
+   "fusion": {
+    "coef": -0.02677,
+    "t": -1.4
+   },
+   "green_hydrogen": {
+    "coef": -0.00373,
+    "t": -0.5
+   },
+   "cheap_ammonia": {
+    "coef": -0.03496,
+    "t": -4.1
+   },
+   "cheap_launch": {
+    "coef": -0.01157,
+    "t": -1.0
+   },
+   "space_solar": {
+    "coef": -0.00787,
+    "t": -0.4
+   },
+   "air_capture": {
+    "coef": -0.0278,
+    "t": -1.8
+   },
+   "geoengineering": {
+    "coef": 0.00612,
+    "t": 0.6
+   },
+   "crops": {
+    "coef": -0.04073,
+    "t": -5.2
+   },
+   "protein": {
+    "coef": -0.00205,
+    "t": -0.3
+   },
+   "desalination": {
+    "coef": -0.01073,
+    "t": -1.4
+   },
+   "vaccines_100d": {
+    "coef": 0.00241,
+    "t": 0.3
+   },
+   "pathogens": {
+    "coef": -0.02026,
+    "t": -2.6
+   },
+   "longevity": {
+    "coef": -0.00734,
+    "t": -0.8
+   },
+   "quantum_crypto": {
+    "coef": -0.00922,
+    "t": -1.1
+   },
+   "_r2": 0.019
+  },
+  "excess_deaths_m": {
+   "long_storage": {
+    "coef": 40.71789,
+    "t": 1.1
+   },
+   "adv_fission": {
+    "coef": -59.72917,
+    "t": -1.4
+   },
+   "geothermal": {
+    "coef": 67.25533,
+    "t": 1.6
+   },
+   "fusion": {
+    "coef": 322.62529,
+    "t": 3.6
+   },
+   "green_hydrogen": {
+    "coef": -3.08316,
+    "t": -0.1
+   },
+   "cheap_ammonia": {
+    "coef": 11.361,
+    "t": 0.3
+   },
+   "cheap_launch": {
+    "coef": 18.73539,
+    "t": 0.4
+   },
+   "space_solar": {
+    "coef": -168.33488,
+    "t": -1.6
+   },
+   "air_capture": {
+    "coef": 67.3537,
+    "t": 0.9
+   },
+   "geoengineering": {
+    "coef": 22.84515,
+    "t": 0.4
+   },
+   "crops": {
+    "coef": -17.64415,
+    "t": -0.5
+   },
+   "protein": {
+    "coef": 39.56749,
+    "t": 1.1
+   },
+   "desalination": {
+    "coef": 14.44967,
+    "t": 0.4
+   },
+   "vaccines_100d": {
+    "coef": -70.16563,
+    "t": -1.9
+   },
+   "pathogens": {
+    "coef": 202.7657,
+    "t": 5.6
+   },
+   "longevity": {
+    "coef": -13.14316,
+    "t": -0.3
+   },
+   "quantum_crypto": {
+    "coef": -0.40697,
+    "t": -0.0
+   },
+   "_r2": 0.008
+  },
+  "log_gdp_petrostates": {
+   "long_storage": {
+    "coef": 0.04604,
+    "t": 3.8
+   },
+   "adv_fission": {
+    "coef": 0.034,
+    "t": 2.4
+   },
+   "geothermal": {
+    "coef": 0.02924,
+    "t": 2.1
+   },
+   "fusion": {
+    "coef": -0.0266,
+    "t": -0.9
+   },
+   "green_hydrogen": {
+    "coef": 0.01454,
+    "t": 1.2
+   },
+   "cheap_ammonia": {
+    "coef": -0.01112,
+    "t": -0.9
+   },
+   "cheap_launch": {
+    "coef": 0.02239,
+    "t": 1.3
+   },
+   "space_solar": {
+    "coef": -0.03012,
+    "t": -0.9
+   },
+   "air_capture": {
+    "coef": 0.00767,
+    "t": 0.3
+   },
+   "geoengineering": {
+    "coef": 0.0496,
+    "t": 2.9
+   },
+   "crops": {
+    "coef": 0.00094,
+    "t": 0.1
+   },
+   "protein": {
+    "coef": 0.00547,
+    "t": 0.5
+   },
+   "desalination": {
+    "coef": 0.01934,
+    "t": 1.6
+   },
+   "vaccines_100d": {
+    "coef": 0.01613,
+    "t": 1.3
+   },
+   "pathogens": {
+    "coef": -0.00583,
+    "t": -0.5
+   },
+   "longevity": {
+    "coef": 0.07574,
+    "t": 5.5
+   },
+   "quantum_crypto": {
+    "coef": 0.00784,
+    "t": 0.6
+   },
+   "_r2": 0.017
+  },
+  "log_gdp_sahel": {
+   "long_storage": {
+    "coef": 0.05625,
+    "t": 3.7
+   },
+   "adv_fission": {
+    "coef": 0.02645,
+    "t": 1.5
+   },
+   "geothermal": {
+    "coef": 0.01596,
+    "t": 0.9
+   },
+   "fusion": {
+    "coef": -0.00481,
+    "t": -0.1
+   },
+   "green_hydrogen": {
+    "coef": 0.02551,
+    "t": 1.7
+   },
+   "cheap_ammonia": {
+    "coef": -0.0009,
+    "t": -0.1
+   },
+   "cheap_launch": {
+    "coef": 0.0443,
+    "t": 2.0
+   },
+   "space_solar": {
+    "coef": 0.00206,
+    "t": 0.0
+   },
+   "air_capture": {
+    "coef": 0.06281,
+    "t": 2.0
+   },
+   "geoengineering": {
+    "coef": 0.12104,
+    "t": 5.7
+   },
+   "crops": {
+    "coef": 0.01292,
+    "t": 0.8
+   },
+   "protein": {
+    "coef": -0.02067,
+    "t": -1.4
+   },
+   "desalination": {
+    "coef": 0.00937,
+    "t": 0.6
+   },
+   "vaccines_100d": {
+    "coef": 0.01593,
+    "t": 1.0
+   },
+   "pathogens": {
+    "coef": -0.03141,
+    "t": -2.1
+   },
+   "longevity": {
+    "coef": 0.06975,
+    "t": 4.0
+   },
+   "quantum_crypto": {
+    "coef": 0.01291,
+    "t": 0.8
+   },
+   "_r2": 0.018
+  },
+  "coups": {
+   "long_storage": {
+    "coef": 0.29506,
+    "t": 0.5
+   },
+   "adv_fission": {
+    "coef": -0.32005,
+    "t": -0.5
+   },
+   "geothermal": {
+    "coef": 1.03316,
+    "t": 1.5
+   },
+   "fusion": {
+    "coef": -0.10274,
+    "t": -0.1
+   },
+   "green_hydrogen": {
+    "coef": 0.81803,
+    "t": 1.4
+   },
+   "cheap_ammonia": {
+    "coef": 0.22129,
+    "t": 0.3
+   },
+   "cheap_launch": {
+    "coef": -0.04287,
+    "t": -0.0
+   },
+   "space_solar": {
+    "coef": 3.66267,
+    "t": 2.1
+   },
+   "air_capture": {
+    "coef": -0.48875,
+    "t": -0.4
+   },
+   "geoengineering": {
+    "coef": 1.72464,
+    "t": 2.1
+   },
+   "crops": {
+    "coef": -0.27781,
+    "t": -0.5
+   },
+   "protein": {
+    "coef": 0.44983,
+    "t": 0.8
+   },
+   "desalination": {
+    "coef": -0.54738,
+    "t": -0.9
+   },
+   "vaccines_100d": {
+    "coef": -0.37729,
+    "t": -0.6
+   },
+   "pathogens": {
+    "coef": -0.18935,
+    "t": -0.3
+   },
+   "longevity": {
+    "coef": -0.00015,
+    "t": -0.0
+   },
+   "quantum_crypto": {
+    "coef": -0.40861,
+    "t": -0.6
+   },
+   "_r2": 0.002
+  }
+ }
+}

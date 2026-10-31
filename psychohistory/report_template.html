@@ -175,6 +175,7 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
       <div class="card"><h3>Real oil price</h3><p class="sub">Origin year = 100. Fan: no AI shock (wars involving exporters spike prices; history replayed without its trend). Line: median with near-free cognition from 2030. 2026 is the observed January–September price</p><div class="chart" id="c-oil"></div></div>
     </div>
     <div class="card"><h3>Winners and losers by 2065</h3><p class="sub">GDP per person with near-free cognition from 2030, relative to the no-AI baseline (median of simulated worlds).</p><div class="chart" id="c-ai-map"></div><div class="legend" id="ai-map-legend"></div></div>
+    <div class="card" id="card-tech"><h3>Other technology breakthroughs</h3><p class="sub" id="tech-sub"></p><div class="tablewrap"><table id="t-tech" class="wraptext"></table></div></div>
     <div class="tablewrap"><table id="t-ai-params"></table></div>
   </section>
 
@@ -1126,6 +1127,32 @@ function scoreSection() {
   } else document.getElementById("card-crowd").hidden = true;
   document.getElementById("score25-notes").textContent = "AUC: the chance that a country where the event happened was ranked above one where it did not (0.5 = coin flip). With one civil-war onset and two coups in 2025, single-year scores are anecdotes, not proof; they are kept to be pooled as more years arrive. ViEWS ranks about as well and is better calibrated month by month; averaging the two ranks best. The monthly model uses only the data available in January 2025 (UCDP's preliminary 2024 events) and was run once, without tuning on 2025; it beats ViEWS at 6 and 12 months ahead and loses at one month. The annual model's clearest miss was the United States, whose electoral democracy index fell from 0.84 to 0.74.";
 }
+function techSection() {
+  const T = EX && EX.tech;
+  if (!T) { document.getElementById("card-tech").hidden = true; return; }
+  const S = T.scen, R = T.registry;
+  const NM = {long_storage: "Cheap long-duration storage", adv_fission: "Advanced fission and small reactors", geothermal: "Enhanced geothermal",
+    fusion: "Fusion (over 5% of electricity)", green_hydrogen: "Cheap green hydrogen and electrified industry", cheap_ammonia: "Cheap ammonia and fertilizer",
+    cheap_launch: "Cheap launch (Starship-class)", space_solar: "Space-based solar power", air_capture: "Direct air capture at gigatonne scale",
+    geoengineering: "Stratospheric geoengineering deployed", crops: "Drought- and heat-tolerant engineered crops", protein: "Fermented or cultivated protein at cost parity",
+    desalination: "Cheap desalination at scale", vaccines_100d: "Vaccines for a new pathogen in 100 days", pathogens: "Engineered-pathogen capability for small groups",
+    longevity: "Longevity drugs (5+ healthy years)", quantum_crypto: "Quantum computer that breaks current encryption"};
+  const pc = v => (100 * v).toFixed(0) + "%";
+  const dl = (a, b, k, f) => (a && b && a[k] != null && b[k] != null) ? f(a[k], b[k]) : "–";
+  const rel = (a, b) => { const v = 100 * (a / b - 1); return (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(1) + "%"; };
+  const pts = (a, b) => { const v = 100 * (a - b); return (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(1) + " pt"; };
+  const dd = (a, b) => { const v = a - b; return (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(3); };
+  const A0 = S.A_uncertain_none, A1 = S.A_uncertain_tech;
+  document.getElementById("tech-sub").textContent = "Each simulated world draws which of these arrive and when: the chance by 2040 and 2065 is anchored on forecaster markets, expert surveys and agency outlooks where they exist (judgement for hydrogen and ammonia), calibrated so that the average over the AI arrival distribution matches; breakthroughs cluster in fast-science worlds and near-free cognition shortens the wait. Each acts only through levers the simulator already has (the clean-energy transition and oil, energy access, warming, harvests, food prices, water, pandemics, the working-age share, leaders' mortality, financial crises, rivalry in monsoon Asia), with magnitudes drawn per world. Columns on the right: the same 4,000 worlds with the technology forced to arrive in 2035 against never, everything else drawn. Not in the headline forecast; all of them drawn together" + (A0 && A1 ? ` raise world GDP per person in 2065 by ${rel(A1.world_gdp_median, A0.world_gdp_median)} and the clean share from ${pc(A0.clean_share_median)} to ${pc(A1.clean_share_median)}.` : ".");
+  const rows = Object.keys(R).map(k => {
+    const a = S[`B_${k}_2035`], b = S[`B_${k}_never`];
+    return `<tr><td>${NM[k] || k}</td><td class="num">${pc(R[k][0])}</td><td class="num">${pc(R[k][1])}</td>` +
+      `<td class="num">${dl(a, b, "world_gdp_median", rel)}</td><td class="num">${dl(a, b, "conflict", pts)}</td>` +
+      `<td class="num">${dl(a, b, "democracy_median", dd)}</td><td class="num">${dl(a, b, "oil_median", rel)}</td>` +
+      `<td class="num">${dl(a, b, "nuclear_use", pts)}</td><td class="num">${dl(a, b, "excess_deaths_m_mean", (x, y) => (x - y >= 0 ? "+" : "−") + Math.abs(x - y).toFixed(1) + " m")}</td></tr>`;
+  });
+  document.getElementById("t-tech").innerHTML = `<thead><tr><th>Technology</th><th class="num">By 2040</th><th class="num">By 2065</th><th class="num">World GDP 2065</th><th class="num">Civil conflict 2065</th><th class="num">Democracy 2065</th><th class="num">Oil price 2065</th><th class="num">Nuclear use</th><th class="num">Excess deaths</th></tr></thead><tbody>${rows.join("")}</tbody>`;
+}
 function benchSection() {
   const P = EX && EX.predcomp, G = EX && EX.predcomp_pgm, V = EX && EX.views_archive, C = EX && EX.crowd_live;
   if (!P && !G && !V && !C) { document.getElementById("sec-bench").hidden = true; return; }
@@ -1434,6 +1461,7 @@ function renderAll() {
   backtestTable(); try { splitTable(); } catch (e) { console.error(e); } calChart(); hindTable(); ablationTable();
   climMap(); scenCharts();
   systemTable(); interSection(); try { waterCard(); } catch (e) { console.error(e); document.getElementById("grid-water").hidden = true; } try { risksCard(); } catch (e) { console.error(e); document.getElementById("card-risks").hidden = true; } aiSection(); panelSection();
+  try { techSection(); } catch (e) { console.error(e); document.getElementById("card-tech").hidden = true; }
   scoreSection(); try { benchSection(); } catch (e) { console.error(e); document.getElementById("sec-bench").hidden = true; } whatIf(); chronicles(); try { disasterSection(); } catch (e) { console.error(e); document.getElementById("s-disaster").closest("section").hidden = true; } try { climateRisk(); } catch (e) { console.error(e); document.getElementById("clim-risk").hidden = true; } cycles(); oilChart(); cleanChart(); ledgerSection();
   if (USD) { usStress(); usMap(); usTable(); usBacktest(); }
   hindcast(document.querySelector("#hind-seg button[aria-pressed=true]")?.dataset.k);

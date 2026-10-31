@@ -816,6 +816,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     dmg_hist = torch.zeros_like(h["lg"])
 
     for k in range(1, T + 1):
+        if WS is not None and WS.tech is not None:
+            WS.tech.set_year(origin + k)               # technology adoption this year (tech.py)
         X = compute_features(h, cur, regions, R)                  # [S, C, F]
         Xh = compute_features({**h, "lg": h["lg"] + dmg_hist}, cur, regions, R) \
             if damage_feedback and bool((dmg_hist != 0).any()) else X
@@ -885,8 +887,9 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             ai = WS.cfg.ai
             # near-free surveillance: rebellion and coups get harder in autocracies
             autoc = (h["dem"][..., -1] < 0.4).float()
-            haz[..., 0] = haz[..., 0] - ai.surveillance * A * autoc
-            haz[..., 2] = haz[..., 2] - ai.surveillance * A * autoc
+            surv = ai.surveillance * (1 - WS.prm("sat_open") * WS.space_ramp(origin + k))   # satellite internet (cheap space)
+            haz[..., 0] = haz[..., 0] - surv * A * autoc
+            haz[..., 2] = haz[..., 2] - surv * A * autoc
             if climate_damage > 0:
                 # sustained local warming since the origin raises civil-war onsets where farming is a large share of
                 # the economy (assumption, range from no effect to a quarter of the untested panel fit)
@@ -958,6 +961,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         # (only the change beyond the 1960-2023 mean, which the growth equation already carries; robots offset part
         #  of a shrinking workforce at full adoption, robot_aging = the share offset, assumption)
         dlw = torch.nan_to_num(exo["lwork"][:, k] - exo["lwork"][:, k - 1]) - WORKFORCE_MEAN
+        if WS is not None and WS.tech is not None:
+            dlw = dlw + WS.tech.lever("work_gain")              # healthy years added (longevity, tech.py)
         if WS is not None:
             off = WS.prm("robot_aging") * WS.A_robot if WS.cfg.ai.arrival else 0.0
             g = g + WS.prm("workforce_beta") * torch.where(dlw < 0, dlw * (1 - off), dlw) + fish_g \
@@ -975,7 +980,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             if ai.arrival:
                 e_pc = cur["energy_pc"].nan_to_num(WS.e_frontier * 0.3)
                 e_front = torch.quantile(e_pc, 0.9, dim=1, keepdim=True)
-                e_eff = e_pc * (1 - WS.prm("dc_share") * 4 * A * (1 - A))
+                e_eff = e_pc * (1 - WS.prm("dc_share") * (1 - WS.prm("orbit_dc") * WS.space_ramp(origin + k)) * 4 * A * (1 - A))
                 e_cap = (e_eff / e_front).clamp(0.09, 1) ** 0.5
                 rent = 1 + WS.prm("hub_rent") * WS.capture() * (WS.hub - 0.3 * (1 - WS.hub))
                 # a transfer between hubs and others: rescaled so the output-weighted world dividend is unchanged
@@ -1022,13 +1027,16 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                 pandemic = (torch.rand(S, device=device, generator=gen) < p_nat).float()
                 lo_p, hi_p = WS.cfg.pandemic_gdp
                 hit = lo_p + (hi_p - lo_p) * torch.rand(S, device=device, generator=gen)
-                g = g + (pandemic * hit * (1 - (1 - ai.bio_response) * frf))[:, None]
+                pcut = (1 - WS.tech.lever("pandemic_cut").clamp(max=1)).flatten() if WS is not None and WS.tech is not None else 1.0   # fast vaccines
+                g = g + (pandemic * hit * pcut * (1 - (1 - ai.bio_response) * frf))[:, None]
                 pm_ = WS.prm("pandemic_mort")
-                pand_mort = pandemic * (pm_.flatten() if torch.is_tensor(pm_) else pm_) * (1 - (1 - ai.bio_response) * frf)
+                pand_mort = pandemic * (pm_.flatten() if torch.is_tensor(pm_) else pm_) * pcut * (1 - (1 - ai.bio_response) * frf)
                 u_eng = torch.rand(S, device=device, generator=gen)       # drawn in every world: paired runs stay paired
                 u3 = torch.rand(S, device=device, generator=gen) ** 3
-                if ai.arrival:
-                    p_eng = (WS.prm("eng_pandemic") * fr).flatten() * (1 + 2 * conf_next.mean(-1))
+                eng_t = WS.tech.lever("eng_pandemic").flatten() if WS is not None and WS.tech is not None else 0.0       # pathogen tools (tech.py)
+                if ai.arrival or WS is not None and WS.tech is not None:
+                    p_eng = ((WS.prm("eng_pandemic") * fr).flatten() if ai.arrival else 0.0) + eng_t
+                    p_eng = p_eng * (1 + 2 * conf_next.mean(-1))
                     eng = (u_eng < p_eng).float()
                     g = g - (eng * (0.05 + 0.20 * u3))[:, None]
                     pand_mort = torch.maximum(pand_mort, eng * (0.002 + 0.05 * u3))     # deaths scale with severity (assumption)
@@ -1055,7 +1063,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             WS.rec["robot_adoption_world"].append((WS.A_robot * pop[:, k]).sum(-1) / pop[:, k].sum())
             WS.rec["mil_autonomy"].append(WS.mil_auto[:, 0])
             # surveillance makes autocratization easier outside democracies
-            dd = dd - WS.prm("autocracy_drift") * A * (h["dem"][..., -1] < 0.5).float()
+            dd = dd - WS.prm("autocracy_drift") * (1 - WS.prm("sat_open") * WS.space_ramp(origin + k)) * A * (h["dem"][..., -1] < 0.5).float()
             if ai.arrival:
                 # elite overproduction and synthetic persuasion: credentialed work loses value fastest where many
                 # graduates compete, eroding democracies during the transition (weaker with strong fiscal capacity)
@@ -1078,7 +1086,12 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             if WS.cfg.transition:
                 adopt = (A * pop[:, k]).sum(-1, keepdim=True) / pop[:, k].sum() if WS.cfg.ai.arrival else 0.0
                 tr_r = tr_rate * (1 + WS.cfg.ai_transition_boost * adopt) * (1 - WS.prm("china_pause") * WS.china_hit)
-                tr_s_new = tr_K / (1 + (tr_K / tr_s - 1) * torch.exp(-tr_r))          # one logistic step
+                tr_Kt = tr_K
+                if WS is not None and WS.tech is not None:
+                    # storage, firm clean power, hydrogen: a faster transition and a higher ceiling (tech.py)
+                    tr_r = tr_r * (1 + WS.tech.lever("clean_rate"))
+                    tr_Kt = (tr_K + WS.tech.lever("clean_cap")).clamp(max=0.95)
+                tr_s_new = tr_Kt / (1 + (tr_Kt / tr_s - 1) * torch.exp(-tr_r))          # one logistic step
                 F_old = (WS.cfg.fossil_share_0 - (tr_s - tr_s0)).clamp(min=0.05)
                 F_new = (WS.cfg.fossil_share_0 - (tr_s_new - tr_s0)).clamp(min=0.05)
                 dlogD = torch.log(F_new / F_old)
@@ -1143,6 +1156,13 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             F_, u_ = wfac[v]
             z_ = torch.randn(S, F_.shape[1], device=device, generator=gen) @ F_.T + u_ * torch.randn(S, C, device=device, generator=gen)
             weather[v] = smooth[v] + d["sd"] * z_
+        if WS is not None and WS.tech is not None:
+            # carbon removal and geoengineering remove a share of the warming since the origin (all climate channels)
+            wc_ = WS.tech.lever("warming_cut").clamp(max=1)
+            for v in ("tas", "txx"):
+                if v in smooth:
+                    dlt = wc_ * (smooth[v] - cl[v]["median"][:, 0])
+                    smooth[v], weather[v] = smooth[v] - dlt, weather[v] - dlt
         amoc_r = None
         if WS is not None:
             # AMOC collapse (tail assumption): rain belts shift south, drying the Sahel and West Africa (half as much
@@ -1305,6 +1325,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                 # yields: country trend (damped) + warming damage + AI agronomy; calories follow income and yields
                 dT = smooth["tas"] - prev_tas
                 dly = WS.yield_trend * 0.97 ** k + WS.cfg.yield_per_degC * dT + ai.yield_gain * A
+                if WS is not None and WS.tech is not None:
+                    dly = dly + WS.tech.lever("yield_gain")          # engineered crops, cheap fertilizer (tech.py)
                 # this year's weather against its expected value moves the harvest (1962-2022 estimate: -1.4% per degC
                 # of hottest-day anomaly, +5.6% per unit log rain anomaly); the level recovers when the weather does
                 an_ = {"txx": torch.nan_to_num(weather["txx"] - smooth["txx"]),
@@ -1316,6 +1338,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                     # yearly weather terms, which explained ~15% of the US yield swings and gave a 1% spread
                     # against 7.6% observed
                     r_now = fd["yres"][shock_idx]
+                    if WS is not None and WS.tech is not None:
+                        r_now = r_now * (1 - WS.tech.lever("harvest_cut").clamp(max=1) * (r_now < 0).float())
                     amp = WS.prm("harvest_amp") * torch.nan_to_num(smooth["tas"] - cl["tas"]["base"]).clamp(min=0) * r_now.clamp(max=0)
                     r_tot = r_now + amp
                     dly = dly + r_tot - fd["r_prev"]
@@ -1359,6 +1383,11 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                         - wp["revert"] * (fd["lp"] - wp["anchor"])
                     if k == 1 and fd["obs"] is not None:
                         dlp = fd["obs"] + noise
+                    if WS is not None and WS.tech is not None:
+                        # cheap fertilizer and new protein: the world grain price falls by the adopted share
+                        fc_ = torch.log1p(-WS.tech.lever("food_cut").clamp(max=0.9))
+                        dlp = dlp + fc_ - fd.get("fcut_prev", 0.0)
+                        fd["fcut_prev"] = fc_
                     fd["lp"] = fd["lp"] + dlp
                     food_dlp = dlp
                     # drylands: cereal area follows decade-mean rainfall (estimate, food.dryland), within the arable cap
@@ -1403,7 +1432,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             #  instead lets energy-poor countries close part of their gap to the frontier)
             e_rel = (cur["energy_pc"] / torch.quantile(cur["energy_pc"].nan_to_num(WS.e_frontier * 0.3), 0.9, dim=1,
                                                          keepdim=True)).clamp(0, 1).nan_to_num(0.3)
-            cur["energy_pc"] = cur["energy_pc"] * torch.exp(0.5 * g + ai.clean_energy_gain * fr * (1 - e_rel))
+            e_tech = WS.tech.lever("energy_gain") if WS is not None and WS.tech is not None else 0.0
+            cur["energy_pc"] = cur["energy_pc"] * torch.exp(0.5 * g + (ai.clean_energy_gain * fr + e_tech) * (1 - e_rel))
             prev_tas = smooth["tas"]
             # (oil exporters' coup risk already moves with oil prices through the country models' oil-exposure
             #  features: only food exporters are added here)
@@ -1422,6 +1452,12 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         # (a deep recession, war and climate damage of the year included, makes a financial crisis likelier)
         g_rec = g + (dmg_hist[..., -1] - dmg_hist[..., -2]) if damage_feedback else g
         p_fc = torch.where(g_rec < -0.05, p_crisis_low, p_crisis_high)
+        if WS is not None and WS.tech is not None and "quantum_crypto" in WS.tech.arrival:
+            # encryption broken: a one-off wave of financial crises in the arrival year and the next (assumption)
+            shock_q = (WS.tech.arrived_in("quantum_crypto", year) + WS.tech.arrived_in("quantum_crypto", year - 1)).clamp(max=1)
+            m_q = 1 + (WS.tech._m["quantum_crypto"]["crisis_mult"] - 1) * shock_q
+            odds_q = p_fc / (1 - p_fc).clamp(min=1e-6) * m_q
+            p_fc = odds_q / (1 + odds_q)
         if WS is not None:
             # short-term external debt against reserves raises the odds of a banking crisis (structure.py)
             odds = p_fc / (1 - p_fc).clamp(min=1e-6) * torch.exp(WS.prm("st_debt_beta") * WS.st_debt[None])
@@ -1493,6 +1529,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             # death or ill health, by age (on top of the regime-based turnover, which mostly counts political exits)
             a0, a1, a2 = LEADER_DEATH
             p_die = torch.sigmoid(a0 + a1 * cur["leader_age"].nan_to_num(55.0) + a2 * (year - 2000) / 100)
+            if WS is not None and WS.tech is not None:
+                p_die = p_die * (1 - WS.tech.lever("leader_cut").clamp(max=1))
             died = (torch.rand(S, C, device=device, generator=gen) < p_die) & ~coup_success & ~regular
             succ_t = torch.where(died & (dem_next < 0.5), torch.full_like(succ_t, 2), (succ_t - 1).clamp(min=0))
             regular = regular | died
@@ -1591,6 +1629,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             wr["watch_war_deaths"] = WS.watch_ep_max.cpu().numpy()          # [S, n_watch] largest war per pair
             wr["blocs_war"] = {k: float(v.mean()) for k, v in WS.bloc_war_ever.items()}
             wr["max_war_deaths"] = WS.max_ep.cpu().numpy()                  # [S] largest single pair-war
+        if WS.tech is not None:
+            wr["tech_arrival"] = WS.tech.record()
         if WS.params:
             wr["params"] = {k: v[:, 0].cpu().numpy() for k, v in WS.params.items()}
         wr["nuclear_end"] = (WS.nuclear & ~WS.nuclear0).float().mean(0).cpu().numpy()     # [C] share of worlds
