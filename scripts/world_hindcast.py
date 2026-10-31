@@ -4,7 +4,9 @@ origin. Saves, per origin, each world's sampled assumptions and summary statisti
 for testing the assumption ranges against history (scripts/world_history_match.py).
 
 python -P scripts/world_hindcast.py TAG HORIZON ORIGIN [ORIGIN ...] [--n N] [--cfg '{"WorldConfig field": value}']
--> outputs/world_hindcast/TAG_<origin>.npz"""
+    [--consts '{"module.CONST": value}']
+-> outputs/world_hindcast/TAG_<origin>.npz
+python -P scripts/world_hindcast.py --compare TAG_A TAG_B ORIGIN [ORIGIN ...]   (CRPS of each statistic, B against A)"""
 import os
 import sys
 import warnings
@@ -21,6 +23,31 @@ def world_series(lg, w):
     return np.log((np.exp(lg) * w[:, None]).sum(-2))
 
 
+def crps(x, y):
+    x = np.sort(np.asarray(x, float))
+    n = len(x)
+    return float(np.mean(np.abs(x - y)) - np.sum((2 * np.arange(1, n + 1) - n - 1) * x) / n ** 2)
+
+
+def compare(a, b, origins):
+    rows = {}
+    for O in origins:
+        A, B = (np.load(os.path.join(OUT, f"{t}_{O}.npz")) for t in (a, b))
+        for j, k in enumerate(A["names"]):
+            if k not in B["names"]:
+                continue
+            jb = list(B["names"]).index(k)
+            y = float(A["obs"][j])
+            rows.setdefault(str(k), []).append((crps(A["sim"][:, j], y), crps(B["sim"][:, jb], y),
+                                                float(np.median(A["sim"][:, j])), float(np.median(B["sim"][:, jb])), y))
+    print(f"{b} vs {a}, origins {origins}")
+    for k, r in rows.items():
+        r = np.array(r)
+        print(f"  {k:16s} CRPS {r[:, 0].mean():.4f} -> {r[:, 1].mean():.4f} ({100 * (r[:, 1].mean() / r[:, 0].mean() - 1):+.1f}%, "
+              f"B better at {(r[:, 1] < r[:, 0]).sum()}/{len(r)})  median {np.round(r[:, 2], 3).tolist()} -> "
+              f"{np.round(r[:, 3], 3).tolist()}  actual {np.round(r[:, 4], 3).tolist()}")
+
+
 def main():
     from psychohistory import interstate as INTER, pipeline as PL, simulate as SIM, world as WM
     from psychohistory.backtest import flatten, train_mask
@@ -31,6 +58,11 @@ def main():
     argv = list(sys.argv[1:])
     n = int(argv.pop(argv.index("--n") + 1)) if "--n" in argv else 2000
     wkw = json.loads(argv.pop(argv.index("--cfg") + 1)) if "--cfg" in argv else {}      # WorldConfig settings to test
+    consts = json.loads(argv.pop(argv.index("--consts") + 1)) if "--consts" in argv else {}   # {"module.CONST": value}
+    import importlib
+    for k, v in consts.items():
+        mod, name = k.rsplit(".", 1)
+        setattr(importlib.import_module(f"psychohistory.{mod}"), name, v)
     args = [a for a in argv if not a.startswith("--")]
     tag, H, origins = args[0], int(args[1]), [int(a) for a in args[2:]]
     os.makedirs(OUT, exist_ok=True)
@@ -114,4 +146,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if sys.argv[1] == "--compare":
+        compare(sys.argv[2], sys.argv[3], [int(o) for o in sys.argv[4:]])
+    else:
+        main()

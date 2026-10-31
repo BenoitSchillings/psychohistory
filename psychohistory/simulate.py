@@ -38,8 +38,13 @@ GROWTH_FEATURES = ["gdp_gap_frontier", "growth_1y", "growth_5y", "gdp_drawdown",
 # free-expression erosion (5-year change) and neopatrimonial rule added 2026-10-28 (scripts/dem_screen.py: 25 V-Dem
 # variables improved democracy-change forecasts on dev and test, this pair the most; hindcasts sim_eval dm_fn:
 # democracy CRPS -3.0% dev (14/15), -6.5% test (7/7), other scores within 1.4%)
+# personalist legitimation added 2026-10-30, with free expression given its own equation (dynamics.INST_SLOW): it beat
+# baseline in all four dem_screen quadrants; hindcasts sim_eval l2dem3 (2 network seeds): democracy CRPS -1.2% dev
+# (12/15), -4.8% test (7/7), coup count CRPS +0.5% / +1.3% (seed 1: -0.2% / +0.3%), other scores within 1%; it moves
+# with democracy (COMOVE): frozen at 2025 levels it would act on democracy for forty years unchanged
 DEM_FEATURES = ["democracy", "democracy_sq", "democracy_change_5y", "region_dem_gap", "conflict_now",
-                "growth_1y", "gdp_drawdown", "gdp_gap_frontier", "freexp_change_5y", "neopatrimonialism"]
+                "growth_1y", "gdp_drawdown", "gdp_gap_frontier", "freexp_change_5y", "neopatrimonialism",
+                "legit_personalist"]
 
 
 def _pools(values, bins, n_bins):
@@ -103,12 +108,13 @@ class Transition:
 
     @staticmethod
     def fit(X, events, target, years, codes, regions, cols, lo, hi, bin_col, grid, squares=(), alpha=10.0,
-            n_bins=4, halflife=None, size=None):
+            n_bins=4, halflife=None, size=None, shock_w=None):
         ci = [FEATURES.index(c) for c in cols]
         ok = np.isfinite(target) & np.isfinite(events).all(1)
         bv = X[ok][:, FEATURES.index(bin_col)]
         lp = X[ok][:, FEATURES.index("log_pop")] if size else None
         X, ev, y, yr, cc, rg = (X[ok][:, ci], events[ok], np.clip(target[ok], lo, hi), years[ok], codes[ok], regions[ok])
+        sw = np.ones(ok.sum()) if shock_w is None else np.nan_to_num(shock_w[ok])
         mu, sd = np.nanmean(X, 0), np.nanstd(X, 0) + 1e-6
         sq_idx = [cols.index(c) for c in squares]
         Z = Transition._design(np.nan_to_num(np.clip((X - mu) / sd, -6, 6)), ev, sq_idx, np)
@@ -119,8 +125,12 @@ class Transition:
         m = Ridge(alpha=alpha).fit(Z, y, sample_weight=w)
         r = y - m.predict(Z)
         gi = np.searchsorted(grid, yr)
-        n_y = np.bincount(gi, minlength=len(grid))
-        shocks = np.where(n_y > 0, np.bincount(gi, r, minlength=len(grid)) / np.maximum(n_y, 1), 0.0)
+        n_y = np.bincount(gi, sw, minlength=len(grid))
+        shocks = np.where(n_y > 0, np.bincount(gi, r * sw, minlength=len(grid)) / np.where(n_y > 0, n_y, 1), 0.0)
+        if shock_w is not None:
+            # (weighted shocks carry the timing of world booms and busts; their mean over all country-years is the
+            # equation's, not the big economies' average residual, or replaying them would drift every country)
+            shocks = np.where(n_y > 0, shocks - shocks[gi].mean(), 0.0)
         r = r - shocks[gi]
         reg_dec, rk, rn = Transition._shrunk_means(r, rg * 10000 + yr // 10)
         r = r - reg_dec[rk]
@@ -141,6 +151,17 @@ class Transition:
                 dec = dec / np.exp(size_b * (np.bincount(ki, lp) / n - size_c))
         dec_bin = np.round(np.bincount(ki, bins) / n).astype(int)   # typical bin of the country-decade
         keep = n >= 5
+        if POOL_HALFLIFE:
+            # recent history counts more: country volatility has fallen since the 1990s (hindcast bands too wide from
+            # 2000 origins, too narrow before); pools are resampled (fixed seed) with weights by year / decade
+            rs = np.random.default_rng(int(yr.max()))
+            wi = 0.5 ** ((yr.max() - yr) / POOL_HALFLIFE)
+            ii = rs.choice(len(idio), len(idio), p=wi / wi.sum())
+            idio, bins = idio[ii], bins[ii]
+            dyr = np.bincount(ki, yr) / n
+            wd = np.where(keep, 0.5 ** ((yr.max() - dyr) / POOL_HALFLIFE), 0)
+            jj = rs.choice(len(dec), int(keep.sum()), p=wd / wd.sum())
+            dec, dec_bin, keep = dec[jj], dec_bin[jj], np.ones(len(jj), bool)
         return Transition(cols, list(squares), mu, sd, m.coef_, float(m.intercept_), shocks, grid, bin_col, edges,
                           reg_dec[rn >= 20], _pools(dec[keep], dec_bin[keep], n_bins), _pools(idio, bins, n_bins), lo, hi,
                           size_b, size_c, size == "both", z_lo, z_hi)
@@ -240,7 +261,9 @@ def fit_transitions(p, X, base, origin, halflife=None):
     args = (Xf, events)
     growth = Transition.fit(*args, flat(lg[:, 1:] - lg[:, :-1]), flat(years), flat(codes), flat(regions),
                             GROWTH_FEATURES, -0.4, 0.3, bin_col="gdp_gap_frontier", grid=grid,
-                            squares=["gdp_gap_frontier"], halflife=halflife, size=SIZE_NOISE)
+                            squares=["gdp_gap_frontier"], halflife=halflife, size=SIZE_NOISE,
+                            shock_w=flat(np.exp(YEAR_SHOCK_POW * (lg[:, :-1] + base["lpop"][:, :-1] - 25)))
+                            if YEAR_SHOCK_POW else None)
     ddem = Transition.fit(*args, flat(dem[:, 1:] - dem[:, :-1]), flat(years), flat(codes), flat(regions),
                           DEM_FEATURES, -0.5, 0.5, bin_col="democracy", grid=grid, halflife=halflife)
     return growth, ddem
@@ -251,7 +274,7 @@ COMOVE = ["rule_of_law", "physical_integrity", "political_killings", "religious_
           "religious_repression", "corruption", "neopatrimonialism",
           "jud_constraints", "leg_constraints", "horiz_acc", "diag_acc", "free_expression", "media_censorship",
           "cso_repression", "free_fair_elections", "elected_regime", "liberal_dem", "civil_liberties",
-          "cso_participation", "exec_respects_const", "clientelism"]
+          "cso_participation", "exec_respects_const", "clientelism", "legit_personalist"]
 # institution levels whose 5-year change is a feature: the change is recomputed from simulated levels
 INST_CHANGE = {"jucon_change_5y": "jud_constraints", "legcon_change_5y": "leg_constraints",
                "freexp_change_5y": "free_expression", "libdem_change_5y": "liberal_dem",
@@ -326,6 +349,13 @@ SUCC_COUP = 0.68
 STRUCT_CONVEXITY = 1.0      # (test switches, code review 2026-10-28)
 LREB_MODE = "age"
 SHIFTERS_BEFORE_ALIGN = True   # see the year-1 alignment in simulate()
+# limits round 2 (2026-10-30): switches tested and rejected, kept off (docs/world_system.md, "Limits round 2")
+YEAR_SHOCK_POW = 0.0      # growth year shocks: mean residual weighted by GDP ** this (0: every country alike). Uncentred,
+#                           its gains came from a negative drift that hurt 30-year growth; centred, recessions got rarer
+CRISIS_COST = None        # (year after, two years after) output cost of a banking crisis beyond its expected rate: no effect
+INFL_CONV = 0.0           # yearly pull of each country's inflation norm toward the cross-country median: no effect
+SCIENCE_DECAY = 1.0       # yearly factor on the science-capacity residual (world layer): no effect (with INFL_CONV)
+POOL_HALFLIFE = None      # noise pools resampled with weight 0.5 ** (years before origin / this): widened the spread
 SUPPORT_Q = 0.005          # Transition features are clamped to their 0.5-99.5% training range when simulating (None: +/-6 sd)
 WORKFORCE_BETA = 1.22     # growth per unit change in log working-age share (scripts/workforce_test.py; s.e. 0.17)
 WORKFORCE_MEAN = 0.0019   # mean yearly change 1960-2023, already absorbed by the fitted growth equation
@@ -649,6 +679,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         fd["i_x4"] = [idx_[c] for c in ("USA", "BRA", "ARG", "UKR") if c in idx_]     # top maize exporters
     prev_tas = cl["tas"]["median"][:, 0] + 0 * z_clim
     infl_target = tt(_nanmedian_recent(base["inflation"], t0))   # the country's own 20-year norm
+    infl_med = float(torch.nanmedian(infl_target))
     unemp_target = tt(_nanmedian_recent(base["unemployment"], t0))
     cm_trend, le_trend = cur["log_cm"].clone(), cur["life_exp"].clone()
     slopes = comove_slopes(base, origin, p.years)
@@ -667,6 +698,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     bubble_t = torch.full((S,), -1, device=device, dtype=torch.long)       # year of the AI investment bust (-1: none yet)
     fin_extra = torch.zeros(S, C, device=device)
     fin_extra_prev = torch.zeros(S, C, device=device)
+    crisis_x = torch.zeros(S, C, device=device)          # banking crises beyond their expected rate, last two years
+    crisis_x_prev = torch.zeros(S, C, device=device)
     spill_hist = [torch.zeros(S, C, device=device), torch.zeros(S, C, device=device)]
     lw_hist = [h["lg"][..., -1].clone()]          # GDP with war damage, origin on (last 5 years kept)
     if world is not None and getattr(world, "transition", False):
@@ -915,6 +948,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         if WS is not None and WS.dy is not None and WS.cfg.war_damage:
             ev_g = torch.cat([events[..., :3], torch.zeros_like(events[..., 3:])], -1)
         g = growth.step(X, ev_g, shock_idx, g_regime, gen)
+        if CRISIS_COST is not None:
+            g = g - CRISIS_COST[0] * crisis_x - CRISIS_COST[1] * crisis_x_prev
         if WS is not None and k == 1:
             g = g - WS.prm("aid_mult") * WS.aid_cut[None]       # 2026: demand lost to the 2025 USAID cut (assumption)
             # 2026: the 2025 US tariffs (intervention.py, assumption)
@@ -926,7 +961,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         if WS is not None:
             off = WS.prm("robot_aging") * WS.A_robot if WS.cfg.ai.arrival else 0.0
             g = g + WS.prm("workforce_beta") * torch.where(dlw < 0, dlw * (1 - off), dlw) + fish_g \
-                + WS.prm("articles_beta") * WS.science          # science capacity beyond income (innovation.py)
+                + WS.prm("articles_beta") * WS.science * SCIENCE_DECAY ** (k - 1)   # science capacity beyond income (innovation.py)
         else:
             g = g + WORKFORCE_BETA * dlw
         # (democracy responds to recorded GDP, damage included, as in its training data; growth keeps X, its own
@@ -1240,6 +1275,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         cur["log_cm"] = cm_trend + 0.1 * conf_next
         cur["life_exp"] = le_trend - 2.0 * conf_next
         # transitory macro conditions revert toward the country's recent norm
+        if INFL_CONV:
+            infl_target = infl_target + INFL_CONV * (infl_med - infl_target)
         cur["inflation"] = infl_target + 0.8 * (cur["inflation"] - infl_target)
         u_target = unemp_target
         if WS is not None:
@@ -1373,6 +1410,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         cur["unemployment"] = u_target + 0.8 * (cur["unemployment"] - u_target)
         # rights and rule-of-law indicators move with the simulated democracy index
         for key, b_ in slopes.items():
+            if slow is not None and key in slow.eq:
+                continue                                  # (has its own equation, dynamics.INST_SLOW)
             cur[key] = (cur[key] + b_ * (dem_next - dem_prev)).clamp(*bounds[key])
         cur["ysc"] = torch.where(conf_next > 0.5, torch.zeros_like(cur["ysc"]), cur["ysc"] + 1)
         cur["coup_recent"] = DECAY["coup_recent"] * cur["coup_recent"] + coup_next
@@ -1402,6 +1441,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             fin_extra = ((torch.rand(S, C, device=device, generator=gen) < p_fc * (WS.cfg.ai.finance_mult ** A - 1))
                          & (crisis < 0.5)).float()
             crisis = torch.maximum(crisis, fin_extra)
+        if CRISIS_COST is not None:
+            crisis_x_prev, crisis_x = crisis_x, crisis - p_fc
         cur["fin_crisis_recent"] = DECAY["fin_crisis_recent"] * cur["fin_crisis_recent"] + crisis
         if slow is not None:
             slow.step(cur, g, conf_next, crisis, dem_next - dem_prev)

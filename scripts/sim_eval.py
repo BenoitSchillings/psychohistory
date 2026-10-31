@@ -12,6 +12,7 @@ Metrics per origin (horizon H = 10 years, or to the last observed year):
 - onsets_crps: CRPS of the number of new conflicts among countries at peace at the origin
 - gdp_crps: mean CRPS of log GDP per person at the horizon (relative to the origin), per country
 - gdp_in90: share of countries whose realised GDP falls inside the simulated 90% band
+- gdp_disp_crps: CRPS of the cross-country spread (sd) of log GDP per person growth over the horizon
 - world_gdp_crps: CRPS of world (population-weighted) log GDP per person growth over the horizon
 - dem_crps: mean CRPS of the electoral democracy index at the horizon
 - coup_brier / coup_auc: each country's simulated probability of any coup attempt over the horizon vs what happened
@@ -28,7 +29,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import numpy as np
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "outputs", "sim_eval")
-LOWER_BETTER = ("conflict_brier", "coup_brier", "coups_crps", "world_share_crps", "onsets_crps", "gdp_crps", "world_gdp_crps", "world_gdppc_crps", "dem_crps")
+LOWER_BETTER = ("conflict_brier", "coup_brier", "coups_crps", "world_share_crps", "onsets_crps", "gdp_crps", "world_gdp_crps", "world_gdppc_crps", "dem_crps", "gdp_disp_crps")
 
 
 def crps(x, y):
@@ -129,6 +130,10 @@ def main():
         r["gdp_crps"] = float(crps(lg_sim[:, okg], lg_act[okg]).mean())
         q = np.quantile(lg_sim[:, okg], [.05, .95], 0)
         r["gdp_in90"] = float(((lg_act[okg] >= q[0]) & (lg_act[okg] <= q[1])).mean())
+        # spread of country growth over the horizon (do simulated countries drift apart too much?)
+        disp_sim = lg_sim[:, okg].std(1)
+        r["gdp_disp_crps"] = float(crps(disp_sim, lg_act[okg].std()))
+        r["diag_gdp_disp_ratio"] = float(np.median(disp_sim) / max(lg_act[okg].std(), 1e-6))
         pop = np.exp(base["lpop"][:, i0]) if "lpop" in base else np.ones(len(lg_act))
         w = np.where(okg & np.isfinite(pop), pop, 0)
         w = w / w.sum()

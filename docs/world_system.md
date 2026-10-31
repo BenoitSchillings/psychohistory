@@ -1722,3 +1722,68 @@ percentile 38 m). With climate damage off, conflict in 2100 is now the same unde
 channels used to keep running in the no-damage worlds). Attribution: assumptions 67% of the 2065 GDP spread (AI and
 robot timing 49%, climate 9%). Disaster knockouts: no climate damage or the smallest estimate removes 94% of the
 economic-collapse tail (was 88-90%).
+
+## Limits round 2 (2026-10-30)
+
+Targets: the three limits left by the first round (countries drifting apart over decades, too few world recessions,
+the democratic recession at the edge of the simulated range). Candidate ideas from an independent read of the code,
+each a switch tested alone and then in combination: 10-year hindcasts (scripts/sim_eval.py, 3,000 worlds, dev
+1970-1998 x15, test 2000-2012 x7, tags l2*) and full-system hindcasts (scripts/world_hindcast.py, now with --consts and
+--compare; 15 years from 1980-2009 x7 and 30 years from 1975/1985/1994, tags w15*/w30*). New hindcast score: CRPS of
+the cross-country spread of 10-year growth (gdp_disp_crps) and its ratio to the actual spread.
+
+### Adopted
+
+- **Free expression gets its own equation** (dynamics.INST_SLOW): it used to move in fixed proportion to democracy
+  (COMOVE), so its 5-year erosion, a democracy-equation feature (free speech goes before elections), could never lead
+  in simulation. Now: yearly change on the same-year democracy change and conflict, reversion to its 20-year anchor,
+  and its own shocks, sized to the part of 10-year changes democracy does not explain (sd 0.039 a year for a 2025
+  origin) and scaled per country by its own yearly volatility, as the bounded slow variables are (HETERO). Two fixes
+  on the way: (1) without the per-country scaling, the 28 countries above 0.9 could only be pushed down (-0.15 in
+  40 years from the bound alone, -0.05 with it); (2) the yearly changes are not winsorised, unlike the other slow
+  variables: the largest are regime transitions, where free expression jumps with democracy, and clipping them cut
+  its slope on the democracy change from 0.84 to 0.50 (the fixed comove slope is 0.82) and hid its reversion (-0.011).
+- **Personalist legitimation** (V-Dem v2exl_legitlead) in the democracy equation (beat baseline in all four
+  dem_screen quadrants, never added), moving with democracy like the other V-Dem levels (COMOVE).
+- Together (l2dem3, two network seeds): democracy CRPS -1.2% / -1.2% dev (12/15), -4.8% / -4.8% test (7/7); coup
+  count CRPS +0.5% / -0.2% dev, +1.3% / +0.3% test; country GDP -0.3% dev (13/15), conflict and coup Briers unchanged
+  or better. (With winsorised changes, l2dem2: -2.1% dev, -6.7% test; kept unwinsorised on principle.) Full system:
+  democracy change CRPS -32% at 15 years from 2000-2009 (3/3), -18% at 30 years, but +9.7% at 15 years from 1980-1995:
+  it lowers simulated democratic gains everywhere, and the 1980s-90s gains were large. The 2000-2015 democratic
+  recession stays in the tail of the simulated worlds (see the percentiles after the rerun).
+- Over 40 years from 2025 (bare simulator, 1,000 worlds, population-weighted world democracy in 2065): 0.499 with
+  neither change, 0.469 with free expression's equation (0.467 with its shocks off: not the bounds), 0.458-0.463 with
+  personalist legitimation (frozen or moving with democracy), 0.433-0.435 with both. Today's high personalism in
+  populous countries (Russia, India) and the end of an overstated feedback (simulated democratic gains used to lift
+  free expression in lockstep, which lifted democracy again) both lower the long-run path. Validated at 10-30 years;
+  at 40 it is an extrapolation.
+
+### Tested and rejected
+
+- **GDP-weighted world year shocks** (YEAR_SHOCK_POW; the replayed shock as the GDP^w-weighted mean residual, not
+  the equal-country mean). Uncentred, the gains looked large (w = 0.5: world GDP CRPS -6.5% dev, -16% test; recession
+  years 1.8% -> 2.2%) but came from a negative mean (the big economies' average residual), which every country then
+  inherited: 30-year world growth fell (1994 origin median 0.64 -> 0.53 log points, actual 0.84). Centred (timing
+  only): world GDP CRPS -2.1% dev, -7.0% test, but simulated recessions became rarer (-6% dev, -23% test; the weighted
+  shocks are smaller, sd 0.0096 vs 0.0106) and 30-year growth CRPS +4.4%. Rejected: it does not address the recession
+  limit.
+- **Output cost of ordinary banking crises** beyond their expected rate (CRISIS_COST, the 1952-2024 AI-crisis
+  estimate 1.7% / 1.2%): every score within 1%, recession frequency +2%. The residual pools already carry crisis years.
+- **Inflation norms converging** to the cross-country median (INFL_CONV 5% a year) and the science residual decaying
+  (SCIENCE_DECAY 0.97): 30-year spread -0.9%, 15-year -0.7%, growth slightly worse. Frozen starting values are not
+  what drives countries apart.
+- **Recency-weighted noise pools** (POOL_HALFLIFE 10/20/40 years): the spread widened on both splits (+8-13% CRPS),
+  because the decades before the test origins (1980s-90s) were the most volatile.
+- **Judicial constraints with their own equation** too: no gain over free expression alone, larger coup cost.
+- **Population-weighted regional democracy pull** (features.REGION_DEM_POW 0.5): democracy -0.9% dev, -3.6% test,
+  but with the adopted pair it added nothing on dev and cost coups (+1.5% / +1.9%).
+- **Anti-pluralism and polarization as drivers** of free expression and courts (yearly changes, fit 1960-1999, scored
+  2000-2024): -0.5% to +0.3% MSE, wrong-signed; not built.
+
+### What the drift is
+
+The 10-year spread of country growth is about right from origins up to 1990 (0.85-1.2 times the actual spread) and
+far too wide from 1992 on (1.3-1.9 times), with 90% GDP bands covering 77-88% of countries on dev and 92-96% on test.
+Real economies, above all developing ones, became much calmer after the 1990s; the simulator draws country noise from
+all history before the origin, and no history before a 2000 origin foretells that. No setting fixes both splits, so
+it stays a stated limit; for the 2026 forecast the pools include 2000-2024, but the calmer era is a minority of them.

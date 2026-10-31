@@ -37,6 +37,17 @@ SPEC = {
     "territorial_control": ("logit100", ["g", "conf", "ddem"]),      # % of territory: logit scale, no pile-up at 100
     "fiscal_capacity": ("level", ["g", "conf", "ddem"]),
 }
+# V-Dem institutions given their own equation (driven by the democracy change, with their own shocks) instead of moving
+# in fixed proportion to democracy (simulate.COMOVE). Free expression adopted 2026-10-30: in lockstep, its 5-year
+# erosion (a democracy feature: speech goes before elections) could never lead in simulation. Judicial constraints
+# too added nothing (sim_eval l2fe vs l2fej); anti-pluralism and polarization as drivers did not forecast its changes
+INST_SLOW = ("free_expression",)
+
+
+def _spec():
+    return {**SPEC, **{v: ("level", ["ddem", "conf"]) for v in INST_SLOW}}
+
+
 DRIVERS = ["g", "conf", "crisis", "ddem"]
 NO_REVERT = {"extreme_poverty", "gini"}
 # household-survey series, observed every few years and carried forward up to 10 years in the panel; the others are
@@ -93,7 +104,7 @@ def _rows(base, years, var, lo, hi, gaps=False):
     forward, and a change right after carried values spans several years (household surveys every few years). With
     gaps=True (variables surveyed too rarely for enough consecutive pairs) such a change is used as its average
     yearly change over the gap, with the reversion term taken at the previous observation."""
-    kind, drv = SPEC[var]
+    kind, drv = _spec()[var]
     x = _fwd(base[var].astype(float), kind)
     anc = _anchor(x)
     D = _drivers(base)
@@ -133,7 +144,7 @@ def _rows(base, years, var, lo, hi, gaps=False):
 def fit(base, years, origin, start=1960):
     """{var: {kind, drivers, rho, beta, mean_x, intercept, sd, lo, hi, n}}"""
     out = {}
-    for var, (kind, drv) in SPEC.items():
+    for var, (kind, drv) in _spec().items():
         if var not in base:
             continue
         X, y = _rows(base, years, var, start, origin)
@@ -143,7 +154,10 @@ def fit(base, years, origin, start=1960):
         if len(y) < 100:
             continue
         mx = X.mean(0)
-        y = np.clip(y, *np.quantile(y, [WINSOR, 1 - WINSOR]))
+        # (not institutions: their largest yearly changes are regime transitions, where they jump with democracy;
+        #  clipped, free expression's slope on the democracy change fell from 0.84 to 0.50 and its reversion vanished)
+        if var not in INST_SLOW:
+            y = np.clip(y, *np.quantile(y, [WINSOR, 1 - WINSOR]))
         A = np.c_[np.ones(len(y)), X - mx]
         if var in NO_REVERT:
             A[:, 1] = 0
@@ -154,6 +168,10 @@ def fit(base, years, origin, start=1960):
         # spread of simulated 10-year changes matches the spread of observed 10-year changes (same years)
         ty = np.where((years >= start) & (years + 10 <= origin))[0]
         d10 = (v[:, ty + 10] - v[:, ty]).ravel()
+        if var in INST_SLOW:
+            # (only the part of the 10-year change the democracy change does not explain: that part is the driver's)
+            dm = base["dem"][:, np.asarray(years) <= origin]
+            d10 = d10 - float(b[2 + drv.index("ddem")]) * (dm[:, ty + 10] - dm[:, ty]).ravel()
         # (an unchanged value is a carried-forward observation, except for the bounded HETERO variables, where no
         # change - no violence, full control - is the real outcome for most countries)
         d10 = d10[np.isfinite(d10) & ((d10 != 0) | (var in HETERO))]
@@ -207,7 +225,9 @@ class SlowState:
         self.shift = {}                   # externally imposed level shifts (AI scenarios), [S, C]
         self.scale = {}
         for var, e in eq.items():
-            if var in HETERO:
+            # (institutions too: free expression sits near its top for 28 countries, where pooled shocks could only
+            #  push it down, -0.15 in 40 years by the bound alone; own volatility is a quarter of the pooled size)
+            if var in HETERO or var in INST_SLOW:
                 x = _fwd(base[var][:, max(0, t0 - ANCHOR_YEARS):t0 + 1].astype(float), e["kind"])
                 with np.errstate(all="ignore"):
                     sd_c = np.nanstd(np.diff(x, axis=1), 1)

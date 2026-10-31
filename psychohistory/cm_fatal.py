@@ -372,5 +372,6 @@ def train_and_forecast(origin, target_months, final_through=None, start=mid(1995
         Xt, _, _ = design(F, [origin], [tm - origin])
         out[tm] = m.sample(Xt, base=base([origin]) if RESID else None)
         if mn is not None:
-            out[tm] = (1 - NN_BLEND) * np.sort(out[tm], 1) + NN_BLEND * np.sort(mn.sample(Xt, base=base([origin]) if RESID else None), 1)
+            out[tm] = np.expm1((1 - NN_BLEND) * np.log1p(np.sort(out[tm], 1))
+                               + NN_BLEND * np.log1p(np.sort(mn.sample(Xt, base=base([origin]) if RESID else None), 1)))
     return out, m

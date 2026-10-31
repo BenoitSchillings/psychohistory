@@ -97,7 +97,7 @@ def nn_draws(origin, months, final_through=None):
 
 
 def blend(a, b, w):
-    return (1 - w) * np.sort(a, 1) + w * np.sort(b, 1)
+    return np.expm1((1 - w) * np.log1p(np.sort(a, 1)) + w * np.log1p(np.sort(b, 1)))
 
 
 def dev(tag=""):

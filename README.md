@@ -182,8 +182,9 @@ All numbers are out-of-sample. See the report's *Validation* section or the CSVs
   economies grow too fast and growth miracles (China 1995–2015) too slowly. Fans cover most outcomes.
 * Population follows the UN WPP 2024 probabilistic projections (each world draws its own fertility and
   migration path); slow variables (education, urbanisation, institutions) evolve by fitted equations.
-* Over 15–30 years countries drift apart more than they did historically, world recessions are too rare, and the
-  post-2000 democratic decline sits at the edge of the simulated range (docs/world_system.md, limits round).
+* Since the 1990s countries drift apart more in the model than they did (economies became calmer than any earlier
+  history suggested), world recessions are too rare, and the post-2000 democratic decline sits in the low tail of the
+  simulated range (docs/world_system.md, limits rounds 1 and 2).
 * The GDP fan width (`growth_regime_scale`) and the world-mood volatility were tuned on the
   same hindcasts used to check them, so their coverage is mildly optimistic.
 

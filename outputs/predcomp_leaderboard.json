@@ -7,6 +7,12 @@
    "mis": 812.5492
   },
   {
+   "model": "OURS_seldon_v9",
+   "crps": 46.1926,
+   "ign": 0.5692,
+   "mis": 770.2846
+  },
+  {
    "model": "submission_final_omm",
    "crps": 46.29,
    "ign": 0.587,
@@ -213,6 +219,11 @@
    "model": "OURS_seldon_v8",
    "Y2024": 33.07,
    "Y2025": 32.773
+  },
+  {
+   "model": "OURS_seldon_v9",
+   "Y2024": 28.748,
+   "Y2025": 29.323
   },
   {
    "model": "P_GAM",
@@ -550,6 +561,15 @@
    "draws": 1000
   },
   {
+   "model": "OURS_seldon_v9",
+   "window": "Y2018",
+   "crps": 11.6425,
+   "ign": 0.564,
+   "mis": 78.6325,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
    "model": "TW_GAM",
    "window": "Y2019",
    "crps": 11.6395,
@@ -789,6 +809,15 @@
    "crps": 7.3939,
    "ign": 0.5273,
    "mis": 62.3232,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v9",
+   "window": "Y2019",
+   "crps": 7.2452,
+   "ign": 0.5396,
+   "mis": 67.9545,
    "n": 2292,
    "draws": 1000
   },
@@ -1036,6 +1065,15 @@
    "draws": 1000
   },
   {
+   "model": "OURS_seldon_v9",
+   "window": "Y2020",
+   "crps": 20.7638,
+   "ign": 0.5156,
+   "mis": 321.7024,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
    "model": "TW_GAM",
    "window": "Y2021",
    "crps": 82.5105,
@@ -1275,6 +1313,15 @@
    "crps": 76.061,
    "ign": 0.6076,
    "mis": 1400.507,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v9",
+   "window": "Y2021",
+   "crps": 75.6093,
+   "ign": 0.6004,
+   "mis": 1385.4493,
    "n": 2292,
    "draws": 1000
   },
@@ -1522,6 +1569,15 @@
    "draws": 1000
   },
   {
+   "model": "OURS_seldon_v9",
+   "window": "Y2022",
+   "crps": 119.1404,
+   "ign": 0.6142,
+   "mis": 2222.9184,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
    "model": "TW_GAM",
    "window": "Y2023",
    "crps": 6054067.5113,
@@ -1761,6 +1817,15 @@
    "crps": 46.9544,
    "ign": 0.5896,
    "mis": 573.275,
+   "n": 2292,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v9",
+   "window": "Y2023",
+   "crps": 42.7545,
+   "ign": 0.5811,
+   "mis": 545.0502,
    "n": 2292,
    "draws": 1000
   },
@@ -2017,6 +2082,15 @@
    "draws": 1000
   },
   {
+   "model": "OURS_seldon_v9",
+   "window": "Y2024",
+   "crps": 28.7482,
+   "ign": 0.5463,
+   "mis": 320.5837,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
    "model": "TW_GAM",
    "window": "Y2025",
    "crps": 4327302.793,
@@ -2265,6 +2339,15 @@
    "crps": 32.7733,
    "ign": 0.7213,
    "mis": 343.7364,
+   "n": 1146,
+   "draws": 1000
+  },
+  {
+   "model": "OURS_seldon_v9",
+   "window": "Y2025",
+   "crps": 29.3233,
+   "ign": 0.7046,
+   "mis": 365.6277,
    "n": 1146,
    "draws": 1000
   }

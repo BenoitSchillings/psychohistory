@@ -141,16 +141,24 @@ def _nanstd(x, dim):
     return torch.where(n >= 2, sd, torch.full_like(sd, float("nan")))
 
 
-def _group_mean_excl(v, regions, n_regions):
-    """mean of v over other members of the same region; v [B, C] (nan-aware)."""
+def _group_mean_excl(v, regions, n_regions, wt=None):
+    """mean of v over other members of the same region; v [B, C] (nan-aware), optionally weighted by wt [B, C]."""
     m = torch.isfinite(v)
-    vz = torch.where(m, v, torch.zeros_like(v))
+    if wt is not None:
+        m = m & torch.isfinite(wt)
+    mw = m.to(v.dtype) if wt is None else torch.where(m, wt, torch.zeros_like(v))
+    vz = torch.where(m, v, torch.zeros_like(v)) * mw
     onehot = torch.nn.functional.one_hot(regions, n_regions).to(v.dtype)  # [C, R]
     s = vz @ onehot                      # [B, R]
-    n = m.to(v.dtype) @ onehot
+    n = mw @ onehot
     s_ex = s[:, regions] - vz            # [B, C]
-    n_ex = n[:, regions] - m.to(v.dtype)
-    return torch.where(n_ex > 0, s_ex / n_ex.clamp(min=1), torch.full_like(v, float("nan")))
+    n_ex = n[:, regions] - mw
+    lo = 1 if wt is None else 1e-12
+    return torch.where(n_ex > 0, s_ex / n_ex.clamp(min=lo), torch.full_like(v, float("nan")))
+
+
+# regional democracy pull weighted by population ** REGION_DEM_POW (0: every country alike)
+REGION_DEM_POW = 0.0
 
 
 SPATIAL = {"W": None}
@@ -220,7 +228,8 @@ def compute_features(h: dict, cur: dict, regions: torch.Tensor, n_regions: int) 
         "log_years_since_conflict": torch.log1p(cur["ysc"].clamp(max=60)),
         "log_refugees_pc": torch.log1p(cur["refugees_pc"] * 1e3), "log_homicide": torch.log1p(cur["homicide"]),
         "region_conflict": _group_mean_excl(conf_now, regions, n_regions),
-        "region_dem_gap": _group_mean_excl(dem_now, regions, n_regions) - dem_now,
+        "region_dem_gap": _group_mean_excl(dem_now, regions, n_regions, torch.exp(REGION_DEM_POW * (now(lpop) - 15))
+                                         if REGION_DEM_POW else None) - dem_now,
         "pre1946": cur["pre1946"],
         "war_now": cur["war"], "interstate_recent": cur["interstate_recent"],
         "landlocked": cur["landlocked"], "log_dist_coast": torch.log1p(cur["dist_coast"]),

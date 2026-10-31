@@ -389,11 +389,11 @@ class SeldonEnsemble:
     families: G (tuned GBM, 3 seeds, from 1955), G60 (tuned GBM, 2 seeds, from 1860), N (tuned PsychoNet,
     2 seeds), Nq (quantile PsychoNet, 2 seeds), F (extra trees), L (logit).
     combine: {task: {"w": {family: weight}, "mode": "prob" | "logit", "platt": [a, b] (optional)}}; tasks not listed use the
-    default (equal G + N). Rows earlier than a family's window are dropped for that family; the
+    default (equal 4-family nonlinear ensemble: G + G60 + N + F). Rows earlier than a family's window are dropped for that family; the
     `years` argument gives each training row's year."""
     name = "Seldon ensemble"
     uses_years = True
-    DEFAULT = {"w": {"G": 0.5, "N": 0.5}, "mode": "prob"}
+    DEFAULT = {"w": {"G": 0.25, "G60": 0.25, "N": 0.25, "F": 0.25}, "mode": "prob"}
 
     def __init__(self, combine=None, members=8, families=None):
         self.combine = combine or {}
