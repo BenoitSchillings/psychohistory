@@ -221,4 +221,20 @@
   if ("ResizeObserver" in window) new ResizeObserver(relayout).observe(document.body);
   load();
   setTimeout(renderNotes, 2000);
+
+  // page views (/api/views): counted once per page per browser session; the total shows on the report's version line
+  (async function () {
+    let seen = false;
+    try { seen = sessionStorage.getItem("seldon-viewed-" + PAGE) === "1"; } catch (e) { /* private window */ }
+    try {
+      const r = seen ? await fetch("/api/views", { cache: "no-store" }) : await fetch("/api/views", { method: "POST",
+        headers: { "content-type": "application/json" }, body: JSON.stringify({ page: PAGE }) });
+      if (!r.ok) return;
+      const j = await r.json();
+      try { sessionStorage.setItem("seldon-viewed-" + PAGE, "1"); } catch (e) { /* private window */ }
+      const total = seen ? ((j.pages || {})[PAGE] || {}).total : j.total;
+      const v = document.querySelector(".credit.version");
+      if (v && total) v.appendChild(document.createTextNode(` · ${total.toLocaleString("en-US")} views`));
+    } catch (e) { /* counting is optional */ }
+  })();
 })();
