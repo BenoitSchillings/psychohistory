@@ -60,7 +60,8 @@ def run(ai, tech, seed, force=None):
          "democracy": o["world_dem"][:, -1], "great_power_war": w["great_power_war"].max(1),
          "nuclear_use": w["nuclear_use"].max(1), "log_oil": w["oil"][:, -1], "clean_share": w["clean_share"][:, -1],
          "log_food_price": w["food_price"][:, -1] if "food_price" in w else np.zeros(N),
-         "excess_deaths_m": w["excess_deaths"].sum(1) / 1e6 if "excess_deaths" in w else np.zeros(N),
+         # (the record is a running total: its last year is the 2026-2065 count)
+         "excess_deaths_m": w["excess_deaths"][:, -1] / 1e6 if "excess_deaths" in w else np.zeros(N),
          "log_gdp_petrostates": lw(petro), "log_gdp_sahel": lw(sahel),
          "coups": o["paths"]["coup"].sum((1, 2)).astype(float)}
     print(f"  run ai={ai} tech={tech} force={force} seed={seed}: {time.time() - t0:.0f}s", flush=True)

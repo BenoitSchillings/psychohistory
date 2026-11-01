@@ -45,7 +45,11 @@ def main():
                     "by_family": {n: round(float(np.median(x[fam == f])), 1) for f, n in
                                   enumerate(("level", "bhm_growth", "global_temp"))}}
         k = yrs.index(2100)
-        out["scenarios"][key] = {"loss_pct": r,
+        cd = np.asarray(runs[1.0]["world"].get("clim_deaths", np.zeros((N, len(yrs)))))      # heat and cold deaths a year
+        deaths = {"per_year_m": {y: round(float(cd[:, yrs.index(y)].mean() / 1e6), 2) for y in YEARS},
+                  "cumulative_m_2065": round(float(cd[:, :yrs.index(2065) + 1].sum(1).mean() / 1e6), 1),
+                  "cumulative_m_2100": round(float(cd.sum(1).mean() / 1e6), 1)}
+        out["scenarios"][key] = {"loss_pct": r, "heat_deaths": deaths,
                                "conflict_2100": {"damage": round(float(np.median(runs[1.0]["world_conflict"][:, k])), 4),
                                                  "no_damage": round(float(np.median(runs[0.0]["world_conflict"][:, k])), 4)}}
         print(key, json.dumps(out["scenarios"][key]), flush=True)

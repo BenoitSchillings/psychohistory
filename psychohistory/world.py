@@ -173,6 +173,12 @@ class WorldConfig:
     # (negative: dominance deters; positive: eroding second-strike confidence and anti-satellite races destabilise);
     # sat_open removes that share of AI surveillance's protection of autocracies and of the AI drift to autocracy
     # (censorship-resistant connectivity); orbit_dc removes that share of data centres' energy draw on Earth
+    # deaths from heat and cold as the climate warms (2026-11-01; Carleton et al. 2022, QJE): yearly deaths per person =
+    # HEAT_MORT_BETA x heat_mort x local warming since the origin x a heat/cold factor from the country's baseline
+    # temperature (negative where milder winters save lives) x an income factor (richer countries adapt); counted in
+    # excess deaths and taken off the population, in worlds with climate damage on
+    heat_mortality: bool = True
+    heat_mort: float = 1.0
     cheap_space: bool = False
     # technology breakthroughs (tech.py; in the headline since 2026-10-31, for forecasts from 2025): each world draws
     # which arrive and when, and their conditional effects; tech_force = {name: year or None} fixes an arrival in
@@ -348,6 +354,7 @@ PARAM_RANGES = {
     "robot_years": ("u", 8.0, 20.0), "phys_dividend": ("u", 0.005, 0.04),   # floor: industrial robots ~0.36 pp/yr (Graetz & Michaels 2018)
     "drone_onset": ("u", -0.3, 0.5), "drone_persist": ("u", 0.0, 0.8), "drone_reach": ("u", 0.0, 0.2), "drone_civil": ("u", -0.2, 0.4),
 }
+HEAT_RANGES = {"heat_mort": ("u", 0.25, 1.75)}      # spans Carleton et al.'s wide range (interquartile 6-101 per 100,000)
 CAPTURE_RANGES = {"firm_capture": ("u", 0.2, 0.9), "clawback": ("u", 0.0, 0.1)}   # AI scenarios only (assumptions)
 SPACE_RANGES = {"space_war": ("u", -0.5, 0.7), "sat_open": ("u", 0.0, 0.5), "orbit_dc": ("u", 0.0, 0.5)}   # cheap space only
 SPACE_START, SPACE_FULL = 2028, 2040
@@ -515,6 +522,11 @@ class World:
             if getattr(self.cfg, k) != getattr(defaults, k):
                 continue
             self.params[k] = a + (b - a) * r_ if kind == "u" else a + b * r_
+        gh = torch.Generator(device=device).manual_seed(seed + 811)       # heat mortality: its own generator
+        for k, (kind, a, b) in (HEAT_RANGES.items() if self.cfg.sample_params else ()):
+            r_ = torch.rand(S, 1, device=device, generator=gh)
+            if self.cfg.heat_mortality and getattr(self.cfg, k) == getattr(defaults, k):
+                self.params[k] = a + (b - a) * r_
         gs = torch.Generator(device=device).manual_seed(seed + 601)       # cheap space: its own generator too
         for k, (kind, a, b) in (SPACE_RANGES.items() if self.cfg.sample_params else ()):
             r_ = torch.rand(S, 1, device=device, generator=gs)
@@ -727,7 +739,7 @@ class World:
         self.dy = dyads if (cfg.interstate and dyads is not None) else None
         if self.dy is not None:
             self._init_dyads(p, base, t0, f)
-        self.rec = {"wars": [], "active": [], "great_power_war": [], "pandemic": [], "ai_adoption_world": [], "oil": [], "clean_share": [], "war_site_share": [], "war_sites": [], "bubble": [],
+        self.rec = {"clim_deaths": [], "wars": [], "active": [], "great_power_war": [], "pandemic": [], "ai_adoption_world": [], "oil": [], "clean_share": [], "war_site_share": [], "war_sites": [], "bubble": [],
                     "eng_pandemic": [], "food_price": [], "import_dep": [], "robot_adoption_world": [], "mil_autonomy": [], "battle_deaths": [],
                     "war_deaths_major": [], "water_change": [], "nuclear_use": [], "nuclear_large": [], "nuclear_deaths": [],
                     "nuclear_states": [], "sanctioned": [], "solar": [], "volcano": [], "pop_dev": [], "excess_deaths": [], "wild_catch": [], "great_power_war_cow": [],

@@ -355,6 +355,11 @@ YEAR_SHOCK_POW = 0.0      # growth year shocks: mean residual weighted by GDP **
 CRISIS_COST = None        # (year after, two years after) output cost of a banking crisis beyond its expected rate: no effect
 INFL_CONV = 0.0           # yearly pull of each country's inflation norm toward the cross-country median: no effect
 SCIENCE_DECAY = 1.0       # yearly factor on the science-capacity residual (world layer): no effect (with INFL_CONV)
+# heat mortality (world.WorldConfig.heat_mortality): deaths per person-year per degree C of local warming at a heat/cold
+# factor of 1 and the reference income; calibrated so that SSP5-8.5 reaches Carleton et al.'s 73 per 100,000 in 2100
+HEAT_MORT_BETA = 0.553e-4    # (1,000 worlds, SSP5-8.5, 2100: 73 per 100,000 a year; SSP2-4.5 then about 17)
+HEAT_MORT_POWER = 1.7
+HEAT_MORT_INCOME = (15000.0, 0.4)   # reference GDP per person (2011 $) and elasticity: richer countries adapt
 POOL_HALFLIFE = None      # noise pools resampled with weight 0.5 ** (years before origin / this): widened the spread
 SUPPORT_Q = 0.005          # Transition features are clamped to their 0.5-99.5% training range when simulating (None: +/-6 sd)
 WORKFORCE_BETA = 1.22     # growth per unit change in log working-age share (scripts/workforce_test.py; s.e. 0.17)
@@ -513,6 +518,10 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     z_clim = torch.randn(S, 1, device=device, generator=gen)
     t_off = cl["tas"].pop("pw_offset")        # damage is evaluated at population-weighted temperature
     t_base = cl["tas"]["base"] + t_off
+    # heat/cold balance of each country's climate: + where it is hot (more heat deaths), - where it is cold (fewer cold
+    # deaths), from its population-weighted baseline temperature
+    heat_h = ((t_base - 16.0) / 8.0).clamp(-1.5, 1.5).nan_to_num(0.0)
+    tas_0 = cl["tas"]["median"][:, 0]
     dmg_cum = torch.zeros(S, C, device=device)
     # world-system layer (interstate wars, food, energy, pandemics, AI); None = the plain simulator
     WS = None
@@ -1258,6 +1267,17 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             # log GDP per person against the median world, 1970-2023 estimate); births follow fertility
             pop_now = torch.exp(exo["lpop"][:, k]) * torch.exp(pop_off)
             dshare = ((WS.deaths_year / pop_now.clamp(min=1)) + pand_mort[:, None]).clamp(0, 0.5)
+            if WS.cfg.heat_mortality and climate_damage:
+                # heat and cold deaths from warming since the origin (Carleton et al. 2022), adapting with income
+                inc = torch.exp(lg_next + dmg_cum).nan_to_num(HEAT_MORT_INCOME[0])
+                adapt = (inc / HEAT_MORT_INCOME[0]).clamp(min=1e-3) ** (-HEAT_MORT_INCOME[1])
+                # (convex in warming, as extreme-heat days multiply: power 1.7 makes SSP2-4.5's 2100 toll about a sixth of
+                #  SSP5-8.5's, as in Carleton et al., where a linear response gave a third)
+                dT_l = torch.nan_to_num(smooth["tas"] - tas_0)
+                dT_l = torch.sign(dT_l) * dT_l.abs() ** HEAT_MORT_POWER
+                hrate = (HEAT_MORT_BETA * WS.prm("heat_mort") * dT_l * heat_h[None] * adapt.clamp(0.25, 3.0)).clamp(-0.004, 0.004)
+                WS.rec["clim_deaths"].append((hrate * pop_now).sum(-1))
+                dshare = dshare + hrate
             excess_deaths = excess_deaths + (dshare * pop_now).sum(-1)
             # (income against the country's own pre-origin trend path, which UN projections broadly assume, and after
             # war and climate damage; not against the other simulated worlds)

@@ -1951,14 +1951,14 @@ One technology forced to arrive in 2035 against never (the same 4,000 worlds, ev
 | Technology | World GDP | Oil | Grain | Other |
 |---|---|---|---|---|
 | Longevity | +7.3% | | | working-age share |
-| Geoengineering | +6.1% | | +2.3% | Sahel +10%; great-power war +3.1 pt (monsoon-Asia rivalry); termination rebounds |
-| 100-day vaccines | +1.8% | | | excess deaths -81 million |
+| Geoengineering | +5.9% | | +2.3% | Sahel +10%; great-power war +3.2 pt (monsoon-Asia rivalry); termination rebounds; excess deaths -6.3 million (fewer heat deaths) |
+| 100-day vaccines | +1.9% | | | excess deaths -5.6 million |
 | Fusion | +0.7% | -14% | | petrostates -1.1%, clean share +17 pt |
 | Energy storage (days of grid power) | +0.6% | -5.7% | | |
 | Advanced fission | +0.4% | -7.3% | | |
 | New protein | 0% | | -1.9% | |
 | Engineered crops | -0.2% | | -5.6% | |
-| Engineered pathogens | -1.5% | | | excess deaths +187 million |
+| Engineered pathogens | -1.4% | | | excess deaths +14.6 million (median +4.0) |
 | Quantum code-breaking | -1.6% | | | a wave of financial crises |
 
 Civil conflict moved by at most 0.3 points and coups by under 0.2 a year for any technology: in this model,
@@ -1990,3 +1990,23 @@ table), the fan of futures, then six parts with a one-paragraph takeaway each (e
 and food; conflict and war; the worst futures; countries; can you trust it?) and an appendix (the commentary, every
 finding with its dated history, what improved the forecasts, the independent review). The hero chart is world GDP per
 person instead of the civil-war share.
+
+### Heat and cold deaths (2026-11-01)
+
+Excess deaths counted only wars and pandemics, so geoengineering showed more deaths (from monsoon-Asia rivalry) and none
+of the lives it saves. world.WorldConfig.heat_mortality (on): yearly deaths per person = HEAT_MORT_BETA (0.553e-4) x
+heat_mort (per world, U(0.25, 1.75)) x sign(dT) |dT|^1.7 (local warming since the origin, smoothed path) x
+clip((T_base - 16) / 8, -1.5, 1.5) (population-weighted baseline temperature: hot places lose, cold places gain) x
+clip((income / $15,000) ^ -0.4, 0.25, 3) (adaptation), each capped at +/-0.4% a year; counted in excess deaths and
+taken off the population, only in worlds with climate damage. Calibration (1,000 worlds to 2100, registry off):
+SSP5-8.5 reaches Carleton et al.'s (2022, QJE) 73 per 100,000 in 2100; the power 1.7 brings SSP2-4.5 to about a
+quarter of that (a linear response gave a third; their 84% is for mortality costs, adaptation spending included).
+climate_2100 (deaths a year 2065 / 2100; cumulative 2026-2100): SSP1-2.6 0.4 / 0.35 m, 21 m; SSP2-4.5 0.85 / 1.8 m,
+63 m; SSP3-7.0 1.4 / 5.4 m, 133 m; SSP5-8.5 2.2 / 8.9 m, 218 m; SSP2-4.5 with breakthroughs 0.5 / 0.4 m, 28 m.
+Headline excess deaths 2026-2065: median 18 m -> 29 m; other headlines within noise.
+
+A bug found with it: scripts/tech_scenarios.py summed the excess-death record over the years, but the record is a
+running total, so every technology's death effect was inflated about twentyfold (fast vaccines -81 m was -5.6 m;
+engineered pathogens +187 m was +15 m). The forecast itself always read the last year. Corrected results, technology
+forced in 2035 against never (2026-2065 excess deaths, mean): geoengineering -6.3 m, 100-day vaccines -5.6 m, fusion
+-1.8 m, fission -1.1 m, energy storage -0.9 m, engineered pathogens +14.6 m (median +4.0 m), others within 0.2 m.
