@@ -1,0 +1,9 @@
+{
+  "name": "seldon-site",
+  "private": true,
+  "type": "module",
+  "description": "Netlify function for reader notes on the Seldon report",
+  "dependencies": {
+    "@netlify/blobs": "11.1.4"
+  }
+}

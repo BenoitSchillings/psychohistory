@@ -5,7 +5,8 @@ set -e
 cd "$(dirname "$0")/.."
 SITE=outputs/netlify_site
 mkdir -p $SITE
-grep -v 'name="claude:viewport-fit-sides"' outputs/seldon_report.html > $SITE/index.html
+grep -v 'name="claude:viewport-fit-sides"' outputs/seldon_report.html \
+  | sed 's#https://benoitschillings.github.io/psychohistory/\(methodology\|data_sources\)\.html#\1.html#g' > $SITE/index.html
 python3 -P scripts/draw_dependencies.py
 cp docs/data_dependencies.svg $SITE/
 python3 -P scripts/build_site_pages.py   # methodology.html, data_sources.html
