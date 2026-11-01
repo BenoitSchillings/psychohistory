@@ -1937,26 +1937,38 @@ A first run had three faults, fixed before these results: civil conflict and cou
 near-discrete counts (no change could show; now means), energy technologies had no climate effect (they lowered world
 GDP), and longevity assumed people work through most of their extra healthy years (+14% world GDP; the range was halved).
 
-All seventeen drawn against none (2 x 4,000 worlds, AI uncertain, 2065): world GDP per person +5.2% ($34.6k -> $36.4k;
-+4.9% without AI), oil price -16%, clean share 64% -> 76%, world grain price -11%, the Sahel and East Africa +9.7%,
-petrostates +2.7%; civil conflict, coups, democracy and great-power war within noise. Attribution in the drawn worlds
-(arrival by 2045 as regressors): technologies explain 4% of the spread of world GDP and under 1% of conflict, war,
-coups or democracy.
+Two further channels, added after the first results: geoengineering can stop (TERM_P U(0.01, 0.04) a year: 22% of
+deployments within 10 years, 52% within 30), after which its effects fade over 5 years and cereal yields lose U(1%, 4%)
+a year during the rebound; and code-breaking's extra crises now carry the AI-finance crisis cost (1.7% / 1.2%).
+
+All seventeen drawn against none (2 x 4,000 worlds, AI uncertain, 2065): world GDP per person +2.5% (+2.3% without AI),
+oil price -16%, clean share 64% -> 76%, world grain price -10%, the Sahel and East Africa +8.5%, petrostates +0.5%,
+nuclear use 12.9% -> 13.6%, great-power war 45.5% -> 46.4%, mean excess deaths +12% (the engineered-pathogen tail;
+the median is unchanged); civil conflict, coups and democracy within noise.
 
 One technology forced to arrive in 2035 against never (the same 4,000 worlds, everything else drawn), 2065:
 
 | Technology | World GDP | Oil | Grain | Other |
 |---|---|---|---|---|
-| Geoengineering | +8.6% | 0% | -1.2% | Sahel +15%; great-power war +2.3 pt (monsoon-Asia rivalry); no termination shock |
-| Longevity | +7.6% | | | working-age share |
-| 100-day vaccines | +1.3% | | | excess deaths -81 million |
-| Fusion | +0.3% | -15% | | petrostates -1.8%, clean share +17 pt |
-| Advanced fission | +0.3% | -7.7% | | petrostates -0.7% |
-| Long-duration storage | +0.3% | -6.7% | | clean share +6 pt |
-| Engineered crops | +0.1% | | -5.1% | |
-| New protein | 0% | | -2.1% | |
-| Quantum code-breaking | -0.2% | | | crises carry no direct output cost here |
-| Engineered pathogens | -1.0% | | | excess deaths +213 million |
+| Longevity | +7.3% | | | working-age share |
+| Geoengineering | +6.1% | | +2.3% | Sahel +10%; great-power war +3.1 pt (monsoon-Asia rivalry); termination rebounds |
+| 100-day vaccines | +1.8% | | | excess deaths -81 million |
+| Fusion | +0.7% | -14% | | petrostates -1.1%, clean share +17 pt |
+| Long-duration storage | +0.6% | -5.7% | | |
+| Advanced fission | +0.4% | -7.3% | | |
+| New protein | 0% | | -1.9% | |
+| Engineered crops | -0.2% | | -5.6% | |
+| Engineered pathogens | -1.5% | | | excess deaths +187 million |
+| Quantum code-breaking | -1.6% | | | a wave of financial crises |
 
 Civil conflict moved by at most 0.3 points and coups by under 0.2 a year for any technology: in this model,
 technology changes economies, not the political drivers of crises.
+
+### In the headline (2026-10-31)
+
+world.WorldConfig.tech is on by default for forecasts from 2025 (hindcasts from earlier origins are unchanged; the
+cheap-space comparison runs with it off). Headline 2065 against the previous release: world GDP per person $34.5k ->
+$35.8k (90%: $17.7k-$91.6k), without AI $24.5k -> $25.3k, civil conflict 22.9% -> 22.3%, world democracy 0.398 ->
+0.403, great-power war 45.2% -> 46.6%, nuclear use 13.6% -> 13.2%. Arrival years enter the attribution of uncertainty
+(group "technology": 1% of the 2065 GDP spread on its own; AI and robot timing falls from 49% to 36%, because
+breakthrough timing rides partly on AI timing).

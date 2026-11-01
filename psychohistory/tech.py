@@ -24,8 +24,11 @@ Levers (read by simulate.py and world.py through TechState.lever):
   work_gain     extra yearly growth of the working-age share (healthy years added; 0.1-0.3% a year at full adoption,
                 3-9% over 30 years: people work through part, not all, of their extra healthy years)
   leader_cut    share of leaders' yearly mortality removed
-  crisis_mult   banking-crisis odds multiplier in the arrival year and the next (one-off shock)
+  crisis_mult   extra banking crises (odds multiplier minus one) in the arrival year and the next, with the output
+                cost of the AI-finance crises (world.WorldConfig.fin_crisis_cost)
   geo_tension   log-odds added to war onset between rivals in monsoon Asia (unilateral climate intervention)
+                (geoengineering can stop: TERM_P a year; its effects then fade over TERM_YEARS while harvests lose
+                REBOUND_HIT a year)
   space         deployment of cheap launch (drives the cheap-space channels, world.WorldConfig.cheap_space)
 """
 from __future__ import annotations
@@ -68,6 +71,9 @@ TECHS = {
 }
 ORIGIN_YEAR = 2025
 TAIL_END = 2120
+TERM_P = (0.01, 0.04)      # yearly chance that geoengineering stops once deployed (assumption)
+TERM_YEARS = 5            # years over which the cooling fades after it stops (aerosols fall out within a few years)
+REBOUND_HIT = (0.01, 0.04)   # yearly loss of cereal yields during the rebound (rapid warming; assumption)
 
 
 def _arrival_from_u(u, p40, p65):
@@ -144,6 +150,11 @@ class TechState:
             late = np.isfinite(y) & (y > ai)
             y[late] = ai[late] + (y[late] - ai[late]) / (1 + boost[late])
             self.arrival[name], self.mag[name] = y, mags
+        # geoengineering can stop (war, a broken coalition, a political reversal): a yearly chance TERM_P per world; the
+        # cooling then fades over TERM_YEARS and harvests suffer during the rebound (drawn last: earlier draws unchanged)
+        p_term = rng.uniform(*TERM_P, S)
+        term_after = rng.exponential(1 / p_term)                 # years from deployment to stopping
+        self.rebound_hit = rng.uniform(*REBOUND_HIT, S)
         for name, (_, _, _, pre, _) in TECHS.items():
             if name in self.arrival and pre:
                 first = np.min([self.arrival.get(q, np.full(S, np.inf)) for q in pre], 0)
@@ -151,7 +162,10 @@ class TechState:
         for name, yr in (force or {}).items():
             if name in self.arrival:
                 self.arrival[name] = np.full(S, np.inf if yr is None else float(yr))
+        self.term_year = (self.arrival["geoengineering"] + term_after) if "geoengineering" in self.arrival else np.full(S, np.inf)
         self._t = {k: torch.as_tensor(v, dtype=torch.float32, device=device)[:, None] for k, v in self.arrival.items()}
+        self._term = torch.as_tensor(self.term_year, dtype=torch.float32, device=device)[:, None]
+        self._hit = torch.as_tensor(self.rebound_hit, dtype=torch.float32, device=device)[:, None]
         self._m = {k: {lv: torch.as_tensor(m, dtype=torch.float32, device=device)[:, None] for lv, m in d.items()}
                    for k, d in self.mag.items()}
         self.year = ORIGIN_YEAR
@@ -174,9 +188,22 @@ class TechState:
             out = torch.zeros(self.S, 1, device=self.dev)
             for name, d in self._m.items():
                 if lv in d:
-                    out = out + d[lv] * self.adoption(name)
+                    a = self.adoption(name)
+                    if name == "geoengineering":
+                        a = a * self.geo_active()
+                    out = out + d[lv] * a
+            if lv == "yield_gain" and "geoengineering" in self._t:
+                out = out - self._hit * self.rebounding()          # harvests in the termination rebound
             self._cache[lv] = out
         return self._cache[lv]
+
+    def geo_active(self):
+        """[S, 1] share of geoengineering still in place: 1 until it stops, then down to 0 over TERM_YEARS"""
+        return (1 - (self.year - self._term) / TERM_YEARS).clamp(0, 1)
+
+    def rebounding(self):
+        """[S, 1] 1 during the termination rebound"""
+        return ((self.year > self._term) & (self.year <= self._term + TERM_YEARS)).float()
 
     def arrived_in(self, name, year):
         """[S, 1] 1 where the technology arrives during this year (one-off shocks)"""

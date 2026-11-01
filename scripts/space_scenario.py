@@ -53,7 +53,7 @@ res = {}
 for ai in ("uncertain", "none"):
     for space in (False, True):
         o = simulate(p, base, net, growth, ddem, LAST_OBS_YEAR, 2065, n_scen=N, clim=clim["ssp245"]["inputs"],
-                     world=WM.WorldConfig(ai=WM.AI_SCENARIOS[ai], sample_params=True, cheap_space=space), dyads=dy,
+                     world=WM.WorldConfig(ai=WM.AI_SCENARIOS[ai], sample_params=True, cheap_space=space, tech=False), dyads=dy,
                      seed=11, climate_damage=1.0)
         key = f"{ai}_{'space' if space else 'base'}"
         res[key] = summary(o)

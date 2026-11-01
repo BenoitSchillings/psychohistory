@@ -174,9 +174,10 @@ class WorldConfig:
     # sat_open removes that share of AI surveillance's protection of autocracies and of the AI drift to autocracy
     # (censorship-resistant connectivity); orbit_dc removes that share of data centres' energy draw on Earth
     cheap_space: bool = False
-    # technology breakthroughs (tech.py; scenario, off by default): each world draws which arrive and when, and their
-    # conditional effects; tech_force = {name: year or None} fixes an arrival in every world (paired comparisons)
-    tech: bool = False
+    # technology breakthroughs (tech.py; in the headline since 2026-10-31, for forecasts from 2025): each world draws
+    # which arrive and when, and their conditional effects; tech_force = {name: year or None} fixes an arrival in
+    # every world (paired comparisons)
+    tech: bool = True
     tech_force: dict | None = None
     space_war: float = 0.1
     sat_open: float = 0.25
@@ -582,7 +583,7 @@ class World:
         self.gen_cascade.manual_seed(int(gen.initial_seed()) + 7919 if gen is not None else 7919)
         self._draw_params(S, device, int(gen.initial_seed()) if hasattr(gen, "initial_seed") else 0)
         self.tech = None
-        if self.cfg.tech:
+        if self.cfg.tech and origin >= 2025:              # (hindcasts from earlier origins are unchanged)
             from .tech import TechState
             ai_w = None
             if self.cfg.ai.arrival:
@@ -590,6 +591,9 @@ class World:
                 ai_w = (ai_w * torch.ones(S, 1, device=device)).cpu().numpy().ravel()
             self.tech = TechState(S, device, int(gen.initial_seed()) if hasattr(gen, "initial_seed") else 0, ai_w,
                                   force=self.cfg.tech_force)
+            if self.cfg.sample_params:
+                for name_, yr_ in self.tech.arrival.items():          # arrival years, for the attribution of uncertainty
+                    self.params[f"tech_{name_}"] = torch.as_tensor(np.minimum(yr_, 2070.0), dtype=torch.float32, device=device)[:, None]
         C = len(p.codes)
         t0 = p.yi(origin)
         f = lambda a: torch.as_tensor(np.asarray(a, dtype=np.float32), device=device)

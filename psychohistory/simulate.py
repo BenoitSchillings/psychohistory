@@ -1452,12 +1452,6 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         # (a deep recession, war and climate damage of the year included, makes a financial crisis likelier)
         g_rec = g + (dmg_hist[..., -1] - dmg_hist[..., -2]) if damage_feedback else g
         p_fc = torch.where(g_rec < -0.05, p_crisis_low, p_crisis_high)
-        if WS is not None and WS.tech is not None and "quantum_crypto" in WS.tech.arrival:
-            # encryption broken: a one-off wave of financial crises in the arrival year and the next (assumption)
-            shock_q = (WS.tech.arrived_in("quantum_crypto", year) + WS.tech.arrived_in("quantum_crypto", year - 1)).clamp(max=1)
-            m_q = 1 + (WS.tech._m["quantum_crypto"]["crisis_mult"] - 1) * shock_q
-            odds_q = p_fc / (1 - p_fc).clamp(min=1e-6) * m_q
-            p_fc = odds_q / (1 + odds_q)
         if WS is not None:
             # short-term external debt against reserves raises the odds of a banking crisis (structure.py)
             odds = p_fc / (1 - p_fc).clamp(min=1e-6) * torch.exp(WS.prm("st_debt_beta") * WS.st_debt[None])
@@ -1478,6 +1472,14 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             fin_extra = ((torch.rand(S, C, device=device, generator=gen) < p_fc * (WS.cfg.ai.finance_mult ** A - 1))
                          & (crisis < 0.5)).float()
             crisis = torch.maximum(crisis, fin_extra)
+            if WS.tech is not None and "quantum_crypto" in WS.tech.arrival:
+                # encryption broken: a one-off wave of extra financial crises in the arrival year and the next, which
+                # cost output as the AI-finance crises do (assumption; drawn every year so paired runs stay paired)
+                shock_q = (WS.tech.arrived_in("quantum_crypto", year) + WS.tech.arrived_in("quantum_crypto", year - 1)).clamp(max=1)
+                m_q = (WS.tech._m["quantum_crypto"]["crisis_mult"] - 1) * shock_q
+                q_extra = ((torch.rand(S, C, device=device, generator=gen) < (p_fc * m_q).clamp(max=1)) & (crisis < 0.5)).float()
+                fin_extra = torch.maximum(fin_extra, q_extra)
+                crisis = torch.maximum(crisis, q_extra)
         if CRISIS_COST is not None:
             crisis_x_prev, crisis_x = crisis_x, crisis - p_fc
         cur["fin_crisis_recent"] = DECAY["fin_crisis_recent"] * cur["fin_crisis_recent"] + crisis
