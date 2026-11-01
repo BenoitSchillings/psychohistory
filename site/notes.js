@@ -1,4 +1,5 @@
-/* Reader notes: post-its that any reader can stick on the page where they are not convinced, where something is
+/* (bottom left: Netlify's own badge sits bottom right)
+   Reader notes: post-its that any reader can stick on the page where they are not convinced, where something is
    missing, or to comment. Three layers (one per kind), each shown or hidden; every reader sees every note.
    Notes are anchored to the nearest element with an id (a section, a card, a chart) at a relative position inside it,
    so they stay in place across screen sizes. Stored by the site's /api/notes function; rendered as text only. */
@@ -19,11 +20,11 @@
   let notes = [], placing = false, openId = null;
 
   const css = `
-  .sn-bar{position:fixed;right:16px;bottom:16px;z-index:9000;font:13px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;color:#1a1a1a}
+  .sn-bar{position:fixed;left:16px;bottom:16px;z-index:2147483000;font:13px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;color:#1a1a1a}
   .sn-btn{border:1px solid rgba(0,0,0,.25);background:#fff;color:#1a1a1a;border-radius:6px;padding:7px 11px;cursor:pointer;font:inherit;box-shadow:0 2px 8px rgba(0,0,0,.15)}
   .sn-btn:focus-visible{outline:2px solid #3446c9;outline-offset:2px}
   .sn-btn.sn-primary{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
-  .sn-panel{position:absolute;right:0;bottom:44px;width:min(320px,calc(100vw - 32px));max-height:min(70vh,560px);overflow:auto;background:#fff;color:#1a1a1a;border:1px solid rgba(0,0,0,.2);border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.2);padding:12px;display:grid;gap:10px}
+  .sn-panel{position:absolute;left:0;bottom:44px;width:min(320px,calc(100vw - 32px));max-height:min(70vh,560px);overflow:auto;background:#fff;color:#1a1a1a;border:1px solid rgba(0,0,0,.2);border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.2);padding:12px;display:grid;gap:10px}
   .sn-panel[hidden]{display:none}
   .sn-row{display:flex;align-items:center;gap:8px}
   .sn-sw{width:14px;height:14px;border-radius:3px;border:1px solid rgba(0,0,0,.3);flex:none}
