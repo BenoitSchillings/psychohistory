@@ -14,8 +14,8 @@ from .data import RAW, ROOT
 
 OUT = ROOT / "outputs"
 TEMPLATE = ROOT / "psychohistory" / "report_template.html"
-# bump on every published change to the report (version 39 follows the 38 earlier published revisions)
-VERSION = ("45", "1 November 2026")
+# the report's release number: bump on every published change (the private copy's own revision counter can run ahead)
+VERSION = ("46", "1 November 2026")
 
 
 def _world_topology():

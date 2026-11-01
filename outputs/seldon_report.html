@@ -122,7 +122,7 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
       <h1>Seldon Report<br><em>2026–2065</em></h1>
       <p class="lede">The next forty years of humanity, simulated ten thousand times: how rich the world becomes, what AI and other breakthroughs change, what warming costs, where wars and coups break out, and whether democracy holds. Built from eighty years of history for every country, it speaks in probabilities about large populations, never in certainties about single events.</p>
       <p class="credit">A study conceived and directed by <b>Benoit Schillings</b>. <a href="https://benoitschillings.github.io/psychohistory/methodology.html" target="_blank" rel="noopener">Methodology</a> · <a href="https://benoitschillings.github.io/psychohistory/data_sources.html" target="_blank" rel="noopener">Data source tree</a></p>
-      <p class="credit version">Version 45 · 1 November 2026</p>
+      <p class="credit version">Version 46 · 1 November 2026</p>
     </div>
     <figure class="hero-paths" style="margin:0">
       <div class="chart" id="hero-chart"></div>
@@ -383,7 +383,7 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
         </ul>
       </div>
     </div>
-    <p class="credit">The full methodology, with every test and its result, is in the <a href="https://benoitschillings.github.io/psychohistory/methodology.html" target="_blank" rel="noopener">methodology document</a>; every input is listed in the <a href="https://benoitschillings.github.io/psychohistory/data_sources.html" target="_blank" rel="noopener">data source tree</a>. Study conceived and directed by Benoit Schillings. Version 45 · 1 November 2026.</p>
+    <p class="credit">The full methodology, with every test and its result, is in the <a href="https://benoitschillings.github.io/psychohistory/methodology.html" target="_blank" rel="noopener">methodology document</a>; every input is listed in the <a href="https://benoitschillings.github.io/psychohistory/data_sources.html" target="_blank" rel="noopener">data source tree</a>. Study conceived and directed by Benoit Schillings. Version 46 · 1 November 2026.</p>
     <p class="footnote" id="footnote"></p>
   </section>
   <div class="part" id="part-appendix"><span class="eyebrow">Appendix</span><h2 class="part-title">The details</h2><p class="lede">The full commentary, every finding with how it changed from version to version, what improved the forecasts, and what an independent review found.</p></div>
@@ -2574,7 +2574,7 @@ function techSection() {
   const T = EX && EX.tech;
   if (!T) { document.getElementById("card-tech").hidden = true; return; }
   const S = T.scen, R = T.registry;
-  const NM = {long_storage: "Cheap long-duration storage", adv_fission: "Advanced fission and small reactors", geothermal: "Enhanced geothermal",
+  const NM = {long_storage: "Energy storage (days of grid power)", adv_fission: "Advanced fission and small reactors", geothermal: "Enhanced geothermal",
     fusion: "Fusion (over 5% of electricity)", green_hydrogen: "Cheap green hydrogen and electrified industry", cheap_ammonia: "Cheap ammonia and fertilizer",
     cheap_launch: "Cheap launch (Starship-class)", space_solar: "Space-based solar power", air_capture: "Direct air capture at gigatonne scale",
     geoengineering: "Stratospheric geoengineering deployed", crops: "Drought- and heat-tolerant engineered crops", protein: "Fermented or cultivated protein at cost parity",
@@ -2859,7 +2859,7 @@ function ledgerSection() {
     oil_eta: "Oil price response to demand", oil_war_jump: "Oil spike when exporters fight", pandemic_p: "Pandemic frequency",
     climate_damage: "Climate damage (×BHM)", growth_dividend: "AI growth dividend", autocracy_drift: "AI autocracy drift", other: "Other (shocks, wars, politics)",
     bubble_p: "Chance of an AI investment bust", bubble_cost: "Cost of the bust", arrival_sd: "AI arrival year", ai_arrival: "AI arrival year", speed_mult: "AI adoption speed", open_lag: "Open-model diffusion lag",
-    export_lag: "Export-control lag", hub_rent: "Rents captured by AI hubs", firm_capture: "AI rents kept by firms", clawback: "States claw rents back", tech_long_storage: "Arrival: Cheap storage", tech_adv_fission: "Arrival: Advanced fission", tech_geothermal: "Arrival: Geothermal", tech_fusion: "Arrival: Fusion", tech_green_hydrogen: "Arrival: Green hydrogen", tech_cheap_ammonia: "Arrival: Cheap fertilizer", tech_cheap_launch: "Arrival: Cheap launch", tech_space_solar: "Arrival: Space solar", tech_air_capture: "Arrival: Air capture", tech_geoengineering: "Arrival: Geoengineering", tech_crops: "Arrival: Engineered crops", tech_protein: "Arrival: New protein", tech_desalination: "Arrival: Desalination", tech_vaccines_100d: "Arrival: 100-day vaccines", tech_pathogens: "Arrival: Engineered pathogens", tech_longevity: "Arrival: Longevity", tech_quantum_crypto: "Arrival: Quantum code-breaking", space_war: "Space dominance: deter or destabilise", sat_open: "Satellite internet vs censorship", orbit_dc: "Orbital compute", chip_pause: "Chip-war slowdown", chip_gdp: "Chip-war output hit", dc_share: "Data-centre energy",
+    export_lag: "Export-control lag", hub_rent: "Rents captured by AI hubs", firm_capture: "AI rents kept by firms", clawback: "States claw rents back", tech_long_storage: "Arrival: Energy storage", tech_adv_fission: "Arrival: Advanced fission", tech_geothermal: "Arrival: Geothermal", tech_fusion: "Arrival: Fusion", tech_green_hydrogen: "Arrival: Green hydrogen", tech_cheap_ammonia: "Arrival: Cheap fertilizer", tech_cheap_launch: "Arrival: Cheap launch", tech_space_solar: "Arrival: Space solar", tech_air_capture: "Arrival: Air capture", tech_geoengineering: "Arrival: Geoengineering", tech_crops: "Arrival: Engineered crops", tech_protein: "Arrival: New protein", tech_desalination: "Arrival: Desalination", tech_vaccines_100d: "Arrival: 100-day vaccines", tech_pathogens: "Arrival: Engineered pathogens", tech_longevity: "Arrival: Longevity", tech_quantum_crypto: "Arrival: Quantum code-breaking", space_war: "Space dominance: deter or destabilise", sat_open: "Satellite internet vs censorship", orbit_dc: "Orbital compute", chip_pause: "Chip-war slowdown", chip_gdp: "Chip-war output hit", dc_share: "Data-centre energy",
     robot_lag: "Robotics lag", robot_aging: "Robots offsetting ageing", robot_arrival: "Robotics arrival year (correlated with AI arrival)",
     robot_years: "Robot deployment speed", phys_dividend: "Physical-automation dividend", drone_onset: "Autonomy and war onset", drone_persist: "Autonomy and war duration",
     drone_reach: "Long-range strikes on expeditionary powers", drone_civil: "Rebel drones and civil-war duration", dem_erosion: "AI-era democratic erosion", ai_war_beta: "AI-gap war risk", nuc_beta: "Nuclear-stability erosion",

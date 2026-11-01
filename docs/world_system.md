@@ -1954,7 +1954,7 @@ One technology forced to arrive in 2035 against never (the same 4,000 worlds, ev
 | Geoengineering | +6.1% | | +2.3% | Sahel +10%; great-power war +3.1 pt (monsoon-Asia rivalry); termination rebounds |
 | 100-day vaccines | +1.8% | | | excess deaths -81 million |
 | Fusion | +0.7% | -14% | | petrostates -1.1%, clean share +17 pt |
-| Long-duration storage | +0.6% | -5.7% | | |
+| Energy storage (days of grid power) | +0.6% | -5.7% | | |
 | Advanced fission | +0.4% | -7.3% | | |
 | New protein | 0% | | -1.9% | |
 | Engineered crops | -0.2% | | -5.6% | |

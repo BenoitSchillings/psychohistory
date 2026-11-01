@@ -51,6 +51,7 @@ AI_BOOST = (0.0, 1.0)      # near-free cognition divides the remaining wait by 1
 # Institute Quantum Threat Timeline 2025 (51-70% within 15 years), Manifold. Green hydrogen and cheap ammonia: no anchors
 # sought (judgement). Not included: room-temperature superconductors and mass brain-computer interfaces (no lever).
 TECHS = {
+    # long_storage: energy storage for days of grid power (multi-day, under ~$20/kWh, at terawatt-hour scale)
     "long_storage":   (0.35, 0.70, 15, (), {"clean_rate": (0.1, 0.4), "clean_cap": (0.03, 0.08), "warming_cut": (0.02, 0.08)}),
     "adv_fission":    (0.15, 0.55, 20, (), {"clean_rate": (0.05, 0.25), "clean_cap": (0.03, 0.10), "energy_gain": (0.002, 0.006), "warming_cut": (0.03, 0.10)}),
     "geothermal":     (0.15, 0.55, 20, (), {"clean_rate": (0.05, 0.15), "clean_cap": (0.02, 0.06), "energy_gain": (0.001, 0.004), "warming_cut": (0.02, 0.06)}),
