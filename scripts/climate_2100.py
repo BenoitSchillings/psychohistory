@@ -1,7 +1,9 @@
 """Climate damage to 2100: world GDP per person with climate damage against the same worlds without it, by emissions
 path and damage family. Only the ratio is reported: absolute GDP that far out is not credible, but the paired ratio
 isolates what the damage functions, tails and harvest channels do. Runs the full simulator (AI uncertain, every
-assumption sampled) to 2100.
+assumption sampled) to 2100. Each emissions path is run without the technology registry (tech.py), so the path keeps its
+meaning (no geoengineering, carbon removal or extra clean energy on top); ssp245_tech adds the breakthroughs, drawn as in
+the headline.
 python -P scripts/climate_2100.py -> outputs/climate_2100.json"""
 import json
 import os
@@ -25,10 +27,11 @@ def main():
     p, base, net, growth, ddem, dy, _, O = D.setup()
     clim = PL.climate_summary(p, base, O, END)
     out = {"n": N, "years": list(YEARS), "scenarios": {}}
-    for s in ("ssp126", "ssp245", "ssp370", "ssp585"):
+    for key in ("ssp126", "ssp245", "ssp370", "ssp585", "ssp245_tech"):
+        s, tech = key.replace("_tech", ""), key.endswith("_tech")
         runs = {}
         for dmg in (1.0, 0.0):
-            cfg = WM.WorldConfig(ai=WM.AI_SCENARIOS["uncertain"], sample_params=True)
+            cfg = WM.WorldConfig(ai=WM.AI_SCENARIOS["uncertain"], sample_params=True, tech=tech)
             runs[dmg] = simulate(p, base, net, growth, ddem, O, END, n_scen=N, clim=clim[s]["inputs"], world=cfg,
                                  dyads=dy, seed=SEED, climate_damage=dmg, record_paths=0)
         yrs = list(runs[1.0]["years"])
@@ -42,10 +45,10 @@ def main():
                     "by_family": {n: round(float(np.median(x[fam == f])), 1) for f, n in
                                   enumerate(("level", "bhm_growth", "global_temp"))}}
         k = yrs.index(2100)
-        out["scenarios"][s] = {"loss_pct": r,
+        out["scenarios"][key] = {"loss_pct": r,
                                "conflict_2100": {"damage": round(float(np.median(runs[1.0]["world_conflict"][:, k])), 4),
                                                  "no_damage": round(float(np.median(runs[0.0]["world_conflict"][:, k])), 4)}}
-        print(s, json.dumps(out["scenarios"][s]), flush=True)
+        print(key, json.dumps(out["scenarios"][key]), flush=True)
     json.dump(out, open(PL.OUT / "climate_2100.json", "w"), indent=1)
 
 

@@ -104,63 +104,57 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
 .credit a { color: inherit; }
 .credit.version { font-size: 12.5px; color: var(--ink-3, var(--ink-2)); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
 .toc a:hover { border-bottom-color: currentColor; }
+.part { display: grid; gap: 10px; border-top: 3px solid var(--ink); padding-top: 26px; margin-top: 8px; }
+.part-title { font-size: clamp(36px, 5.5vw, 58px); }
+.part .lede { margin: 0; }
+.onepage ul { padding-left: 0; list-style: none; display: grid; gap: 14px; max-width: 72ch; }
+.onepage li { border-left: 3px solid var(--accent); padding-left: 14px; margin: 0; }
+.onepage a { color: var(--accent); white-space: nowrap; }
 </style>
 
 <div class="wrap">
   <header class="hero">
     <div style="display:grid; gap:14px; min-width:0">
-      <span class="eyebrow" id="hero-eyebrow">Psychohistory model</span>
+      <span class="eyebrow" id="hero-eyebrow">A simulation of humanity, 2026–2065</span>
       <h1>Seldon Report<br><em>2026–2065</em></h1>
-      <p class="lede">A statistical forecast of civil conflict, coups, economic collapse and democratic decline for every country, built from 80 years of history and 10,000 simulated futures. It speaks in probabilities about large populations, never in certainties about single events.</p>
+      <p class="lede">The next forty years of humanity, simulated ten thousand times: how rich the world becomes, what AI and other breakthroughs change, what warming costs, where wars and coups break out, and whether democracy holds. Built from eighty years of history for every country, it speaks in probabilities about large populations, never in certainties about single events.</p>
       <p class="credit">A study conceived and directed by <b>Benoit Schillings</b>. <a href="https://benoitschillings.github.io/psychohistory/methodology.html" target="_blank" rel="noopener">Methodology</a> · <a href="https://benoitschillings.github.io/psychohistory/data_sources.html" target="_blank" rel="noopener">Data source tree</a></p>
       <p class="credit version"><!--__VERSION__--></p>
     </div>
     <figure class="hero-paths" style="margin:0">
       <div class="chart" id="hero-chart"></div>
-      <figcaption>Share of countries at civil war, 1946–2025 (ink), and twelve of the simulated futures (blue).</figcaption>
+      <figcaption>World GDP per person (2011 dollars, log scale): history in ink, and the spread of the simulated futures to 2065 (median, 50% and 90% bands).</figcaption>
     </figure>
   </header>
 
   <section aria-labelledby="s-summary">
     <div class="tiles tiles-3" id="tiles"></div>
-    <nav class="toc" aria-label="Contents"><a href="#s-risk">Hotspots 2026–30</a><a href="#s-inter">Wars between states</a><a href="#s-ai">AI race</a><a href="#s-world">Fan of futures</a><a href="#s-score25">Track record</a><a href="#s-ledger">On the record</a><a href="#s-whatif">What if</a><a href="#s-explorer">Country explorer</a><a href="#s-commentary">Commentary</a><a href="#s-climate">Climate</a><a href="#s-us">United States</a><a href="#s-trust">Validation</a><a href="#s-method">Method</a><a href="https://benoitschillings.github.io/psychohistory/methodology.html" target="_blank" rel="noopener">Full methodology</a><a href="https://benoitschillings.github.io/psychohistory/data_sources.html" target="_blank" rel="noopener">Data sources</a></nav>
+    <nav class="toc" aria-label="Contents"><a href="#s-onepage">In one page</a><a href="#s-drivers">What decides it</a><a href="#s-world">Fan of futures</a><a href="#part-econ">Economy, AI and technology</a><a href="#part-climate">Climate and food</a><a href="#part-conflict">Conflict and war</a><a href="#part-tails">Worst futures</a><a href="#part-places">Countries</a><a href="#part-trust">Can you trust it?</a><a href="#part-appendix">Appendix</a><a href="https://benoitschillings.github.io/psychohistory/methodology.html" target="_blank" rel="noopener">Full methodology</a><a href="https://benoitschillings.github.io/psychohistory/data_sources.html" target="_blank" rel="noopener">Data sources</a></nav>
   </section>
-
-  <section aria-labelledby="s-narr">
-    <div class="section-head"><span class="eyebrow">Key findings</span><h2 id="s-narr">The short version</h2></div>
-    <div class="narr"><!--__NARRATIVE_TOP__--></div>
+  <section aria-labelledby="s-onepage">
+    <div class="section-head"><span class="eyebrow">The future in one page</span><h2 id="s-onepage">What the simulations say</h2>
+      <p class="muted">The main findings, each with the section that shows the evidence. Every number is the median of the simulated worlds unless a range is given.</p></div>
+    <div class="narr onepage"><!--__SUMMARY__--></div>
   </section>
-
-  <section aria-labelledby="s-risk">
-    <div class="section-head"><span class="eyebrow">Five-year risk, 2026–2030</span><h2 id="s-risk">Where the risk concentrates</h2>
-      <p class="muted">Direct estimates from the model ensemble, using each country's 2025 situation. The bracket on each bar spans the lowest and highest of the three model families, a measure of how much the models disagree. Civil-conflict onset is only defined for countries at peace; countries already at war are shown separately.</p></div>
-    <div class="controls"><div class="seg" id="task-seg" role="group" aria-label="Crisis type"></div></div>
-    <div class="card"><div class="chart" id="c-map"></div><div class="legend" id="map-legend"></div></div>
-    <div class="controls"><label for="risk-search" class="muted" style="font-size:13px">Find a country</label><input type="search" id="risk-search" placeholder="e.g. Nigeria"></div>
-    <div class="tablewrap" style="max-height:560px"><table id="risk-table"></table></div>
+  <section aria-labelledby="s-drivers">
+    <div class="section-head"><span class="eyebrow">What decides the outcome</span><h2 id="s-drivers">Which future we get, and why</h2>
+      <p class="muted">Each simulated world draws every uncertain assumption from its plausible range, then lives through its own wars, elections, shocks and breakthroughs. This table splits the spread of 2065 outcomes between the assumptions and everything else.</p></div>
+    <div class="card"><h3>What drives the uncertainty in 2065</h3><p class="sub">Share of the spread across simulated worlds explained by each assumed parameter, drawn per world from its plausible range. "Other" is history's replayed shocks and the simulated wars, coups and elections themselves.</p><div class="tablewrap"><table id="t-attr" class="wraptext"></table></div><h4 style="margin-top:18px">Grouped, and how far the main assumptions move each outcome</h4><p class="sub" id="attr2-sub"></p><div class="tablewrap"><table id="t-attr2" class="wraptext"></table></div><div class="tablewrap"><table id="t-attr3" class="wraptext"></table></div></div>
   </section>
-
-  <section aria-labelledby="s-inter">
-    <div class="section-head"><span class="eyebrow">Wars between states</span><h2 id="s-inter">Rivals, alliances and the risk of interstate war</h2>
-      <p class="muted" id="inter-sub"></p></div>
-    <div class="tablewrap"><table id="t-watch"></table></div>
-    <div class="grid2" id="grid-scale">
-      <div class="card"><h3>How big the wars get</h3><p class="sub" id="scale-sub"></p><div class="tablewrap"><table id="t-scale"></table></div></div>
-      <div class="card"><h3>Interstate battle deaths per year</h3><p class="sub" id="deaths-sub">Headline worlds: median and 50% / 90% bands, log scale (values below 100 shown at 100). Battle deaths only; civilian and indirect deaths are often several times larger.</p><div class="chart" id="c-deaths"></div></div>
-    </div>
-    <div class="card" id="card-risks"><h3>Nuclear weapons, catastrophes and population</h3><p class="sub" id="risks-sub"></p><div class="tablewrap"><table id="t-risks" class="wraptext"></table></div></div>
-    <div class="grid2" id="grid-water">
-      <div class="card"><h3>Water disputes</h3><p class="sub" id="water-sub"></p><div class="tablewrap"><table id="t-water"></table></div></div>
-      <div class="card"><h3>Glaciers and water supply</h3><p class="sub" id="glacier-sub"></p><div class="tablewrap"><table id="t-glacier"></table></div></div>
-    </div>
+  <section aria-labelledby="s-world">
+    <div class="section-head"><span class="eyebrow">World trajectories</span><h2 id="s-world">The fan of futures</h2>
+      <p class="muted">Each fan is the spread across simulated worlds: dark band = middle 50%, light band = 90%, line = median. History is in ink.</p></div>
     <div class="grid2">
-      <div class="card"><h3>Could it have seen the world wars coming?</h3><p class="sub">Trained only on what was known by 1913 and 1938, then asked which pairs of countries were most likely to fight in the next five years. Rank among all pairs; lower is better.</p><div class="tablewrap"><table id="t-ww"></table></div></div>
-      <div class="card"><h3>How well it forecasts interstate conflict</h3><p class="sub">Backtests and simulator hindcasts, out of sample.</p><div class="tablewrap"><table id="t-inter-val" class="wraptext"></table></div></div>
+      <div class="card"><h3>Countries in civil conflict</h3><p class="sub">Share of all countries with an active intrastate armed conflict (UCDP, ≥25 battle deaths)</p><div class="chart" id="c-conflict"></div></div>
+      <div class="card"><h3>Coup attempts per year</h3><p class="sub">Count of countries with at least one coup attempt (Powell &amp; Thyne)</p><div class="chart" id="c-coups"></div></div>
+      <div class="card"><h3>World GDP per person</h3><p class="sub">Population-weighted, 2011 international dollars (Maddison), log scale</p><div class="chart" id="c-gdp"></div></div>
+      <div class="card"><h3>World democracy</h3><p class="sub">Population-weighted V-Dem electoral democracy index (0–1)</p><div class="chart" id="c-dem"></div></div>
+      <div class="card" id="card-food"><h3>World grain price</h3><p class="sub" id="food-sub">Real World Bank grains index, origin year = 100 (median and 50%/90% bands; headline worlds). Moves with oil, with world harvests per person and with the replayed history of each scenario year.</p><div class="chart" id="c-food"></div></div>
+      <div class="card" id="card-dep"><h3>Population against farmland</h3><p class="sub">Cereal import dependency (share of cereal use imported), median of worlds. Harvests grow with yields on today's cropland while populations grow; largest rises by 2065.</p><div class="tablewrap" style="max-height:300px"><table id="t-dep"></table></div></div>
+      <div class="card" id="card-displaced"><h3>Refugees from simulated wars</h3><p class="sub">People living as refugees, asylum seekers or others in need of protection outside their country, millions (median and 50%/90% bands; headline worlds). Flows follow simulated civil wars and move population to host countries in UNHCR's recent patterns.</p><div class="chart" id="c-displaced"></div></div>
     </div>
-    <div class="card" id="card-gulf"><h3>The 2026 Gulf war, measured</h3><p class="sub" id="gulf-sub"></p><div class="tablewrap"><table id="t-gulf" class="wraptext"></table></div></div>
-    <div class="card"><h3>Chance of at least one great-power war</h3><p class="sub">Share of simulated worlds with a war (≥ 1,000 battle deaths) between two major powers by each year.</p><div class="chart" id="c-wars"></div><div class="legend" id="wars-legend"></div></div>
   </section>
-
+  <div class="part" id="part-econ"><span class="eyebrow">Part I</span><h2 class="part-title">The economy, AI and technology</h2><p class="lede">How rich the world becomes by 2065 depends above all on when intellectual work becomes nearly free, and on who captures the gains. Other breakthroughs, from storage and fission to longevity drugs, add a few per cent; the frontier economies gain most.</p></div>
   <section aria-labelledby="s-ai">
     <div class="section-head"><span class="eyebrow">AI: near-free cognition</span><h2 id="s-ai">If intellectual work becomes nearly free</h2>
       <p class="muted">An assumption-driven scenario layer. When thinking costs nearly nothing, the binding constraints become physical (energy, materials, land, robots, capital); income shifts toward their owners; credentialed work loses value; science, surveillance, persuasion and weapons all get cheaper. Every channel is an explicit parameter below; the rest of the engine reacts to them through the relationships it learned from history.</p></div>
@@ -178,115 +172,7 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
     <div class="card" id="card-tech"><h3>Other technology breakthroughs</h3><p class="sub" id="tech-sub"></p><div class="tablewrap"><table id="t-tech" class="wraptext"></table></div></div>
     <div class="tablewrap"><table id="t-ai-params"></table></div>
   </section>
-
-  <section aria-labelledby="s-world">
-    <div class="section-head"><span class="eyebrow">World trajectories</span><h2 id="s-world">The fan of futures</h2>
-      <p class="muted">Each fan is the spread across simulated worlds: dark band = middle 50%, light band = 90%, line = median. History is in ink.</p></div>
-    <div class="grid2">
-      <div class="card"><h3>Countries in civil conflict</h3><p class="sub">Share of all countries with an active intrastate armed conflict (UCDP, ≥25 battle deaths)</p><div class="chart" id="c-conflict"></div></div>
-      <div class="card"><h3>Coup attempts per year</h3><p class="sub">Count of countries with at least one coup attempt (Powell &amp; Thyne)</p><div class="chart" id="c-coups"></div></div>
-      <div class="card"><h3>World GDP per person</h3><p class="sub">Population-weighted, 2011 international dollars (Maddison), log scale</p><div class="chart" id="c-gdp"></div></div>
-      <div class="card"><h3>World democracy</h3><p class="sub">Population-weighted V-Dem electoral democracy index (0–1)</p><div class="chart" id="c-dem"></div></div>
-      <div class="card" id="card-food"><h3>World grain price</h3><p class="sub" id="food-sub">Real World Bank grains index, origin year = 100 (median and 50%/90% bands; headline worlds). Moves with oil, with world harvests per person and with the replayed history of each scenario year.</p><div class="chart" id="c-food"></div></div>
-      <div class="card" id="card-dep"><h3>Population against farmland</h3><p class="sub">Cereal import dependency (share of cereal use imported), median of worlds. Harvests grow with yields on today's cropland while populations grow; largest rises by 2065.</p><div class="tablewrap" style="max-height:300px"><table id="t-dep"></table></div></div>
-      <div class="card" id="card-displaced"><h3>Refugees from simulated wars</h3><p class="sub">People living as refugees, asylum seekers or others in need of protection outside their country, millions (median and 50%/90% bands; headline worlds). Flows follow simulated civil wars and move population to host countries in UNHCR's recent patterns.</p><div class="chart" id="c-displaced"></div></div>
-    </div>
-  </section>
-
-  <section aria-labelledby="s-score25">
-    <div class="section-head"><span class="eyebrow">Scored on the future</span><h2 id="s-score25">2025: the first year the model had never seen</h2>
-      <p class="muted">Every model was trained on data up to 2024 and scored on what happened in 2025 (UCDP/PRIO 26.1, V-Dem v16). The comparison with ViEWS, the leading academic conflict-forecasting system, uses its forecasts made with data to December 2024 and its own target: at least one month with 25 or more battle deaths in the country.</p></div>
-    <div class="tablewrap"><table id="t-score25" class="wraptext"></table></div>
-    <p class="muted" id="score25-notes" style="max-width:none"></p>
-    <div class="card" id="card-crowd" style="margin-top:18px"><h3>Against crowd forecasters</h3><p class="sub" id="crowd-sub"></p><div class="tablewrap"><table id="t-crowd" class="wraptext"></table></div></div>
-  </section>
-
-  <section aria-labelledby="s-bench" id="sec-bench">
-    <div class="section-head"><span class="eyebrow">Against the field</span><h2 id="s-bench">Benchmarks against published forecasters</h2>
-      <p class="muted" id="bench-sub"></p></div>
-    <div class="grid2">
-      <div class="card" id="card-pc-cm"><h3>VIEWS Prediction Challenge, country-month</h3><p class="sub" id="pc-cm-sub"></p><div class="tablewrap" style="max-height:460px"><table id="t-pc-cm"></table></div></div>
-      <div class="card" id="card-pc-pgm"><h3>VIEWS Prediction Challenge, 55 km grid cells</h3><p class="sub" id="pc-pgm-sub"></p><div class="tablewrap" style="max-height:460px"><table id="t-pc-pgm"></table></div></div>
-    </div>
-    <div class="grid2">
-      <div class="card" id="card-varch"><h3>Head to head with every archived ViEWS run</h3><p class="sub" id="varch-sub"></p><div class="tablewrap"><table id="t-varch" class="wraptext"></table></div></div>
-      <div class="card" id="card-crowdlive"><h3>Live prediction markets and crowds</h3><p class="sub" id="crowdlive-sub"></p><div class="tablewrap" style="max-height:460px"><table id="t-crowdlive" class="wraptext"></table></div></div>
-    </div>
-  </section>
-
-  <section aria-labelledby="s-ledger">
-    <div class="section-head"><span class="eyebrow">On the record</span><h2 id="s-ledger">Forecasts logged before the fact</h2>
-      <p class="muted" id="ledger-sub"></p></div>
-    <div class="card" id="card-scorecard" style="margin-bottom:16px"><h3>Scorecard: forecasts frozen before the outcome</h3><p class="sub" id="scorecard-sub"></p><div class="tablewrap"><table id="t-scorecard" class="wraptext"></table></div></div>
-    <div class="grid2">
-      <div class="card"><h3>Where fighting could start in the next twelve months</h3><p class="sub" id="ledger-card-sub">Countries with no month of 25 or more battle deaths in the past year: probability of at least one such month</p><div class="tablewrap" style="max-height:420px"><table id="t-ledger"></table></div></div>
-      <div class="card"><h3>What drives the uncertainty in 2065</h3><p class="sub">Share of the spread across simulated worlds explained by each assumed parameter, drawn per world from its plausible range. "Other" is history's replayed shocks and the simulated wars, coups and elections themselves.</p><div class="tablewrap"><table id="t-attr" class="wraptext"></table></div><h4 style="margin-top:18px">Grouped, and how far the main assumptions move each outcome</h4><p class="sub" id="attr2-sub"></p><div class="tablewrap"><table id="t-attr2" class="wraptext"></table></div><div class="tablewrap"><table id="t-attr3" class="wraptext"></table></div></div>
-    </div>
-  </section>
-
-  <section aria-labelledby="s-whatif">
-    <div class="section-head"><span class="eyebrow">What if…</span><h2 id="s-whatif">Crisis explorer</h2>
-      <p class="muted">Each scenario forces one war into every simulated world and compares them with the same worlds without it. The rest follows from the engine: alliances pull in other states, countries where the war is fought lose about 9% of output in each war year and recover half two years later (the 1951–2023 record), trade partners suffer, oil moves if exporters fight, and the crisis models react.</p></div>
-    <div class="controls"><div class="seg" id="whatif-seg" role="group" aria-label="Crisis scenario"></div></div>
-    <div class="tiles tiles-3" id="whatif-tiles"></div>
-    <div class="grid2">
-      <div class="card"><h3>GDP per person three years after the war starts</h3><p class="sub">Change against the same worlds without the war (median)</p><div class="chart" id="c-whatif-map"></div><div class="legend" id="whatif-legend"></div></div>
-      <div class="card"><h3>Who else gets drawn in</h3><p class="sub">Rise in the chance that a pair of states fights at some point by 2065</p><div class="tablewrap"><table id="t-whatif-drawn"></table></div></div>
-    </div>
-  </section>
-
-  <section aria-labelledby="s-explorer">
-    <div class="section-head"><span class="eyebrow">Country explorer</span><h2 id="s-explorer">One country, ten thousand futures</h2></div>
-    <div class="controls"><label for="country-select" class="muted" style="font-size:13px">Country</label><select id="country-select"></select></div>
-    <div class="tiles tiles-3" id="country-tiles"></div>
-    <div class="explorer">
-      <div class="card"><h3>GDP per person</h3><p class="sub">2011 int. $, log scale; 1990–2025 in ink</p><div class="chart" id="x-gdp"></div></div>
-      <div class="card"><h3>Democracy index</h3><p class="sub">V-Dem electoral democracy</p><div class="chart" id="x-dem"></div></div>
-      <div class="card"><h3>Probability of civil conflict</h3><p class="sub">Ink: at war (1) or not (0), 1990–2025. Blue: share of simulated worlds at war</p><div class="chart" id="x-conf"></div></div>
-    </div>
-    <div class="card"><h3>What drives this country's five-year conflict and autocratization risk</h3>
-      <p class="sub">Contribution of each feature group to the logit model's log-odds, relative to an average country. Red raises risk, blue lowers it.</p>
-      <div class="grid2"><div class="chart" id="x-drv-conf"></div><div class="chart" id="x-drv-autoc"></div></div></div>
-  </section>
-
-  <section aria-labelledby="s-commentary">
-    <div class="section-head"><span class="eyebrow">Commentary</span><h2 id="s-commentary">What the radiant shows, in detail</h2></div>
-    <div class="narr"><!--__NARRATIVE__--></div>
-  </section>
-
-  <section aria-labelledby="s-panel">
-    <div class="section-head"><span class="eyebrow">Analyst panel</span><h2 id="s-panel">What independent AI analysts think of these numbers</h2>
-      <p class="muted" id="panel-sub">Two independent AI analysts reviewed the five-year forecasts with everything they know, including events after the model's 2024 data. Their views cannot be backtested (they have read the history), so they are shown beside the model, not merged into it, and logged with today's date to be scored as events unfold.</p></div>
-    <div class="tablewrap" style="max-height:640px"><table id="t-panel"></table></div>
-  </section>
-
-  <section aria-labelledby="s-chron">
-    <div class="section-head"><span class="eyebrow">Possible histories</span><h2 id="s-chron">Four of the simulated worlds, told as history</h2>
-      <p class="muted">Written by a language model from each world's event log, without adding events. They are stories about single draws, picked to show the range; the forecast is the whole distribution.</p></div>
-    <div class="grid2" id="chron-cards"></div>
-  </section>
-
-  <section aria-labelledby="s-disaster">
-    <div class="section-head"><span class="eyebrow">Disaster worlds</span><h2 id="s-disaster">The worst 1% of futures, and why they are possible</h2>
-      <p class="muted" id="dis-sub"></p></div>
-    <div class="tablewrap"><table id="t-dis" class="wraptext"></table></div>
-    <h3 style="margin-top:22px">Switching one mechanism off</h3>
-    <p class="muted">The same worlds rerun with one mechanism removed. Each cell: how often the disaster threshold (the baseline's worst 1%) is still crossed, as a multiple of 1%, with the change in the median world in brackets. A mechanism that moves the median as much as the tail shifts all futures; one that moves only the tail is a cause of disaster specifically.</p>
-    <div class="tablewrap"><table id="t-knock"></table></div>
-    <h3 style="margin-top:22px">Five of the worst worlds</h3>
-    <div class="grid2" id="dis-cards"></div>
-    <div class="narr" style="margin-top:18px"><!--__DISASTER__--></div>
-  </section>
-
-  <section aria-labelledby="s-crisis">
-    <div class="section-head"><span class="eyebrow">Seldon crises</span><h2 id="s-crisis">When does instability peak?</h2>
-      <p class="muted">For each simulated world, the year in which the share of countries in conflict is highest, and the conflict fan by region.</p></div>
-    <div class="grid2">
-      <div class="card"><h3>Year of peak global conflict</h3><p class="sub" id="peak-sub"></p><div class="chart" id="c-peak"></div></div>
-      <div class="card"><h3>Conflict by region</h3><p class="sub">Median share of countries in conflict, with 50% band</p><div class="chart" id="c-regions"></div></div>
-    </div>
-  </section>
-
+  <div class="part" id="part-climate"><span class="eyebrow">Part II</span><h2 class="part-title">Climate, food and resources</h2><p class="lede">Warming costs real output, more on hotter paths, and the cost lands hardest where it is already hot. Single bad harvests matter as much as the trend: breadbaskets fail together, and import dependence grows across the Sahel and East Africa.</p></div>
   <section aria-labelledby="s-climate">
     <div class="section-head"><span class="eyebrow">Climate to 2065</span><h2 id="s-climate">Forty years of weather</h2>
       <p class="muted">CMIP6 multi-model projections (World Bank Climate Change Knowledge Portal), bias-corrected to ERA5 observations, drive the simulator country by country: temperature, rainfall, dry spells and heat extremes, with year-to-year weather noise and the spread between climate models. Economic damage follows Burke, Hsiang &amp; Miguel (2015).</p></div>
@@ -309,7 +195,92 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
       </div>
     </div>
   </section>
-
+  <div class="part" id="part-conflict"><span class="eyebrow">Part III</span><h2 class="part-title">Conflict and war</h2><p class="lede">Civil war stays near its post-1946 high, concentrated in the Sahel, the Horn of Africa and the Middle East; coups cluster in West Africa. Wars between great powers are rare but not remote, and their size, more than their number, sets the death toll.</p></div>
+  <section aria-labelledby="s-risk">
+    <div class="section-head"><span class="eyebrow">Five-year risk, 2026–2030</span><h2 id="s-risk">Where the risk concentrates</h2>
+      <p class="muted">Direct estimates from the model ensemble, using each country's 2025 situation. The bracket on each bar spans the lowest and highest of the three model families, a measure of how much the models disagree. Civil-conflict onset is only defined for countries at peace; countries already at war are shown separately.</p></div>
+    <div class="controls"><div class="seg" id="task-seg" role="group" aria-label="Crisis type"></div></div>
+    <div class="card"><div class="chart" id="c-map"></div><div class="legend" id="map-legend"></div></div>
+    <div class="controls"><label for="risk-search" class="muted" style="font-size:13px">Find a country</label><input type="search" id="risk-search" placeholder="e.g. Nigeria"></div>
+    <div class="tablewrap" style="max-height:560px"><table id="risk-table"></table></div>
+  </section>
+  <section aria-labelledby="s-inter">
+    <div class="section-head"><span class="eyebrow">Wars between states</span><h2 id="s-inter">Rivals, alliances and the risk of interstate war</h2>
+      <p class="muted" id="inter-sub"></p></div>
+    <div class="tablewrap"><table id="t-watch"></table></div>
+    <div class="grid2" id="grid-scale">
+      <div class="card"><h3>How big the wars get</h3><p class="sub" id="scale-sub"></p><div class="tablewrap"><table id="t-scale"></table></div></div>
+      <div class="card"><h3>Interstate battle deaths per year</h3><p class="sub" id="deaths-sub">Headline worlds: median and 50% / 90% bands, log scale (values below 100 shown at 100). Battle deaths only; civilian and indirect deaths are often several times larger.</p><div class="chart" id="c-deaths"></div></div>
+    </div>
+    <div class="card" id="card-risks"><h3>Nuclear weapons, catastrophes and population</h3><p class="sub" id="risks-sub"></p><div class="tablewrap"><table id="t-risks" class="wraptext"></table></div></div>
+    <div class="grid2" id="grid-water">
+      <div class="card"><h3>Water disputes</h3><p class="sub" id="water-sub"></p><div class="tablewrap"><table id="t-water"></table></div></div>
+      <div class="card"><h3>Glaciers and water supply</h3><p class="sub" id="glacier-sub"></p><div class="tablewrap"><table id="t-glacier"></table></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h3>Could it have seen the world wars coming?</h3><p class="sub">Trained only on what was known by 1913 and 1938, then asked which pairs of countries were most likely to fight in the next five years. Rank among all pairs; lower is better.</p><div class="tablewrap"><table id="t-ww"></table></div></div>
+      <div class="card"><h3>How well it forecasts interstate conflict</h3><p class="sub">Backtests and simulator hindcasts, out of sample.</p><div class="tablewrap"><table id="t-inter-val" class="wraptext"></table></div></div>
+    </div>
+    <div class="card" id="card-gulf"><h3>The 2026 Gulf war, measured</h3><p class="sub" id="gulf-sub"></p><div class="tablewrap"><table id="t-gulf" class="wraptext"></table></div></div>
+    <div class="card"><h3>Chance of at least one great-power war</h3><p class="sub">Share of simulated worlds with a war (≥ 1,000 battle deaths) between two major powers by each year.</p><div class="chart" id="c-wars"></div><div class="legend" id="wars-legend"></div></div>
+  </section>
+  <section aria-labelledby="s-whatif">
+    <div class="section-head"><span class="eyebrow">What if…</span><h2 id="s-whatif">Crisis explorer</h2>
+      <p class="muted">Each scenario forces one war into every simulated world and compares them with the same worlds without it. The rest follows from the engine: alliances pull in other states, countries where the war is fought lose about 9% of output in each war year and recover half two years later (the 1951–2023 record), trade partners suffer, oil moves if exporters fight, and the crisis models react.</p></div>
+    <div class="controls"><div class="seg" id="whatif-seg" role="group" aria-label="Crisis scenario"></div></div>
+    <div class="tiles tiles-3" id="whatif-tiles"></div>
+    <div class="grid2">
+      <div class="card"><h3>GDP per person three years after the war starts</h3><p class="sub">Change against the same worlds without the war (median)</p><div class="chart" id="c-whatif-map"></div><div class="legend" id="whatif-legend"></div></div>
+      <div class="card"><h3>Who else gets drawn in</h3><p class="sub">Rise in the chance that a pair of states fights at some point by 2065</p><div class="tablewrap"><table id="t-whatif-drawn"></table></div></div>
+    </div>
+  </section>
+  <section aria-labelledby="s-crisis">
+    <div class="section-head"><span class="eyebrow">Seldon crises</span><h2 id="s-crisis">When does instability peak?</h2>
+      <p class="muted">For each simulated world, the year in which the share of countries in conflict is highest, and the conflict fan by region.</p></div>
+    <div class="grid2">
+      <div class="card"><h3>Year of peak global conflict</h3><p class="sub" id="peak-sub"></p><div class="chart" id="c-peak"></div></div>
+      <div class="card"><h3>Conflict by region</h3><p class="sub">Median share of countries in conflict, with 50% band</p><div class="chart" id="c-regions"></div></div>
+    </div>
+  </section>
+  <div class="part" id="part-tails"><span class="eyebrow">Part IV</span><h2 class="part-title">The worst futures, and how history might read</h2><p class="lede">The worst one per cent of futures each have a cause the simulator can trace: a slide in output with heavy climate damage, a great-power war, a wave of civil wars, or early AI with a drift to autocracy. Four worlds are told here as history.</p></div>
+  <section aria-labelledby="s-disaster">
+    <div class="section-head"><span class="eyebrow">Disaster worlds</span><h2 id="s-disaster">The worst 1% of futures, and why they are possible</h2>
+      <p class="muted" id="dis-sub"></p></div>
+    <div class="tablewrap"><table id="t-dis" class="wraptext"></table></div>
+    <h3 style="margin-top:22px">Switching one mechanism off</h3>
+    <p class="muted">The same worlds rerun with one mechanism removed. Each cell: how often the disaster threshold (the baseline's worst 1%) is still crossed, as a multiple of 1%, with the change in the median world in brackets. A mechanism that moves the median as much as the tail shifts all futures; one that moves only the tail is a cause of disaster specifically.</p>
+    <div class="tablewrap"><table id="t-knock"></table></div>
+    <h3 style="margin-top:22px">Five of the worst worlds</h3>
+    <div class="grid2" id="dis-cards"></div>
+    <div class="narr" style="margin-top:18px"><!--__DISASTER__--></div>
+  </section>
+  <section aria-labelledby="s-chron">
+    <div class="section-head"><span class="eyebrow">Possible histories</span><h2 id="s-chron">Four of the simulated worlds, told as history</h2>
+      <p class="muted">Written by a language model from each world's event log, without adding events. They are stories about single draws, picked to show the range; the forecast is the whole distribution.</p></div>
+    <div class="grid2" id="chron-cards"></div>
+  </section>
+  <section aria-labelledby="s-cycles">
+    <div class="section-head"><span class="eyebrow">Long cycles</span><h2 id="s-cycles">Does history move in cycles?</h2>
+      <p class="muted">Two tests of the structural-demographic theory behind psychohistory: 230 years of the United States (Turchin's political-violence data, congressional polarization, wages, elites, debt), and 169 state crises over four thousand years (Seshat CrisisDB).</p></div>
+    <div class="grid2">
+      <div class="card"><h3>United States, 1790–2025</h3><p class="sub">Political violence (events per 10 million people, decade average), congressional polarization and worker immiseration, each on its own scale</p><div class="chart" id="c-us-viol"></div><div class="chart" id="c-us-pol"></div><div class="chart" id="c-us-imm"></div></div>
+      <div class="card"><h3>What the tests say</h3><div id="cycles-text" class="prose"></div><h3 style="margin-top:14px">Seshat: crises per polity-century by the polity's age</h3><div class="chart" id="c-seshat-age"></div></div>
+    </div>
+  </section>
+  <div class="part" id="part-places"><span class="eyebrow">Part V</span><h2 class="part-title">Countries</h2><p class="lede">Every country has its own fan of futures: its income, democracy and conflict paths, and what drives its risk. The United States gets its own state-level model.</p></div>
+  <section aria-labelledby="s-explorer">
+    <div class="section-head"><span class="eyebrow">Country explorer</span><h2 id="s-explorer">One country, ten thousand futures</h2></div>
+    <div class="controls"><label for="country-select" class="muted" style="font-size:13px">Country</label><select id="country-select"></select></div>
+    <div class="tiles tiles-3" id="country-tiles"></div>
+    <div class="explorer">
+      <div class="card"><h3>GDP per person</h3><p class="sub">2011 int. $, log scale; 1990–2025 in ink</p><div class="chart" id="x-gdp"></div></div>
+      <div class="card"><h3>Democracy index</h3><p class="sub">V-Dem electoral democracy</p><div class="chart" id="x-dem"></div></div>
+      <div class="card"><h3>Probability of civil conflict</h3><p class="sub">Ink: at war (1) or not (0), 1990–2025. Blue: share of simulated worlds at war</p><div class="chart" id="x-conf"></div></div>
+    </div>
+    <div class="card"><h3>What drives this country's five-year conflict and autocratization risk</h3>
+      <p class="sub">Contribution of each feature group to the logit model's log-odds, relative to an average country. Red raises risk, blue lowers it.</p>
+      <div class="grid2"><div class="chart" id="x-drv-conf"></div><div class="chart" id="x-drv-autoc"></div></div></div>
+  </section>
   <section aria-labelledby="s-us">
     <div class="section-head"><span class="eyebrow">United States</span><h2 id="s-us">Fifty states and DC</h2>
       <p class="muted">A separate state-level model, 1929–2024: BEA income, BLS unemployment, FHFA house prices, CDC overdoses, Mother Jones mass shootings, MIT election returns, Shor–McCarty legislative polarisation and NOAA climate. All states share one business cycle, so the data hold only a handful of independent national crises; read the absolute numbers with that in mind and the differences between states with more confidence.</p></div>
@@ -321,22 +292,35 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
     <div class="tablewrap" style="max-height:520px"><table id="us-table"></table></div>
     <div class="card"><h3>State backtest</h3><p class="sub">Rolling origins 1990–2015, five-year horizon, out of sample. Overdose surges were not predictable from state structure (they were driven by national drug-supply shocks) and are not forecast.</p><div class="tablewrap"><table id="t-us-bt"></table></div></div>
   </section>
-
-  <section aria-labelledby="s-cycles">
-    <div class="section-head"><span class="eyebrow">Long cycles</span><h2 id="s-cycles">Does history move in cycles?</h2>
-      <p class="muted">Two tests of the structural-demographic theory behind psychohistory: 230 years of the United States (Turchin's political-violence data, congressional polarization, wages, elites, debt), and 169 state crises over four thousand years (Seshat CrisisDB).</p></div>
+  <div class="part" id="part-trust"><span class="eyebrow">Part VI</span><h2 class="part-title">Can you trust it?</h2><p class="lede">The model is scored on years it never saw, against published forecasters and crowds, and against its own frozen past forecasts. It ranks where trouble comes well; where a prediction market or crowd covers a near-term question, the crowd is better, and the report shows its number.</p></div>
+  <section aria-labelledby="s-score25">
+    <div class="section-head"><span class="eyebrow">Scored on the future</span><h2 id="s-score25">2025: the first year the model had never seen</h2>
+      <p class="muted">Every model was trained on data up to 2024 and scored on what happened in 2025 (UCDP/PRIO 26.1, V-Dem v16). The comparison with ViEWS, the leading academic conflict-forecasting system, uses its forecasts made with data to December 2024 and its own target: at least one month with 25 or more battle deaths in the country.</p></div>
+    <div class="tablewrap"><table id="t-score25" class="wraptext"></table></div>
+    <p class="muted" id="score25-notes" style="max-width:none"></p>
+    <div class="card" id="card-crowd" style="margin-top:18px"><h3>Against crowd forecasters</h3><p class="sub" id="crowd-sub"></p><div class="tablewrap"><table id="t-crowd" class="wraptext"></table></div></div>
+  </section>
+  <section aria-labelledby="s-bench" id="sec-bench">
+    <div class="section-head"><span class="eyebrow">Against the field</span><h2 id="s-bench">Benchmarks against published forecasters</h2>
+      <p class="muted" id="bench-sub"></p></div>
     <div class="grid2">
-      <div class="card"><h3>United States, 1790–2025</h3><p class="sub">Political violence (events per 10 million people, decade average), congressional polarization and worker immiseration, each on its own scale</p><div class="chart" id="c-us-viol"></div><div class="chart" id="c-us-pol"></div><div class="chart" id="c-us-imm"></div></div>
-      <div class="card"><h3>What the tests say</h3><div id="cycles-text" class="prose"></div><h3 style="margin-top:14px">Seshat: crises per polity-century by the polity's age</h3><div class="chart" id="c-seshat-age"></div></div>
+      <div class="card" id="card-pc-cm"><h3>VIEWS Prediction Challenge, country-month</h3><p class="sub" id="pc-cm-sub"></p><div class="tablewrap" style="max-height:460px"><table id="t-pc-cm"></table></div></div>
+      <div class="card" id="card-pc-pgm"><h3>VIEWS Prediction Challenge, 55 km grid cells</h3><p class="sub" id="pc-pgm-sub"></p><div class="tablewrap" style="max-height:460px"><table id="t-pc-pgm"></table></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card" id="card-varch"><h3>Head to head with every archived ViEWS run</h3><p class="sub" id="varch-sub"></p><div class="tablewrap"><table id="t-varch" class="wraptext"></table></div></div>
+      <div class="card" id="card-crowdlive"><h3>Live prediction markets and crowds</h3><p class="sub" id="crowdlive-sub"></p><div class="tablewrap" style="max-height:460px"><table id="t-crowdlive" class="wraptext"></table></div></div>
     </div>
   </section>
+  <section aria-labelledby="s-ledger">
+    <div class="section-head"><span class="eyebrow">On the record</span><h2 id="s-ledger">Forecasts logged before the fact</h2>
+      <p class="muted" id="ledger-sub"></p></div>
+    <div class="card" id="card-scorecard" style="margin-bottom:16px"><h3>Scorecard: forecasts frozen before the outcome</h3><p class="sub" id="scorecard-sub"></p><div class="tablewrap"><table id="t-scorecard" class="wraptext"></table></div></div>
+    <div>
+      <div class="card"><h3>Where fighting could start in the next twelve months</h3><p class="sub" id="ledger-card-sub">Countries with no month of 25 or more battle deaths in the past year: probability of at least one such month</p><div class="tablewrap" style="max-height:420px"><table id="t-ledger"></table></div></div>
 
-  <section aria-labelledby="s-system">
-    <div class="section-head"><span class="eyebrow">The world as a system</span><h2 id="s-system">What is learned, what is assumed</h2>
-      <p class="muted">Each simulated world steps every country and every politically relevant pair of countries forward a year at a time. Mechanisms marked <span class="pill">learned</span> were estimated from history and checked out of sample; those marked <span class="pill">assumed</span> come from the literature or from a stated scenario and are shown with and without.</p></div>
-    <div class="tablewrap"><table id="t-system"></table></div>
+    </div>
   </section>
-
   <section aria-labelledby="s-trust">
     <div class="section-head"><span class="eyebrow">Validation</span><h2 id="s-trust">How much to trust this</h2>
       <p class="muted">Every number below is out-of-sample: models were trained only on what was known before each test period.</p></div>
@@ -353,17 +337,16 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
     <div class="card"><h3>Simulator coverage</h3><p class="sub">Share of countries whose actual outcome fell inside the simulated band (target: 90% and 50%). "Conflict ranking" scores which countries are at war in each year, which ongoing wars make easy; "new onset" scores only countries at peace at the origin. Demography in hindcasts is extrapolated from the origin, not taken from what happened. The fan width and world-mood settings were chosen on the 1975–2004 runs; 2015 → 2025 is the only run they never saw (its GDP bands are too wide: 70% of countries inside the 50% band).</p><div class="tablewrap"><table id="t-hind"></table></div></div>
     <div class="card"><h3>Do ideology, religion and state data help?</h3><p class="sub">Ensemble AUC when adding each new data family to the structural core (economy, demography, elites, regime, violence). Six backtest origins, 1990–2015; gain over the core in brackets.</p><div class="tablewrap"><table id="t-ablation"></table></div></div>
   </section>
-
-  <section aria-labelledby="s-improve">
-    <div class="section-head"><span class="eyebrow">Model improvement</span><h2 id="s-improve">What made the forecasts better</h2></div>
-    <div class="narr"><!--__IMPROVE__--></div>
+  <section aria-labelledby="s-panel">
+    <div class="section-head"><span class="eyebrow">Analyst panel</span><h2 id="s-panel">What independent AI analysts think of these numbers</h2>
+      <p class="muted" id="panel-sub">Two independent AI analysts reviewed the five-year forecasts with everything they know, including events after the model's 2024 data. Their views cannot be backtested (they have read the history), so they are shown beside the model, not merged into it, and logged with today's date to be scored as events unfold.</p></div>
+    <div class="tablewrap" style="max-height:640px"><table id="t-panel"></table></div>
   </section>
-
-  <section aria-labelledby="s-review">
-    <div class="section-head"><span class="eyebrow">Independent review</span><h2 id="s-review">What a second reviewer found</h2></div>
-    <div class="narr"><!--__REVIEW__--></div>
+  <section aria-labelledby="s-system">
+    <div class="section-head"><span class="eyebrow">The world as a system</span><h2 id="s-system">What is learned, what is assumed</h2>
+      <p class="muted">Each simulated world steps every country and every politically relevant pair of countries forward a year at a time. Mechanisms marked <span class="pill">learned</span> were estimated from history and checked out of sample; those marked <span class="pill">assumed</span> come from the literature or from a stated scenario and are shown with and without.</p></div>
+    <div class="tablewrap"><table id="t-system"></table></div>
   </section>
-
   <section aria-labelledby="s-method">
     <div class="section-head"><span class="eyebrow">Method</span><h2 id="s-method">How the model works, and where it breaks</h2></div>
     <div class="grid2">
@@ -397,6 +380,23 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
     <p class="credit">The full methodology, with every test and its result, is in the <a href="https://benoitschillings.github.io/psychohistory/methodology.html" target="_blank" rel="noopener">methodology document</a>; every input is listed in the <a href="https://benoitschillings.github.io/psychohistory/data_sources.html" target="_blank" rel="noopener">data source tree</a>. Study conceived and directed by Benoit Schillings. <!--__VERSION__-->.</p>
     <p class="footnote" id="footnote"></p>
   </section>
+  <div class="part" id="part-appendix"><span class="eyebrow">Appendix</span><h2 class="part-title">The details</h2><p class="lede">The full commentary, every finding with how it changed from version to version, what improved the forecasts, and what an independent review found.</p></div>
+  <section aria-labelledby="s-commentary">
+    <div class="section-head"><span class="eyebrow">Appendix</span><h2 id="s-commentary">Commentary in detail</h2></div>
+    <div class="narr"><!--__NARRATIVE__--></div>
+  </section>
+  <section aria-labelledby="s-narr">
+    <div class="section-head"><span class="eyebrow">Appendix</span><h2 id="s-narr">Every finding, with its history</h2><p class="muted">The detailed findings, dated where a model change moved them.</p></div>
+    <div class="narr"><!--__NARRATIVE_TOP__--></div>
+  </section>
+  <section aria-labelledby="s-improve">
+    <div class="section-head"><span class="eyebrow">Model improvement</span><h2 id="s-improve">What made the forecasts better</h2></div>
+    <div class="narr"><!--__IMPROVE__--></div>
+  </section>
+  <section aria-labelledby="s-review">
+    <div class="section-head"><span class="eyebrow">Independent review</span><h2 id="s-review">What a second reviewer found</h2></div>
+    <div class="narr"><!--__REVIEW__--></div>
+  </section>
 
 </div>
 
@@ -416,7 +416,7 @@ const pct = (v, d = 0) => v == null ? "–" : (100 * v).toFixed(d) + "%";
 const money = v => v == null ? "–" : "$" + d3.format(",.0f")(v);
 const qAt = (q, i) => q.map(r => r[i]);
 document.getElementById("hero-eyebrow").textContent =
-  `Forecast origin ${M.origin} · ${d3.format(",")(M.n_scenarios)} simulated worlds · ${M.n_countries} countries`;
+  `A simulation of humanity · ${d3.format(",")(M.n_scenarios)} worlds · ${M.n_countries} countries · from ${M.origin}`;
 
 /* ---------- tooltip ---------- */
 function tipFor(container) {
@@ -481,8 +481,8 @@ function fanChart(el, o) {
 /* ---------- hero: spaghetti ---------- */
 function hero() {
   const el = document.getElementById("hero-chart");
-  fanChart(el, {hist: {years: H.years, values: H.world_conflict}, fmt: d => pct(d), ymin: 0, h: 230, label: "Historical and simulated share of countries in civil conflict",
-    extra: W.sample_paths.map(p => ({years: [M.origin, ...W.years], values: [H.world_conflict.at(-1), ...p], color: "--fan", width: 1, label: "One simulated world"})).slice(0, 12)});
+  fanChart(el, {hist: {years: H.years, values: H.world_gdp}, fan: {years: W.years, q: W.world_gdp_q}, fmt: d => "$" + d3.format("~s")(d), log: true, ml: 52, h: 230,
+    label: "World GDP per person"});
 }
 
 /* ---------- tiles ---------- */
@@ -492,13 +492,13 @@ function tiles() {
   const usa = DATA.countries.find(c => c.code === "USA");
   const hot = DATA.countries.filter(c => !c.in_conflict).sort((a, b) => b.civil_conflict_5y - a.civil_conflict_5y);
   const t = [
-    {k: `Countries in civil conflict, ${M.origin}`, v: pct(last), s: `${Math.round(last * M.n_countries)} of ${M.n_countries}; post-1946 peak ${pct(M.hist_max_conflict ?? W.hist_max_conflict)}`},
-    {k: "Median projection, 2035", v: pct(W.world_conflict_q[2][yi(2035)]), s: `90% band ${pct(W.world_conflict_q[0][yi(2035)])} – ${pct(W.world_conflict_q[4][yi(2035)])}; tops its 1990 peak by ${W.years.at(-1)} in ${pct(W.p_exceed_hist_max)} of worlds`},
+    {k: `World GDP per person, ${W.years.at(-1)}`, v: money(W.world_gdp_q[2].at(-1)), s: `${money(H.world_gdp.at(-1))} in ${M.origin}; 90% band ${money(W.world_gdp_q[0].at(-1))} – ${money(W.world_gdp_q[4].at(-1))}` + (noai ? `; no AI shock ${money(noai.world_gdp_q[2].at(-1))}` : "")},
+    {k: `World democracy index, ${W.years.at(-1)}`, v: d3.format(".2f")(W.world_dem_q[2].at(-1)), s: `${d3.format(".2f")(H.world_dem.at(-1))} in ${M.origin} (population-weighted); 90% band ${d3.format(".2f")(W.world_dem_q[0].at(-1))} – ${d3.format(".2f")(W.world_dem_q[4].at(-1))}`},
+    {k: `Countries in civil conflict, ${W.years.at(-1)}`, v: pct(W.world_conflict_q[2].at(-1)), s: `${pct(last)} in ${M.origin}; 90% band ${pct(W.world_conflict_q[0].at(-1))} – ${pct(W.world_conflict_q[4].at(-1))}; tops its 1990 peak in ${pct(W.p_exceed_hist_max)} of worlds`},
+    base ? {k: `Great-power war by ${W.years.at(-1)}`, v: pct(base.great_power_war_by.at(-1)), s: `≥ 1,000 battle deaths between great powers (the traditional majors and nuclear states with ≥ 5% of world output, i.e. India); ${base.great_power_war_cow_by ? `traditional majors only ${pct(base.great_power_war_cow_by.at(-1))}; ` : ""}nuclear use ${pct(base.risks.nuclear_use_p)}`}
+         : {k: "Great-power war", v: "–", s: ""},
     {k: `Most likely new civil war, ${M.origin + 1}–${M.origin + 5}`, v: `${hot[0].name} ${pct(hot[0].civil_conflict_5y)}`, s: hot.slice(1, 4).map(c => `${c.name} ${pct(c.civil_conflict_5y)}`).join(", ")},
-    base ? {k: `Great-power war by ${W.years.at(-1)}`, v: pct(base.great_power_war_by.at(-1)), s: `≥ 1,000 deaths between great powers (COW majors + nuclear states with ≥ 5% of world output, i.e. India); ${base.great_power_war_cow_by ? `old majors only ${pct(base.great_power_war_cow_by.at(-1))}; ` : ""}${noai ? `no AI shock ${pct(noai.great_power_war_by.at(-1))}, ` : ""}AI from 2030 ${pct(ai.great_power_war_by.at(-1))}, 1914-style alliances ${pct((AI.alliances_1914 || base).great_power_war_by.at(-1))}`}
-         : {k: `World democracy index, ${W.years.at(-1)}`, v: d3.format(".2f")(W.world_dem_q[2].at(-1)), s: ""},
-    {k: `World GDP per person, ${W.years.at(-1)}`, v: money(W.world_gdp_q[2].at(-1)), s: `90% band ${money(W.world_gdp_q[0].at(-1))} – ${money(W.world_gdp_q[4].at(-1))}` + (noai ? `; no AI shock ${money(noai.world_gdp_q[2].at(-1))}` : "") + (ai ? `; AI from 2030 ${money(ai.world_gdp_q[2].at(-1))}` : "")},
-    {k: `US autocratization, ${M.origin + 1}–${M.origin + 5}`, v: pct(usa.autocratization_5y), s: `chance of another large fall in democracy; index now ${d3.format(".2f")(usa.democracy + 1e-9)}, world median ${W.years.at(-1)} ${d3.format(".2f")(W.world_dem_q[2].at(-1))}`},
+    {k: `US autocratization, ${M.origin + 1}–${M.origin + 5}`, v: pct(usa.autocratization_5y), s: `chance of another large fall in democracy; index now ${d3.format(".2f")(usa.democracy + 1e-9)}`},
   ];
   document.getElementById("tiles").innerHTML = t.map(d => `<div class="tile"><span class="k">${d.k}</span><span class="v num">${d.v}</span><span class="s">${d.s}</span></div>`).join("");
 }
@@ -1248,7 +1248,7 @@ function climateRisk() {
     `<tr><td><b>All worlds</b></td><td class="num">100%</td><td class="num"><b>${money(CR.gdp_2065)}</b></td></tr></tbody>`;
   const Y = CR.y2100;
   if (Y) {
-    const NM = {ssp126: "Low (SSP1-2.6)", ssp245: "Middle (SSP2-4.5)", ssp370: "High (SSP3-7.0)", ssp585: "Very high (SSP5-8.5)"};
+    const NM = {ssp126: "Low (SSP1-2.6)", ssp245: "Middle (SSP2-4.5)", ssp370: "High (SSP3-7.0)", ssp585: "Very high (SSP5-8.5)", ssp245_tech: "Middle, with breakthroughs drawn (clean energy beyond the path, carbon removal, geoengineering)"};
     document.getElementById("t-c2100").innerHTML = `<thead><tr><th>Emissions path</th>${Y.years.map(y => `<th class="num">${y}</th>`).join("")}<th class="num">2100, by estimate (level / growth / global)</th></tr></thead><tbody>` +
       Object.entries(Y.scenarios).map(([k, v]) => `<tr><td>${NM[k] || k}</td>${Y.years.map(y => { const c = v.loss_pct[y]; return `<td class="num">${sg(c.median)}<br><span class="muted">${sg(c.p5)} to ${sg(c.p95)}</span></td>`; }).join("")}<td class="num">${["level", "bhm_growth", "global_temp"].map(n => sg(v.loss_pct[2100].by_family[n])).join(" / ")}</td></tr>`).join("") +
       `</tbody><caption class="sub" style="caption-side:bottom;text-align:left">Median and 90% range across worlds. Absolute GDP beyond 2065 is not credible; the paired ratio isolates the damage.</caption>`;

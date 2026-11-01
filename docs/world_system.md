@@ -1972,3 +1972,21 @@ $35.8k (90%: $17.7k-$91.6k), without AI $24.5k -> $25.3k, civil conflict 22.9% -
 0.403, great-power war 45.2% -> 46.6%, nuclear use 13.6% -> 13.2%. Arrival years enter the attribution of uncertainty
 (group "technology": 1% of the 2065 GDP spread on its own; AI and robot timing falls from 49% to 36%, because
 breakthrough timing rides partly on AI timing).
+
+### Climate paths keep their meaning (2026-11-01)
+
+With the technology registry in the headline, scripts/climate_2100.py first reported the middle path's 2100 loss at
+10% instead of 27%: geoengineering, carbon removal and clean energy beyond the path were being drawn on top of every
+emissions path. The four SSPs now run with the registry off (2065 / 2100 median losses: SSP1-2.6 -10% / -14%,
+SSP2-4.5 -14% / -27%, SSP3-7.0 -17% / -37%, SSP5-8.5 -21% / -43%, unchanged from before), and ssp245_tech adds the
+breakthroughs as drawn in the headline: -11% in 2065, -10% in 2100 (90% range -38% to +3%), so where they arrive the
+late-century damage stops growing.
+
+### Report structure (2026-11-01)
+
+The report is ordered top down: what the model is (a simulation of humanity, not only of conflict), the findings in
+one page (outputs/summary.md, each with a link to its evidence), what decides which future we get (the attribution
+table), the fan of futures, then six parts with a one-paragraph takeaway each (economy, AI and technology; climate
+and food; conflict and war; the worst futures; countries; can you trust it?) and an appendix (the commentary, every
+finding with its dated history, what improved the forecasts, the independent review). The hero chart is world GDP per
+person instead of the civil-war share.

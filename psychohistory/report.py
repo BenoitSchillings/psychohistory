@@ -15,7 +15,7 @@ from .data import RAW, ROOT
 OUT = ROOT / "outputs"
 TEMPLATE = ROOT / "psychohistory" / "report_template.html"
 # bump on every published change to the report (version 39 follows the 38 earlier published revisions)
-VERSION = ("44", "1 November 2026")
+VERSION = ("45", "1 November 2026")
 
 
 def _world_topology():
@@ -34,7 +34,9 @@ def _md_to_html(md: str) -> str:
     def inline(s):
         s = html.escape(s)
         s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
-        return re.sub(r"\*(.+?)\*", r"<em>\1</em>", s)
+        s = re.sub(r"\*(.+?)\*", r"<em>\1</em>", s)
+        # links to sections of the page only: [text](#id)
+        return re.sub(r"\[([^\]]+)\]\((#[A-Za-z0-9_-]+)\)", r'<a href="\2">\1</a>', s)
 
     def flush():
         if items:
@@ -118,6 +120,8 @@ def build(path=None) -> str:
     if not rest:                                    # no split marker: everything goes in the detailed commentary
         top, rest = "", top
     top = top.replace("## The short version", "", 1)   # the section heading already says it
+    summ = OUT / "summary.md"                             # "The future in one page" (top of the report)
+    page = page.replace("<!--__SUMMARY__-->", _md_to_html(summ.read_text()) if summ.exists() else "")
     page = page.replace("<!--__NARRATIVE_TOP__-->", _md_to_html(top) if top.strip() else "")
     page = page.replace("<!--__NARRATIVE__-->", _md_to_html(rest) if rest.strip() else
                         "<p class='muted'>No narrative written yet (outputs/narrative.md).</p>")
