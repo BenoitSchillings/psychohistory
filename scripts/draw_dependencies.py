@@ -77,9 +77,9 @@ N = {
     "dyad": (2, "DyadModel (logit + GBM)", "interstate conflict 1 y / 5 y, fatal MID, use of force; alliance cascade calibration"),
     "cont": (2, "contagion_test.py", "trade contagion β = 4.26 ± 0.56; bank-lending link rejected"),
     "extra": (2, "extra_estimates.py", "financial-crisis hazard & cost, mineral rents, fertility vs income, yields vs weather"),
-    "assume": (2, "Sampled assumptions", "PARAM / WATER / EXTRA ranges, AI & robot arrival CDFs, nuclear, cyber, tail catastrophes", ASSUME),
+    "assume": (2, "Sampled assumptions", "PARAM / WATER / EXTRA ranges, AI & robot arrival CDFs, nuclear, cyber, tail catastrophes, dollar-decline scenario", ASSUME),
     "cmq": (2, "Fatality quantile models (LightGBM)", "cm: change from 3-month level; pgm: local tail bound; 1,000 draws each"),
-    "newtests": (2, "History tests of candidates", "workforce, succession, ocean, innovation, intervention, structure, political economy, ethnic kin: estimates kept, failures rejected"),
+    "newtests": (2, "History tests of candidates", "workforce, succession, ocean, innovation, intervention, structure, political economy, ethnic kin, sovereign & currency crises (costs kept, simulation channel rejected), interest rates (untestable): estimates kept, failures rejected"),
     "monthly": (2, "monthly.py", "P(≥25 deaths) per country-month"),
     "side": (2, "US & long-cycle models", "US state crisis models, US structural stress, Seshat cycle tests"),
     # simulation
@@ -107,7 +107,7 @@ N = {
 
 E = [  # (source, target, label or "", dashed)
     ("wpp", "sim"), ("wikid", "panel"), ("ilo", "sim"), ("ibtracs", "sim"), ("natearth", "cmdata"), ("mort", "sim"),
-    ("anchors", "assume"), ("rff", "hind"), ("rejected", "newtests"), ("gmd", "extra"),
+    ("anchors", "assume"), ("rff", "hind"), ("rejected", "newtests"), ("gmd", "extra"), ("gmd", "newtests"),
     ("owid", "panel"), ("vdem", "panel"), ("gmd", "panel"), ("epr", "panel"), ("pol", "panel"), ("ucdp", "panel"),
     ("events", "panel"), ("energy", "panel"), ("food", "panel"), ("mig", "panel"), ("clim", "panel"),
     ("panel", "feat"), ("clim", "climp"),
