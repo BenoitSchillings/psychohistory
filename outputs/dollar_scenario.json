@@ -1,0 +1,86 @@
+{
+ "uncertain_base": {
+  "great_power_war": 0.44624999165534973,
+  "nuclear_use": 0.13075000047683716,
+  "conflict_2065": 0.22857142984867096,
+  "democracy_2065": 0.4014725685119629,
+  "gdp_2065": 35611.75,
+  "usa_gdppc_2065": 110340.078125,
+  "chn_gdppc_2065": 56988.7578125,
+  "war_China-United States": 0.09550000727176666,
+  "war_Russia-United States": 0.04975000396370888,
+  "war_China-Taiwan": 0.09175000339746475
+ },
+ "uncertain_dollar": {
+  "great_power_war": 0.4465000033378601,
+  "nuclear_use": 0.13050000369548798,
+  "conflict_2065": 0.22857142984867096,
+  "democracy_2065": 0.40147072076797485,
+  "gdp_2065": 35424.1875,
+  "usa_gdppc_2065": 105632.90625,
+  "chn_gdppc_2065": 57004.79296875,
+  "war_China-United States": 0.09550000727176666,
+  "war_Russia-United States": 0.05025000125169754,
+  "war_China-Taiwan": 0.09175000339746475
+ },
+ "uncertain_dollar_deep": {
+  "great_power_war": 0.44077959656715393,
+  "nuclear_use": 0.13718141615390778,
+  "conflict_2065": 0.22857142984867096,
+  "democracy_2065": 0.40036648511886597,
+  "gdp_2065": 35014.6796875,
+  "usa_gdppc_2065": 100920.1875,
+  "chn_gdppc_2065": 57086.34375
+ },
+ "uncertain_dollar_mild": {
+  "great_power_war": 0.45201238989830017,
+  "nuclear_use": 0.13622291386127472,
+  "conflict_2065": 0.22857142984867096,
+  "democracy_2065": 0.4037137031555176,
+  "gdp_2065": 36245.23828125,
+  "usa_gdppc_2065": 111140.171875,
+  "chn_gdppc_2065": 57738.6015625
+ },
+ "none_base": {
+  "great_power_war": 0.4152500033378601,
+  "nuclear_use": 0.12049999833106995,
+  "conflict_2065": 0.22285714745521545,
+  "democracy_2065": 0.4217587113380432,
+  "gdp_2065": 25554.630859375,
+  "usa_gdppc_2065": 62048.4453125,
+  "chn_gdppc_2065": 35719.2578125,
+  "war_China-United States": 0.08425000309944153,
+  "war_Russia-United States": 0.04375000298023224,
+  "war_China-Taiwan": 0.08225000649690628
+ },
+ "none_dollar": {
+  "great_power_war": 0.42274999618530273,
+  "nuclear_use": 0.1237500011920929,
+  "conflict_2065": 0.22285714745521545,
+  "democracy_2065": 0.42176520824432373,
+  "gdp_2065": 25461.75390625,
+  "usa_gdppc_2065": 60037.7890625,
+  "chn_gdppc_2065": 35772.04296875,
+  "war_China-United States": 0.08950000256299973,
+  "war_Russia-United States": 0.046000003814697266,
+  "war_China-Taiwan": 0.08225000649690628
+ },
+ "none_dollar_deep": {
+  "great_power_war": 0.4182908535003662,
+  "nuclear_use": 0.11769115179777145,
+  "conflict_2065": 0.22285714745521545,
+  "democracy_2065": 0.4220142364501953,
+  "gdp_2065": 25507.71484375,
+  "usa_gdppc_2065": 58641.453125,
+  "chn_gdppc_2065": 35803.40625
+ },
+ "none_dollar_mild": {
+  "great_power_war": 0.41873064637184143,
+  "nuclear_use": 0.12848296761512756,
+  "conflict_2065": 0.22285714745521545,
+  "democracy_2065": 0.4188668727874756,
+  "gdp_2065": 25335.5625,
+  "usa_gdppc_2065": 61281.6875,
+  "chn_gdppc_2065": 35371.6796875
+ }
+}

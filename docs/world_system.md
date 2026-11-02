@@ -2084,3 +2084,35 @@ what the simulator represents.
 - Flashpoints: any of the 20 watched pairs, its clash and war chance by year, under each set of assumptions, the
   five-year pair-model risks and the large-war tail.
 - What changed since the previous version: headline numbers per release (outputs/release_history.json).
+
+## Debt and currencies (2026-11-02)
+
+What the model already knew: public debt / GDP and its 5-year change are inputs to the country risk models (from the
+Global Macro Database), and a country in a banking crisis carries it as a feature. It did not have crises as events in
+the simulated economy, interest rates, or the dollar's reserve role.
+
+### Sovereign and currency crises (psychohistory/macro_crisis.py; scripts/debt_crisis_test.py; rejected, off)
+- Data: GMD crisis dates 1960-2024 (sovereign onsets 81 in 1960-1999, 22 in 2000-2024; currency 140 and 45).
+- Cost (growth, country and year effects removed): sovereign -1.2% (dev) / -2.9% (test) in the onset year and -1.2%
+  the next; currency -2.0% / -2.7%, then -0.6% / -1.5%; nothing in the third year. Stable across periods.
+- Hazard (logit, fit 1960-1999, scored 2000-2024): debt, its change, growth, inflation and a banking crisis raise the
+  AUC from 0.47 to 0.64 (sovereign) and 0.54 to 0.60 (currency), but the log loss does not improve for sovereign
+  crises (0.0580 -> 0.0582): few events after 2000.
+- Rates: the real rate minus growth, times debt, does not move the yearly debt change (t = -0.9); long rates are too
+  sparse before 2000 to test. A world interest-rate regime was therefore not added.
+- In the simulation (simulate.MACRO_CRISIS): a crisis drawn each year from the hazard, its cost charged to growth.
+  10-year hindcasts: world GDP per person CRPS -12% on both splits and recession years closer to history, but world
+  GDP growth CRPS +5.5% (1970-1998) and +13% (2000-2012) and the spread between countries wider. Full system: 15-year
+  dispersion +39% (dev), 30-year growth +32% worse. The growth residuals replayed by the simulator already contain the
+  average crisis, so charging crises on top double counts. A centred version (charge only the difference from each
+  country's expected cost) is neutral (all metrics within 1.4%). Neither passes the rule; off.
+
+### The dollar's decline (world.WorldConfig.dollar_decline; scripts/dollar_scenario.py; scenario, not in the headline)
+- Assumption, not fitted (there is one precedent, sterling after 1914-1945): each world draws how far the dollar's
+  reserve role falls by 2045 (0-100%, ramped from 2026). At full decline sanctions on states at war with the West lose
+  half their bite and US growth loses 0-0.3% a year (higher borrowing costs, the end of the "exorbitant privilege").
+- Same 4,000 worlds with and without (SSP2-4.5, every assumption sampled). Uncertain AI: US GDP per person in 2065
+  $110k -> $106k (-4.3%; -9% when the decline is deep), world GDP per person -0.5%, China unchanged, great-power war
+  44.6% -> 44.7%, nuclear use unchanged. No AI: US -3.2%, great-power war 41.5% -> 42.3%, China-US war 8.4% -> 9.0%.
+- Reading: in this model the dollar matters mostly to Americans' incomes; its strategic effect (weaker sanctions) is
+  small because sanctions are a small part of what decides wars here.
