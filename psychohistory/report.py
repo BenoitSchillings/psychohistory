@@ -72,6 +72,50 @@ def _anon_panel(text: str) -> str:
     return text
 
 
+def _summary_vars():
+    """numbers for outputs/summary_template.md ("The future in one page"), read from the current results so the
+    summary cannot go stale when the forecast is rerun"""
+    import csv
+    fc = json.loads((OUT / "forecast.json").read_text())
+    u, n, H, W = fc["ai"]["uncertain"], fc["ai"]["none"], fc["history"], fc["world"]
+    k = lambda v: f"${v / 1000:.0f}k"
+    p = lambda v: f"{100 * v:.0f}%"
+    v = {"gdp_now": k(H["world_gdp"][-1]), "gdp_med": k(u["world_gdp_q"][2][-1]), "gdp_lo": k(u["world_gdp_q"][0][-1]),
+         "gdp_hi": k(u["world_gdp_q"][-1][-1]), "gdp_noai": k(n["world_gdp_q"][2][-1]),
+         "conf_now": p(H["world_conflict"][-1]), "conf_2065": p(u["world_conflict_q"][2][-1]), "p_record": p(W["p_exceed_hist_max"]),
+         "gpw": p(u["great_power_war_by"][-1]), "gpw_cow": p(u["great_power_war_cow_by"][-1]),
+         "nuke": p(u["risks"]["nuclear_use_p"]), "nuke_large": f"{100 * u['risks']['nuclear_large_p']:.1f}%",
+         "dem_now": f"{H['world_dem'][-1]:.2f}", "dem_2065": f"{u['world_dem_q'][2][-1]:.2f}",
+         "dem_lo": f"{u['world_dem_q'][0][-1]:.2f}", "dem_hi": f"{u['world_dem_q'][-1][-1]:.2f}"}
+    att = OUT / "uncertainty_attribution.json"
+    if att.exists():
+        v["ai_share"] = p(json.loads(att.read_text())["log_world_gdp_2065"]["groups"]["AI and robot timing"])
+    rows = list(csv.DictReader(open(OUT / "country_forecasts.csv")))
+    num = lambda r, c: float(r[c]) if r.get(c) not in (None, "") else -1.0
+    top = lambda c, cond=lambda r: True: sorted((r for r in rows if cond(r)), key=lambda r: -num(r, c))[:3]
+    and_ = lambda xs: ", ".join(xs[:-1]) + " and " + xs[-1] if len(xs) > 1 else "".join(xs)
+    v["war_top"] = and_([r["name"] for r in top("civil_conflict_5y", lambda r: r["in_conflict"] in ("0", "0.0"))])
+    v["coup_top"] = and_([r["name"] for r in top("coup_5y")])
+    us = next(r for r in rows if r["code"] == "USA")
+    v["us_aut"] = p(num(us, "autocratization_5y"))
+    c21 = OUT / "climate_2100.json"
+    if c21.exists():
+        sc = json.loads(c21.read_text())["scenarios"]
+        L = lambda s_, y, q="median": f"{-sc[s_]['loss_pct'][str(y)][q]:.0f}%"
+        v.update({"clim_245_2065": L("ssp245", 2065), "clim_245_2100": L("ssp245", 2100), "clim_245_2100_hi": L("ssp245", 2100, "p5"),
+                  "clim_585_2100": L("ssp585", 2100), "clim_tech_2100": L("ssp245_tech", 2100)})
+        hd = lambda s_, y: f"{sc[s_]['heat_deaths']['cumulative_m_' + str(y)]:.0f} million"
+        v.update({"heat_245_2065": hd("ssp245", 2065), "heat_245_2100": hd("ssp245", 2100), "heat_585_2100": hd("ssp585", 2100)})
+    ts = OUT / "tech_scenarios.json"
+    if ts.exists():
+        t = json.loads(ts.read_text())
+        a, b = t["A_uncertain_none"], t["A_uncertain_tech"]
+        r = lambda key: f"{abs(100 * (b[key] / a[key] - 1)):.0f}%"
+        v.update({"tech_gdp": f"{100 * (b['world_gdp_median'] / a['world_gdp_median'] - 1):.1f}%", "tech_oil": r("oil_median"),
+                  "tech_grain": r("food_price_median"), "tech_sahel": r("gdp_sahel_median")})
+    return v
+
+
 def build(path=None) -> str:
     fc = json.loads((OUT / "forecast.json").read_text())
     narrative = OUT / "narrative.md"
@@ -120,8 +164,13 @@ def build(path=None) -> str:
     if not rest:                                    # no split marker: everything goes in the detailed commentary
         top, rest = "", top
     top = top.replace("## The short version", "", 1)   # the section heading already says it
-    summ = OUT / "summary.md"                             # "The future in one page" (top of the report)
-    page = page.replace("<!--__SUMMARY__-->", _md_to_html(summ.read_text()) if summ.exists() else "")
+    summ = OUT / "summary_template.md"                    # "The future in one page" (top of the report): {name}
+    if summ.exists():                                     # placeholders are filled from the results (_summary_vars)
+        txt = summ.read_text().format_map(_summary_vars())
+        (OUT / "summary.md").write_text(txt)              # (the filled copy, for reading and diffs)
+        page = page.replace("<!--__SUMMARY__-->", _md_to_html(txt))
+    else:
+        page = page.replace("<!--__SUMMARY__-->", "")
     page = page.replace("<!--__NARRATIVE_TOP__-->", _md_to_html(top) if top.strip() else "")
     page = page.replace("<!--__NARRATIVE__-->", _md_to_html(rest) if rest.strip() else
                         "<p class='muted'>No narrative written yet (outputs/narrative.md).</p>")
