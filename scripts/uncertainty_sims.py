@@ -27,6 +27,7 @@ from psychohistory.features import TASKS
 parts = ens.predict_families(X[:, p.yi(LAST_OBS_YEAR)])
 lgf = lambda v: np.log(np.clip(v, 1e-4, 1 - 1e-4) / (1 - np.clip(v, 1e-4, 1 - 1e-4)))
 net.struct_sd = np.nan_to_num(np.nanstd(np.stack([lgf(v) for v in parts.values()]), 0)[:, [TASKS.index(t) for t in ("onset_1y", "termination_1y", "coup_1y")]])
+net.struct_sd, net.struct_fam, net.struct_w = PL.struct_inputs(ens, X[:, p.yi(LAST_OBS_YEAR)])
 growth, ddem = fit_transitions(p, X, base, LAST_OBS_YEAR)
 dy = INTER.sim_inputs(INTER.run(verbose=False, backtests=False))
 clim = PL.climate_summary(p, base, LAST_OBS_YEAR, 2065)

@@ -139,6 +139,21 @@ def climate_summary(p, base, origin, end):
     return out
 
 
+def struct_inputs(ens, X_now):
+    """structural-uncertainty inputs for simulate (STRUCT_MODE) from a fitted SeldonEnsemble at the origin's features:
+    struct_sd [C, 3] the families' log-odds spread; struct_fam [F, C, 3] each family's log-odds offset from PsychoNet;
+    struct_w [F] the ensemble's default weights for these one-year tasks (onset, termination, coup)"""
+    from .models import SeldonEnsemble
+    parts = ens.predict_families(X_now)
+    idx3 = [TASKS.index(t) for t in ("onset_1y", "termination_1y", "coup_1y")]
+    lgf = lambda v: np.log(np.clip(v, 1e-4, 1 - 1e-4) / (1 - np.clip(v, 1e-4, 1 - 1e-4)))
+    fams = [f for f in SeldonEnsemble.DEFAULT["w"] if f in parts]
+    w = np.array([SeldonEnsemble.DEFAULT["w"][f] for f in fams], float)
+    fam_l = np.stack([lgf(parts[f]) for f in fams])
+    sd = np.nan_to_num(np.nanstd(np.stack([lgf(v) for v in parts.values()]), 0)[:, idx3])
+    return sd, np.nan_to_num(fam_l[:, :, idx3] - lgf(parts["N"])[None, :, idx3]), (w / w.sum()).astype(np.float32)
+
+
 def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, members=10,
                   scenario="ssp245", climate_damage=1.0, scen_n=4000):
     _log(f"training on all history up to {origin}")
@@ -168,6 +183,8 @@ def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, 
     lgf = lambda v: np.log(np.clip(v, 1e-4, 1 - 1e-4) / (1 - np.clip(v, 1e-4, 1 - 1e-4)))
     fam_l = np.stack([lgf(v) for v in parts.values()])                           # [F, C, T]
     net.struct_sd = np.nan_to_num(np.nanstd(fam_l, 0)[:, [TASKS.index(t) for t in ("onset_1y", "termination_1y", "coup_1y")]])
+    # (since 2026-11-01 the simulator draws which family is right, centred: simulate.STRUCT_MODE = "familyc")
+    net.struct_sd, net.struct_fam, net.struct_w = struct_inputs(ens, X_now)
     clim = climate_summary(p, base, origin, end)
     # world-system layer: interstate wars between country pairs, food, energy, pandemics (AI off in the baseline)
     from . import interstate as INTER

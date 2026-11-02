@@ -347,6 +347,14 @@ from .structure import FRAG_MEAN, FRAG_NEW, FRAG_LONG, FRAG_TAU
 LEADER_DEATH = (-9.006, 0.0728, -1.277)
 SUCC_COUP = 0.68
 STRUCT_CONVEXITY = 1.0      # (test switches, code review 2026-10-28)
+# structural uncertainty (which risk model is right): "gauss" = one shared draw per world and hazard scaled by the model
+# families' disagreement (net.struct_sd); "family" = each world and hazard draws one family with the ensemble's weights
+# and takes its log-odds offset from PsychoNet (net.struct_fam, net.struct_w); "familyc" = the same, offsets centred
+# on their weighted mean (spread without a level shift); "off" = none (pipeline.struct_inputs)
+# Adopted "familyc" 2026-11-01 (scripts/world_hindcast.py --struct, the risk ensemble refitted at each origin, 2,000
+# worlds): against "gauss", war onsets CRPS -5.5% at 15 years from 1980-1995 (4/4), -27% from 2000-2009 (3/3), -7% at
+# 30 years; conflict share -12% from 2000-2009; the safe-country tail +5-8%. Against "off" within +/-2% except coups.
+STRUCT_MODE = "familyc"
 LREB_MODE = "age"
 SHIFTERS_BEFORE_ALIGN = True   # see the year-1 alignment in simulate()
 # limits round 2 (2026-10-30): switches tested and rejected, kept off (docs/world_system.md, "Limits round 2")
@@ -601,8 +609,18 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     volc_t = torch.full((S,), -99, device=device)
     pand_mort = torch.zeros(S, device=device)
     trans_prev = torch.zeros(S, C, device=device)
-    struct_sd = None
-    if WS is not None and WS.cfg.sample_params and getattr(net, "struct_sd", None) is not None:
+    struct_sd = struct_shift = None
+    if WS is not None and WS.cfg.sample_params and STRUCT_MODE in ("family", "familyc") and getattr(net, "struct_fam", None) is not None:
+        # each world and hazard takes one family's view of every country (within the families' range by construction);
+        # "familyc": the offsets centred on their weighted mean, so the draw spreads risk without moving its level
+        fam_ = np.clip(np.nan_to_num(net.struct_fam), -3.0, 3.0)
+        if STRUCT_MODE == "familyc":
+            fam_ = fam_ - np.tensordot(np.asarray(net.struct_w, float), fam_, axes=1)[None]
+        sf = tt(fam_)                                                                     # [F, C, 3]
+        g_s = torch.Generator(device=device).manual_seed(seed + 4242)
+        fi = torch.multinomial(tt(net.struct_w).expand(S * 3, -1), 1, replacement=True, generator=g_s).view(S, 3)
+        struct_shift = torch.stack([sf[fi[:, j], :, j] for j in range(3)], -1)        # [S, C, 3]
+    elif WS is not None and WS.cfg.sample_params and STRUCT_MODE == "gauss" and getattr(net, "struct_sd", None) is not None:
         struct_sd = tt(np.clip(net.struct_sd, 0, 1.5))
         g_s = torch.Generator(device=device).manual_seed(seed + 4242)
         z_struct = torch.randn(S, 3, device=device, generator=g_s)
@@ -844,6 +862,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         var_w = mood_rho ** 2 * var_w + mood_sd[0] ** 2
         var_r = mood_rho ** 2 * var_r + mood_sd[1] ** 2
         mood = mood_world + mood_region[:, regions]
+        if struct_shift is not None:
+            haz = haz + struct_shift
         if struct_sd is not None:
             # structural uncertainty: one error per world and hazard, scaled by the model families' disagreement
             # (with the convexity correction used for mood and frailty, so the average hazard is kept; review 2026-10-28)

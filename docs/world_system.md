@@ -2010,3 +2010,28 @@ running total, so every technology's death effect was inflated about twentyfold 
 engineered pathogens +187 m was +15 m). The forecast itself always read the last year. Corrected results, technology
 forced in 2035 against never (2026-2065 excess deaths, mean): geoengineering -6.3 m, 100-day vaccines -5.6 m, fusion
 -1.8 m, fission -1.1 m, energy storage -0.9 m, engineered pathogens +14.6 m (median +4.0 m), others within 0.2 m.
+
+### Structural uncertainty, tested on history (2026-11-01)
+
+The structural draw (which risk model is right) had never been hindcast: the full-system hindcasts used PsychoNet alone.
+scripts/world_hindcast.py --struct fits the risk ensemble (GBM, GBM from 1860, PsychoNet, extra trees; 3 members) at
+each origin and runs every mode on the same fit, 2,000 worlds, 15 years from 1980-2009 (7 origins) and 30 years from
+1975/1985/1994. Two new statistics: country-level conflict Brier, and safe20_wars (how many of the 20 countries at
+peace with the lowest simulated risk go to war in the window). Modes (simulate.STRUCT_MODE):
+- gauss (the production draw until now: one shared Gaussian shift per world and hazard, scaled by the families'
+  disagreement), against no structural noise: conflict share CRPS -2.5% / +16% (15 years, 1980-95 / 2000-09), war
+  onsets +6.6% / +38%, coups +16% / +1%, safe tail -6% / -11%; 30 years onsets +8.6%, coups -9%.
+- family (each world and hazard takes one family's offset from PsychoNet, drawn with the ensemble's weights; the
+  patch kept aside on 2026-10-31): the safe tail -30% / -68% / -44% (30 years), onsets -7% / +1% / -12%, but the
+  level of conflict drifts up (30-year median share 0.22 against 0.19 without, 0.18 actual; conflict share CRPS +46%,
+  coups +28%): the families' average view differs from PsychoNet's, above all on how long wars last, and the year-1
+  alignment does not hold it over decades.
+- familyc (adopted): the family offsets centred on their weighted mean, so a world takes one family's spread without
+  its level. Against no noise everything within +/-2% except coups (+8% 1980-95, -0.4% 2000-09, -8% at 30 years); the
+  country Brier is unchanged. Against gauss: onsets -5.5% (4/4) / -27% (3/3) / -7% at 30 years, conflict share +2.5% /
+  -12% (3/3), coups -6% / -1%, the safe tail +5-8%.
+
+What it shows about the Nordic tail: only the uncentred family draw removes it, by lowering the level of risk for very
+safe countries (the other families see them as safer than PsychoNet does). The tail is in PsychoNet's central risk for
+the safest countries, not in the structural noise; using the ensemble's central hazards in the simulator, with an
+alignment that holds over decades, is the next open item.
