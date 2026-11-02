@@ -11,6 +11,7 @@ import markdown
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
+sys.path.insert(0, ROOT)
 from draw_dependencies import E, N  # noqa: E402
 
 RAW = os.path.join(ROOT, "data", "raw")
@@ -131,6 +132,7 @@ def render_dir(name, node, depth=0, path=""):
 
 
 def data_sources():
+    from psychohistory.report import VERSION as RVER
     feeds = {}
     for src, dst, *_ in E:
         feeds.setdefault(src, []).append(N[dst][1])
@@ -149,9 +151,9 @@ def data_sources():
         "run through the simulator, validated, and written to the published results. Scroll sideways on small screens.</p>"
         '<div class="figure"><a href="data_dependencies.svg"><img src="data_dependencies.svg" alt="Data dependency diagram"></a></div>'
         f"<h2>Source families</h2><table><thead><tr><th>Source</th><th>What it measures</th><th>Feeds</th></tr></thead><tbody>{rows}</tbody></table>"
-        "<h2>Files</h2><p class='muted'>The raw data directory as used for the 29 October 2026 forecast. "
+        f"<h2>Files</h2><p class='muted'>The raw data directory as used for report version {RVER[0]} ({RVER[1]}). "
         f"Folders with more than {MAX_FILES} files are summarised by file type.</p>" + "".join(tree))
-    return page("Data source tree", body, "Every data source behind the Seldon world crisis forecast.")
+    return page("Data source tree", body, "Every data source behind the Seldon simulation of humanity, 2026-2065.")
 
 
 def methodology():

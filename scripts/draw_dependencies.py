@@ -18,7 +18,7 @@ N = {
     # raw data
     "owid": (0, "OWID / World Bank / UN series", "GDP (Maddison, WB), population & UN projections, age, fertility, schooling, inequality, gov. spending, tax, military, health, internet, warheads"),
     "vdem": (0, "V-Dem v15", "democracy, liberties, corruption, coups; pre-1946 history"),
-    "gmd": (0, "Global Macro Database", "public debt; banking / currency crises (Laeven-Valencia)"),
+    "gmd": (0, "Global Macro Database", "public debt, rates; banking, sovereign-debt and currency crisis dates (Laeven-Valencia)"),
     "epr": (0, "EPR · WRP religion · REIGN", "ethnic power relations, religious composition, leaders"),
     "pol": (0, "Political datasets", "Archigos, GWF, MMP, NAVCO, NELDA, V-Party, WhoGov"),
     "ucdp": (0, "UCDP ACD 26.1 · BRD / NS / OS 25.1", "armed-conflict years, battle deaths, non-state & one-sided violence"),
@@ -46,6 +46,16 @@ N = {
     "out25": (0, "2025 outcomes", "UCDP 2025, V-Dem v16, GDP 2025: held out for scoring"),
     "bench": (0, "VIEWS Prediction Challenge 2023/24 · ViEWS archive", "actuals, benchmark & participant draws; 48 archived ViEWS runs"),
     "crowd": (0, "Crowd forecasts", "Metaculus / GJOpen / INFER archive; Polymarket & Manifold live"),
+    # added after the 29 October 2026 release
+    "wpp": (0, "UN WPP 2024 probabilistic projections", "fertility and population uncertainty by country (80% intervals, PPgp/wpp2024)"),
+    "wikid": (0, "Wikidata leaders", "birth years of national leaders after 2020 (ages and deaths in office)"),
+    "ilo": (0, "ILO occupation shares (DBnomics)", "managers, professionals, technicians, clerks: exposure to near-free AI"),
+    "ibtracs": (0, "IBTrACS cyclone tracks", "share of land under hurricane-force winds since 1980"),
+    "natearth": (0, "Natural Earth borders (1:10m)", "55 km grid cells mapped to countries"),
+    "mort": (0, "Climate mortality: Carleton et al. 2022", "deaths per degree of warming, cold-climate gains, adaptation with income", ASSUME),
+    "anchors": (0, "Technology and catastrophe forecasts", "Metaculus, Manifold, GRI quantum timeline, IEA, CEPI, FRI XPT: chances of 17 breakthroughs and of an AI catastrophe", ASSUME),
+    "rff": (0, "RFF Socioeconomic Projections", "world GDP to 2065 without climate damage (benchmark)"),
+    "rejected": (0, "Tested and not used", "IMF Global Debt Database, PLAD leaders' ethnicity, Penn World Table labour share"),
     # processing
     "panel": (1, "data.py → country-year panel", "~200 countries, 1850-2025: economy, demography, regime, conflict, crises, events, climate"),
     "feat": (1, "features.py", "11-year windows + current state → X; labels for 7 tasks; spatial neighbour weights"),
@@ -96,6 +106,8 @@ N = {
 }
 
 E = [  # (source, target, label or "", dashed)
+    ("wpp", "sim"), ("wikid", "panel"), ("ilo", "sim"), ("ibtracs", "sim"), ("natearth", "cmdata"), ("mort", "sim"),
+    ("anchors", "assume"), ("rff", "hind"), ("rejected", "newtests"), ("gmd", "extra"),
     ("owid", "panel"), ("vdem", "panel"), ("gmd", "panel"), ("epr", "panel"), ("pol", "panel"), ("ucdp", "panel"),
     ("events", "panel"), ("energy", "panel"), ("food", "panel"), ("mig", "panel"), ("clim", "panel"),
     ("panel", "feat"), ("clim", "climp"),
