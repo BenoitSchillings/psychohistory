@@ -188,6 +188,13 @@ class WorldConfig:
     ai_cat_deaths: float = 0.04
     ai_cat_loss: float = 0.2
     heat_mort: float = 1.0
+    # the dollar's decline (scenario, off by default; 2026-11-02): how far its reserve role falls by 2045 (dollar_shift,
+    # ramped in from 2026), sanctions losing up to half their bite (much of it runs through dollar clearing) and US
+    # growth losing up to usd_cost a year at full decline (higher borrowing costs, the end of the "exorbitant
+    # privilege"); assumptions, with no history to test them
+    dollar_decline: bool = False
+    dollar_shift: float = 0.5
+    usd_cost: float = 0.0015
     cheap_space: bool = False
     # technology breakthroughs (tech.py; in the headline since 2026-10-31, for forecasts from 2025): each world draws
     # which arrive and when, and their conditional effects; tech_force = {name: year or None} fixes an arrival in
@@ -363,6 +370,7 @@ PARAM_RANGES = {
     "robot_years": ("u", 8.0, 20.0), "phys_dividend": ("u", 0.005, 0.04),   # floor: industrial robots ~0.36 pp/yr (Graetz & Michaels 2018)
     "drone_onset": ("u", -0.3, 0.5), "drone_persist": ("u", 0.0, 0.8), "drone_reach": ("u", 0.0, 0.2), "drone_civil": ("u", -0.2, 0.4),
 }
+USD_RANGES = {"dollar_shift": ("u", 0.0, 1.0), "usd_cost": ("u", 0.0, 0.003)}   # dollar decline only
 AICAT_RANGES = {"ai_cat_rate": ("logu", 0.0003, 0.004), "ai_cat_deaths": ("u", 0.01, 0.10), "ai_cat_loss": ("u", 0.10, 0.35)}
 HEAT_RANGES = {"heat_mort": ("u", 0.25, 1.75)}      # spans Carleton et al.'s wide range (interquartile 6-101 per 100,000)
 CAPTURE_RANGES = {"firm_capture": ("u", 0.2, 0.9), "clawback": ("u", 0.0, 0.1)}   # AI scenarios only (assumptions)
@@ -482,6 +490,12 @@ class World:
             return 0.0
         return float(np.clip((year - SPACE_START) / (SPACE_FULL - SPACE_START), 0.0, 1.0))
 
+    def dollar(self, year):
+        """[S, 1] (or 0) how far the dollar's reserve role has fallen: dollar_shift, ramped in 2026-2045"""
+        if not self.cfg.dollar_decline:
+            return 0.0
+        return self.prm("dollar_shift") * float(np.clip((year - 2026) / 19, 0, 1))
+
     def capture(self):
         """firms' share of AI rents relative to the mean assumption (1 = as before the rent-capture split), falling as
         states claw rents back with every year of full adoption"""
@@ -532,6 +546,11 @@ class World:
             if getattr(self.cfg, k) != getattr(defaults, k):
                 continue
             self.params[k] = a + (b - a) * r_ if kind == "u" else a + b * r_
+        gu = torch.Generator(device=device).manual_seed(seed + 1009)      # dollar decline: its own generator
+        for k, (kind, a, b) in (USD_RANGES.items() if self.cfg.sample_params else ()):
+            r_ = torch.rand(S, 1, device=device, generator=gu)
+            if self.cfg.dollar_decline and getattr(self.cfg, k) == getattr(defaults, k):
+                self.params[k] = a + (b - a) * r_
         ga = torch.Generator(device=device).manual_seed(seed + 907)       # AI loss of control: its own generator
         for k, (kind, a, b) in (AICAT_RANGES.items() if self.cfg.sample_params else ()):
             r_ = torch.rand(S, 1, device=device, generator=ga)

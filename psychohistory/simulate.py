@@ -409,7 +409,10 @@ POOL_HALFLIFE = None
 VOL_NOISE = False         # B: growth noise scaled by the country's own 10-year growth volatility (slope estimated in fit)
 ASYM_SHOCK = None         # C: (boom scale, bust scale) for the replayed world shocks, recentred, in place of shock_scale
 DEM_INTER = ()            # D: interaction pairs added to the democracy equation, e.g. (("democracy", "freexp_change_5y"),)
-DEMOG_COHORT = False      # E: hindcasts age the origin's 0-14 and 15-64 stocks forward instead of extending trends      # noise pools resampled with weight 0.5 ** (years before origin / this): widened the spread
+DEMOG_COHORT = False
+# sovereign debt and currency crises (macro_crisis.py): drawn each year from hazards on simulated debt, growth and
+# inflation, each with its estimated output cost; under test 2026-11-02
+MACRO_CRISIS = False      # E: hindcasts age the origin's 0-14 and 15-64 stocks forward instead of extending trends      # noise pools resampled with weight 0.5 ** (years before origin / this): widened the spread
 SUPPORT_Q = 0.005          # Transition features are clamped to their 0.5-99.5% training range when simulating (None: +/-6 sd)
 WORKFORCE_BETA = 1.22     # growth per unit change in log working-age share (scripts/workforce_test.py; s.e. 0.17)
 WORKFORCE_MEAN = 0.0019   # mean yearly change 1960-2023, already absorbed by the fitted growth equation
@@ -795,6 +798,14 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     bubble_t = torch.full((S,), -1, device=device, dtype=torch.long)       # year of the AI investment bust (-1: none yet)
     fin_extra = torch.zeros(S, C, device=device)
     fin_extra_prev = torch.zeros(S, C, device=device)
+    mc_models, mc_prev, mc_pz = None, {}, {}
+    if MACRO_CRISIS and "public_debt" in cur:
+        from . import macro_crisis as MC
+        mc_models = MC.fit(origin, tuple(p.codes), tuple(int(y) for y in p.years))
+        mc_prev = {k: torch.zeros(S, C, device=device) for k in mc_models}
+        mc_pz = {}
+        g_mc = torch.Generator(device=device).manual_seed(seed + 1301)       # (its own draws: other streams unchanged)
+        mc_rec = {k: [] for k in mc_models}
     crisis_x = torch.zeros(S, C, device=device)          # banking crises beyond their expected rate, last two years
     crisis_x_prev = torch.zeros(S, C, device=device)
     spill_hist = [torch.zeros(S, C, device=device), torch.zeros(S, C, device=device)]
@@ -1050,8 +1061,26 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         if WS is not None and WS.dy is not None and WS.cfg.war_damage:
             ev_g = torch.cat([events[..., :3], torch.zeros_like(events[..., 3:])], -1)
         g = growth.step(X, ev_g, shock_idx, g_regime, gen)
+        if mc_models is not None:
+            # debt and currency crises from last year's state, with their output cost this year and the next
+            g_last = torch.nan_to_num(h["lg"][..., -1] - h["lg"][..., -2])
+            for k_, mdl in mc_models.items():
+                pz = MC.hazard(mdl, h["lg"][..., -1], cur["public_debt"], cur["debt_change_5y"], g_last, cur["inflation"])
+                hit = (torch.rand(S, C, device=device, generator=g_mc) < pz).float() * (1 - mc_prev[k_])
+                c0, c1 = MC.COST[k_]
+                if MACRO_CRISIS == "centered":
+                    # (the replayed growth residuals already hold the average crisis: charge only the difference from
+                    #  this country's expected cost, so high-debt countries pay more without a built-in drag)
+                    g = g - c0 * (hit - pz) - c1 * (mc_prev[k_] - mc_pz.get(k_, 0.0))
+                    mc_pz[k_] = pz
+                else:
+                    g = g - c0 * hit - c1 * mc_prev[k_]
+                mc_prev[k_] = hit
+                mc_rec[k_].append(hit.sum(-1))
         if CRISIS_COST is not None:
             g = g - CRISIS_COST[0] * crisis_x - CRISIS_COST[1] * crisis_x_prev
+        if WS is not None and WS.cfg.dollar_decline:
+            g = g - WS.prm("usd_cost") * WS.dollar(origin + k) * WS.is_usa[None]      # the dollar's decline (scenario)
         if WS is not None and k == 1:
             g = g - WS.prm("aid_mult") * WS.aid_cut[None]       # 2026: demand lost to the 2025 USAID cut (assumption)
             # 2026: the 2025 US tariffs (intervention.py, assumption)
@@ -1248,7 +1277,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             # (sanctions: a growth drag while they last; nuclear damage: a lasting level loss, in log units)
             # (nuclear damage counts once per country: the largest hit so far, not every year of use again)
             nuc_new = torch.maximum(nuc_cum, WS.nuc_hit.clamp(max=0.9))
-            war_cum = war_cum - WS.prm("sanction_loss") * WS.west_share[None] * WS.sanctioned + torch.log1p(-nuc_new) - torch.log1p(-nuc_cum)
+            war_cum = war_cum - WS.prm("sanction_loss") * (1 - 0.5 * WS.dollar(origin + k)) * WS.west_share[None] * WS.sanctioned \
+                + torch.log1p(-nuc_new) - torch.log1p(-nuc_cum)
             nuc_cum = nuc_new
             site_hist = site_hist[1:] + [site]
             spill_hist = spill_hist[1:] + [spill]
@@ -1739,6 +1769,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     out["paths"] = {k: torch.stack(v, -1).cpu().numpy() for k, v in paths.items()}
     out["years"] = np.arange(origin + 1, end + 1)
     from .dynamics import SPEC as _SLOW_SPEC
+    if mc_models is not None:
+        out["macro_crises"] = {k: torch.stack(v, -1).cpu().numpy() for k, v in mc_rec.items()}     # [S, T] countries hit
     out["slow_end"] = {k: torch.quantile(cur[k], torch.tensor([.05, .25, .5, .75, .95], device=device), 0).T.cpu().numpy()
                        for k in _SLOW_SPEC if k in cur}
     if WS is not None:
