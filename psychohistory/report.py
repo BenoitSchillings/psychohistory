@@ -15,7 +15,7 @@ from .data import RAW, ROOT
 OUT = ROOT / "outputs"
 TEMPLATE = ROOT / "psychohistory" / "report_template.html"
 # the report's release number: bump on every published change (the private copy's own revision counter can run ahead)
-VERSION = ("48", "1 November 2026")
+VERSION = ("49", "2 November 2026")
 
 
 def _world_topology():
@@ -85,6 +85,7 @@ def _summary_vars():
          "conf_now": p(H["world_conflict"][-1]), "conf_2065": p(u["world_conflict_q"][2][-1]), "p_record": p(W["p_exceed_hist_max"]),
          "gpw": p(u["great_power_war_by"][-1]), "gpw_cow": p(u["great_power_war_cow_by"][-1]),
          "nuke": p(u["risks"]["nuclear_use_p"]), "nuke_large": f"{100 * u['risks']['nuclear_large_p']:.1f}%",
+         "ai_cat": f"{100 * (u['risks'].get('ai_catastrophe_p') or 0):.1f}%",
          "dem_now": f"{H['world_dem'][-1]:.2f}", "dem_2065": f"{u['world_dem_q'][2][-1]:.2f}",
          "dem_lo": f"{u['world_dem_q'][0][-1]:.2f}", "dem_hi": f"{u['world_dem_q'][-1][-1]:.2f}"}
     att = OUT / "uncertainty_attribution.json"
@@ -116,6 +117,70 @@ def _summary_vars():
     return v
 
 
+def _worldbuilder():
+    """"Build your own world": for every combination of five reader choices, the 2065 outcomes of the simulated worlds
+    that match it (outputs/uncertainty_sims.npz, 48,000 worlds); sparse combinations widen by dropping the least
+    important choices first. No fitted model: each answer is a set of actual simulated worlds."""
+    import itertools
+    import numpy as np
+    f = OUT / "uncertainty_sims.npz"
+    if not f.exists():
+        return None
+    z = np.load(f)
+    need = ["p_ai_arrival", "p_dmg_family", "p_nuclear_war_factor", "p_firm_capture", "y_log_world_gdp_2065"]
+    if any(k not in z.files for k in need):
+        return None
+    ai = z["p_ai_arrival"]
+    ai_bins = [(2025, 2030), (2030, 2035), (2035, 2045), (2045, 2065.5), (2065.5, 1e9)]
+    c_ai = np.full(len(ai), -1)
+    for i, (a, b) in enumerate(ai_bins):
+        c_ai[(ai >= a) & (ai < b)] = i
+    c_cl = np.clip(np.round(z["p_dmg_family"]).astype(int), 0, 2)
+    ter = lambda v: np.digitize(v, np.quantile(v, [1 / 3, 2 / 3]))
+    c_nu, c_fc = ter(z["p_nuclear_war_factor"]), ter(z["p_firm_capture"])
+    tk = [k for k in z.files if k.startswith("p_tech_")]
+    n_t = np.sum([z[k] <= 2045 for k in tk], 0) if tk else np.zeros(len(ai))
+    c_te = ter(n_t + 1e-6 * np.arange(len(n_t)) / len(n_t))
+    C = np.stack([c_ai, c_cl, c_nu, c_fc, c_te], 1)
+    Y = {"gdp": np.exp(z["y_log_world_gdp_2065"]), "conflict": z["y_world_conflict_2065"], "dem": z["y_world_democracy_2065"],
+         "gpw": z["y_great_power_war"], "nuke": z["y_nuclear_use"] if "y_nuclear_use" in z.files else None}
+    drop_order = [3, 2, 4, 1]                     # widen by dropping: rent capture, nuclear, breakthroughs, climate
+    cells = {}
+    for combo in itertools.product(range(5), range(3), range(3), range(3), range(3)):
+        keep, used = [0, 1, 2, 3, 4], []
+        while True:
+            m = np.all(C[:, keep] == np.array(combo)[keep], 1)
+            if m.sum() >= 60 or len(keep) == 1:
+                break
+            keep = [k_ for k_ in keep if k_ != drop_order[len(used)]]
+            used.append(drop_order[len(used)])
+        q = lambda v: [round(float(x), 4) for x in np.quantile(v[m], [0.05, 0.5, 0.95])]
+        cells["".join(map(str, combo))] = {"n": int(m.sum()), "kept": len(keep), "gdp": [round(float(x)) for x in np.quantile(Y["gdp"][m], [0.05, 0.5, 0.95])],
+                                           "conflict": q(Y["conflict"]), "dem": q(Y["dem"]), "gpw": round(float(Y["gpw"][m].mean()), 4),
+                                           "nuke": round(float(Y["nuke"][m].mean()), 4) if Y["nuke"] is not None else None}
+    return {"n": int(len(ai)), "cells": cells, "tech_cuts": [float(x) for x in np.quantile(n_t, [1 / 3, 2 / 3])]}
+
+
+def _release_changes():
+    """headline numbers of this release next to the previous one (outputs/release_history.json, one entry per version)"""
+    hist_f = OUT / "release_history.json"
+    hist = json.loads(hist_f.read_text()) if hist_f.exists() else {}
+    v = _summary_vars()
+    keys = ["gdp_med", "gdp_noai", "conf_2065", "dem_2065", "gpw", "nuke", "clim_245_2100", "heat_245_2100", "tech_gdp"]
+    cur = {k: v.get(k) for k in keys if v.get(k) is not None}
+    fc = json.loads((OUT / "forecast.json").read_text())
+    ed = fc["ai"]["uncertain"]["risks"].get("excess_deaths_q")
+    if ed:
+        cur["excess_deaths"] = f"{ed[2] / 1e6:.0f} million"
+    hist[VERSION[0]] = {"date": VERSION[1], "headline": cur}
+    hist_f.write_text(json.dumps(hist, indent=1))
+    prev = [k for k in hist if int(k) < int(VERSION[0])]
+    if not prev:
+        return None
+    pk = max(prev, key=int)
+    return {"version": VERSION[0], "prev": pk, "prev_date": hist[pk]["date"], "now": cur, "before": hist[pk]["headline"]}
+
+
 def build(path=None) -> str:
     fc = json.loads((OUT / "forecast.json").read_text())
     narrative = OUT / "narrative.md"
@@ -135,6 +200,12 @@ def build(path=None) -> str:
                     ("scorecard", "prospective_scorecard.json"), ("climate", "climate_risk.json")]:
         if (OUT / fn).exists():
             extra[key] = json.loads((OUT / fn).read_text())
+    wb = _worldbuilder()
+    if wb:
+        extra["worldbuilder"] = wb
+    ch = _release_changes()
+    if ch:
+        extra["changes"] = ch
     ts = OUT / "tech_scenarios.json"
     if ts.exists():
         from .tech import TECHS

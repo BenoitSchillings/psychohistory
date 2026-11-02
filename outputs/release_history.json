@@ -1,0 +1,32 @@
+{
+ "48": {
+  "date": "1 November 2026",
+  "headline": {
+   "gdp_med": "$36k",
+   "gdp_noai": "$25k",
+   "conf_2065": "23%",
+   "dem_2065": "0.40",
+   "gpw": "46%",
+   "nuke": "14%",
+   "clim_245_2100": "26%",
+   "heat_245_2100": "63 million",
+   "tech_gdp": "2.5%",
+   "excess_deaths": "29 million"
+  }
+ },
+ "49": {
+  "date": "2 November 2026",
+  "headline": {
+   "gdp_med": "$35k",
+   "gdp_noai": "$25k",
+   "conf_2065": "23%",
+   "dem_2065": "0.40",
+   "gpw": "48%",
+   "nuke": "14%",
+   "clim_245_2100": "27%",
+   "heat_245_2100": "63 million",
+   "tech_gdp": "2.5%",
+   "excess_deaths": "30 million"
+  }
+ }
+}

@@ -215,7 +215,7 @@ def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, 
     # AI scenarios (near-free cognition) and a 1914-style alliance stress test, against the same baseline
     def attribution(o):
         """share of the variance of each 2065 outcome explained by each sampled assumption. The assumptions are drawn
-        independently, so each share is the R^2 of the outcome on that assumption alone; the AI arrival year enters
+        independently (except as noted below), so each share is the R^2 of the outcome on that assumption alone; the AI arrival year enters
         through a flexible basis (years of AI before the end, its square, and "no arrival"), since its effect on
         2065 outcomes is far from linear. The robotics arrival year is drawn correlated with the AI arrival year and
         capped by it, so its share is what it adds beyond the AI year and robot_lag (incremental R^2)"""
@@ -257,6 +257,11 @@ def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, 
             up = [k_ for k_ in ("ai_arrival", "arrival_sd", "robot_lag") if k_ in sh]
             if "robot_arrival" in sh and up:
                 sh["robot_arrival"] = max(0.0, r2(*up, "robot_arrival") - r2(*up))
+            # technology arrival years share a science-pace factor and are pulled forward by the AI year (tech.py): credit
+            # each only beyond the AI arrival, so the shares do not count AI timing again (review 2026-11-02)
+            if "ai_arrival" in sh:
+                for n_ in [n_ for n_ in sh if n_.startswith("tech_")]:
+                    sh[n_] = max(0.0, r2("ai_arrival", n_) - r2("ai_arrival"))
             out[k] = {**{n_: round(float(v), 4) for n_, v in sh.items()}, "other": round(float(max(0, 1 - sum(sh.values()))), 4)}
         return out
 
@@ -334,6 +339,7 @@ def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, 
                 "pop_dev_q": qq(w["pop_dev"][:, -1]) if "pop_dev" in w else None,
                 "excess_deaths_q": qq(w["excess_deaths"][:, -1]) if "excess_deaths" in w else None,
                 "solar_p": float(w["solar"].max(1).mean()) if "solar" in w else None,
+                "ai_catastrophe_p": float(w["ai_catastrophe"].max(1).mean()) if "ai_catastrophe" in w else None,
                 "volcano_p": float(w["volcano"].max(1).mean()) if "volcano" in w else None,
                 "sanction_country_years_mean": float(w["sanctioned"].sum(-1).mean()) if "sanctioned" in w else None}
 

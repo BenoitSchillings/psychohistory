@@ -178,6 +178,15 @@ class WorldConfig:
     # temperature (negative where milder winters save lives) x an income factor (richer countries adapt); counted in
     # excess deaths and taken off the population, in worlds with climate damage on
     heat_mortality: bool = True
+    # AI loss of control (2026-11-02; assumption): once near-free cognition arrives, a yearly chance (ai_cat_rate x
+    # frontier progress; log-uniform per world, about 1% to 13% by 2100: superforecasters' 2% to domain experts' 12% for
+    # an AI catastrophe killing a tenth of humanity by 2100, FRI XPT 2022) of a catastrophe that kills ai_cat_deaths of
+    # the world's population and costs ai_cat_loss of output, half of it recovered over the following decade.
+    # Extinction is outside what the simulator can represent and is stated, not simulated
+    ai_catastrophe: bool = True       # (in the headline since 2026-11-02)
+    ai_cat_rate: float = 0.0012
+    ai_cat_deaths: float = 0.04
+    ai_cat_loss: float = 0.2
     heat_mort: float = 1.0
     cheap_space: bool = False
     # technology breakthroughs (tech.py; in the headline since 2026-10-31, for forecasts from 2025): each world draws
@@ -354,6 +363,7 @@ PARAM_RANGES = {
     "robot_years": ("u", 8.0, 20.0), "phys_dividend": ("u", 0.005, 0.04),   # floor: industrial robots ~0.36 pp/yr (Graetz & Michaels 2018)
     "drone_onset": ("u", -0.3, 0.5), "drone_persist": ("u", 0.0, 0.8), "drone_reach": ("u", 0.0, 0.2), "drone_civil": ("u", -0.2, 0.4),
 }
+AICAT_RANGES = {"ai_cat_rate": ("logu", 0.0003, 0.004), "ai_cat_deaths": ("u", 0.01, 0.10), "ai_cat_loss": ("u", 0.10, 0.35)}
 HEAT_RANGES = {"heat_mort": ("u", 0.25, 1.75)}      # spans Carleton et al.'s wide range (interquartile 6-101 per 100,000)
 CAPTURE_RANGES = {"firm_capture": ("u", 0.2, 0.9), "clawback": ("u", 0.0, 0.1)}   # AI scenarios only (assumptions)
 SPACE_RANGES = {"space_war": ("u", -0.5, 0.7), "sat_open": ("u", 0.0, 0.5), "orbit_dc": ("u", 0.0, 0.5)}   # cheap space only
@@ -522,6 +532,11 @@ class World:
             if getattr(self.cfg, k) != getattr(defaults, k):
                 continue
             self.params[k] = a + (b - a) * r_ if kind == "u" else a + b * r_
+        ga = torch.Generator(device=device).manual_seed(seed + 907)       # AI loss of control: its own generator
+        for k, (kind, a, b) in (AICAT_RANGES.items() if self.cfg.sample_params else ()):
+            r_ = torch.rand(S, 1, device=device, generator=ga)
+            if self.cfg.ai_catastrophe and self.cfg.ai.arrival and getattr(self.cfg, k) == getattr(defaults, k):
+                self.params[k] = torch.exp(np.log(a) + (np.log(b) - np.log(a)) * r_) if kind == "logu" else a + (b - a) * r_
         gh = torch.Generator(device=device).manual_seed(seed + 811)       # heat mortality: its own generator
         for k, (kind, a, b) in (HEAT_RANGES.items() if self.cfg.sample_params else ()):
             r_ = torch.rand(S, 1, device=device, generator=gh)
@@ -532,8 +547,9 @@ class World:
             r_ = torch.rand(S, 1, device=device, generator=gs)
             if (self.cfg.cheap_space or self.cfg.tech) and getattr(self.cfg, k) == getattr(defaults, k):
                 self.params[k] = a + (b - a) * r_
-        # rent capture: its own generator (seed + 503), so adding it left every earlier draw unchanged
-        gr = torch.Generator(device=device).manual_seed(seed + 503)
+        # rent capture: its own generator (seed + 521; + 503 was already the climate-response draw in simulate, which
+        # tied every world's climate sensitivity to its rent capture; review 2026-11-02)
+        gr = torch.Generator(device=device).manual_seed(seed + 521)
         for k, (kind, a, b) in (CAPTURE_RANGES.items() if self.cfg.sample_params else ()):
             r_ = torch.rand(S, 1, device=device, generator=gr)
             if not self.cfg.ai.arrival or getattr(self.cfg.ai, k) != getattr(defaults.ai, k):
@@ -594,6 +610,8 @@ class World:
         self.gen_cascade = torch.Generator(device=device)
         self.gen_cascade.manual_seed(int(gen.initial_seed()) + 7919 if gen is not None else 7919)
         self._draw_params(S, device, int(gen.initial_seed()) if hasattr(gen, "initial_seed") else 0)
+        self.ai_cat_done = torch.zeros(S, device=device)         # AI catastrophe already happened in this world
+        self.ai_cat_back = torch.zeros(S, device=device)         # output still to recover from it
         self.tech = None
         if self.cfg.tech and origin >= 2025:              # (hindcasts from earlier origins are unchanged)
             from .tech import TechState
@@ -739,7 +757,7 @@ class World:
         self.dy = dyads if (cfg.interstate and dyads is not None) else None
         if self.dy is not None:
             self._init_dyads(p, base, t0, f)
-        self.rec = {"clim_deaths": [], "wars": [], "active": [], "great_power_war": [], "pandemic": [], "ai_adoption_world": [], "oil": [], "clean_share": [], "war_site_share": [], "war_sites": [], "bubble": [],
+        self.rec = {"ai_catastrophe": [], "clim_deaths": [], "wars": [], "active": [], "great_power_war": [], "pandemic": [], "ai_adoption_world": [], "oil": [], "clean_share": [], "war_site_share": [], "war_sites": [], "bubble": [],
                     "eng_pandemic": [], "food_price": [], "import_dep": [], "robot_adoption_world": [], "mil_autonomy": [], "battle_deaths": [],
                     "war_deaths_major": [], "water_change": [], "nuclear_use": [], "nuclear_large": [], "nuclear_deaths": [],
                     "nuclear_states": [], "sanctioned": [], "solar": [], "volcano": [], "pop_dev": [], "excess_deaths": [], "wild_catch": [], "great_power_war_cow": [],

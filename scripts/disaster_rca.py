@@ -159,7 +159,7 @@ def cmd_sim():
 KNOCKOUTS = {
     "no_interstate_wars": dict(cfg=dict(interstate=False)),
     "no_nuclear_use": dict(cfg=dict(nuc_use_both=0.0, nuc_use_one=0.0)),
-    "no_pandemics": dict(cfg=dict(pandemic_p=0.0), ai=dict(eng_pandemic=0.0)),
+    "no_pandemics": dict(cfg=dict(pandemic_p=0.0, tech_force={"pathogens": None}), ai=dict(eng_pandemic=0.0)),   # (and no pathogen tools)
     "no_climate_damage": dict(kw=dict(climate_damage=0.0)),
     "no_ai": dict(ai_none=True),
     "no_bubbles": dict(cfg=dict(bubble_p=0.0)),

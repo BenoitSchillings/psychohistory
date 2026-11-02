@@ -107,6 +107,9 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
 .part { display: grid; gap: 10px; border-top: 3px solid var(--ink); padding-top: 26px; margin-top: 8px; }
 .part-title { font-size: clamp(36px, 5.5vw, 58px); }
 .part .lede { margin: 0; }
+.wb-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px 22px; }
+.wb-grid > div { display: grid; gap: 6px; min-width: 0; }
+.wb-k { font: 500 13px var(--body); color: var(--ink-2); }
 .onepage ul { padding-left: 0; list-style: none; display: grid; gap: 14px; max-width: 72ch; }
 .onepage li { border-left: 3px solid var(--accent); padding-left: 14px; margin: 0; }
 .onepage a { color: var(--accent); white-space: nowrap; }
@@ -129,7 +132,8 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
 
   <section aria-labelledby="s-summary">
     <div class="tiles tiles-3" id="tiles"></div>
-    <nav class="toc" aria-label="Contents"><a href="#s-onepage">In one page</a><a href="#s-drivers">What decides it</a><a href="#s-world">Fan of futures</a><a href="#part-econ">Economy, AI and technology</a><a href="#part-climate">Climate and food</a><a href="#part-conflict">Conflict and war</a><a href="#part-tails">Worst futures</a><a href="#part-places">Countries</a><a href="#part-trust">Can you trust it?</a><a href="#part-appendix">Appendix</a><a href="https://benoitschillings.github.io/psychohistory/methodology.html" target="_blank" rel="noopener">Full methodology</a><a href="https://benoitschillings.github.io/psychohistory/data_sources.html" target="_blank" rel="noopener">Data sources</a></nav>
+    <div class="card" id="card-changes"><h3 id="changes-title">What changed in this version</h3><p class="sub" id="changes-sub"></p><div class="tablewrap"><table id="t-changes"></table></div></div>
+    <nav class="toc" aria-label="Contents"><a href="#s-onepage">In one page</a><a href="#s-drivers">What decides it</a><a href="#s-world">Fan of futures</a><a href="#part-econ">Economy, AI and technology</a><a href="#part-climate">Climate and food</a><a href="#part-conflict">Conflict and war</a><a href="#s-flash">Flashpoints</a><a href="#part-tails">Worst futures</a><a href="#part-places">Countries</a><a href="#part-trust">Can you trust it?</a><a href="#part-appendix">Appendix</a><a href="https://benoitschillings.github.io/psychohistory/methodology.html" target="_blank" rel="noopener">Full methodology</a><a href="https://benoitschillings.github.io/psychohistory/data_sources.html" target="_blank" rel="noopener">Data sources</a></nav>
   </section>
   <section aria-labelledby="s-onepage">
     <div class="section-head"><span class="eyebrow">The future in one page</span><h2 id="s-onepage">What the simulations say</h2>
@@ -140,6 +144,18 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
     <div class="section-head"><span class="eyebrow">What decides the outcome</span><h2 id="s-drivers">Which future we get, and why</h2>
       <p class="muted">Each simulated world draws every uncertain assumption from its plausible range, then lives through its own wars, elections, shocks and breakthroughs. This table splits the spread of 2065 outcomes between the assumptions and everything else.</p></div>
     <div class="card"><h3>What drives the uncertainty in 2065</h3><p class="sub">Share of the spread across simulated worlds explained by each assumed parameter, drawn per world from its plausible range. "Other" is history's replayed shocks and the simulated wars, coups and elections themselves.</p><div class="tablewrap"><table id="t-attr" class="wraptext"></table></div><h4 style="margin-top:18px">Grouped, and how far the main assumptions move each outcome</h4><p class="sub" id="attr2-sub"></p><div class="tablewrap"><table id="t-attr2" class="wraptext"></table></div><div class="tablewrap"><table id="t-attr3" class="wraptext"></table></div></div>
+    <div class="card" id="card-wb"><h3>Build your own world</h3>
+      <p class="sub">Pick your view of the five assumptions that matter most and see what the simulated worlds that match it look like in 2065. Every answer is a set of actual simulated worlds, not a fitted formula.</p>
+      <div class="wb-grid">
+        <div><span class="wb-k">When does near-free AI arrive?</span><div class="seg" id="wb-ai" role="group" aria-label="AI arrival"></div></div>
+        <div><span class="wb-k">Which climate-damage estimate is right?</span><div class="seg" id="wb-cl" role="group" aria-label="Climate damage"></div></div>
+        <div><span class="wb-k">How readily do crises between nuclear powers escalate?</span><div class="seg" id="wb-nu" role="group" aria-label="Nuclear escalation"></div></div>
+        <div><span class="wb-k">Who keeps the AI rents?</span><div class="seg" id="wb-fc" role="group" aria-label="AI rent capture"></div></div>
+        <div><span class="wb-k">How many other breakthroughs arrive by 2045?</span><div class="seg" id="wb-te" role="group" aria-label="Breakthroughs"></div></div>
+      </div>
+      <div class="tiles tiles-3" id="wb-out"></div>
+      <p class="sub" id="wb-note"></p>
+    </div>
   </section>
   <section aria-labelledby="s-world">
     <div class="section-head"><span class="eyebrow">World trajectories</span><h2 id="s-world">The fan of futures</h2>
@@ -223,6 +239,15 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
     </div>
     <div class="card" id="card-gulf"><h3>The 2026 Gulf war, measured</h3><p class="sub" id="gulf-sub"></p><div class="tablewrap"><table id="t-gulf" class="wraptext"></table></div></div>
     <div class="card"><h3>Chance of at least one great-power war</h3><p class="sub">Share of simulated worlds with a war (≥ 1,000 battle deaths) between two major powers by each year.</p><div class="chart" id="c-wars"></div><div class="legend" id="wars-legend"></div></div>
+  </section>
+  <section aria-labelledby="s-flash">
+    <div class="section-head"><span class="eyebrow">Flashpoints</span><h2 id="s-flash">One rivalry at a time</h2>
+      <p class="muted">Pick a pair of states to see how its chance of a clash, a war (1,000 or more battle deaths a year) and a very large war builds up to 2065, how it changes under other assumptions, and the five-year risks from the pair model.</p></div>
+    <div class="controls"><label for="flash-select" class="muted" style="font-size:13px">Pair</label><select id="flash-select"></select></div>
+    <div class="grid2">
+      <div class="card"><h3 id="flash-title">Chance by each year</h3><p class="sub">Share of simulated worlds in which the pair has fought by that year (headline worlds).</p><div class="chart" id="c-flash"></div><div class="legend" id="flash-legend"></div></div>
+      <div class="card"><h3>Under other assumptions, and the next five years</h3><p class="sub" id="flash-sub"></p><div class="tablewrap"><table id="t-flash" class="wraptext"></table></div></div>
+    </div>
   </section>
   <section aria-labelledby="s-whatif">
     <div class="section-head"><span class="eyebrow">What if…</span><h2 id="s-whatif">Crisis explorer</h2>
@@ -969,6 +994,7 @@ function risksCard() {
     ["A new nuclear-armed state", pct(R.new_nuclear_p), `Most likely: ${top}. Programs can be struck and set back (Iran 2025); a rival's weapon makes neighbours likelier to follow`],
     ["Carrington-class solar storm", pct(R.solar_p), "Grid-dependent economies lose 1–8% of output that year"],
     ["Large volcanic eruption (VEI 6+)", pct(R.volcano_p), "World cereal yields fall 3–12% for two years; grain prices react"],
+    ...(R.ai_catastrophe_p != null ? [["AI loss-of-control catastrophe", pct(R.ai_catastrophe_p, 1), "After near-free AI arrives: 1–10% of the world's population dies and output falls 10–35%, half recovered within the following decade. Chance anchored between superforecasters (2%) and AI experts (12%) for such a catastrophe by 2100 (FRI 2022); extinction is outside what the model can represent"]] : []),
     ["Excess deaths from wars and pandemics", eq ? `${fmtN(eq[2])} (90%: ${fmtN(eq[0])}–${fmtN(eq[4])})` : "–", "Battle deaths × civilian multiplier, nuclear and pandemic deaths, taken off the UN population path"],
     ["World population against the UN projection", pq ? `${sg(pq[2])} (90%: ${sg(pq[0])} to ${sg(pq[4])})` : "–", "Deaths, plus fertility responding to income (−0.035 per unit change in log income, estimated)"],
     ["Country-years under Western sanctions", R.sanction_country_years_mean != null ? R.sanction_country_years_mean.toFixed(1) : "–", "Mean per world: a non-Western state at war with a Western one loses 0–4% of output a year × its Western trade share"]];
@@ -1127,6 +1153,82 @@ function scoreSection() {
   } else document.getElementById("card-crowd").hidden = true;
   document.getElementById("score25-notes").textContent = "AUC: the chance that a country where the event happened was ranked above one where it did not (0.5 = coin flip). With one civil-war onset and two coups in 2025, single-year scores are anecdotes, not proof; they are kept to be pooled as more years arrive. ViEWS ranks about as well and is better calibrated month by month; averaging the two ranks best. The monthly model uses only the data available in January 2025 (UCDP's preliminary 2024 events) and was run once, without tuning on 2025; it beats ViEWS at 6 and 12 months ahead and loses at one month. The annual model's clearest miss was the United States, whose electoral democracy index fell from 0.84 to 0.74.";
 }
+function changesCard() {
+  const C = EX && EX.changes;
+  if (!C) { document.getElementById("card-changes").hidden = true; return; }
+  const L = {gdp_med: "World GDP per person, 2065", gdp_noai: "… without near-free AI", conf_2065: "Countries in civil conflict, 2065",
+    dem_2065: "World democracy index, 2065", gpw: "Great-power war by 2065", nuke: "Nuclear use by 2065", clim_245_2100: "Climate cost, middle path, 2100",
+    heat_245_2100: "Heat deaths, middle path, by 2100", tech_gdp: "Output added by breakthroughs", excess_deaths: "Excess deaths 2026–2065 (median)"};
+  document.getElementById("changes-title").textContent = `What changed since version ${C.prev}`;
+  document.getElementById("changes-sub").textContent = `Headline numbers of version ${C.version} next to version ${C.prev} (${C.prev_date}). The appendix explains each change.`;
+  const rows = Object.keys(L).filter(k => C.now[k] != null).map(k => {
+    const a = C.before[k] ?? "–", b = C.now[k], same = a === b;
+    return `<tr><td>${L[k]}</td><td class="num">${a}</td><td class="num"${same ? "" : ' style="font-weight:600"'}>${b}</td></tr>`;
+  });
+  document.getElementById("t-changes").innerHTML = `<thead><tr><th>Headline</th><th class="num">Version ${C.prev}</th><th class="num">Version ${C.version}</th></tr></thead><tbody>${rows.join("")}</tbody>`;
+}
+
+function worldBuilder() {
+  const B = EX && EX.worldbuilder;
+  if (!B) { document.getElementById("card-wb").hidden = true; return; }
+  const st = {ai: "1", cl: "1", nu: "1", fc: "1", te: "1"};
+  const opts = {
+    ai: [["0", "2026–29"], ["1", "2030–34"], ["2", "2035–44"], ["3", "2045–65"], ["4", "Not by 2065"]],
+    cl: [["0", "Small (level)"], ["1", "Middle (growth)"], ["2", "Large (global)"]],
+    nu: [["0", "Rarely"], ["1", "Sometimes"], ["2", "Readily"]],
+    fc: [["0", "Spread widely"], ["1", "In between"], ["2", "The firms"]],
+    te: [["0", "Few"], ["1", "Typical"], ["2", "Many"]]};
+  const money = v => "$" + d3.format(",.0f")(Math.round(v / 100) * 100);
+  const draw = () => {
+    const c = B.cells[st.ai + st.cl + st.nu + st.fc + st.te];
+    const t = [
+      {k: "World GDP per person, 2065", v: money(c.gdp[1]), s: `90% of these worlds: ${money(c.gdp[0])} – ${money(c.gdp[2])}`},
+      {k: "Countries in civil conflict, 2065", v: pct(c.conflict[1]), s: `90%: ${pct(c.conflict[0])} – ${pct(c.conflict[2])}`},
+      {k: "World democracy index, 2065", v: d3.format(".2f")(c.dem[1]), s: `90%: ${d3.format(".2f")(c.dem[0])} – ${d3.format(".2f")(c.dem[2])}`},
+      {k: "Great-power war by 2065", v: pct(c.gpw), s: "share of these worlds"},
+      {k: "Nuclear weapon used by 2065", v: c.nuke == null ? "–" : pct(c.nuke), s: "share of these worlds"},
+      {k: "Simulated worlds behind this answer", v: d3.format(",")(c.n), s: `of ${d3.format(",")(B.n)}` + (c.kept < 5 ? "; some choices relaxed" : "; all five choices matched")}];
+    document.getElementById("wb-out").innerHTML = t.map(d => `<div class="tile"><span class="k">${d.k}</span><span class="v num">${d.v}</span><span class="s">${d.s}</span></div>`).join("");
+    document.getElementById("wb-note").textContent = `Based on the ${d3.format(",")(c.n)} of ${d3.format(",")(B.n)} simulated worlds that match` +
+      (c.kept < 5 ? " (too few matched all five choices, so the least important ones were relaxed)." : " all five choices.") +
+      " Climate damage, AI timing and breakthroughs move income; wars and democracy depend mostly on chance and on politics, which these choices barely touch.";
+  };
+  for (const k of Object.keys(opts)) seg("wb-" + k, opts[k], st[k], v => { st[k] = v; draw(); });
+  draw();
+}
+
+function flashpoints() {
+  const base = AI && (AI.uncertain || AI.none);
+  if (!base || !base.watch) { document.getElementById("s-flash").closest("section").hidden = true; return; }
+  const pairs = Object.keys(base.watch);
+  const sel = document.getElementById("flash-select");
+  sel.innerHTML = pairs.map(p => `<option value="${p}">${p.replace("-", " – ")}</option>`).join("");
+  const IW = (DATA.interstate && DATA.interstate.watch) || [];
+  const NM = Object.fromEntries(DATA.countries.map(c => [c.code, c.name]));
+  const yrs = Object.keys(base.watch[pairs[0]]).map(Number);
+  const series = (o, p) => o && o[p] ? [0, ...yrs.map(y => o[p][String(y)])] : null;
+  const draw = p => {
+    document.getElementById("flash-title").textContent = `${p.replace("-", " – ")}: chance by each year`;
+    const ex = [["Clash (any fighting)", series(base.watch, p), "--fan"], ["War (1,000+ deaths a year)", series(base.watch_war, p), "--up"]].filter(r => r[1]);
+    fanChart(document.getElementById("c-flash"), {fmt: d => pct(d), ymin: 0, h: 240, label: p,
+      extra: ex.map(([l, v, c]) => ({years: [M.origin, ...yrs], values: v, color: c, width: 2, label: l}))});
+    document.getElementById("flash-legend").innerHTML = ex.map(([l, , c]) => `<span><i style="background:var(${c})"></i>${l}</span>`).join("");
+    const sc = [["Headline (AI timing uncertain)", AI.uncertain], ["No AI shock", AI.none], ["AI from 2030", AI["2030"]], ["1914-style alliances", AI.alliances_1914]].filter(r => r[1] && r[1].watch && r[1].watch[p]);
+    const last = String(yrs.at(-1));
+    let rows = sc.map(([l, o]) => `<tr><td>${l}</td><td class="num">${pct(o.watch[p][last])}</td><td class="num">${o.watch_war && o.watch_war[p] ? pct(o.watch_war[p][last]) : "–"}</td></tr>`).join("");
+    const [a, b] = p.split("-");
+    const w5 = IW.find(r => (NM[r.a] === a && NM[r.b] === b) || (NM[r.a] === b && NM[r.b] === a) || (r.a + "-" + r.b) === p);
+    document.getElementById("flash-sub").textContent = w5
+      ? `By ${last}, clash and war. Next five years (pair model): any militarized dispute ${pct(w5.p_force_5y)}, a fatal one ${pct(w5.p_fatal_mid_5y)}, conflict with 25+ battle deaths ${pct(w5.p_conflict_5y)}${w5.ongoing ? "; fighting is ongoing" : ""}.`
+      : `By ${last}, clash and war under each set of assumptions.`;
+    const bw = base.watch_bigwar && base.watch_bigwar[p];
+    if (bw) document.getElementById("flash-sub").textContent += ` A war killing more than 100,000 by ${last}: ${pct(bw["100k"], 1)}; more than a million: ${pct(bw["1M"], 1)} (headline).`;
+    document.getElementById("t-flash").innerHTML = `<thead><tr><th>Assumptions</th><th class="num">Clash by ${last}</th><th class="num">War by ${last}</th></tr></thead><tbody>${rows}</tbody>`;
+  };
+  sel.onchange = () => draw(sel.value);
+  draw(pairs[0]);
+}
+
 function techSection() {
   const T = EX && EX.tech;
   if (!T) { document.getElementById("card-tech").hidden = true; return; }
@@ -1430,7 +1532,7 @@ function ledgerSection() {
     nuc_use_one: "Nuclear use against a non-nuclear state", nuc_escalate: "Escalation to a large exchange", nuc_gdp_large: "World output lost in a large exchange",
     sanction_loss: "Cost of Western sanctions", mineral_elast: "Critical-minerals windfall", china_pause: "China clean-tech chokepoint", civ_mult: "Civilian war deaths",
     pandemic_mort: "Pandemic death rate", slr_mult: "Sea-level rise", slr_cost: "Cost of sea-level rise", storm_trend: "Storms and warming", storm_loss: "Cost of a damaging storm",
-    solar_p: "Solar-storm frequency", solar_loss: "Cost of a solar storm", volc_p: "Large-eruption frequency", volc_yield: "Harvest loss after an eruption", cyber_loss: "Wartime infrastructure attacks",
+    ai_cat_rate: "AI loss-of-control risk", ai_cat_deaths: "Deaths in an AI catastrophe", ai_cat_loss: "Output lost in an AI catastrophe", solar_p: "Solar-storm frequency", solar_loss: "Cost of a solar storm", volc_p: "Large-eruption frequency", volc_yield: "Harvest loss after an eruption", cyber_loss: "Wartime infrastructure attacks",
     nuclear_war_factor: "War between nuclear-armed states (vs others)", dmg_family: "Climate damage estimate (level / growth / global)", clim_response: "Climate sensitivity", harvest_amp: "Warming deepens bad harvests", amoc_p: "Chance of an AMOC collapse", amoc_hit: "AMOC collapse", amoc_eu_loss: "AMOC cost to Europe", amoc_eu_yield: "AMOC harvest loss in Europe", amoc_rain: "AMOC drying of the Sahel",
     slr_ice: "Fast ice-sheet loss", slr_ice_mult: "Size of fast ice-sheet loss", dry_area_elast: "Drylands losing cropland", clim_conflict: "Warming and civil war", clim_migr: "Climate emigration",
     workforce_beta: "Ageing drag on growth", articles_beta: "Science capacity and growth", frag_beta: "Rebel fragmentation and war length", fin_contagion: "Financial contagion through trade", dividend_fade: "AI dividend fading",
@@ -1461,6 +1563,9 @@ function renderAll() {
   backtestTable(); try { splitTable(); } catch (e) { console.error(e); } calChart(); hindTable(); ablationTable();
   climMap(); scenCharts();
   systemTable(); interSection(); try { waterCard(); } catch (e) { console.error(e); document.getElementById("grid-water").hidden = true; } try { risksCard(); } catch (e) { console.error(e); document.getElementById("card-risks").hidden = true; } aiSection(); panelSection();
+  try { changesCard(); } catch (e) { console.error(e); document.getElementById("card-changes").hidden = true; }
+  try { worldBuilder(); } catch (e) { console.error(e); document.getElementById("card-wb").hidden = true; }
+  try { flashpoints(); } catch (e) { console.error(e); document.getElementById("s-flash").closest("section").hidden = true; }
   try { techSection(); } catch (e) { console.error(e); document.getElementById("card-tech").hidden = true; }
   scoreSection(); try { benchSection(); } catch (e) { console.error(e); document.getElementById("sec-bench").hidden = true; } whatIf(); chronicles(); try { disasterSection(); } catch (e) { console.error(e); document.getElementById("s-disaster").closest("section").hidden = true; } try { climateRisk(); } catch (e) { console.error(e); document.getElementById("clim-risk").hidden = true; } cycles(); oilChart(); cleanChart(); ledgerSection();
   if (USD) { usStress(); usMap(); usTable(); usBacktest(); }

@@ -100,6 +100,10 @@ class Transition:
     size_regime: bool = False
     z_lo: np.ndarray = None   # training support of each standardised feature (0.5-99.5%): no extrapolation beyond it
     z_hi: np.ndarray = None
+    inter: tuple = ()         # interaction columns (feature index pairs), appended after cols
+    vol_b: float = 0.0        # slope of log|noise| on standardised growth volatility (VOL_NOISE)
+    vol_mu: float = 0.0
+    vol_sd: float = 1.0
 
     @staticmethod
     def _design(z, ev, sq_idx, xp):
@@ -108,17 +112,23 @@ class Transition:
 
     @staticmethod
     def fit(X, events, target, years, codes, regions, cols, lo, hi, bin_col, grid, squares=(), alpha=10.0,
-            n_bins=4, halflife=None, size=None, shock_w=None):
+            n_bins=4, halflife=None, size=None, shock_w=None, inter=(), vol=False):
         ci = [FEATURES.index(c) for c in cols]
+        inter = tuple((FEATURES.index(a_), FEATURES.index(b_)) for a_, b_ in inter)
+        gv_all = X[:, FEATURES.index("growth_vol_10y")] if vol else None
         ok = np.isfinite(target) & np.isfinite(events).all(1)
         bv = X[ok][:, FEATURES.index(bin_col)]
         lp = X[ok][:, FEATURES.index("log_pop")] if size else None
-        X, ev, y, yr, cc, rg = (X[ok][:, ci], events[ok], np.clip(target[ok], lo, hi), years[ok], codes[ok], regions[ok])
+        Xo = X[ok]
+        X, ev, y, yr, cc, rg = (Xo[:, ci], events[ok], np.clip(target[ok], lo, hi), years[ok], codes[ok], regions[ok])
+        if inter:
+            X = np.c_[X, np.stack([Xo[:, a_] * Xo[:, b_] for a_, b_ in inter], 1)]
+        gv = gv_all[ok] if vol else None
         sw = np.ones(ok.sum()) if shock_w is None else np.nan_to_num(shock_w[ok])
         mu, sd = np.nanmean(X, 0), np.nanstd(X, 0) + 1e-6
         sq_idx = [cols.index(c) for c in squares]
         Z = Transition._design(np.nan_to_num(np.clip((X - mu) / sd, -6, 6)), ev, sq_idx, np)
-        z_lo, z_hi = ((np.full(len(cols), s_) if SUPPORT_Q is None else np.nan_to_num(np.nanquantile((X - mu) / sd, q, 0), nan=s_))
+        z_lo, z_hi = ((np.full(X.shape[1], s_) if SUPPORT_Q is None else np.nan_to_num(np.nanquantile((X - mu) / sd, q, 0), nan=s_))
                       for q, s_ in ((SUPPORT_Q, -6.0), (1 - (SUPPORT_Q or 0), 6.0)))
         # optional recency weighting: the structural mean leans on recent decades
         w = None if halflife is None else 0.5 ** ((yr.max() - yr) / halflife)
@@ -149,6 +159,16 @@ class Transition:
             idio = idio / np.exp(size_b * (lp - size_c))
             if size == "both":
                 dec = dec / np.exp(size_b * (np.bincount(ki, lp) / n - size_c))
+        vol_b, vol_mu, vol_sd = 0.0, 0.0, 1.0
+        if vol:
+            # quiet economies draw quieter noise: slope of log|residual| on standardised 10-year growth volatility,
+            # within bins; pooled residuals are put on a common scale and rescaled to the drawing country's volatility
+            gv = np.nan_to_num(gv, nan=np.nanmedian(gv))
+            vol_mu, vol_sd = float(gv.mean()), float(gv.std() + 1e-9)
+            zv = np.clip((gv - vol_mu) / vol_sd, -3, 3)
+            D_ = np.c_[np.ones(len(zv)), zv, np.eye(n_bins)[bins][:, 1:]]
+            vol_b = float(np.linalg.lstsq(D_, np.log(np.abs(idio) + 1e-3), rcond=None)[0][1])
+            idio = idio / np.exp(vol_b * zv)
         dec_bin = np.round(np.bincount(ki, bins) / n).astype(int)   # typical bin of the country-decade
         keep = n >= 5
         if POOL_HALFLIFE:
@@ -164,7 +184,7 @@ class Transition:
             dec, dec_bin, keep = dec[jj], dec_bin[jj], np.ones(len(jj), bool)
         return Transition(cols, list(squares), mu, sd, m.coef_, float(m.intercept_), shocks, grid, bin_col, edges,
                           reg_dec[rn >= 20], _pools(dec[keep], dec_bin[keep], n_bins), _pools(idio, bins, n_bins), lo, hi,
-                          size_b, size_c, size == "both", z_lo, z_hi)
+                          size_b, size_c, size == "both", z_lo, z_hi, inter, vol_b, vol_mu, vol_sd)
 
     @staticmethod
     def _shrunk_means(r, key):
@@ -217,15 +237,31 @@ class Transition:
     def step(self, X, events, shock_idx, regime, gen):
         # (held inside the training support: the squared income-gap term would otherwise turn a war-torn economy that
         # falls below any observed level into an accelerating collapse; 30-year hindcasts from 1994, code review 2026-10-29)
-        z = torch.nan_to_num(torch.minimum(torch.maximum((X[..., self.ci_t] - self.mu_t) / self.sd_t, self.zlo_t), self.zhi_t))
+        Xs = X[..., self.ci_t]
+        if self.inter:
+            Xs = torch.cat([Xs] + [(X[..., a_] * X[..., b_])[..., None] for a_, b_ in self.inter], -1)
+        z = torch.nan_to_num(torch.minimum(torch.maximum((Xs - self.mu_t) / self.sd_t, self.zlo_t), self.zhi_t))
         mean = self._design(z, events, self.sq_t, torch) @ self.w + self.intercept
         eps = self.resid_t.draw(self._bin(X), gen)
         if self.size_b:
             eps = eps * self._size(X)
-        return (mean + getattr(self, "shock_scale", 1.0) * self.shocks_t[shock_idx][:, None] + regime + eps).clamp(self.lo, self.hi)
+        if self.vol_b:
+            gv = torch.nan_to_num(X[..., FEATURES.index("growth_vol_10y")], nan=self.vol_mu)
+            eps = eps * torch.exp(self.vol_b * ((gv - self.vol_mu) / self.vol_sd).clamp(-3, 3)).clamp(0.3, 3.0)
+        sh = self.shocks_t[shock_idx]
+        if ASYM_SHOCK is not None:
+            # booms and busts scaled apart, recentred over the replayed years so the average shock is unchanged
+            if getattr(self, "_asym_mu", None) is None:
+                a_all = torch.where(self.shocks_t > 0, ASYM_SHOCK[0] * self.shocks_t, ASYM_SHOCK[1] * self.shocks_t)
+                self._asym_mu = float(a_all.mean() - getattr(self, "shock_scale", 1.0) * self.shocks_t.mean())
+            sh = torch.where(sh > 0, ASYM_SHOCK[0] * sh, ASYM_SHOCK[1] * sh) - self._asym_mu
+        else:
+            sh = getattr(self, "shock_scale", 1.0) * sh
+        return (mean + sh[:, None] + regime + eps).clamp(self.lo, self.hi)
 
     def coefficients(self):
-        return dict(zip(self.cols + [f"{c}^2" for c in self.squares] + EVENTS, self.coef))
+        names = self.cols + [f"{FEATURES[a_]}*{FEATURES[b_]}" for a_, b_ in self.inter]
+        return dict(zip(names + [f"{c}^2" for c in self.squares] + EVENTS, self.coef))
 
 
 # growth noise scaled by country size: None, "idio" (yearly noise) or "both" (+ decade regimes). Adopted ("both")
@@ -261,11 +297,11 @@ def fit_transitions(p, X, base, origin, halflife=None):
     args = (Xf, events)
     growth = Transition.fit(*args, flat(lg[:, 1:] - lg[:, :-1]), flat(years), flat(codes), flat(regions),
                             GROWTH_FEATURES, -0.4, 0.3, bin_col="gdp_gap_frontier", grid=grid,
-                            squares=["gdp_gap_frontier"], halflife=halflife, size=SIZE_NOISE,
+                            squares=["gdp_gap_frontier"], halflife=halflife, size=SIZE_NOISE, vol=VOL_NOISE,
                             shock_w=flat(np.exp(YEAR_SHOCK_POW * (lg[:, :-1] + base["lpop"][:, :-1] - 25)))
                             if YEAR_SHOCK_POW else None)
     ddem = Transition.fit(*args, flat(dem[:, 1:] - dem[:, :-1]), flat(years), flat(codes), flat(regions),
-                          DEM_FEATURES, -0.5, 0.5, bin_col="democracy", grid=grid, halflife=halflife)
+                          DEM_FEATURES, -0.5, 0.5, bin_col="democracy", grid=grid, halflife=halflife, inter=DEM_INTER)
     return growth, ddem
 
 
@@ -368,7 +404,12 @@ SCIENCE_DECAY = 1.0       # yearly factor on the science-capacity residual (worl
 HEAT_MORT_BETA = 0.553e-4    # (1,000 worlds, SSP5-8.5, 2100: 73 per 100,000 a year; SSP2-4.5 then about 17)
 HEAT_MORT_POWER = 1.7
 HEAT_MORT_INCOME = (15000.0, 0.4)   # reference GDP per person (2011 $) and elasticity: richer countries adapt
-POOL_HALFLIFE = None      # noise pools resampled with weight 0.5 ** (years before origin / this): widened the spread
+POOL_HALFLIFE = None
+# 2026-11-02 tests (off = the adopted model):
+VOL_NOISE = False         # B: growth noise scaled by the country's own 10-year growth volatility (slope estimated in fit)
+ASYM_SHOCK = None         # C: (boom scale, bust scale) for the replayed world shocks, recentred, in place of shock_scale
+DEM_INTER = ()            # D: interaction pairs added to the democracy equation, e.g. (("democracy", "freexp_change_5y"),)
+DEMOG_COHORT = False      # E: hindcasts age the origin's 0-14 and 15-64 stocks forward instead of extending trends      # noise pools resampled with weight 0.5 ** (years before origin / this): widened the spread
 SUPPORT_Q = 0.005          # Transition features are clamped to their 0.5-99.5% training range when simulating (None: +/-6 sd)
 WORKFORCE_BETA = 1.22     # growth per unit change in log working-age share (scripts/workforce_test.py; s.e. 0.17)
 WORKFORCE_MEAN = 0.0019   # mean yearly change 1960-2023, already absorbed by the fitted growth equation
@@ -404,11 +445,28 @@ def exogenous_demography(p, base, origin, T, mode="un"):
            "lwork": (np.log(0.45), np.log(0.75))}
     out = {}
     for k in keys:
+        if k == "lwork" and DEMOG_COHORT:
+            continue
         rate = np.nan_to_num(_trend_rate(base[k], t0, 5 if k == "lpop" else 10))
         path = [base[k][:, t0]]
         for j in range(1, T + 1):
             path.append(np.clip(path[-1] + rate * (0.98 if k == "lpop" else 0.95) ** j, *lim[k]))
         out[k] = np.stack(path, 1)
+    if DEMOG_COHORT:
+        # the working-age share from people already born at the origin: each year a fifteenth of the 0-14 stock
+        # enters working age and a fiftieth of the 15-64 stock leaves it (uniform ages within each group), over the
+        # total population path; after 15 years the share continues its own last-five-year change, damped
+        w0 = np.exp(np.nan_to_num(base["lwork"][:, t0], nan=np.log(0.6)))
+        y0 = np.clip(np.nan_to_num(base["youth"][:, t0], nan=0.3), 0.05, 0.6)
+        lp = out["lpop"]
+        path = [np.log(w0)]
+        for j in range(1, T + 1):
+            if j <= 15:
+                stock = w0 + y0 * j / 15 - w0 * j / 50
+                path.append(np.log(np.clip(stock / np.exp(lp[:, j] - lp[:, 0]), 0.45, 0.75)))
+            else:
+                path.append(np.clip(path[-1] + (path[15] - path[10]) / 5 * 0.95 ** (j - 15), np.log(0.45), np.log(0.75)))
+        out["lwork"] = np.stack(path, 1)
     return out
 
 
@@ -610,12 +668,24 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     pand_mort = torch.zeros(S, device=device)
     trans_prev = torch.zeros(S, C, device=device)
     struct_sd = struct_shift = None
-    if WS is not None and WS.cfg.sample_params and STRUCT_MODE in ("family", "familyc") and getattr(net, "struct_fam", None) is not None:
+    struct_var = None
+    if WS is not None and WS.cfg.sample_params and STRUCT_MODE in ("family", "familyc", "ens_onset") and getattr(net, "struct_fam", None) is not None:
         # each world and hazard takes one family's view of every country (within the families' range by construction);
-        # "familyc": the offsets centred on their weighted mean, so the draw spreads risk without moving its level
+        # "familyc": the offsets centred on their weighted mean, so the draw spreads risk without moving its level;
+        # "ens_onset": centred for war ending and coups, uncentred for war onset (the onset level becomes the
+        # ensemble's, which puts the safest countries lower than the neural network alone)
         fam_ = np.clip(np.nan_to_num(net.struct_fam), -3.0, 3.0)
+        w_ = np.asarray(net.struct_w, float)
+        mean_ = np.tensordot(w_, fam_, axes=1)[None]                                      # [1, C, 3]
+        cen_ = fam_ - mean_
+        # convexity: a log-odds spread that averages zero still raises a low probability on average (Jensen); the
+        # same correction as the Gaussian draw, with each country's own spread between the families (review 2026-11-02)
+        struct_var = tt(np.tensordot(w_, cen_ ** 2, axes=1))                              # [C, 3]
         if STRUCT_MODE == "familyc":
-            fam_ = fam_ - np.tensordot(np.asarray(net.struct_w, float), fam_, axes=1)[None]
+            fam_ = cen_
+        elif STRUCT_MODE == "ens_onset":
+            fam_ = cen_.copy()
+            fam_[..., 0] = fam_[..., 0] + mean_[..., 0]
         sf = tt(fam_)                                                                     # [F, C, 3]
         g_s = torch.Generator(device=device).manual_seed(seed + 4242)
         fi = torch.multinomial(tt(net.struct_w).expand(S * 3, -1), 1, replacement=True, generator=g_s).view(S, 3)
@@ -863,7 +933,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         var_r = mood_rho ** 2 * var_r + mood_sd[1] ** 2
         mood = mood_world + mood_region[:, regions]
         if struct_shift is not None:
-            haz = haz + struct_shift
+            haz = haz + struct_shift - STRUCT_CONVEXITY * 0.5 * struct_var[None] * (1 - 2 * torch.sigmoid(haz))
         if struct_sd is not None:
             # structural uncertainty: one error per world and hazard, scaled by the model families' disagreement
             # (with the convexity correction used for mood and frailty, so the average hazard is kept; review 2026-10-28)
@@ -1071,6 +1141,17 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                     pand_mort = torch.maximum(pand_mort, eng * (0.002 + 0.05 * u3))     # deaths scale with severity (assumption)
                     pandemic = torch.maximum(pandemic, eng)
                     WS.rec["eng_pandemic"].append(eng)
+            if WS.cfg.ai_catastrophe and ai.arrival:
+                # AI loss of control (assumption, world.WorldConfig.ai_catastrophe): once per world at most
+                u_c = torch.rand(S, device=device, generator=gen)
+                p_c = (WS.prm("ai_cat_rate") * fr).flatten()
+                cat = ((u_c < p_c) & (WS.ai_cat_done < 0.5)).float()
+                WS.ai_cat_done = torch.maximum(WS.ai_cat_done, cat)
+                loss_c = torch.as_tensor(WS.prm("ai_cat_loss"), device=device).flatten() * cat
+                g = g - loss_c[:, None] + (0.1 * WS.ai_cat_back)[:, None]       # half recovered, a tenth of it a year
+                WS.ai_cat_back = 0.9 * WS.ai_cat_back + 0.5 * loss_c
+                pand_mort = torch.maximum(pand_mort, cat * torch.as_tensor(WS.prm("ai_cat_deaths"), device=device).flatten())
+                WS.rec["ai_catastrophe"].append(cat)
             WS.rec["pandemic"].append(pandemic)
             # geomagnetic storm: grid-dependent economies lose output that year
             p_s = WS.prm("solar_p")

@@ -47,6 +47,7 @@ GROUPS = {"AI and robot timing": ["ai_arrival", "robot_arrival", "robot_lag", "a
                       "storm_loss", "harvest_amp", "dry_area_elast", "clim_conflict", "clim_migr"],
           "nuclear": ["nuclear_war_factor", "nuc_use_both", "nuc_use_one", "nuc_escalate", "nuc_gdp_large", "nuc_beta"],
           "AI rent capture": ["firm_capture", "clawback"],
+          "AI loss of control": ["ai_cat_rate", "ai_cat_deaths", "ai_cat_loss"],
           "technology": ["tech_" + n for n in __import__("psychohistory.tech", fromlist=["TECHS"]).TECHS] + ["space_war", "sat_open", "orbit_dc"]}
 out = {}
 for k, y in Y.items():

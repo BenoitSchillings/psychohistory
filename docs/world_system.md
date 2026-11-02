@@ -2035,3 +2035,52 @@ What it shows about the Nordic tail: only the uncentred family draw removes it, 
 safe countries (the other families see them as safer than PsychoNet does). The tail is in PsychoNet's central risk for
 the safest countries, not in the structural noise; using the ensemble's central hazards in the simulator, with an
 alignment that holds over decades, is the next open item.
+
+## Round of 2026-11-02: review bugs, five tests, an AI tail, reader tools
+
+### Bugs (independent review)
+- The centred family draw (STRUCT_MODE familyc) had no convexity correction: a log-odds spread that averages zero
+  still raises a low probability on average, most where the families disagree most (the safest countries). It now
+  takes -0.5 x (each country's weighted spread between families) x (1 - 2p), as the Gaussian draw did. With it the
+  safe-country tail improves against no structural noise (-4.7% / -5.1% / -2.5% at 15 years 1980-95 / 2000-09 and at 30
+  years; it was +5-8% worse without the correction), and the country-level conflict Brier slightly (0.08655 -> 0.08635,
+  0.07466 -> 0.07449).
+- Two random generators shared a seed (seed + 503): the climate-response draw in simulate and AI rent capture in the
+  world layer, so every world's climate sensitivity was tied to its rent capture. Rent capture now uses seed + 521.
+- The "no pandemics" knockout (scripts/disaster_rca.py) still let the technology registry's engineered-pathogen tools
+  cause pandemics; it now also forces them off.
+- The simple attribution (pipeline.attribution) credited each technology's arrival year with what AI timing already
+  explains (arrivals are pulled forward by AI); each is now credited only beyond the AI arrival year.
+
+### Tested and rejected (10-year hindcasts, two network seeds; full-system runs where noted)
+- **Growth noise scaled by each country's own 10-year volatility** (VOL_NOISE): country GDP CRPS -0.6% dev, -2.1% test,
+  but the cross-country spread +15% on dev (better at 1-2 of 15; -7.7% on test) and world recessions 26% rarer.
+- **Asymmetric world shocks** (ASYM_SHOCK, busts at full size, booms x0.55, recentred): simulated recession years
+  +40% dev (1.8% -> 2.5%, actual 3%) and +55% test (1.4% -> 2.2%, actual 9.5%), but world GDP CRPS +1.5% / +1.0% and
+  world GDP per person +0.3% / +2.2%: closer to the recession count, worse on the scores.
+- **Democracy x free-expression erosion** in the democracy equation (DEM_INTER): +0.3% / +0.2%.
+- **Working-age share aged forward from the origin's cohorts** in hindcasts (DEMOG_COHORT, three broad age groups):
+  country GDP CRPS +16% / +12%; too crude with only 0-14 / 15-64 / 65+.
+- **The ensemble's level for war onset** (STRUCT_MODE ens_onset, with the convexity correction): the safe-country
+  tail -33% / -77% / -51% and country-level Brier better (0.08595 / 0.07387), but the world's conflict share CRPS
+  +13.6% on 2000-09 (0/3) and +6.3% at 30 years, war onsets +10.5% on 2000-09: it lowers the world's war risk in the
+  decade before the 2010s rise. The most promising lead for the Nordic tail, if paired with an alignment that keeps the
+  world total on target over decades.
+(The full-system runs for the first four did not run: a shell error in the queue; they had already failed the
+10-year tests.)
+
+### Added: AI loss of control (world.WorldConfig.ai_catastrophe, in the headline; assumption)
+Once near-free cognition arrives, a yearly chance (ai_cat_rate x frontier progress; log-uniform 0.0003-0.004 per
+world, about 1% to 13% by 2100, between superforecasters' 2% and domain experts' 12% for an AI catastrophe killing a
+tenth of humanity by 2100, FRI XPT 2022) of one catastrophe that kills 1-10% of the world's population and costs 10-35%
+of output, half of it recovered over the following decade. With AI from 2030: 4.3% of worlds by 2065, mean excess
+deaths 71 -> 96 million, 99th percentile 551 -> 860 million; with AI timing uncertain, 2.5%. Extinction is outside
+what the simulator represents.
+
+### Reader tools
+- "Build your own world": five choices (AI arrival, climate-damage estimate, nuclear escalation, who keeps AI rents,
+  breakthroughs by 2045), 405 combinations, each answered by the simulated worlds that match it (60-215 of the 48,000
+  in outputs/uncertainty_sims.npz; 4 sparse combinations widened by dropping the least important choices).
+- Flashpoints: any of the 20 watched pairs, its clash and war chance by year, under each set of assumptions, the
+  five-year pair-model risks and the large-war tail.
+- What changed since the previous version: headline numbers per release (outputs/release_history.json).
