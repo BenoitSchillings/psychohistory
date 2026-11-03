@@ -5,7 +5,7 @@
 2. Cost: growth in the crisis year and the next two (local projection, country and year effects removed by demeaning),
    fit on 1960-1999 and on 2000-2024 separately.
 3. Debt dynamics: does the interest-growth gap times last year's debt improve the yearly debt change out of sample
-   (fit 1960-1999, scored 2000-2024)?
+   (fit 1960-1999, scored 2000-2024)? And which half, growth x debt or the real rate x debt?
 python -P scripts/debt_crisis_test.py -> outputs/debt_crisis_test.json"""
 import json
 import os
@@ -103,14 +103,16 @@ for k, nm in (("SovDebtCrisis", "sovereign"), ("CurrencyCrisis", "currency")):
     logit_test(nm, onset)
     cost_test(nm, onset)
 
-# debt dynamics: yearly change in debt / GDP against the interest-growth gap x last year's debt
+# debt dynamics: yearly change in debt / GDP. The interest-growth gap times last year's debt is split into its two
+# halves: growth x debt (which the simulator's log-debt equation already holds through its growth driver) and the
+# real rate x debt (the part a rate regime would add). Same rows (clean rate available) for every spec.
 dd = (debt - lag(debt)) / 100
-for spec, ks in (("base", ["growth_now", "def"]), ("with_r_g", ["growth_now", "def", "rg_debt"])):
-    Z = {"growth_now": growth, "def": -b["gov_deficit"] / 100 if "gov_deficit" in b else np.zeros_like(growth),
-         "rg_debt": (rr / 100 - growth) * lag(debt) / 100}
+Z = {"growth_now": growth, "def": -b["gov_deficit"] / 100, "g_debt": growth * lag(debt) / 100,
+     "r_debt": lag(rr) / 100 * lag(debt) / 100, "rg_debt": (lag(rr) / 100 - growth) * lag(debt) / 100}
+for spec, ks in (("base", ["growth_now", "def"]), ("with_r_g", ["growth_now", "def", "rg_debt"]),
+                 ("with_g_debt", ["growth_now", "def", "g_debt"]), ("with_g_debt_r_debt", ["growth_now", "def", "g_debt", "r_debt"])):
     D = np.stack([Z[k] for k in ks], -1)
-    # (both specs on the same rows: those where the clean rate exists)
-    ok = np.isfinite(dd) & np.isfinite(D).all(-1) & np.isfinite(rr) & (np.abs(dd) < 0.5)
+    ok = np.isfinite(dd) & np.isfinite(D).all(-1) & np.isfinite(Z["r_debt"]) & (np.abs(dd) < 0.5)
     dev, test = ok & (Y_ >= 1960) & (Y_ < 2000), ok & (Y_ >= 2000)
     m = sm.OLS(dd[dev], sm.add_constant(D[dev])).fit()
     pt = m.predict(sm.add_constant(D[test], has_constant="add"))

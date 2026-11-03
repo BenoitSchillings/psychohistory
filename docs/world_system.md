@@ -2098,12 +2098,14 @@ the simulated economy, interest rates, or the dollar's reserve role.
 - Hazard (logit, fit 1960-1999, scored 2000-2024): debt, its change, growth, inflation and a banking crisis raise the
   AUC from 0.47 to 0.64 (sovereign) and 0.54 to 0.60 (currency), but the log loss does not improve for sovereign
   crises (0.0580 -> 0.0582): few events after 2000.
-- Rates (corrected after review): the panel's real rate clips inflation at 100% but not the nominal rate, so
-  hyperinflations gave huge real rates exactly when inflation was eroding debt. With the real rate kept only where
-  inflation is under 50% (and within +-30 points), the real rate minus growth, times last year's debt, does move debt
-  as theory says (+0.26 per unit, t = 6.3; out-of-sample R^2 of the yearly debt change 0.175 -> 0.198 on the same
-  2000-2024 rows). The first run (t = -0.9, "no effect") was the artefact. Not yet in the simulator, which has no
-  interest rates: debt reverts to its 20-year level, driven by growth, conflict, crises and democracy.
+- Rates (corrected twice). The panel's real rate clips inflation at 100% but not the nominal rate, so hyperinflations
+  gave huge real rates exactly when inflation was eroding debt; with the real rate kept only where inflation is under
+  50% (and within +-30 points), the real rate minus growth, times last year's debt, appeared to move debt (t = 3.9-6.3;
+  out-of-sample R^2 of the yearly debt change 0.18 -> 0.20). Split into its halves, almost all of that is growth x
+  debt (R^2 0.18 -> 0.26), which the simulator's log-debt equation already holds through its growth driver; the real
+  rate x debt adds 0.004 (0.09 per unit, t = 2.3; the overall deficit, a control here, already contains interest
+  paid). As a driver of the simulator's own log-debt equation (fit to 1995 or 2005, scored after), the real rate has
+  no effect (coefficient -0.12 / -0.02; R^2 0.127 -> 0.124, 0.132 -> 0.132). No interest-rate regime was added.
 - In the simulation (simulate.MACRO_CRISIS): a crisis drawn each year from the hazard, its cost charged to growth.
   10-year hindcasts: world GDP per person CRPS -12% on both splits and recession years closer to history, but world
   GDP growth CRPS +5.5% (1970-1998) and +13% (2000-2012) and the spread between countries wider. Full system: 15-year
