@@ -2146,3 +2146,49 @@ the simulated economy, interest rates, or the dollar's reserve role.
   average and the war entries of major exporters (+0.24 log, t = 3, 1955..origin), since the simulator adds both
   itself. 15-year full-system hindcasts, 7 origins: oil price change CRPS -6.4% (better at 6/7), but world GDP growth
   +3.1% (2/7; exporters' and importers' growth follow the price's departure from the replayed move). Mixed; off.
+
+## Democratic recession and growth spread (2026-11-02, evening)
+
+### The democracy equation's trend (simulate.DEM_DRIFT; rejected)
+- Diagnosis: the democracy-change equation's level is the average yearly change of its training years (1955..origin,
+  the third wave: +0.006 a year), so from 2000-2009 origins it predicts +0.004 to +0.007 a year for the average country
+  while the next 15 years averaged about zero (-0.002 to +0.002). Full-system hindcasts: world democracy +0.011 to
+  +0.023 over 15 years from 2000-2009 against -0.034 to -0.097 observed.
+- Tested, 10-year hindcasts (network seed 0): no trend ("zero"): democracy CRPS +5.3% (1970-1998), +3.7% (2000-2012),
+  onsets +1.7% / +3.6%, coups +0.6% / +4.6%; half the trend: democracy +1.6% / -1.6%, onsets +0.9% / +1.9%, coups
+  +0.3% / +2.2%; the 1900-origin average (+0.002 to +0.004 a year, the 1920s-30s reversals included): democracy
+  +0.4% / -1.6%, onsets +0.4% / +1.2%, coups +0.5% / +1.4%. Every version loses on 1970-1998 (the third wave was
+  real), and lower democracy raises simulated onsets and coups on 2000-2012 beyond what happened. Not adopted: the
+  recession after 2006 is not in any pre-origin trend the equation sees.
+
+### What the "democratic recession" miss is
+- The full-system miss is in population-weighted world democracy, and it is mostly India: its V-Dem score fell 0.19
+  (2000-2015) and about 0.3 (2005-2024, 2009-2024), which alone is -0.033 of the -0.034 world change from 2000, -0.058
+  of -0.081 from 2005 and -0.053 of -0.097 from 2009. The unweighted average country changed +0.033, -0.002, -0.037.
+- World-level drivers tested offline against the democracy equation's errors (slope fit before the origin, scored on
+  the 15 years after, origins 1995/2000/2005): rest-of-world GDP-weighted democracy (level gap, 5-year change) and the
+  autocracies' share of world GDP (level, 5-year change; 19% in 2000, 25% in 2005, 46% in 2020). No out-of-sample
+  gain (-3.6% to +0.2% in squared error); the share's 5-year change points the right way but overshoots twofold.
+- Coverage of the 15-year world democracy change (percentile of the outcome among simulated worlds): 1980 91, 1990 66,
+  2000 16, 2005 4, 2009 2. The lower tail is too thin (5th percentile about -0.07 at every origin): a large democracy
+  backsliding by 0.3 (India 1975, Chile and Uruguay 1973, the Philippines 1972, Venezuela after 1999) is almost never
+  drawn.
+- Democracy regime scale (country-decade draws x DEM_REGIME_SCALE, 1.0, never tuned), against the 1.4 growth
+  baseline. 1.5: country democracy CRPS -0.7% (1970-1998) and +2.9% (2000-2012, worse at 7/7), onsets -0.4% / -0.6%,
+  coups 0.0% / -0.9%; full system 15 years: world democracy change -2.5%, others within 0.9%. 2.0: democracy -0.7% /
+  +6.2%. Wider drift for every country to make room for one India-sized fall costs more on the many stable countries
+  than it gains. Rejected; the tail stays too thin, a known limit.
+
+### Growth regime scale 1.8 -> 1.4 (adopted)
+- Country-decade growth regimes are drawn from history and multiplied by growth_regime_scale. 1.8 was chosen on
+  26 October, when 1.4 looked like noise; the simulator has changed since (noise scaled by country size, slow
+  variables, war damage), and at 1.8 the spread of countries' 10-year growth was 15% too wide on 1970-1998 (ratio of
+  simulated to observed spread 1.15) and 66% too wide on 2000-2012.
+- 10-year hindcasts, two network seeds, identical to the first decimal: 1.4 brings the 1970-1998 ratio to 1.03;
+  spread CRPS -22% (1970-1998) and -29% (2000-2012, better at 7/7 origins), world GDP per person -3.2% and -11%
+  (12/15, 7/7), country GDP +0.3% and -1.1% (7/7), onsets +0.2% and -0.8/-1.0%, coups -0.2/-0.7% and +0.8/+1.1%,
+  democracy unchanged. 1.0 is better still on 2000-2012 but too narrow on 1970-1998 (ratio 0.92; country GDP +0.8%).
+- Full-system hindcasts: 15 years (7 origins) spread -18%, world growth -4.6%, recessions -2.7%, others within 1%;
+  30 years (3 origins) spread -28% (3/3), world growth +4.2% (1/3), safe-country wars +1.4%, others within 1%.
+- The spread is still too wide after 2000 (ratio 1.48): the simulator replays decades in proportion, and national
+  growth was far calmer after 2000 than in the 1970s-1990s (recency-weighted pools were rejected on 2026-10-30).
