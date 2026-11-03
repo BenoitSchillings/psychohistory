@@ -104,6 +104,8 @@ class Transition:
     vol_b: float = 0.0        # slope of log|noise| on standardised growth volatility (VOL_NOISE)
     vol_mu: float = 0.0
     vol_sd: float = 1.0
+    pool_state: str = None    # noise pools split by this feature (top third vs rest; POOL_STATE)
+    pool_edge: float = 0.0
 
     @staticmethod
     def _design(z, ev, sq_idx, xp):
@@ -112,7 +114,7 @@ class Transition:
 
     @staticmethod
     def fit(X, events, target, years, codes, regions, cols, lo, hi, bin_col, grid, squares=(), alpha=10.0,
-            n_bins=4, halflife=None, size=None, shock_w=None, inter=(), vol=False):
+            n_bins=4, halflife=None, size=None, shock_w=None, inter=(), vol=False, pool_state=None):
         ci = [FEATURES.index(c) for c in cols]
         inter = tuple((FEATURES.index(a_), FEATURES.index(b_)) for a_, b_ in inter)
         gv_all = X[:, FEATURES.index("growth_vol_10y")] if vol else None
@@ -142,12 +144,12 @@ class Transition:
             # equation's, not the big economies' average residual, or replaying them would drift every country)
             shocks = np.where(n_y > 0, shocks - shocks[gi].mean(), 0.0)
         r = r - shocks[gi]
+        edges = np.nanquantile(bv, np.linspace(0, 1, n_bins + 1)[1:-1])
+        bins = np.digitize(np.nan_to_num(bv, nan=np.nanmedian(bv)), edges)
         reg_dec, rk, rn = Transition._shrunk_means(r, rg * 10000 + yr // 10)
         r = r - reg_dec[rk]
         dec, ki, n = Transition._shrunk_means(r, cc * 10000 + yr // 10)
         idio = r - dec[ki]
-        edges = np.nanquantile(bv, np.linspace(0, 1, n_bins + 1)[1:-1])
-        bins = np.digitize(np.nan_to_num(bv, nan=np.nanmedian(bv)), edges)
         size_b = size_c = 0.0
         if size:
             # large countries are less volatile (diversified): pooled residuals are put on a common size scale and
@@ -170,6 +172,13 @@ class Transition:
             vol_b = float(np.linalg.lstsq(D_, np.log(np.abs(idio) + 1e-3), rcond=None)[0][1])
             idio = idio / np.exp(vol_b * zv)
         dec_bin = np.round(np.bincount(ki, bins) / n).astype(int)   # typical bin of the country-decade
+        pool_edge, n_ib = 0.0, n_bins
+        if pool_state:
+            # (state-conditional noise: a high-debt country draws from what high-debt countries went through)
+            sv = Xo[:, FEATURES.index(pool_state)]
+            pool_edge = float(np.nanquantile(sv, 2 / 3))
+            bins = bins * 2 + (np.nan_to_num(sv, nan=-np.inf) > pool_edge)
+            n_ib = n_bins * 2
         keep = n >= 5
         if POOL_HALFLIFE:
             # recent history counts more: country volatility has fallen since the 1990s (hindcast bands too wide from
@@ -183,8 +192,8 @@ class Transition:
             jj = rs.choice(len(dec), int(keep.sum()), p=wd / wd.sum())
             dec, dec_bin, keep = dec[jj], dec_bin[jj], np.ones(len(jj), bool)
         return Transition(cols, list(squares), mu, sd, m.coef_, float(m.intercept_), shocks, grid, bin_col, edges,
-                          reg_dec[rn >= 20], _pools(dec[keep], dec_bin[keep], n_bins), _pools(idio, bins, n_bins), lo, hi,
-                          size_b, size_c, size == "both", z_lo, z_hi, inter, vol_b, vol_mu, vol_sd)
+                          reg_dec[rn >= 20], _pools(dec[keep], dec_bin[keep], n_bins), _pools(idio, bins, n_ib), lo, hi,
+                          size_b, size_c, size == "both", z_lo, z_hi, inter, vol_b, vol_mu, vol_sd, pool_state, pool_edge)
 
     @staticmethod
     def _shrunk_means(r, key):
@@ -242,7 +251,10 @@ class Transition:
             Xs = torch.cat([Xs] + [(X[..., a_] * X[..., b_])[..., None] for a_, b_ in self.inter], -1)
         z = torch.nan_to_num(torch.minimum(torch.maximum((Xs - self.mu_t) / self.sd_t, self.zlo_t), self.zhi_t))
         mean = self._design(z, events, self.sq_t, torch) @ self.w + self.intercept
-        eps = self.resid_t.draw(self._bin(X), gen)
+        ib = self._bin(X)
+        if self.pool_state:
+            ib = ib * 2 + (torch.nan_to_num(X[..., FEATURES.index(self.pool_state)], nan=-float("inf")) > self.pool_edge).long()
+        eps = self.resid_t.draw(ib, gen)
         if self.size_b:
             eps = eps * self._size(X)
         if self.vol_b:
@@ -297,11 +309,12 @@ def fit_transitions(p, X, base, origin, halflife=None):
     args = (Xf, events)
     growth = Transition.fit(*args, flat(lg[:, 1:] - lg[:, :-1]), flat(years), flat(codes), flat(regions),
                             GROWTH_FEATURES, -0.4, 0.3, bin_col="gdp_gap_frontier", grid=grid,
-                            squares=["gdp_gap_frontier"], halflife=halflife, size=SIZE_NOISE, vol=VOL_NOISE,
+                            squares=["gdp_gap_frontier"], halflife=halflife, size=SIZE_NOISE, vol=VOL_NOISE, pool_state=POOL_STATE,
                             shock_w=flat(np.exp(YEAR_SHOCK_POW * (lg[:, :-1] + base["lpop"][:, :-1] - 25)))
                             if YEAR_SHOCK_POW else None)
     ddem = Transition.fit(*args, flat(dem[:, 1:] - dem[:, :-1]), flat(years), flat(codes), flat(regions),
-                          DEM_FEATURES, -0.5, 0.5, bin_col="democracy", grid=grid, halflife=halflife, inter=DEM_INTER)
+                          DEM_FEATURES, -0.5, 0.5, bin_col="democracy", grid=grid, halflife=halflife, inter=DEM_INTER,
+                          size=DEM_SIZE)
     return growth, ddem
 
 
@@ -394,6 +407,12 @@ STRUCT_MODE = "familyc"
 LREB_MODE = "age"
 SHIFTERS_BEFORE_ALIGN = True   # see the year-1 alignment in simulate()
 # limits round 2 (2026-10-30): switches tested and rejected, kept off (docs/world_system.md, "Limits round 2")
+# (year shocks per income tier beyond the world one were measured 2026-11-02, empirical-Bayes shrunk: sd 0.1-0.2% a
+#  year against 1.2% for the world shock - nothing to replay, not added)
+OIL_RESID = False         # oil: replay residuals of a fitted pull + war-entry equation instead of raw moves (tested 2026-11-02)
+OIL_EXPORTERS = ["SAU", "IRN", "IRQ", "KWT", "ARE", "QAT", "OMN", "RUS", "LBY", "VEN", "KAZ", "DZA", "NGA"]
+DEM_SIZE = None           # democracy noise scaled by population like growth's ("both"; tested 2026-11-02)
+POOL_STATE = None         # growth noise pools split by a state feature, e.g. "public_debt" (tested 2026-11-02)
 YEAR_SHOCK_POW = 0.0      # growth year shocks: mean residual weighted by GDP ** this (0: every country alike). Uncentred,
 #                           its gains came from a negative drift that hurt 30-year growth; centred, recessions got rarer
 CRISIS_COST = None        # (year after, two years after) output cost of a banking crisis beyond its expected rate: no effect
@@ -787,6 +806,24 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     # the replayed shock year y stands for the transition y -> y+1 (fit_transitions labels growth and democracy
     # shocks by their start year), so oil and grain-price moves are taken over the same transition
     oil_change_t = tt(np.nan_to_num(np.array([oil[p.yi(y) + 1] - oil[p.yi(y)] for y in growth.shock_years])))
+    if OIL_RESID and world is not None:
+        # (replay what is left of each historical move after its pull toward the 20-year average and any war entry by a
+        #  major exporter, estimated on 1955..origin; the simulator adds its own pull and war spikes, which replaying
+        #  the raw moves of 1974, 1979 or 1990 counted twice - independent review, 2026-11-02)
+        _ex = [p.codes.index(c) for c in OIL_EXPORTERS if c in p.codes]
+        _it = np.nan_to_num(base["interstate"][_ex])
+        _new = np.r_[False, ((_it[:, 1:] > 0) & (_it[:, :-1] == 0)).any(0)]
+        _rows = {}
+        for j in range(len(p.years) - 1):
+            y_ = int(p.years[j])
+            if 1955 <= y_ < origin and np.isfinite(oil[j + 1]) and np.isfinite(oil[j]):
+                _rows[y_] = (oil[j + 1] - oil[j], oil[j] - np.nanmean(oil[max(0, j - 19):j + 1]), float(_new[j + 1]), float(_new[j]))
+        if len(_rows) > 15:
+            _R = np.array(list(_rows.values()))
+            _D = np.c_[np.ones(len(_R)), _R[:, 1:]]
+            _b = np.linalg.lstsq(_D, _R[:, 0], rcond=None)[0]
+            _res = dict(zip(_rows, _R[:, 0] - _D[:, 1:] @ _b[1:]))       # (the constant stays: the trend is removed later)
+            oil_change_t = tt(np.array([_res.get(int(y), float(oil_change_t[i])) for i, y in enumerate(growth.shock_years)]))
     # oil-production exposure (log1p of MWh per person / 10, as in the growth regression) and the major exporters
     oil_expo = tt(np.nan_to_num(np.log1p(base["oil_pc"][:, t0] / 1000) / 10))
     oil_trend = float(np.nanmean(oil_change_t.cpu().numpy()))
@@ -798,12 +835,11 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     bubble_t = torch.full((S,), -1, device=device, dtype=torch.long)       # year of the AI investment bust (-1: none yet)
     fin_extra = torch.zeros(S, C, device=device)
     fin_extra_prev = torch.zeros(S, C, device=device)
-    mc_models, mc_prev, mc_pz = None, {}, {}
+    mc_models, mc_prev = None, {}
     if MACRO_CRISIS and "public_debt" in cur:
         from . import macro_crisis as MC
         mc_models = MC.fit(origin, tuple(p.codes), tuple(int(y) for y in p.years))
         mc_prev = {k: torch.zeros(S, C, device=device) for k in mc_models}
-        mc_pz = {}
         g_mc = torch.Generator(device=device).manual_seed(seed + 1301)       # (its own draws: other streams unchanged)
         mc_rec = {k: [] for k in mc_models}
     crisis_x = torch.zeros(S, C, device=device)          # banking crises beyond their expected rate, last two years
@@ -819,7 +855,6 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         s0 = world.trans_share_0 * float(np.exp(world.trans_rate[0] * (origin - 2024)))   # 6.4% in 2024
         tr_s0 = torch.full((S, 1), s0, device=device)
         tr_s = tr_s0.clone()
-    OIL_EXPORTERS = ["SAU", "IRN", "IRQ", "KWT", "ARE", "QAT", "OMN", "RUS", "LBY", "VEN", "KAZ", "DZA", "NGA"]
     oil_exporters = torch.as_tensor([p.codes.index(c) for c in OIL_EXPORTERS if c in p.codes], device=device)
     hist_ok = (p.years[None, :] <= origin) & (p.years[None, :] >= 1950)
     # share of coup attempts that succeed (Powell & Thyne), up to the origin
@@ -1069,10 +1104,12 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                 hit = (torch.rand(S, C, device=device, generator=g_mc) < pz).float() * (1 - mc_prev[k_])
                 c0, c1 = MC.COST[k_]
                 if MACRO_CRISIS == "centered":
-                    # (the replayed growth residuals already hold the average crisis: charge only the difference from
-                    #  this country's expected cost, so high-debt countries pay more without a built-in drag)
-                    g = g - c0 * (hit - pz) - c1 * (mc_prev[k_] - mc_pz.get(k_, 0.0))
-                    mc_pz[k_] = pz
+                    # (the replayed growth residuals already hold the average crisis, at the historical onset rate pbar:
+                    #  charge crises against that rate, so a country above the average risk pays more and one below
+                    #  pays less, without a built-in drag. Centring on the country's own pz instead, as first tried,
+                    #  makes every country's expected charge zero - found by the independent review, 2026-11-02)
+                    pbar = mc_models[k_][2]
+                    g = g - c0 * (hit - pbar) - c1 * (mc_prev[k_] - pbar)
                 else:
                     g = g - c0 * hit - c1 * mc_prev[k_]
                 mc_prev[k_] = hit

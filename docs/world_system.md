@@ -2098,14 +2098,21 @@ the simulated economy, interest rates, or the dollar's reserve role.
 - Hazard (logit, fit 1960-1999, scored 2000-2024): debt, its change, growth, inflation and a banking crisis raise the
   AUC from 0.47 to 0.64 (sovereign) and 0.54 to 0.60 (currency), but the log loss does not improve for sovereign
   crises (0.0580 -> 0.0582): few events after 2000.
-- Rates: the real rate minus growth, times debt, does not move the yearly debt change (t = -0.9); long rates are too
-  sparse before 2000 to test. A world interest-rate regime was therefore not added.
+- Rates (corrected after review): the panel's real rate clips inflation at 100% but not the nominal rate, so
+  hyperinflations gave huge real rates exactly when inflation was eroding debt. With the real rate kept only where
+  inflation is under 50% (and within +-30 points), the real rate minus growth, times last year's debt, does move debt
+  as theory says (+0.26 per unit, t = 6.3; out-of-sample R^2 of the yearly debt change 0.175 -> 0.198 on the same
+  2000-2024 rows). The first run (t = -0.9, "no effect") was the artefact. Not yet in the simulator, which has no
+  interest rates: debt reverts to its 20-year level, driven by growth, conflict, crises and democracy.
 - In the simulation (simulate.MACRO_CRISIS): a crisis drawn each year from the hazard, its cost charged to growth.
   10-year hindcasts: world GDP per person CRPS -12% on both splits and recession years closer to history, but world
   GDP growth CRPS +5.5% (1970-1998) and +13% (2000-2012) and the spread between countries wider. Full system: 15-year
   dispersion +39% (dev), 30-year growth +32% worse. The growth residuals replayed by the simulator already contain the
-  average crisis, so charging crises on top double counts. A centred version (charge only the difference from each
-  country's expected cost) is neutral (all metrics within 1.4%). Neither passes the rule; off.
+  average crisis, so charging crises on top double counts. A first centred version charged each country hit minus its
+  own hazard, which has zero expected cost for every country, so it could only come out neutral (found by the
+  independent review). Corrected: crises charged against the historical onset rate of the residual years (hit - pbar),
+  so riskier countries pay more on average. Two network seeds: spread between countries +14% (1970-1998) and +5.6%
+  (2000-2012), world GDP per person +4% and +14%, world GDP growth -1.3% and +0.8%. Rejected; off.
 
 ### The dollar's decline (world.WorldConfig.dollar_decline; scripts/dollar_scenario.py; scenario, not in the headline)
 - Assumption, not fitted (there is one precedent, sterling after 1914-1945): each world draws how far the dollar's
@@ -2116,3 +2123,24 @@ the simulated economy, interest rates, or the dollar's reserve role.
   44.6% -> 44.7%, nuclear use unchanged. No AI: US -3.2%, great-power war 41.5% -> 42.3%, China-US war 8.4% -> 9.0%.
 - Reading: in this model the dollar matters mostly to Americans' incomes; its strategic effect (weaker sanctions) is
   small because sanctions are a small part of what decides wars here.
+
+### Debt-conditional growth shocks (simulate.POOL_STATE; 2026-11-02)
+- The simulator's yearly country growth shocks were drawn from pools by income only. Split each pool by public debt
+  (top third of country-years vs the rest), so a high-debt country draws from what high-debt countries went through
+  (crises included, without charging them twice). 10-year hindcasts, two network seeds, identical on both: world GDP
+  growth CRPS -3.5% (1970-1998, better at 13/15 origins) and -1.4% (2000-2012); spread between countries -3.1% and
+  -2.5% (7/7 test origins); war onsets 0.0/-0.4% (dev, seeds 0/1) and -0.4/-0.8% (test); world GDP per person 0.0% and +0.7/+0.8%; coups
+  +0.1/-0.1% and +1.3/+1.1%. Full-system hindcasts: 15 years (7 origins) spread -2.4%, world recessions -3.0%, world
+  growth +1.2%, coups +1.7%; 30 years (3 origins) growth -4.1%, recessions -11.6%, spread +2.2%, coups +2.6%. Coups
+  get worse at every horizon (high-debt countries draw harder slumps, and slumps drive coups), beyond the 1.4% allowed
+  before. The nearest miss of the round: off, kept as a switch.
+  The 5-year debt rise as the split instead: mixed (world GDP per person +1.3% / +3.0%). Debt and its rise in the
+  growth equation's mean: mixed (world GDP per person +6% dev, -5% test).
+- Year shocks per income tier (rich countries replaying their own synchronised recessions, beyond the world shock):
+  measured with empirical-Bayes shrinkage, sd 0.1-0.2% a year against 1.2% for the world shock. Nothing to add.
+- Democracy shocks scaled by population as growth's are (simulate.DEM_SIZE, a cheap form of the reviewer's
+  "stable autocracies near 0 reflect off the bound" idea): every 10-year score within 0.1%. Not added.
+- Oil (simulate.OIL_RESID): replay what is left of each historical price move after a fitted pull toward the 20-year
+  average and the war entries of major exporters (+0.24 log, t = 3, 1955..origin), since the simulator adds both
+  itself. 15-year full-system hindcasts, 7 origins: oil price change CRPS -6.4% (better at 6/7), but world GDP growth
+  +3.1% (2/7; exporters' and importers' growth follow the price's departure from the replayed move). Mixed; off.
