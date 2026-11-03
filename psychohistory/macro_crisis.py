@@ -42,7 +42,7 @@ def _design(lg, debt, debt_chg5, growth, inflation):
 
 @functools.lru_cache(maxsize=8)
 def fit(origin, codes, years):
-    """{kind: (coefficients [6] incl. intercept, crisis means for imputation)} fitted on data before the origin"""
+    """{kind: (coefficients [6] incl. intercept, predictor means for imputation, past onset rate)} fitted before the origin"""
     import statsmodels.api as sm
     from .data import get_panel
     from .pipeline import base_arrays
@@ -71,14 +71,16 @@ def fit(origin, codes, years):
                 mid = (lo_ + hi_) / 2
                 lo_, hi_ = (mid, hi_) if (1 / (1 + np.exp(-(lin + mid)))).mean() < target else (lo_, mid)
             beta[0] += (lo_ + hi_) / 2
-        out[k] = (beta.astype(np.float32), np.nanmean(D[ok], 0).astype(np.float32))
+        # (pbar: the average onset rate over the years the growth residuals come from (1960..origin-1): those
+        #  residuals already contain crises at this rate, so the simulator charges hit - pbar)
+        out[k] = (beta.astype(np.float32), np.nanmean(D[ok], 0).astype(np.float32), float(onset[ok].mean()))
     return out
 
 
 def hazard(model, lg, debt, debt_chg5, growth, inflation):
     """yearly chance of a crisis starting, torch [S, C]"""
     import torch
-    beta, mean_ = model
+    beta, mean_ = model[0], model[1]
     X = _design(lg, debt, debt_chg5, growth, inflation)
     z = float(beta[0])
     for j, x in enumerate(X):

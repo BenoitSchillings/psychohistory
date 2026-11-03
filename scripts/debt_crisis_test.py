@@ -39,7 +39,11 @@ lg = b["lg"]
 growth = lg - lag(lg)
 debt = b["public_debt"]
 infl = np.sign(b["inflation"]) * np.log1p(np.abs(np.clip(b["inflation"], -99, 1e4)))
-rr = b["real_rate"]
+# (features.real_rate clips inflation at 100% but not the nominal rate, so hyperinflations give huge positive real
+#  rates exactly when inflation is eroding debt; here the real rate is kept only where inflation is under 50% and the
+#  rate within +-30 points - review fix, 2026-11-02. The deficit is the overall one, interest included: no primary
+#  balance in GMD for most countries)
+rr = np.where((np.abs(b["inflation"]) < 50) & (np.abs(b["real_rate"]) < 30), b["real_rate"], np.nan)
 r_g = rr / 100 - growth
 X = {"debt": lag(debt) / 100, "debt_chg5": lag(b["debt_change_5y"]) / 100, "growth": lag(growth), "infl": lag(infl),
      "r_minus_g": lag(r_g), "bank_crisis": lag(b["fin_crisis"]), "long_rate": lag(b["long_rate"]) / 100}
@@ -105,7 +109,8 @@ for spec, ks in (("base", ["growth_now", "def"]), ("with_r_g", ["growth_now", "d
     Z = {"growth_now": growth, "def": -b["gov_deficit"] / 100 if "gov_deficit" in b else np.zeros_like(growth),
          "rg_debt": (rr / 100 - growth) * lag(debt) / 100}
     D = np.stack([Z[k] for k in ks], -1)
-    ok = np.isfinite(dd) & np.isfinite(D).all(-1) & (np.abs(dd) < 0.5)
+    # (both specs on the same rows: those where the clean rate exists)
+    ok = np.isfinite(dd) & np.isfinite(D).all(-1) & np.isfinite(rr) & (np.abs(dd) < 0.5)
     dev, test = ok & (Y_ >= 1960) & (Y_ < 2000), ok & (Y_ >= 2000)
     m = sm.OLS(dd[dev], sm.add_constant(D[dev])).fit()
     pt = m.predict(sm.add_constant(D[test], has_constant="add"))
