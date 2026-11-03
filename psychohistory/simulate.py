@@ -315,6 +315,22 @@ def fit_transitions(p, X, base, origin, halflife=None):
     ddem = Transition.fit(*args, flat(dem[:, 1:] - dem[:, :-1]), flat(years), flat(codes), flat(regions),
                           DEM_FEATURES, -0.5, 0.5, bin_col="democracy", grid=grid, halflife=halflife, inter=DEM_INTER,
                           size=DEM_SIZE)
+    if DEM_DRIFT is not None:
+        # the equation's level carries the average democracy change of its training years (1955..origin: the third
+        # wave, +0.006 a year), which the simulation would extrapolate for decades. Replace it: "zero" (no trend, as
+        # for the slow variables), a number (that share of it), or "longrun" (the average yearly change since 1900,
+        # reversals of the 1920s-30s included). Tested 2026-11-02.
+        dy = flat(dem[:, 1:] - dem[:, :-1])
+        m_tr = float(np.nanmean(dy))
+        if DEM_DRIFT == "longrun":
+            yy = np.asarray(p.years)
+            seg = (yy[1:] >= 1900) & (yy[1:] <= origin)
+            target = float(np.nanmean((dem[:, 1:] - dem[:, :-1])[:, seg]))
+        elif DEM_DRIFT == "zero":
+            target = 0.0
+        else:
+            target = float(DEM_DRIFT) * m_tr
+        ddem.intercept += target - m_tr
     return growth, ddem
 
 
@@ -411,6 +427,9 @@ SHIFTERS_BEFORE_ALIGN = True   # see the year-1 alignment in simulate()
 #  year against 1.2% for the world shock - nothing to replay, not added)
 OIL_RESID = False         # oil: replay residuals of a fitted pull + war-entry equation instead of raw moves (tested 2026-11-02)
 OIL_EXPORTERS = ["SAU", "IRN", "IRQ", "KWT", "ARE", "QAT", "OMN", "RUS", "LBY", "VEN", "KAZ", "DZA", "NGA"]
+DEM_REGIME_SCALE = 1.0     # country-decade democracy regimes x this
+GROWTH_REGIME_SCALE = 1.4  # country-decade growth regimes x this (1.8 until 2026-11-02; docs/world_system.md)
+DEM_DRIFT = None          # democracy equation's trend: None (1955..origin average), "zero", "longrun", or a share
 DEM_SIZE = None           # democracy noise scaled by population like growth's ("both"; tested 2026-11-02)
 POOL_STATE = None         # growth noise pools split by a state feature, e.g. "public_debt" (tested 2026-11-02)
 YEAR_SHOCK_POW = 0.0      # growth year shocks: mean residual weighted by GDP ** this (0: every country alike). Uncentred,
@@ -556,10 +575,10 @@ def _ffill_window(x, limit=3):
 @torch.no_grad()
 def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, origin: int, end: int,
              n_scen=4000, seed=0, device=DEVICE, record_paths=8, chronicle=0, mood_sd=(0.10, 0.10), mood_rho=0.9,
-             regime_years=10, growth_regime_scale=1.8, demography="un", clim=None, climate_damage=0.0,
+             regime_years=10, growth_regime_scale=None, demography="un", clim=None, climate_damage=0.0,
              align=True, world=None, dyads=None, slow_dynamics=True, migration=True, damage_feedback=True,
              align_window=10, align_longrun_w=0.0, year_shock_scale=0.7, align_longrun_targets="otc",
-             dem_regime_scale=1.0, dem_shock_scale=1.0, frailty_sd=0.6, frailty_end=1.0, coup_frailty_sd=0.0, coup_align_window=None, coup_align_mult=0.7):
+             dem_regime_scale=None, dem_shock_scale=1.0, frailty_sd=0.6, frailty_end=1.0, coup_frailty_sd=0.0, coup_align_window=None, coup_align_mult=0.7):
     """`growth_regime_scale` and `mood_sd` are dispersion settings chosen with the hindcasts
     (see README: their coverage is therefore mildly optimistic). mood_sd was lowered from 0.20 to 0.10 on 2026-10-27:
     with 0.20 the world conflict level was over-dispersed (scripts/conflict_clustering_check.py, dev origins 1970-1998:
@@ -1050,8 +1069,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         corr = var_ / 2 * (1 - 2 * torch.sigmoid(haz))
         haz = torch.sigmoid(haz + torch.stack([mood + frail, -mood - frailty_end * frail, mood_coup[:, regions] + frail_c], -1) - corr)
         if (k - 1) % regime_years == 0:
-            g_regime = growth_regime_scale * (growth.draw_regime(X, gen) + growth.draw_region_era(S, R, gen)[:, regions])
-            d_regime = dem_regime_scale * (ddem.draw_regime(X, gen) + ddem.draw_region_era(S, R, gen)[:, regions])
+            g_regime = (GROWTH_REGIME_SCALE if growth_regime_scale is None else growth_regime_scale) * (growth.draw_regime(X, gen) + growth.draw_region_era(S, R, gen)[:, regions])
+            d_regime = (DEM_REGIME_SCALE if dem_regime_scale is None else dem_regime_scale) * (ddem.draw_regime(X, gen) + ddem.draw_region_era(S, R, gen)[:, regions])
             era = growth.draw_era(S, gen)
         conf = h["conflict"][..., -1]
         u = torch.rand(S, C, device=device, generator=gen)
