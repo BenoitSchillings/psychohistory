@@ -60,6 +60,7 @@ def main():
     wkw = json.loads(argv.pop(argv.index("--cfg") + 1)) if "--cfg" in argv else {}      # WorldConfig settings to test
     consts = json.loads(argv.pop(argv.index("--consts") + 1)) if "--consts" in argv else {}   # {"module.CONST": value}
     # --struct off,gauss,family: fit the risk ensemble at each origin and run each structural-uncertainty mode on it
+    # (a mode may name the ensemble offset too, paired on the same ensemble: familyc+oc, familyc+ for none)
     # (outputs TAG<mode>_<origin>.npz)
     struct = argv.pop(argv.index("--struct") + 1).split(",") if "--struct" in argv else None
     modes = struct or [""]
@@ -83,24 +84,30 @@ def main():
             from psychohistory.models import SeldonEnsemble, load_combine
             Ytr, tr = train_mask(Yf, year, O, first_year=1860)
             ens = SeldonEnsemble(load_combine(), members=3, families=["G", "G60", "N", "F"]).fit(Xf[tr], Ytr[tr], ci[tr], year[tr])
-            net = ens.fam["N"][0]
-            net.nets = [m_ for mm in ens.fam["N"] for m_ in mm.nets]
-            PL.attach_ensemble(net, ens, X[:, p.yi(O)])
+            net = PL.sim_net(ens, X[:, p.yi(O)])
         else:
             Ytr, tr = train_mask(Yf, year, O)
             net = PsychoNet(members=8, **NET_TUNED).fit(Xf[tr], Ytr[tr], ci[tr])
-            if SIM.ENS_OFFSET:
+            if SIM.ENS_OFFSET or SIM.STRUCT_MODE in ("family", "familyc", "ens_onset"):
                 # the ensemble's central view of onsets and coups (scripts/ens_cache.py; adopted 2026-11-03)
                 fc = os.path.join(OUT, "..", "sim_eval", "ens_cache", f"{O}.npz")
                 if not os.path.exists(fc):
-                    sys.exit(f"no ensemble cache for {O}: run scripts/ens_cache.py {O} {O} 1 (or --consts '{{\"simulate.ENS_OFFSET\": \"\"}}')")
-                net.haz_offset = PL.ensemble_offset(np.load(fc)["p"].mean(0), net, X[:, p.yi(O)])
+                    sys.exit(f"no ensemble cache for {O}: run scripts/ens_cache.py {O} {O} 1 (the offset and the family draw need it)")
+                # (and the structural draw's family offsets, as the forecast: production attaches both, 2026-11-04)
+                ec = np.load(fc)
+                PL.attach_cached(net, ec["fams"], ec["p"], X[:, p.yi(O)])
         growth, ddem = SIM.fit_transitions(p, X, base, O)
         dy = INTER.sim_inputs(INTER.run(verbose=False, origin=O, backtests=False, df=df))
         for mode in todo:
             f = os.path.join(OUT, f"{tag}{mode}_{O}.npz")
             if struct:
-                SIM.STRUCT_MODE = mode
+                # "familyc+oc": the structural mode, then (after a +) simulate.ENS_OFFSET for this run
+                # (a third part rN refreshes the ensemble's view every N simulated years: simulate.ENS_REFRESH)
+                parts_ = mode.split("+")
+                SIM.STRUCT_MODE = parts_[0]
+                if len(parts_) > 1:
+                    SIM.ENS_OFFSET = parts_[1]
+                SIM.ENS_REFRESH = int(parts_[2][1:]) if len(parts_) > 2 else 0
             cfg = WM.WorldConfig(ai=WM.AI_SCENARIOS["none"], sample_params=True, **wkw)
             o = SIM.simulate(p, base, net, growth, ddem, O, E, n_scen=n, demography="extrapolate", record_paths=n,
                              seed=O + 11, world=cfg, dyads=dy)

@@ -50,14 +50,7 @@ def setup():
     Ytr, tr = train_mask(Yf, year, LAST_OBS_YEAR, first_year=1860)
     # as the forecast (pipeline.step_forecast), with 3 ensemble members instead of 10
     ens = SeldonEnsemble(load_combine(), members=3, families=ALL_FAMILIES).fit(Xf[tr], Ytr[tr], ci[tr], year[tr])
-    X_now = X[:, p.yi(LAST_OBS_YEAR)]
-    parts = ens.predict_families(X_now)
-    net = ens.fam["N"][0]
-    net.nets = [n for m in ens.fam["N"] for n in m.nets]
-    lgf = lambda v: np.log(np.clip(v, 1e-4, 1 - 1e-4) / (1 - np.clip(v, 1e-4, 1 - 1e-4)))
-    fam_l = np.stack([lgf(v) for v in parts.values()])
-    net.struct_sd = np.nan_to_num(np.nanstd(fam_l, 0)[:, [TASKS.index(t) for t in ("onset_1y", "termination_1y", "coup_1y")]])
-    PL.attach_ensemble(net, ens, X[:, p.yi(LAST_OBS_YEAR)])     # (structural inputs + ensemble central offset)
+    net = PL.sim_net(ens, X[:, p.yi(LAST_OBS_YEAR)])   # (as the forecast: pooled seeds, structural inputs, ensemble offset)
     growth, ddem = fit_transitions(p, X, base, LAST_OBS_YEAR)
     dy = INTER.sim_inputs(INTER.run(verbose=False, backtests=False))
     clim = PL.climate_summary(p, base, LAST_OBS_YEAR, 2065)["ssp245"]["inputs"]

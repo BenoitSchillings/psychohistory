@@ -2323,8 +2323,9 @@ the simulated economy, interest rates, or the dollar's reserve role.
   - onsets only, alignment kept (eo): onset log loss -4.0/-4.5% / -6.1/-7.3%, onset AUC +2.8/+3.8% / +0.5/+0.9%,
     new-conflict count CRPS -6.7/-10.6% / -13.7/-15.1%, world conflict share -5.8/-4.3% / +2.7/-0.5%.
   - onsets only, alignment off (eona): better per country, but the world conflict share +45-56% on test. Rejected.
-  - onsets, endings and coups (eotc): coup Brier -5.3/-5.8% / -4.3/-3.4%, but the share of country-years at war 8% high
-    on dev (the ending offset). Not kept.
+  - onsets, endings and coups (eotc, coup alignment still 0.7): coup Brier -5.3/-5.8% / -4.3/-3.4%, but the share of
+    country-years at war 8% high on dev (the ending offset). Not kept. (Its coup count is not comparable with eoc66's,
+    which also lowered the coup alignment.)
   - onsets and coups, coup alignment 0.66 (eoc66, adopted): conflict Brier -1.8/-0.8% / +0.6/-0.4%; onset log loss
     -4.0/-4.5% / -6.1/-7.4%; world conflict share -5.7/-4.1% / +2.6/-0.7%; coup Brier -5.1/-5.6% / -4.4/-3.5%, AUC
     +2.6/+3.2% / +3.0/+3.6%; coup count CRPS -3.8/-5.7% / -8.2/-6.5%; world GDP -0.7/-0.4% / -1.2/-1.1%; country GDP
@@ -2334,5 +2335,12 @@ the simulated economy, interest rates, or the dollar's reserve role.
   -0.9 / -0.3 / -0.3%, conflict share +0.9 / -1.9 / +3.9%, world GDP growth +0.5 / +1.2 / +0.7%, democracy change
   -1.8 / +0.6 / -0.1%.
 - An earlier, uncentred version inside the structural draw (STRUCT_MODE ens_onset, without the coup part or the
-  realignment) lowered the world conflict share by 14% on 2000-2009; applying the offset before the alignment keeps the
-  world's level on the previous decade's rate and moves only who carries it.
+  realignment) lowered the world conflict share by 14% on 2000-2009. Both are applied before the year-1 alignment; the
+  difference is that ens_onset gave each world one family's level (with the convexity term subtracted on top of an
+  uncentred draw, a review found in November 2026), while the offset gives every world the same central view and the
+  family draw stays centred around it. Which of the two caused the 14% was not isolated.
+- The harness runs above attached the offset without the forecast's family draw (STRUCT_MODE familyc). A review
+  (2026-11-04) caught this; the combination is tested below, and scripts/world_hindcast.py now attaches both from the
+  cache, as the forecast does. The same review found three scripts (uncertainty, disaster, the hindcast --struct mode)
+  pooling the network seeds into the ensemble's own member, which then weighted one seed three times in the family
+  average; pipeline.sim_net now builds the simulator's network for every script.

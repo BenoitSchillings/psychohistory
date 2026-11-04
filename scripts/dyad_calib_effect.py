@@ -19,7 +19,8 @@ p, base, X, Yl = PL.prepare(False)
 Xf, Yf, ci, year = flatten(p, X, Yl)
 Ytr, tr = train_mask(Yf, year, LAST_OBS_YEAR, first_year=1860)
 ens = SeldonEnsemble(load_combine(), members=3, families=ALL_FAMILIES).fit(Xf[tr], Ytr[tr], ci[tr], year[tr])
-net = ens.fam["N"][0]
+import copy
+net = copy.copy(ens.fam["N"][0])          # (shallow copy: the ensemble's own member keeps its nets)
 net.nets = [n for m in ens.fam["N"] for n in m.nets]
 growth, ddem = fit_transitions(p, X, base, LAST_OBS_YEAR)
 dy = INTER.sim_inputs(INTER.run(verbose=False, backtests=False))

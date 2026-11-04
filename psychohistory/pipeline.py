@@ -173,6 +173,34 @@ def attach_ensemble(net, ens, X_now):
     return net
 
 
+def attach_cached(net, fams, p3, X_now):
+    """attach_ensemble from cached family probabilities (scripts/ens_cache.py: fams [F], p3 [F, C, 3] one-year onset,
+    termination, coup): the same central offset, and the structural draw's family offsets taken against this network
+    (the centred draw, STRUCT_MODE familyc, does not depend on the reference)"""
+    from .models import SeldonEnsemble
+    idx3 = [TASKS.index(t) for t in ("onset_1y", "termination_1y", "coup_1y")]
+    lgf = lambda v: np.log(np.clip(v, 1e-4, 1 - 1e-4) / (1 - np.clip(v, 1e-4, 1 - 1e-4)))
+    fams = list(fams)
+    use = [f for f in SeldonEnsemble.DEFAULT["w"] if f in fams]
+    w = np.array([SeldonEnsemble.DEFAULT["w"][f] for f in use], float)
+    P = np.stack([p3[fams.index(f)] for f in use])
+    pn = net.predict(X_now)[:, idx3]
+    net.struct_fam = np.nan_to_num(lgf(P) - lgf(pn)[None])
+    net.struct_w = (w / w.sum()).astype(np.float32)
+    net.struct_sd = np.nan_to_num(np.nanstd(lgf(P), 0))
+    net.haz_offset = ensemble_offset(P.mean(0), net, X_now)
+    return net
+
+def sim_net(ens, X_now):
+    """the simulator's network as in the forecast: a shallow copy of the ensemble's first PsychoNet with every seed's
+    members pooled (the ensemble's own members keep their nets), with attach_ensemble's inputs at the origin"""
+    import copy
+    net = copy.copy(ens.fam["N"][0])
+    net.nets = [n for m in ens.fam["N"] for n in m.nets]
+    net.ens_models = {f: ens.fam[f] for f in ("G", "G60", "N", "F") if f in ens.fam}   # (simulate.ENS_REFRESH)
+    return attach_ensemble(net, ens, X_now)
+
+
 def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, members=10,
                   scenario="ssp245", climate_damage=1.0, scen_n=4000):
     _log(f"training on all history up to {origin}")
@@ -192,18 +220,11 @@ def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, 
     base_rate = np.nanmean(Ytr[tr], 0)
 
     growth, ddem = fit_transitions(p, X, base, origin)
-    # the simulator's hazards come from the tuned PsychoNet; pool the members of every seed
-    # (all seeds are fitted on the same rows, so they share one input standardisation)
-    import copy
-    net = copy.copy(ens.fam["N"][0])          # (a shallow copy: the ensemble's own member keeps its nets)
-    net.nets = [n for m in ens.fam["N"] for n in m.nets]
-    # structural uncertainty (2026-10-26): how far the model families (GBM, net, logit...) disagree on each country's
-    # one-year hazards at the origin; the simulator draws one structural error per world and hazard, scaled by it
-    lgf = lambda v: np.log(np.clip(v, 1e-4, 1 - 1e-4) / (1 - np.clip(v, 1e-4, 1 - 1e-4)))
-    fam_l = np.stack([lgf(v) for v in parts.values()])                           # [F, C, T]
-    net.struct_sd = np.nan_to_num(np.nanstd(fam_l, 0)[:, [TASKS.index(t) for t in ("onset_1y", "termination_1y", "coup_1y")]])
-    # (since 2026-11-01 the simulator draws which family is right, centred: simulate.STRUCT_MODE = "familyc")
-    attach_ensemble(net, ens, X_now)            # (+ the ensemble's central view of onsets and coups, 2026-11-03)
+    # the simulator's hazards come from the tuned PsychoNet with the members of every seed pooled (all seeds are fitted
+    # on the same rows, so they share one input standardisation); structural uncertainty: each
+    # world draws which model family is right (simulate.STRUCT_MODE = "familyc"), around the ensemble's central view
+    # of onsets and coups (simulate.ENS_OFFSET, 2026-11-03)
+    net = sim_net(ens, X_now)
     clim = climate_summary(p, base, origin, end)
     # world-system layer: interstate wars between country pairs, food, energy, pandemics (AI off in the baseline)
     from . import interstate as INTER
