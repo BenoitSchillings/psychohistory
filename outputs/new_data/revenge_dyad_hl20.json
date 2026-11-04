@@ -1,0 +1,211 @@
+{
+ "half_life": 20.0,
+ "interstate_5y:dev:base": {
+  "logit": {
+   "auc": 0.9422,
+   "bss": 0.1722,
+   "events": 131
+  },
+  "gbm": {
+   "auc": 0.9405,
+   "bss": 0.1556,
+   "events": 131
+  },
+  "avg": {
+   "auc": 0.9494,
+   "bss": 0.187,
+   "events": 131
+  }
+ },
+ "interstate_5y:dev:revenge": {
+  "logit": {
+   "auc": 0.9399,
+   "bss": 0.1372,
+   "events": 131
+  },
+  "gbm": {
+   "auc": 0.94,
+   "bss": 0.1464,
+   "events": 131
+  },
+  "avg": {
+   "auc": 0.9503,
+   "bss": 0.166,
+   "events": 131
+  }
+ },
+ "interstate_5y:dev:humiliation": {
+  "logit": {
+   "auc": 0.9414,
+   "bss": 0.1623,
+   "events": 131
+  },
+  "gbm": {
+   "auc": 0.9411,
+   "bss": 0.1484,
+   "events": 131
+  },
+  "avg": {
+   "auc": 0.9531,
+   "bss": 0.1798,
+   "events": 131
+  }
+ },
+ "interstate_5y:test:base": {
+  "logit": {
+   "auc": 0.9636,
+   "bss": 0.11,
+   "events": 61
+  },
+  "gbm": {
+   "auc": 0.9571,
+   "bss": 0.1633,
+   "events": 61
+  },
+  "avg": {
+   "auc": 0.9665,
+   "bss": 0.1587,
+   "events": 61
+  }
+ },
+ "interstate_5y:test:revenge": {
+  "logit": {
+   "auc": 0.9609,
+   "bss": 0.1142,
+   "events": 61
+  },
+  "gbm": {
+   "auc": 0.9565,
+   "bss": 0.1635,
+   "events": 61
+  },
+  "avg": {
+   "auc": 0.9656,
+   "bss": 0.1599,
+   "events": 61
+  }
+ },
+ "interstate_5y:test:humiliation": {
+  "logit": {
+   "auc": 0.9615,
+   "bss": 0.1122,
+   "events": 61
+  },
+  "gbm": {
+   "auc": 0.9562,
+   "bss": 0.1558,
+   "events": 61
+  },
+  "avg": {
+   "auc": 0.9661,
+   "bss": 0.1558,
+   "events": 61
+  }
+ },
+ "interstate_1y:dev:base": {
+  "logit": {
+   "auc": 0.9528,
+   "bss": 0.0422,
+   "events": 24
+  },
+  "gbm": {
+   "auc": 0.9602,
+   "bss": 0.028,
+   "events": 24
+  },
+  "avg": {
+   "auc": 0.9601,
+   "bss": 0.0402,
+   "events": 24
+  }
+ },
+ "interstate_1y:dev:revenge": {
+  "logit": {
+   "auc": 0.949,
+   "bss": 0.0236,
+   "events": 24
+  },
+  "gbm": {
+   "auc": 0.9613,
+   "bss": 0.0274,
+   "events": 24
+  },
+  "avg": {
+   "auc": 0.9586,
+   "bss": 0.0341,
+   "events": 24
+  }
+ },
+ "interstate_1y:dev:humiliation": {
+  "logit": {
+   "auc": 0.9457,
+   "bss": 0.0419,
+   "events": 24
+  },
+  "gbm": {
+   "auc": 0.963,
+   "bss": 0.0267,
+   "events": 24
+  },
+  "avg": {
+   "auc": 0.9569,
+   "bss": 0.0405,
+   "events": 24
+  }
+ },
+ "interstate_1y:test:base": {
+  "logit": {
+   "auc": 0.8573,
+   "bss": -0.006,
+   "events": 11
+  },
+  "gbm": {
+   "auc": 0.935,
+   "bss": 0.0033,
+   "events": 11
+  },
+  "avg": {
+   "auc": 0.9091,
+   "bss": 0.0023,
+   "events": 11
+  }
+ },
+ "interstate_1y:test:revenge": {
+  "logit": {
+   "auc": 0.8135,
+   "bss": -0.0109,
+   "events": 11
+  },
+  "gbm": {
+   "auc": 0.9465,
+   "bss": 0.0023,
+   "events": 11
+  },
+  "avg": {
+   "auc": 0.8999,
+   "bss": 0.0002,
+   "events": 11
+  }
+ },
+ "interstate_1y:test:humiliation": {
+  "logit": {
+   "auc": 0.8631,
+   "bss": -0.0042,
+   "events": 11
+  },
+  "gbm": {
+   "auc": 0.9453,
+   "bss": 0.003,
+   "events": 11
+  },
+  "avg": {
+   "auc": 0.9163,
+   "bss": 0.003,
+   "events": 11
+  }
+ },
+ "logit_humiliation": [
+  1.8601459837488823,
+  1.7580090385702836
+ ]
+}
