@@ -2308,7 +2308,7 @@ the simulated economy, interest rates, or the dollar's reserve role.
   - 15-year oil 5-95% bands now 0.14-0.66x (1980) to 0.87-4.5x (1995); all 7 outcomes inside them, 3 of 7 in the
     middle half (3.5 expected).
 
-### The ensemble's central view in the simulator (2026-11-03, adopted)
+### The ensemble's central view in the simulator (2026-11-03; withdrawn 2026-11-04)
 - The simulator's hazards came from the neural network alone, aligned on the previous decade's rates; the forecast's
   risk ensemble (gradient boosting from 1955 and from 1860, the network, extra trees; equal-weight probabilities) was
   only used for the structural spread around it. scripts/safe_tail_check.py, 15 years, origin-year onset hazards:
@@ -2344,3 +2344,17 @@ the simulated economy, interest rates, or the dollar's reserve role.
   cache, as the forecast does. The same review found three scripts (uncertainty, disaster, the hindcast --struct mode)
   pooling the network seeds into the ensemble's own member, which then weighted one seed three times in the family
   average; pipeline.sim_net now builds the simulator's network for every script.
+
+### The ensemble's central view, tested as the forecast runs it (2026-11-04): withdrawn
+Full-system hindcasts with the forecast's own setup (risk ensemble at each origin, the family draw STRUCT_MODE familyc,
+2,000 worlds; world_hindcast --struct, every variant on the same ensemble), against no offset; 1980-1995 / 2000-2009 at
+15 years / 1975, 1985, 1994 at 30 years:
+- onsets and coups (ENS_OFFSET "oc", the v53 candidate): safe-country wars -30 / -56 / -49%, new conflicts -5.6% (4/4) /
+  +11.6% (0/3) / -11.4%, conflict share +0.3 / +7.2% (0/3) / +4.1% (0/3), coups -2.1 / -9.8 / +4.1%, world GDP growth
+  -0.8 / +2.8 / -5.1%. Fails the test period on the world's war level: not adopted.
+- coups only ("c"): coups -1.2 / -9.3 / +5.6% (1/3), everything else within 1%. Mixed: not adopted.
+- the ensemble's view recomputed from each world's simulated state every 5 years (simulate.ENS_REFRESH 5, with "oc"):
+  new conflicts -31% / +58% / -46%, conflict share +14 / -7 / +41%, coups -35 / -16 / -23%. The refreshed offsets
+  move the level (the alignment is solved only in year 1), so the war level drifts up. Not adopted; worth retrying with
+  the level re-solved at each refresh, so the refresh moves only who carries the risk.
+The earlier tests above ran a stand-alone network without the family draw, which is why they passed.

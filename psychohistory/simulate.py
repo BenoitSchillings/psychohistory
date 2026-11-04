@@ -471,7 +471,10 @@ OIL_INDEP = True          # oil moves replayed from independent historical years
 # run; coup alignment 0.7 -> 0.66 with it. 10-year hindcasts, 2 network seeds (sim_eval eoc66 vs ao1): onset log loss
 # -4.0/-4.5% (1970-1998), -6.1/-7.4% (2000-2012); coup Brier -5.1/-5.6%, -4.4/-3.5%; coup count CRPS -3.8/-5.7%,
 # -8.2/-6.5%; world GDP -0.7/-0.4%, -1.2/-1.1%; country GDP +0.0/+0.1%, +0.3/+0.3%. "o" onset, "t" ending, "c" coups
-ENS_OFFSET = "oc"
+# Withdrawn 2026-11-04: in the forecast's configuration (with the family draw, world_hindcast --struct familyc+ vs
+# familyc+oc) new civil wars +11.6% and conflict share +7.2% on 2000-2009 (0/3), share +4.1% and coups +4.1% at 30
+# years; coups only ("c"): -1.2% / -9.3% / +5.6%. Not adopted; "" = the network's view, as before.
+ENS_OFFSET = ""
 # the ensemble's view refreshed from each world's simulated state every this many years (0: the origin's offset for the
 # whole run). Offsets at the origin correlate only ~0.6 / 0.45 / 0.25 with the next origin's 5 / 10 / 20 years later
 # (outputs/sim_eval/ens_cache), so a fixed offset goes stale. Needs net.ens_models (pipeline.sim_net); under test 2026-11-04
