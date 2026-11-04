@@ -472,6 +472,10 @@ OIL_INDEP = True          # oil moves replayed from independent historical years
 # -4.0/-4.5% (1970-1998), -6.1/-7.4% (2000-2012); coup Brier -5.1/-5.6%, -4.4/-3.5%; coup count CRPS -3.8/-5.7%,
 # -8.2/-6.5%; world GDP -0.7/-0.4%, -1.2/-1.1%; country GDP +0.0/+0.1%, +0.3/+0.3%. "o" onset, "t" ending, "c" coups
 ENS_OFFSET = "oc"
+# the ensemble's view refreshed from each world's simulated state every this many years (0: the origin's offset for the
+# whole run). Offsets at the origin correlate only ~0.6 / 0.45 / 0.25 with the next origin's 5 / 10 / 20 years later
+# (outputs/sim_eval/ens_cache), so a fixed offset goes stale. Needs net.ens_models (pipeline.sim_net); under test 2026-11-04
+ENS_REFRESH = 0
 ONSET_SLOPE = 1.0         # onset log-odds x this before alignment (1.15-1.5 rejected 2026-11-03: worse on 1970-1998)
 # 2026-11-02 tests (off = the adopted model):
 VOL_NOISE = False         # B: growth noise scaled by the country's own 10-year growth volatility (slope estimated in fit)
@@ -603,6 +607,25 @@ def _ffill_window(x, limit=3):
 
 
 @torch.no_grad()
+def _ens_refresh(models, Xh, haz_net, haz_offset0):
+    """[S, C, 3] the ensemble's log-odds (equal-weight family probabilities, as pipeline.attach_ensemble) minus the
+    network's at each world's simulated features, clipped to +/-3, on the hazards in ENS_OFFSET; countries the origin's
+    offset left at zero (no data) stay at zero"""
+    from .features import TASKS
+    idx3 = [TASKS.index(t) for t in ("onset_1y", "termination_1y", "coup_1y")]
+    S_, C_, F_ = Xh.shape
+    Xf_ = Xh.reshape(-1, F_)
+    pe = np.empty((S_ * C_, 3))
+    for a in range(0, S_ * C_, 200000):                       # chunked to bound host memory
+        Xn = Xf_[a:a + 200000].detach().cpu().numpy().astype(np.float32)
+        pe[a:a + 200000] = np.mean([np.mean([m.predict(Xn)[:, idx3] for m in ms], 0) for ms in models.values()], 0)
+    pe = np.clip(pe, 1e-4, 1 - 1e-4).reshape(S_, C_, 3)
+    off = torch.as_tensor(np.log(pe / (1 - pe)), dtype=torch.float32, device=haz_net.device) - haz_net
+    off = off.clamp(-3.0, 3.0)
+    keep = torch.as_tensor(np.asarray(haz_offset0) != 0, device=haz_net.device)[None]
+    return torch.nan_to_num(torch.where(keep, off, torch.zeros_like(off)))
+
+
 def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, origin: int, end: int,
              n_scen=4000, seed=0, device=DEVICE, record_paths=8, chronicle=0, mood_sd=(0.10, 0.10), mood_rho=0.9,
              regime_years=10, growth_regime_scale=None, demography="un", clim=None, climate_damage=0.0,
@@ -1037,7 +1060,9 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                 haz[a:a + 2000][i] = torch.stack([snaps[j](Z[i])[..., j] for j in (ON, TERM, COUP)], -1)
         del Z
         if haz_offset is not None:
-            haz = haz + haz_off_t[None]
+            if ENS_REFRESH and k > 1 and (k - 1) % ENS_REFRESH == 0 and getattr(net, "ens_models", None):
+                haz_off_t = _ens_refresh(net.ens_models, Xh, haz, haz_offset)          # [S, C, 3] from now on
+            haz = haz + (haz_off_t if haz_off_t.dim() == 3 else haz_off_t[None])
         Xh_d = Xh if Xh is not X else None          # kept for the democracy step below
         mood_world = mood_rho * mood_world + mood_sd[0] * torch.randn(S, 1, device=device, generator=gen)
         mood_region = mood_rho * mood_region + mood_sd[1] * torch.randn(S, R, device=device, generator=gen)
