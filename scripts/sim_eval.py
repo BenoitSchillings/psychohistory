@@ -9,6 +9,9 @@ Metrics per origin (horizon H = 10 years, or to the last observed year):
 - conflict_brier: Brier score of each country's simulated probability of conflict in each year (all country-years)
 - onset_auc: AUC of the probability of any new conflict, countries at peace at the origin
 - world_share_crps: CRPS of the share of country-years in conflict over the horizon (world level)
+- onset_brier / onset_ll: each country's simulated probability of any new conflict over the horizon, countries at
+  peace at the origin (Brier, log loss); diag_safe20: simulated / actual countries with a new conflict among the 20 at
+  peace with the lowest simulated risk (added 2026-11-03: the safest countries got too many wars)
 - onsets_crps: CRPS of the number of new conflicts among countries at peace at the origin
 - gdp_crps: mean CRPS of log GDP per person at the horizon (relative to the origin), per country
 - gdp_in90: share of countries whose realised GDP falls inside the simulated 90% band
@@ -29,7 +32,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import numpy as np
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "outputs", "sim_eval")
-LOWER_BETTER = ("conflict_brier", "coup_brier", "coups_crps", "world_share_crps", "onsets_crps", "gdp_crps", "world_gdp_crps", "world_gdppc_crps", "dem_crps", "gdp_disp_crps")
+LOWER_BETTER = ("conflict_brier", "onset_brier", "onset_ll", "coup_brier", "coups_crps", "world_share_crps", "onsets_crps", "gdp_crps", "world_gdp_crps", "world_gdppc_crps", "dem_crps", "gdp_disp_crps")
 
 
 def crps(x, y):
@@ -45,7 +48,7 @@ def compare(a, b):
     common = sorted(set(A) & set(B), key=int)
     print(f"{b} vs {a}: {len(common)} origins ({common[0]}-{common[-1]})")
     res = {}
-    for m in A[common[0]]:
+    for m in [m_ for m_ in A[common[0]] if m_ in B[common[0]]]:
         va = np.array([A[o][m] for o in common], float)
         vb = np.array([B[o][m] for o in common], float)
         ok = np.isfinite(va) & np.isfinite(vb)
@@ -105,6 +108,12 @@ def main():
         ons_act = ((act[:, 1:] == 1) & (act[:, :-1] == 0)).any(-1)
         peace = ok & (act[:, 0] == 0)
         r["onset_auc"] = float(roc_auc_score(ons_act[peace], ons_sim[:, peace].mean(0))) if 0 < ons_act[peace].sum() < peace.sum() else np.nan
+        po = np.clip(ons_sim[:, peace].mean(0), 0.5 / S, 1 - 0.5 / S)
+        ya = ons_act[peace].astype(float)
+        r["onset_brier"] = float(np.mean((po - ya) ** 2))
+        r["onset_ll"] = float(-np.mean(ya * np.log(po) + (1 - ya) * np.log(1 - po)))
+        safe = np.argsort(po)[:20]
+        r["diag_safe20_sim"], r["diag_safe20_act"] = float(po[safe].sum()), float(ya[safe].sum())
         r["world_share_crps"] = float(crps(cf[:, ok].mean((1, 2)), act[ok, 1:].mean()))
         # diagnostics (ratios simulated mean / actual): war level, onsets and endings over all country-years
         ends_sim = ((full[:, ok, :-1] > 0.5) & (full[:, ok, 1:] < 0.5)).sum((1, 2)).mean()

@@ -459,6 +459,14 @@ HEAT_MORT_BETA = 0.553e-4    # (1,000 worlds, SSP5-8.5, 2100: 73 per 100,000 a y
 HEAT_MORT_POWER = 1.7
 HEAT_MORT_INCOME = (15000.0, 0.4)   # reference GDP per person (2011 $) and elasticity: richer countries adapt
 POOL_HALFLIFE = None
+# align the onset hazard on the previous decade's onset rate (one log-odds shift for every country at peace). Under test
+# 2026-11-03: the shift (+0.3 to +0.6 from 1995) went to the safest countries too, which had almost no new wars
+ALIGN_ONSET = True        # (rejected off 2026-11-03: total onsets fell to 0.7-0.8x, world conflict share CRPS +11% / +120%)
+OIL_INDEP = True          # oil moves replayed from independent historical years, not the world's replayed decade
+                          # (adopted 2026-11-03 with WorldConfig.oil_reversion 0.15: within a decade block one era's
+                          # direction repeated ten times; 15-year hindcast oil 5-95% band was 0.15-13x, 6 of 7 outcomes
+                          # in its middle half)
+ONSET_SLOPE = 1.0         # onset log-odds x this before alignment (1.15-1.5 rejected 2026-11-03: worse on 1970-1998)
 # 2026-11-02 tests (off = the adopted model):
 VOL_NOISE = False         # B: growth noise scaled by the country's own 10-year growth volatility (slope estimated in fit)
 ASYM_SHOCK = None         # C: (boom scale, bust scale) for the replayed world shocks, recentred, in place of shock_scale
@@ -975,6 +983,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         return (float(on_ev.sum() / max((cf[:, :-1] == 0).sum(), 1)), float(te_ev.sum() / max((cf[:, :-1] == 1).sum(), 1)),
                 float(np.nanmean(np.where(np.isfinite(ca), ca > 0, np.nan))) if np.isfinite(ca).any() else None)
     r_on, r_te, r_cp = _rates(align_window)
+    if not ALIGN_ONSET:
+        r_on = None
     # coups have declined almost every decade since the 1960s: the coup target can use its own (shorter) window and a
     # multiplier for that decline
     if coup_align_window and coup_align_window != align_window:
@@ -1061,6 +1071,9 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             # only the slope changes, not the level
             g1 = torch.nan_to_num(Xh[..., FEATURES.index("growth_1y")], nan=0.0).clamp(-0.3, 0.3)
             haz[..., 2] = haz[..., 2] + COUP_GROWTH * g1
+        if ONSET_SLOPE != 1.0:
+            # sharper onset risk: the network's log-odds times a slope, before the alignment re-solves the level
+            haz[..., 0] = ONSET_SLOPE * haz[..., 0]
         if SHIFTERS_BEFORE_ALIGN:
             haz = _shifters(haz)
         if k == 1 and align:
@@ -1305,7 +1318,15 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         # oil price: the scenario's historical year, plus (world system) a weak pull toward the 20-year
         # average, a jump when a major exporter enters a new interstate war, and lower demand as cheap
         # clean energy spreads; exporters gain and importers lose relative to the replayed history
-        oil_hist = oil_change_t[shock_idx][:, None]
+        if OIL_INDEP:
+            # (a historical year of its own each year, not the world's replayed decade: a decade block repeats one
+            #  era's direction of the oil price ten times; own generator so the other draws stay paired)
+            if k == 1:
+                gen_oil = torch.Generator(device=device).manual_seed(seed + 7777)
+            oil_hist = oil_change_t[torch.randint(len(oil_change_t), (S,), device=device, generator=gen_oil)][:, None]
+        else:
+            oil_hist = oil_change_t[shock_idx][:, None]
+        oil_year = oil_change_t[shock_idx][:, None]    # the move in the year whose growth shocks are replayed
         oil_change = oil_hist
         if WS is not None and WS.cfg.energy:
             # historical year-to-year moves without their 1950-2024 trend, a pull toward the 1995-2024 average,
@@ -1342,8 +1363,12 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                 # as noise; the rise above zero unwinds the next year, like a war spike
                 oil_change = obs[0] + obs[1] * oil_noise
                 oil_spike = torch.full_like(oil_change, max(obs[0], 0.0))
-            dev = oil_change - oil_hist
-            g = g + WS.cfg.oil_beta * oil_expo * dev + WS.cfg.oil_importer * (oil_expo < 0.05).float() * dev.clamp(min=0)
+            # (exporters and importers gain or lose against the oil move already inside the replayed growth shocks)
+            dev = oil_change - oil_year
+            # importers lose only on price rises: the effect of the simulated move minus that of the replayed one (the
+            # clamp of their difference would charge importers on average once the two moves are drawn independently)
+            rise = oil_change.clamp(min=0) - oil_year.clamp(min=0) if OIL_INDEP else dev.clamp(min=0)
+            g = g + WS.cfg.oil_beta * oil_expo * dev + WS.cfg.oil_importer * (oil_expo < 0.05).float() * rise
             g = g + WS.cfg.oil_beta * oil_expo * dlogD                  # exporters also lose volume
             WS.rec["oil"].append(h["oil_price"][:, 0, -1] + oil_change[:, 0])
         oil_next = h["oil_price"][..., -1] + oil_change

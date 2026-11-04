@@ -188,9 +188,11 @@ class PsychoNet:
         self.members, self.epochs, self.lr, self.wd, self.seed = members, epochs, lr, wd, seed
         self.hidden, self.dropout = hidden, dropout
 
-    def fit(self, X, Y, groups):
+    def fit(self, X, Y, groups, sample_weight=None):
+        """`sample_weight` (optional, per row): e.g. a recency weight; None = every row counts the same"""
         self.pre = Preprocessor().fit(X)
         Z = torch.as_tensor(self.pre.transform(X), device=DEVICE)
+        self._sw = None if sample_weight is None else torch.as_tensor(np.asarray(sample_weight), dtype=torch.float32, device=DEVICE)
         # tasks that may not see some features (features.TASK_ONLY) get the snapshots of a pass trained with those
         # inputs blanked, wrapped so that they are blanked at prediction too; one pass per distinct blocked set
         F = X.shape[1]
@@ -240,7 +242,11 @@ class PsychoNet:
                 for b in range(0, len(perm), 512):
                     i = perm[b:b + 512]
                     loss = nn.functional.binary_cross_entropy_with_logits(net(Z[i]), Yt[i], reduction="none")
-                    loss = (loss * M[i] * w_task).sum() / M[i].sum().clamp(min=1)
+                    if self._sw is None:
+                        loss = (loss * M[i] * w_task).sum() / M[i].sum().clamp(min=1)
+                    else:
+                        sw = self._sw[i][:, None]
+                        loss = (loss * M[i] * w_task * sw).sum() / (M[i] * sw).sum().clamp(min=1e-6)
                     opt.zero_grad()
                     loss.backward()
                     opt.step()
