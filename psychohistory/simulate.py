@@ -466,6 +466,12 @@ OIL_INDEP = True          # oil moves replayed from independent historical years
                           # (adopted 2026-11-03 with WorldConfig.oil_reversion 0.15: within a decade block one era's
                           # direction repeated ten times; 15-year hindcast oil 5-95% band was 0.15-13x, 6 of 7 outcomes
                           # in its middle half)
+# the risk-model ensemble's central view in the simulator (adopted 2026-11-03): each country's onset and coup log-odds
+# shifted by the ensemble's (G, G60, N, F, equal-weight probabilities) minus the network's at the origin, held for the
+# run; coup alignment 0.7 -> 0.66 with it. 10-year hindcasts, 2 network seeds (sim_eval eoc66 vs ao1): onset log loss
+# -4.0/-4.5% (1970-1998), -6.1/-7.4% (2000-2012); coup Brier -5.1/-5.6%, -4.4/-3.5%; coup count CRPS -3.8/-5.7%,
+# -8.2/-6.5%; world GDP -0.7/-0.4%, -1.2/-1.1%; country GDP +0.0/+0.1%, +0.3/+0.3%. "o" onset, "t" ending, "c" coups
+ENS_OFFSET = "oc"
 ONSET_SLOPE = 1.0         # onset log-odds x this before alignment (1.15-1.5 rejected 2026-11-03: worse on 1970-1998)
 # 2026-11-02 tests (off = the adopted model):
 VOL_NOISE = False         # B: growth noise scaled by the country's own 10-year growth volatility (slope estimated in fit)
@@ -602,7 +608,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
              regime_years=10, growth_regime_scale=None, demography="un", clim=None, climate_damage=0.0,
              align=True, world=None, dyads=None, slow_dynamics=True, migration=True, damage_feedback=True,
              align_window=10, align_longrun_w=0.0, year_shock_scale=0.7, align_longrun_targets="otc",
-             dem_regime_scale=None, dem_shock_scale=1.0, frailty_sd=0.6, frailty_end=1.0, coup_frailty_sd=0.0, coup_align_window=None, coup_align_mult=0.7):
+             dem_regime_scale=None, dem_shock_scale=1.0, frailty_sd=0.6, frailty_end=1.0, coup_frailty_sd=0.0, coup_align_window=None, coup_align_mult=None,
+             haz_offset=None):
     """`growth_regime_scale` and `mood_sd` are dispersion settings chosen with the hindcasts
     (see README: their coverage is therefore mildly optimistic). mood_sd was lowered from 0.20 to 0.10 on 2026-10-27:
     with 0.20 the world conflict level was over-dispersed (scripts/conflict_clustering_check.py, dev origins 1970-1998:
@@ -614,9 +621,21 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     years (standard microsimulation alignment; uses only pre-origin data).
     `slow_dynamics`: debt, polarization, mobilization, political violence, inequality, poverty and military spending
     follow equations estimated on history (psychohistory/dynamics.py) instead of staying at their origin values.
-    `migration`: refugees flee simulated wars and move population to host countries (psychohistory/migration.py)."""
+    `migration`: refugees flee simulated wars and move population to host countries (psychohistory/migration.py).
+    `haz_offset`: optional [C, 3] log-odds added to each country's onset / termination / coup hazards for the whole run
+    (the risk-model ensemble's view at the origin minus the network's). None: `net.haz_offset` if the caller attached one
+    (pipeline.attach_ensemble), restricted to the hazards in ENS_OFFSET.
+    `coup_align_mult`: None = 0.66 with the ensemble's coup offset, 0.7 without (both chosen on 1970-1998 hindcasts)."""
     gen = torch.Generator(device=device).manual_seed(seed)
     C = len(p.codes)
+    if haz_offset is None and getattr(net, "haz_offset", None) is not None:
+        haz_offset = np.array(net.haz_offset, float)
+        for j_, t_ in enumerate("otc"):
+            if t_ not in ENS_OFFSET:
+                haz_offset[:, j_] = 0.0
+    if coup_align_mult is None:
+        coup_align_mult = 0.66 if haz_offset is not None and bool(np.any(np.asarray(haz_offset)[:, 2] != 0)) else 0.7
+    haz_off_t = None if haz_offset is None else torch.as_tensor(np.nan_to_num(np.asarray(haz_offset, float)), dtype=torch.float32, device=device)
     S = n_scen
     t0 = p.yi(origin)
     T = end - origin
@@ -1017,6 +1036,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                 i = member[a:a + 2000] == m
                 haz[a:a + 2000][i] = torch.stack([snaps[j](Z[i])[..., j] for j in (ON, TERM, COUP)], -1)
         del Z
+        if haz_offset is not None:
+            haz = haz + haz_off_t[None]
         Xh_d = Xh if Xh is not X else None          # kept for the democracy step below
         mood_world = mood_rho * mood_world + mood_sd[0] * torch.randn(S, 1, device=device, generator=gen)
         mood_region = mood_rho * mood_region + mood_sd[1] * torch.randn(S, R, device=device, generator=gen)

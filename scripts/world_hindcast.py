@@ -85,10 +85,16 @@ def main():
             ens = SeldonEnsemble(load_combine(), members=3, families=["G", "G60", "N", "F"]).fit(Xf[tr], Ytr[tr], ci[tr], year[tr])
             net = ens.fam["N"][0]
             net.nets = [m_ for mm in ens.fam["N"] for m_ in mm.nets]
-            net.struct_sd, net.struct_fam, net.struct_w = PL.struct_inputs(ens, X[:, p.yi(O)])
+            PL.attach_ensemble(net, ens, X[:, p.yi(O)])
         else:
             Ytr, tr = train_mask(Yf, year, O)
             net = PsychoNet(members=8, **NET_TUNED).fit(Xf[tr], Ytr[tr], ci[tr])
+            if SIM.ENS_OFFSET:
+                # the ensemble's central view of onsets and coups (scripts/ens_cache.py; adopted 2026-11-03)
+                fc = os.path.join(OUT, "..", "sim_eval", "ens_cache", f"{O}.npz")
+                if not os.path.exists(fc):
+                    sys.exit(f"no ensemble cache for {O}: run scripts/ens_cache.py {O} {O} 1 (or --consts '{{\"simulate.ENS_OFFSET\": \"\"}}')")
+                net.haz_offset = PL.ensemble_offset(np.load(fc)["p"].mean(0), net, X[:, p.yi(O)])
         growth, ddem = SIM.fit_transitions(p, X, base, O)
         dy = INTER.sim_inputs(INTER.run(verbose=False, origin=O, backtests=False, df=df))
         for mode in todo:

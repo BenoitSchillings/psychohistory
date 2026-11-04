@@ -154,6 +154,25 @@ def struct_inputs(ens, X_now):
     return sd, np.nan_to_num(fam_l[:, :, idx3] - lgf(parts["N"])[None, :, idx3]), (w / w.sum()).astype(np.float32)
 
 
+def ensemble_offset(ens_p3, net, X_now):
+    """[C, 3] log-odds of the ensemble's one-year probabilities (onset, termination, coup) minus the network's, at the
+    origin's features (clipped to +/-3); attached to the simulator's network as net.haz_offset"""
+    idx3 = [TASKS.index(t) for t in ("onset_1y", "termination_1y", "coup_1y")]
+    lgf = lambda v: np.log(np.clip(v, 1e-4, 1 - 1e-4) / (1 - np.clip(v, 1e-4, 1 - 1e-4)))
+    return np.nan_to_num(np.clip(lgf(ens_p3) - lgf(net.predict(X_now)[:, idx3]), -3, 3))
+
+
+def attach_ensemble(net, ens, X_now):
+    """the simulator's network gets the structural-uncertainty inputs and the ensemble's central offset
+    (simulate.ENS_OFFSET: the default four families, equal-weight probabilities, as the onset and coup tasks combine)"""
+    net.struct_sd, net.struct_fam, net.struct_w = struct_inputs(ens, X_now)
+    parts = ens.predict_families(X_now)
+    idx3 = [TASKS.index(t) for t in ("onset_1y", "termination_1y", "coup_1y")]
+    fams = [f for f in ("G", "G60", "N", "F") if f in parts]
+    net.haz_offset = ensemble_offset(np.mean([parts[f][:, idx3] for f in fams], 0), net, X_now)
+    return net
+
+
 def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, members=10,
                   scenario="ssp245", climate_damage=1.0, scen_n=4000):
     _log(f"training on all history up to {origin}")
@@ -184,7 +203,7 @@ def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, 
     fam_l = np.stack([lgf(v) for v in parts.values()])                           # [F, C, T]
     net.struct_sd = np.nan_to_num(np.nanstd(fam_l, 0)[:, [TASKS.index(t) for t in ("onset_1y", "termination_1y", "coup_1y")]])
     # (since 2026-11-01 the simulator draws which family is right, centred: simulate.STRUCT_MODE = "familyc")
-    net.struct_sd, net.struct_fam, net.struct_w = struct_inputs(ens, X_now)
+    attach_ensemble(net, ens, X_now)            # (+ the ensemble's central view of onsets and coups, 2026-11-03)
     clim = climate_summary(p, base, origin, end)
     # world-system layer: interstate wars between country pairs, food, energy, pandemics (AI off in the baseline)
     from . import interstate as INTER
