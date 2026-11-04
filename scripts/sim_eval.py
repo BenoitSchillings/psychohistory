@@ -81,7 +81,9 @@ def main():
     if "mood_sd" in kw:
         kw["mood_sd"] = tuple(kw["mood_sd"])
     S, H = int(kw.pop("n_scen", 3000)), int(kw.pop("horizon", 10))
-    net_seed = int(kw.pop("net_seed", 0))       # seed of the hazard networks (to measure their initialisation noise)
+    net_seed = int(kw.pop("net_seed", 0))
+    # the ensemble's central offset (simulate.ENS_OFFSET, adopted 2026-11-03) from scripts/ens_cache.py; "" = without
+    ens_off, ens_w = kw.pop("ens_offset", SIM.ENS_OFFSET), float(kw.pop("ens_w", 1.0))       # seed of the hazard networks (to measure their initialisation noise)
     p, base, X, Yl = PL.prepare(False)
     Xf, Yf, ci, year = flatten(p, X, Yl)
     os.makedirs(OUT, exist_ok=True)
@@ -94,8 +96,26 @@ def main():
         Ytr, tr = train_mask(Yf, year, O)
         net = PsychoNet(members=8, seed=net_seed, **NET_TUNED).fit(Xf[tr], Ytr[tr], ci[tr])
         growth, ddem = SIM.fit_transitions(p, X, base, O)
+        kw_o = dict(kw)
+        if ens_off:
+            # the risk-model ensemble's one-year log-odds at the origin (scripts/ens_cache.py: equal-weight probabilities
+            # of the G, G60, N, F families, the forecast's default) minus this network's, for the tasks in ens_off
+            # ("o" onset, "t" termination, "c" coups), held for the whole run
+            from psychohistory.features import TASKS
+            fc = os.path.join(OUT, "ens_cache", f"{O}.npz")
+            if not os.path.exists(fc):
+                sys.exit(f"no ensemble cache for {O}: run scripts/ens_cache.py {O} {O} 1 (or pass ens_offset \"\")")
+            ec = np.load(fc)
+            lgt = lambda q: np.log(np.clip(q, 1e-4, 1 - 1e-4) / (1 - np.clip(q, 1e-4, 1 - 1e-4)))
+            pe = ec["p"].mean(0)                                                         # [C, 3]
+            pn = net.predict(X[:, p.yi(O)])[:, [TASKS.index(t) for t in ("onset_1y", "termination_1y", "coup_1y")]]
+            off = np.nan_to_num(np.clip(lgt(pe) - lgt(pn), -3, 3))
+            for j, t in enumerate("otc"):
+                if t not in ens_off:
+                    off[:, j] = 0.0
+            kw_o["haz_offset"] = off * ens_w
         o = SIM.simulate(p, base, net, growth, ddem, O, E, n_scen=S, demography="extrapolate", record_paths=S,
-                         seed=O + 7, **kw)
+                         seed=O + 7, **kw_o)
         cf, gdp, dem = o["paths"]["conflict"], o["paths"]["gdp"], o["paths"]["dem"]       # [S, C, T]
         i0, i1 = p.yi(O), p.yi(E)
         act = base["conflict"][:, i0:i1 + 1]

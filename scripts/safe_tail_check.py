@@ -59,7 +59,18 @@ def main():
             if key not in nets:
                 nets[key] = train(O, hl)
             pr = nets[key].predict(X[:, i0])[:, ON]
-            if v == "raw":
+            if v.startswith("ens") or v.startswith("fam"):
+                # the risk-model ensemble (as in the forecast) or one of its families, aligned as the simulator does
+                if "ens" not in nets:
+                    from psychohistory.models import SeldonEnsemble, load_combine
+                    Ye, te = train_mask(Yf, year, O, first_year=1860)
+                    nets["ens"] = SeldonEnsemble(load_combine(), members=3, families=["G", "G60", "N", "F"]).fit(Xf[te], Ye[te], ci[te], year[te])
+                    nets["ens_fam"] = nets["ens"].predict_families(X[:, i0])
+                    # (the onset task uses the default combination: equal-weight probabilities of the four families)
+                    nets["ens_p"] = np.mean([nets["ens_fam"][f_] for f_ in ("G", "G60", "N", "F")], 0)
+                q = nets["ens_p"][:, ON] if v.startswith("ens") else nets["ens_fam"][v[3:]][:, ON]
+                pa = align(np.clip(q, 1e-5, 1 - 1e-5), i0) if v.endswith("_al") or v.startswith("fam") else np.clip(q, 1e-5, 1 - 1e-5)
+            elif v == "raw":
                 pa = pr
             elif v == "recal":
                 # slope and intercept from the previous decade, out of sample: a network trained ten years earlier,

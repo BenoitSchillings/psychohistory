@@ -2283,7 +2283,7 @@ the simulated economy, interest rates, or the dollar's reserve role.
   - Calibration intercepts by risk half or third from the previous decade (with 2 pseudo-events): right after 2000,
     wrong before 1995 (1980 log loss 0.576 -> 0.643), because the calm 1970s low tail was followed by the busy 1980s.
 - The post-1990 calm of the low-risk countries is a change of era that the history before each origin does not reveal.
-  Nothing adopted; the per-country risks of the most stable countries are probably too high (stated in the report).
+  None of these was adopted; the remedy was the ensemble's central view (next section).
 
 ### Oil price spread (2026-11-03, adopted)
 - Found in the full-system hindcasts: at 15 years the simulated oil price ran from 0.15 to 5-13 times its starting
@@ -2307,3 +2307,32 @@ the simulated economy, interest rates, or the dollar's reserve role.
   - Conflict, coups, democracy, interstate wars: within 0.4%.
   - 15-year oil 5-95% bands now 0.14-0.66x (1980) to 0.87-4.5x (1995); all 7 outcomes inside them, 3 of 7 in the
     middle half (3.5 expected).
+
+### The ensemble's central view in the simulator (2026-11-03, adopted)
+- The simulator's hazards came from the neural network alone, aligned on the previous decade's rates; the forecast's
+  risk ensemble (gradient boosting from 1955 and from 1860, the network, extra trees; equal-weight probabilities) was
+  only used for the structural spread around it. scripts/safe_tail_check.py, 15 years, origin-year onset hazards:
+  per-country log loss of any new conflict, network + alignment 0.500 (1980-1995) / 0.412 (2000-2009), ensemble 0.475 /
+  0.367, better at all 7 origins; the 20 safest countries 1.2-2.0 expected new conflicts instead of 1.9-3.8. Gradient
+  boosting alone 0.479 / 0.394, the network's own family 0.495 / 0.422, extra trees 0.508 / 0.417.
+- simulate.ENS_OFFSET "oc": each country's onset and coup log-odds are shifted by the ensemble's minus the network's at
+  the origin (clipped to +/-3), for the whole run, before the alignment; pipeline.attach_ensemble sets it for the
+  forecast, uncertainty and disaster runs; the harnesses read scripts/ens_cache.py. With the coup offset the world coup
+  count drifted up (ratio 1.08 on 1970-1998), so the coup alignment multiplier went 0.7 -> 0.66 (chosen on 1970-1998).
+- 10-year hindcasts, 2 network seeds, against ao1 (sim_eval; dev 1970-1998 / test 2000-2012):
+  - onsets only, alignment kept (eo): onset log loss -4.0/-4.5% / -6.1/-7.3%, onset AUC +2.8/+3.8% / +0.5/+0.9%,
+    new-conflict count CRPS -6.7/-10.6% / -13.7/-15.1%, world conflict share -5.8/-4.3% / +2.7/-0.5%.
+  - onsets only, alignment off (eona): better per country, but the world conflict share +45-56% on test. Rejected.
+  - onsets, endings and coups (eotc): coup Brier -5.3/-5.8% / -4.3/-3.4%, but the share of country-years at war 8% high
+    on dev (the ending offset). Not kept.
+  - onsets and coups, coup alignment 0.66 (eoc66, adopted): conflict Brier -1.8/-0.8% / +0.6/-0.4%; onset log loss
+    -4.0/-4.5% / -6.1/-7.4%; world conflict share -5.7/-4.1% / +2.6/-0.7%; coup Brier -5.1/-5.6% / -4.4/-3.5%, AUC
+    +2.6/+3.2% / +3.0/+3.6%; coup count CRPS -3.8/-5.7% / -8.2/-6.5%; world GDP -0.7/-0.4% / -1.2/-1.1%; country GDP
+    +0.0/+0.1% / +0.3/+0.3%; democracy -0.1%.
+- Full-system hindcasts (ensf15 / ensf30 against the oil-adopted oilfx15 / oilfx30), 1980-1995 / 2000-2009 / 30 years:
+  safe-country wars CRPS -27 / -50 / -21%, coups -4.3 / -8.2 / -8.9%, new conflicts -13.7 / +3.0 / -12.3%, interstate
+  -0.9 / -0.3 / -0.3%, conflict share +0.9 / -1.9 / +3.9%, world GDP growth +0.5 / +1.2 / +0.7%, democracy change
+  -1.8 / +0.6 / -0.1%.
+- An earlier, uncentred version inside the structural draw (STRUCT_MODE ens_onset, without the coup part or the
+  realignment) lowered the world conflict share by 14% on 2000-2009; applying the offset before the alignment keeps the
+  world's level on the previous decade's rate and moves only who carries it.
