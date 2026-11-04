@@ -58,5 +58,20 @@
    "tech_gdp": "2.5%",
    "excess_deaths": "30 million"
   }
+ },
+ "52": {
+  "date": "3 November 2026",
+  "headline": {
+   "gdp_med": "$33k",
+   "gdp_noai": "$24k",
+   "conf_2065": "23%",
+   "dem_2065": "0.40",
+   "gpw": "48%",
+   "nuke": "14%",
+   "clim_245_2100": "27%",
+   "heat_245_2100": "62 million",
+   "tech_gdp": "2.5%",
+   "excess_deaths": "30 million"
+  }
  }
 }

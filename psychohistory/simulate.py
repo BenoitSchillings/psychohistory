@@ -14,6 +14,7 @@ Per simulated year:
 """
 from __future__ import annotations
 
+import math
 import warnings
 from dataclasses import dataclass
 
@@ -177,7 +178,18 @@ class Transition:
             # (state-conditional noise: a high-debt country draws from what high-debt countries went through)
             sv = Xo[:, FEATURES.index(pool_state)]
             pool_edge = float(np.nanquantile(sv, 2 / 3))
-            bins = bins * 2 + (np.nan_to_num(sv, nan=-np.inf) > pool_edge)
+            hi_ = np.nan_to_num(sv, nan=-np.inf) > pool_edge
+            if POOL_CENTER:
+                # keep only the shape of each sub-pool: both halves get their parent bin's mean, so debt does not
+                # enter the growth mean through the noise (it was rejected as a growth-equation term)
+                idio = idio.copy()
+                for b_ in range(n_bins):
+                    par = bins == b_
+                    for s_ in (False, True):
+                        sub = par & (hi_ == s_)
+                        if sub.any():
+                            idio[sub] += idio[par].mean() - idio[sub].mean()
+            bins = bins * 2 + hi_
             n_ib = n_bins * 2
         keep = n >= 5
         if POOL_HALFLIFE:
@@ -431,7 +443,11 @@ DEM_REGIME_SCALE = 1.0     # country-decade democracy regimes x this
 GROWTH_REGIME_SCALE = 1.4  # country-decade growth regimes x this (1.8 until 2026-11-02; docs/world_system.md)
 DEM_DRIFT = None          # democracy equation's trend: None (1955..origin average), "zero", "longrun", or a share
 DEM_SIZE = None           # democracy noise scaled by population like growth's ("both"; tested 2026-11-02)
-POOL_STATE = None         # growth noise pools split by a state feature, e.g. "public_debt" (tested 2026-11-02)
+POOL_STATE = "public_debt"  # growth noise pools split by a state feature: debt top third vs rest (adopted 2026-11-03,
+#                             docs/world_system.md; rejected at the 1.8 growth scale on 2026-11-02)
+POOL_CENTER = True        # re-centre the two debt sub-pools on their parent bin mean (adopted after review, 2026-11-03)
+COUP_GROWTH = None        # extra coup log-odds per unit of last year's growth (recalibration; rejected 2026-11-03)
+MOOD_JUMP = None          # (probability per region-year, size in log-odds): rare regional unrest jumps (rejected 2026-11-03)
 YEAR_SHOCK_POW = 0.0      # growth year shocks: mean residual weighted by GDP ** this (0: every country alike). Uncentred,
 #                           its gains came from a negative drift that hurt 30-year growth; centred, recessions got rarer
 CRISIS_COST = None        # (year after, two years after) output cost of a banking crisis beyond its expected rate: no effect
@@ -930,6 +946,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     mood_world = torch.zeros(S, 1, device=device)
     mood_region = torch.zeros(S, R, device=device)
     mood_coup = torch.zeros(S, R, device=device)
+    n_jump = 0
     ever = {k: torch.zeros(S, C, device=device) for k in ("onset", "collapse", "autoc", "coup")}
     p_crisis_low, p_crisis_high = crisis_given_growth(base, origin, p.years)
     # a collapse already under way at the origin is already counted in collapses_total (same rule, features.py)
@@ -996,6 +1013,19 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         mood_coup = mood_rho * mood_coup + mood_sd[1] * torch.randn(S, R, device=device, generator=gen)
         var_w = mood_rho ** 2 * var_w + mood_sd[0] ** 2
         var_r = mood_rho ** 2 * var_r + mood_sd[1] ** 2
+        if MOOD_JUMP:
+            # belief cascades (1989, the Arab Spring): a rare regional jump in unrest that raises both war and coup
+            # hazards and fades with the mood; centred so the average hazard is unchanged
+            pj, sj = MOOD_JUMP
+            jump = sj * ((torch.rand(S, R, device=device, generator=gen) < pj).float() - pj)
+            mood_region = mood_region + jump
+            mood_coup = mood_coup + jump
+            # the jump is skewed, so the Gaussian variance correction is wrong for it: the accumulated jump state
+            # J = sum rho^k j_k has log E[exp(c J)] = sum_k K(c rho^k), K(c) = log(1 - p + p e^(c s)) - c p s,
+            # taken at c = +1 (onsets, coups) and c = -1 (endings, where the mood enters with a minus sign)
+            n_jump += 1
+            K = lambda c: math.log(1 - pj + pj * math.exp(c * sj)) - c * pj * sj
+            jcorr = (sum(K(mood_rho ** i) for i in range(n_jump)), sum(K(-mood_rho ** i) for i in range(n_jump)))
         mood = mood_world + mood_region[:, regions]
         if struct_shift is not None:
             haz = haz + struct_shift - STRUCT_CONVEXITY * 0.5 * struct_var[None] * (1 - 2 * torch.sigmoid(haz))
@@ -1025,6 +1055,12 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         # (before the year-1 alignment, like intl_beta, so the alignment absorbs these terms' level at the origin and
         # only their changes move the rates; until 2026-10-28 they were added after it, on top of the aligned rates:
         # SHIFTERS_BEFORE_ALIGN = False restores that)
+        if COUP_GROWTH:
+            # coup recalibration on last year's growth (scripts/coup_slump_test.py): the network's coup risk rises
+            # less after a bad year than real coups did (offset logit on held-out years). Before the alignment, so
+            # only the slope changes, not the level
+            g1 = torch.nan_to_num(Xh[..., FEATURES.index("growth_1y")], nan=0.0).clamp(-0.3, 0.3)
+            haz[..., 2] = haz[..., 2] + COUP_GROWTH * g1
         if SHIFTERS_BEFORE_ALIGN:
             haz = _shifters(haz)
         if k == 1 and align:
@@ -1067,6 +1103,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         # probability is var/2 * (1 - 2p), close to var/2 for rare events but smaller for conflict endings (p ~ 0.2)
         var_ = torch.tensor([var_w + var_r + frailty_sd ** 2, var_w + var_r + (frailty_end * frailty_sd) ** 2, var_r + coup_frailty_sd ** 2], device=device)
         corr = var_ / 2 * (1 - 2 * torch.sigmoid(haz))
+        if MOOD_JUMP:
+            corr = corr + torch.tensor([jcorr[0], jcorr[1], jcorr[0]], device=device)
         haz = torch.sigmoid(haz + torch.stack([mood + frail, -mood - frailty_end * frail, mood_coup[:, regions] + frail_c], -1) - corr)
         if (k - 1) % regime_years == 0:
             g_regime = (GROWTH_REGIME_SCALE if growth_regime_scale is None else growth_regime_scale) * (growth.draw_regime(X, gen) + growth.draw_region_era(S, R, gen)[:, regions])

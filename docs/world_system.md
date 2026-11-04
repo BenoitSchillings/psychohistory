@@ -2192,3 +2192,72 @@ the simulated economy, interest rates, or the dollar's reserve role.
   30 years (3 origins) spread -28% (3/3), world growth +4.2% (1/3), safe-country wars +1.4%, others within 1%.
 - The spread is still too wide after 2000 (ratio 1.48): the simulator replays decades in proportion, and national
   growth was far calmer after 2000 than in the 1970s-1990s (recency-weighted pools were rejected on 2026-10-30).
+
+### Do coups overreact to slumps? (2026-11-03)
+- Question: the debt-split growth pools (POOL_STATE "public_debt") were rejected on full-system coups (+1.7% at 15
+  years, +2.6% at 30). Is the coup model too sensitive to slumps?
+- scripts/coup_slump_test.py: the production network trained at each origin (1975-1995 dev, 2000-2009 test) predicts
+  the next-year coup hazard on the years up to the next origin (features O..next-1, coups O+1..next; the last test
+  window runs ten years): 3,651 and 3,035 country-years, no row counted twice. Calibration by last year's growth and
+  the drawdown from the GDP peak, and a recalibration logit with the model's log-odds as offset (standard errors
+  clustered by country).
+- Normal and boom years are overpredicted on both periods (growth above 2%: 0.59-0.65 of the predicted coups on dev,
+  0.46-0.50 on test). After a bad year real coups rose more steeply than the model says: growth term -2.9 (s.e. 0.7)
+  on dev, -4.5 (1.7) on test; the model's own slope is -1.6 and +0.2, the raw historical one -4.3 and -4.9. The
+  drawdown term is null on dev (+0.2, s.e. 0.5) but on test the deepest slumps were overpredicted (drawdown below
+  -15%: 2 coups against 8.0 expected; term +3.2, s.e. 1.7).
+- Out of sample (fitted on dev, scored on test), log loss: raw 0.05575, level shift 0.05434, plus drawdown 0.05430,
+  plus growth and drawdown 0.05393 (-0.75%). The model's coup risk is too flat in one-year growth; damping the
+  drawdown response gains nothing.
+- (A first version of this test scored the years O+2..O+11 with overlapping windows and unclustered errors, and read
+  the result as "no overreaction, nothing to fix"; an independent review caught it.)
+
+### Debt-split growth pools, retested and adopted centred (2026-11-03)
+- Uncentred (as tested on 2026-11-02), at the 1.4 growth scale against b14, two network seeds, 10-year hindcasts:
+  spread -5.8% (1970-1998) and -3.3% (2000-2012, 7/7), world GDP -3.6% and -1.8/-1.9%, coups +0.1% and +1.2/+1.6%.
+  Full system 15 years: spread -4.8%, recessions -2.4%, coups +1.8%; 30 years: recessions -12.6% (3/3), world growth
+  -4.7%, spread +3.3%, coups +3.2%.
+- Review (2026-11-03): splitting the residual pools without re-centring gives the high-debt pool a lower mean, so debt
+  entered the growth mean through the noise, though it had been rejected as a growth-equation term. And the coup
+  cost, paired runs on the same networks and draws, is a real effect: the 13% seed noise of the world coup count does
+  not apply to a paired difference.
+- POOL_CENTER: each sub-pool re-centred on its parent bin's mean, so only the shape of the shocks depends on debt.
+  10-year: spread -4.3% (11/15, both seeds) and -2.5% (6/7, both seeds), world GDP -3.0% and -1.1/-1.3%, onsets
+  +0.1/-0.2% and -0.1/-0.5%, coups 0.0% and +1.0/+1.2%, others within 0.3%. Full system 15 years: spread -3.2% (6/7),
+  recessions -2.0%, interstate -0.9%, coups +0.9%, safe-country wars +1.1%; 30 years: recessions -11.3% (3/3), world
+  growth -2.6%, spread -0.9%, safe-country wars -2.1%, coups +1.3%.
+- Adopted centred: same gains in spread and recessions, the spread no longer worse at 30 years, the coup cost halved.
+  It remains (0 to +1.3%), the price of more realistic slumps in coup-prone countries.
+- Not fixed: countries without debt data at the origin draw from the lower-debt pool (3% of countries in 2010-2025,
+  23% in 1990); the edge is a single 1955..origin percentile across income bins (about 56% of GDP for 2025), so the
+  share of countries above it moves with the debt cycle: 47% in 1990, 51% in 2000, 24% in 2010, 43% in 2025.
+
+### Revenge and revanchism in wars between states (2026-11-03, rejected)
+- scripts/revenge_dyad_test.py: pair features from events that ended strictly before the year in question: a COW
+  interstate war (1816-2007) with a winner and a loser between the two, dated by the end of the whole war, and a GML
+  militarized dispute (1816-2010) in which the two themselves reached hostility 4-5, ending in victory or a yield; each
+  decayed with a half-life of 20 or 50 years; "humiliation" is either. 16% of pair-years carry one.
+- Dyad backtests, logit + GBM, origins 1975-1995 / 2000-2015. 5-year UCDP outcome BSS 0.187 / 0.159 without, with
+  both features 0.166-0.169 / 0.160, with humiliation 0.180-0.182 / 0.156-0.158. 1-year onset model (the simulator's)
+  0.040 / 0.0023 without, 0.034-0.044 / 0.0002-0.0036 with, on 24 and 11 onsets. The existing memory (years since the
+  last conflict, ever in conflict, strategic rivalry, territorial threat) already carries it. Rejected. (A first
+  version dated multilateral war outcomes by each pair's last year of fighting, counted co-belligerents that never
+  fought each other, and included same-year events; fixing it did not change the result.)
+
+### Belief cascades as regional mood jumps (2026-11-03, rejected)
+- MOOD_JUMP (probability per region-year, size in log-odds): a rare, centred jump in a region's unrest added to both
+  its war and its coup mood, fading with the mood (rho 0.9), for 1989- or Arab-Spring-like waves the smooth AR(1)
+  mood may not make. The jump is skewed, so its mean-keeping correction uses its exact cumulant (a first version used
+  the Gaussian one, which let rare hazards drift up).
+- 10-year hindcasts, 1970-1998, against b14, corrected: (0.02, 0.6) world conflict share -0.5%, onsets +0.2%, coups
+  +0.8%; (0.02, 1.0) share -0.6%, onsets +0.5%, coups +3.5% with the coup count on target (ratio 1.01): the cost is
+  the extra dispersion, not a drift. First version, (0.05, 0.6): onsets +0.2%, coups +2.0%. Years with new-conflict
+  counts in the outer 5% tails 0.167 -> 0.147-0.160 (0.10 expected). The existing mood already makes such years about
+  as often as they happened. Rejected without a test-period run.
+
+### Coup recalibration on last year's growth in the simulator (2026-11-03, rejected)
+- COUP_GROWTH: coup log-odds + c x growth_1y (clamped to +/-0.3), before the alignment so only the slope changes,
+  from the offset logit above (dev -2.9). 10-year hindcasts against the adopted centred-pool baseline:
+  c = -2.9: country coup Brier -0.2% (12/15) and -0.3%, AUC +0.3% and 0.0%, but the world coup count CRPS +5.0% and
+  +3.9% (the count 3% higher on test); c = -1.5: Brier -0.1% and -0.2%, world count +2.5% and +1.7%. Steeper slump
+  sensitivity sharpens which countries but makes coups cluster in world recessions more than history did. Rejected.
