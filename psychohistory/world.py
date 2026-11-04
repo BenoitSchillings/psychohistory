@@ -339,7 +339,11 @@ class WorldConfig:
     energy: bool = True
     oil_war_jump: float = 0.18        # log real oil price jump in a year a major exporter enters a new interstate conflict
                                       # (OLS +0.27 +/- 0.08 incl. 1974; +0.18 without the embargo year)
-    oil_reversion: float = 0.05       # yearly pull toward the 20-year average (OLS 0.05 +/- 0.05)
+    oil_reversion: float = 0.15       # yearly pull toward the 20-year average. 0.05 until 2026-11-03 (one-year OLS 0.05 +/- 0.05);
+                                      # over longer spans the price returns faster (slope of the change on the gap to the
+                                      # 20-year average: 3 years -0.19, 5 years -0.34, 10 years -1.0, 1965-2024). With
+                                      # simulate.OIL_INDEP, 15-year hindcasts chose 0.15 on 1980-1995 (oil CRPS -43%) and
+                                      # confirmed it on 2000-2009 (-32%; world GDP growth -2.8% / -2.1%)
     oil_beta: float = 0.068           # growth response to oil price changes per unit of production exposure (+/- 0.022)
     oil_importer: float = -0.014      # growth response of net importers to price rises (pop-weighted, 1966-2023; +/- 0.013)
     # observed oil years after the origin: ((year, change in log real price vs the previous year, sd of the

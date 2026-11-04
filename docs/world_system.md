@@ -2261,3 +2261,49 @@ the simulated economy, interest rates, or the dollar's reserve role.
   c = -2.9: country coup Brier -0.2% (12/15) and -0.3%, AUC +0.3% and 0.0%, but the world coup count CRPS +5.0% and
   +3.9% (the count 3% higher on test); c = -1.5: Brier -0.1% and -0.2%, world count +2.5% and +1.7%. Steeper slump
   sensitivity sharpens which countries but makes coups cluster in world recessions more than history did. Rejected.
+
+### The safest countries' civil-war risk (2026-11-03, tested, nothing adopted)
+- Found in the full-system hindcasts: among the 20 countries at peace with the lowest simulated risk, the simulator
+  expects 2-3 to start a civil conflict within 15 years from every origin 1995-2009; none did (0 at all four). The
+  2025 forecast has the same tail: Norway 19%, Germany 29%, Canada 33% chance of a new civil conflict by 2065.
+- scripts/safe_tail_check.py (networks trained as in the hindcasts, origin-year onset hazards frozen, 15 years): the
+  network itself is too flat at the low end, and the alignment makes it worse. From 1990 the safest 40-50% of countries
+  at peace had almost no onsets (bottom half 1.4-5.4% over 15 years) against 9-17% from the network alone and 15-22%
+  after alignment. The alignment shift was +0.3 to +0.6 log-odds from 1995, set by the previous decade's onset rate,
+  which risky countries drove. Before 1990 the low tail was right (bottom half 12% predicted, 15-16% observed).
+- Tried, each scored on the per-country chance of a new conflict (log loss) and in 10-year hindcasts (sim_eval, now
+  with onset_brier, onset_ll and diag_safe20):
+  - Alignment off (simulate.ALIGN_ONSET): per-country onset log loss -0.8% / -1.6% on 2000-2012, but total onsets fell
+    to 0.70-0.77 of the observed and the world conflict share CRPS rose 11-15% on 1970-1998 and 117-138% on 2000-2012.
+  - A slope on the onset log-odds before alignment (ONSET_SLOPE 1.15 / 1.3 / 1.5): worse on 1970-1998 at every value
+    (onset log loss +0.1 / +0.8 / +2.5%, new-conflict count CRPS +4 / +12 / +29%).
+  - Slope and intercept from the previous decade, scored with a network trained ten years earlier: mixed (slopes 0.75
+    to 1.4 from origin to origin).
+  - Recency-weighted training (PsychoNet sample_weight, half-life 20 or 40 years): no gain.
+  - Calibration intercepts by risk half or third from the previous decade (with 2 pseudo-events): right after 2000,
+    wrong before 1995 (1980 log loss 0.576 -> 0.643), because the calm 1970s low tail was followed by the busy 1980s.
+- The post-1990 calm of the low-risk countries is a change of era that the history before each origin does not reveal.
+  Nothing adopted; the per-country risks of the most stable countries are probably too high (stated in the report).
+
+### Oil price spread (2026-11-03, adopted)
+- Found in the full-system hindcasts: at 15 years the simulated oil price ran from 0.15 to 5-13 times its starting
+  value (5-95%), yet 6 of 7 outcomes fell in the middle half, and the median was below the outcome at 6 of 7.
+- Cause: the yearly oil move was replayed from the world's historical decade block, so a world drawn into the 1970s
+  repeated that decade's rise ten times (or the 1980s' fall). The pull toward the 20-year average, 0.05 a year, was
+  the one-year estimate; over longer spans the price returns much faster (slope of the change on the gap to the
+  20-year average, 1965-2024: 1 year -0.05, 3 years -0.19, 5 years -0.34, 10 years -1.0).
+- simulate.OIL_INDEP: each year's oil move comes from an independent historical year (own random stream, so the other
+  draws stay paired). Exporters and importers gain or lose against the move inside the replayed growth shocks. The
+  importer loss on price rises is taken as the effect of the simulated rise minus that of the replayed one; the first
+  version clamped their difference, which charged importers on average (world GDP medians -2%) and was caught before
+  adoption.
+- 15-year full-system hindcasts against the then baseline (oilb15): pull 0.08 / 0.15 / 0.25 with independent years on
+  1980-1995 gave oil CRPS -35 / -43 / -43%, world GDP growth -1.3 / -2.8 / -3.2%, world GDP falls +0.9 / +1.8 / +3.3%;
+  0.15 chosen. Without independent years: pull 0.10 / 0.15 / 0.30 gave oil -23 / -33 / -37%; independent years alone
+  -22%. Final version (corrected importer term), oilfx15 / oilfx30:
+  - 1980-1995: oil -42.9% (4/4), world GDP growth -2.1% (4/4), growth spread across countries -1.2%, falls 0.0%.
+  - 2000-2009: oil -32.4% (3/3), world GDP growth -1.2% (3/3), spread +1.3%, falls +0.6%.
+  - 30 years from 1975, 1985, 1994: oil -11.2%, world GDP growth -1.6%, falls -1.9%, spread +0.9%.
+  - Conflict, coups, democracy, interstate wars: within 0.4%.
+  - 15-year oil 5-95% bands now 0.14-0.66x (1980) to 0.87-4.5x (1995); all 7 outcomes inside them, 3 of 7 in the
+    middle half (3.5 expected).
