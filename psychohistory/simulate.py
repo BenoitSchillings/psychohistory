@@ -626,6 +626,7 @@ def _ens_refresh(models, Xh, haz_net, haz_offset0):
     return torch.nan_to_num(torch.where(keep, off, torch.zeros_like(off)))
 
 
+@torch.no_grad()
 def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, origin: int, end: int,
              n_scen=4000, seed=0, device=DEVICE, record_paths=8, chronicle=0, mood_sd=(0.10, 0.10), mood_rho=0.9,
              regime_years=10, growth_regime_scale=None, demography="un", clim=None, climate_damage=0.0,
