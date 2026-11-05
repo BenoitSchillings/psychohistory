@@ -2358,3 +2358,17 @@ Full-system hindcasts with the forecast's own setup (risk ensemble at each origi
   move the level (the alignment is solved only in year 1), so the war level drifts up. Not adopted; worth retrying with
   the level re-solved at each refresh, so the refresh moves only who carries the risk.
 The earlier tests above ran a stand-alone network without the family draw, which is why they passed.
+
+### Two follow-ups (2026-11-04, evening): both rejected
+- The ensemble's view refreshed every 5 simulated years with each hazard's level re-solved at every refresh
+  (simulate.ENS_REFRESH 5, ENS_REFRESH_LEVEL), against no offset on the same ensembles, 1980-1995 / 2000-2009 at 15
+  years / 1975, 1985, 1994 at 30 years: new conflicts -19.4% (4/4) / +16.9% (1/3) / -39.6%, coups -25.0 / -11.9 /
+  +48.2% (0/3), conflict share +4.4 / -0.1 / +29.3% (0/3), safe-country wars -25 / -57 / -42%. Holding the level at each
+  refresh does not hold it between refreshes: risk moves to countries that start and end wars repeatedly, and over
+  30 years coups and the share at war run high. Rejected; ENS_REFRESH stays 0.
+- Country frailty correlated between neighbours (simulate.FRAILTY_SPATIAL 0.5: each world's draw mixed half and half
+  with its distance-weighted neighbours', exp(-km / 800), rescaled so every country keeps its variance), for which
+  countries fight together. Full-system hindcasts: every statistic within 1.6% (new conflicts -0.3 / +1.6 / -0.2%,
+  interstate -1.1% on 2000-2009). Joint test (scripts/joint_hindcast_test.py, 13 origins 1970-2006, 15 years, same
+  network per origin): per-country conflict variogram score -0.02% (8/13), energy score +0.02% (4/13); world conflict
+  by year energy score +0.45% (2/13). No gain in co-movement: rejected, FRAILTY_SPATIAL stays 0.

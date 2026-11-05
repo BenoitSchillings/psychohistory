@@ -6,7 +6,8 @@ dependence: each dimension's worlds are shuffled independently. If the simulated
 beats its shuffled self, above all on VS.
 Vectors scored: (a) share of years in conflict, per country; (b) the world conflict share, year by year;
 (c) log GDP per person change over the horizon, per country; (d) the same, by region-year.
-python -P scripts/joint_hindcast_test.py [first last step tag] -> outputs/joint_hindcast_test[_tag].json"""
+python -P scripts/joint_hindcast_test.py [first last step tag ['{"VAR": {"simulate.CONST": v}, ...}']]
+    -> outputs/joint_hindcast_test[_tag][_VAR].json (variants run on the same network at each origin)"""
 import json
 import os
 import sys
@@ -59,42 +60,51 @@ out = {}
 A = sys.argv[1:]
 ORIG = range(int(A[0]), int(A[1]) + 1, int(A[2])) if A else range(1975, 2010, 5)
 TAG = f"_{A[3]}" if len(A) > 3 else ""
+import importlib
+VARIANTS = json.loads(A[4]) if len(A) > 4 else {"": {}}
 for O in ORIG:
     E = min(O + H, LAST_OBS_YEAR)
     Ytr, tr = train_mask(Yf, year, O)
     net = PsychoNet(members=8, **NET_TUNED).fit(Xf[tr], Ytr[tr], ci[tr])
     growth, ddem = fit_transitions(p, X, base, O)
-    o = simulate(p, base, net, growth, ddem, O, E, n_scen=S, demography="extrapolate", record_paths=S, seed=O)
-    cf, gdp = o["paths"]["conflict"], o["paths"]["gdp"]          # [S, C, T]
-    i0, i1 = p.yi(O), p.yi(E)
-    act_c = base["conflict"][:, i0 + 1:i1 + 1]
-    act_g = base["lg"][:, i1] - base["lg"][:, i0]
-    vec = {}
-    okc = np.isfinite(act_c).all(1)
-    vec["conflict_share_by_country"] = (cf[:, okc].mean(-1), act_c[okc].mean(-1))
-    vec["world_conflict_by_year"] = (cf[:, okc].mean(1), act_c[okc].mean(0))
-    sim_g = np.log(gdp[:, :, -1]) - base["lg"][:, i0][None]
-    okg = np.isfinite(act_g) & np.isfinite(sim_g).all(0)
-    vec["gdp_change_by_country"] = (sim_g[:, okg], act_g[okg])
-    lgp = np.log(gdp) - base["lg"][:, i0][None, :, None]
-    act_lp = base["lg"][:, i0 + 1:i1 + 1] - base["lg"][:, i0][:, None]
-    okr = okg & np.isfinite(act_lp).all(1) & np.isfinite(lgp).all((0, 2))
-    ur = np.unique(regions[okr])
-    reg_sim = np.concatenate([lgp[:, okr & (regions == r)].mean(1) for r in ur], 1)
-    reg_act = np.concatenate([act_lp[okr & (regions == r)].mean(0) for r in ur])
-    vec["gdp_path_by_region_year"] = (reg_sim, reg_act)
-    res = {}
-    for k, (Xs, y) in vec.items():
-        Xs, y = Xs.astype(np.float32), y.astype(np.float32)
-        Xsh = shuffled(Xs, rng)
-        res[k] = {"dims": int(Xs.shape[1]), "es_sim": es(Xs, y), "es_shuffled": es(Xsh, y), "vs_sim": vs(Xs, y), "vs_shuffled": vs(Xsh, y)}
-    out[O] = res
-    print(O, E, json.dumps({k: {m: round(v, 4) for m, v in r.items()} for k, r in res.items()}), flush=True)
+    for VAR, consts in VARIANTS.items():
+      for k_, v_ in consts.items():
+          mod_, nm_ = k_.rsplit(".", 1)
+          setattr(importlib.import_module(f"psychohistory.{mod_}"), nm_, v_)
+      rng = np.random.default_rng(O)
+      o = simulate(p, base, net, growth, ddem, O, E, n_scen=S, demography="extrapolate", record_paths=S, seed=O)
+      cf, gdp = o["paths"]["conflict"], o["paths"]["gdp"]          # [S, C, T]
+      i0, i1 = p.yi(O), p.yi(E)
+      act_c = base["conflict"][:, i0 + 1:i1 + 1]
+      act_g = base["lg"][:, i1] - base["lg"][:, i0]
+      vec = {}
+      okc = np.isfinite(act_c).all(1)
+      vec["conflict_share_by_country"] = (cf[:, okc].mean(-1), act_c[okc].mean(-1))
+      vec["world_conflict_by_year"] = (cf[:, okc].mean(1), act_c[okc].mean(0))
+      sim_g = np.log(gdp[:, :, -1]) - base["lg"][:, i0][None]
+      okg = np.isfinite(act_g) & np.isfinite(sim_g).all(0)
+      vec["gdp_change_by_country"] = (sim_g[:, okg], act_g[okg])
+      lgp = np.log(gdp) - base["lg"][:, i0][None, :, None]
+      act_lp = base["lg"][:, i0 + 1:i1 + 1] - base["lg"][:, i0][:, None]
+      okr = okg & np.isfinite(act_lp).all(1) & np.isfinite(lgp).all((0, 2))
+      ur = np.unique(regions[okr])
+      reg_sim = np.concatenate([lgp[:, okr & (regions == r)].mean(1) for r in ur], 1)
+      reg_act = np.concatenate([act_lp[okr & (regions == r)].mean(0) for r in ur])
+      vec["gdp_path_by_region_year"] = (reg_sim, reg_act)
+      res = {}
+      for k, (Xs, y) in vec.items():
+          Xs, y = Xs.astype(np.float32), y.astype(np.float32)
+          Xsh = shuffled(Xs, rng)
+          res[k] = {"dims": int(Xs.shape[1]), "es_sim": es(Xs, y), "es_shuffled": es(Xsh, y), "vs_sim": vs(Xs, y), "vs_shuffled": vs(Xsh, y)}
+      out.setdefault(VAR, {})[O] = res
+      print(VAR, O, E, json.dumps({k: {m: round(v, 4) for m, v in r.items()} for k, r in res.items()}), flush=True)
 
-summ = {}
-for k in next(iter(out.values())):
-    for m in ("es", "vs"):
-        d = [out[O][k][f"{m}_sim"] / out[O][k][f"{m}_shuffled"] - 1 for O in out]
-        summ[f"{k}:{m}"] = {"mean_rel_change_vs_shuffled": round(float(np.mean(d)), 4), "origins_sim_better": int(sum(x < 0 for x in d)), "n": len(d)}
-print(json.dumps(summ, indent=1))
-json.dump({"by_origin": {str(k): v for k, v in out.items()}, "summary": summ}, open(PL.OUT / f"joint_hindcast_test{TAG}.json", "w"), indent=1)
+for VAR, outv in out.items():
+    summ = {}
+    for k in next(iter(outv.values())):
+        for m in ("es", "vs"):
+            d = [outv[O][k][f"{m}_sim"] / outv[O][k][f"{m}_shuffled"] - 1 for O in outv]
+            summ[f"{k}:{m}"] = {"mean_rel_change_vs_shuffled": round(float(np.mean(d)), 4), "origins_sim_better": int(sum(x < 0 for x in d)), "n": len(d)}
+    print(VAR, json.dumps(summ, indent=1))
+    json.dump({"by_origin": {str(k): v for k, v in outv.items()}, "summary": summ},
+              open(PL.OUT / f"joint_hindcast_test{TAG}{'_' + VAR if VAR else ''}.json", "w"), indent=1)

@@ -479,6 +479,11 @@ ENS_OFFSET = ""
 # whole run). Offsets at the origin correlate only ~0.6 / 0.45 / 0.25 with the next origin's 5 / 10 / 20 years later
 # (outputs/sim_eval/ens_cache), so a fixed offset goes stale. Needs net.ens_models (pipeline.sim_net); under test 2026-11-04
 ENS_REFRESH = 0
+ENS_REFRESH_LEVEL = True  # re-solve each hazard's level at a refresh so the world's average stays where it was (only who
+                          # carries the risk moves); without it the 5-year refresh drifted war onsets +58% (2000-2009)
+# country frailty correlated between neighbours: z mixed with its distance-weighted neighbours' (features.SPATIAL W,
+# exp(-km / 800), rows normalised) by this weight, rescaled so every country keeps variance frailty_sd^2 (0: independent)
+FRAILTY_SPATIAL = 0.0
 ONSET_SLOPE = 1.0         # onset log-odds x this before alignment (1.15-1.5 rejected 2026-11-03: worse on 1970-1998)
 # 2026-11-02 tests (off = the adopted model):
 VOL_NOISE = False         # B: growth noise scaled by the country's own 10-year growth volatility (slope estimated in fit)
@@ -1017,6 +1022,12 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     # country frailty (frailty_sd > 0): a persistent per-world, per-country log-odds shift, + on onsets, - on endings,
     # so war-prone countries stay war-prone (less churn than independent yearly draws)
     frail = frailty_sd * torch.randn(S, C, device=device, generator=gen) if frailty_sd else 0.0
+    if frailty_sd and FRAILTY_SPATIAL:
+        from .features import SPATIAL as _SP
+        Wn = _SP["W"].to(device)
+        Wn = Wn / Wn.sum(1, keepdim=True).clamp(min=1e-12)
+        rho_ = float(FRAILTY_SPATIAL)
+        frail = ((1 - rho_) * frail + rho_ * frail @ Wn.T) / torch.sqrt((1 - rho_) ** 2 + rho_ ** 2 * (Wn ** 2).sum(1))[None]
     frail_c = coup_frailty_sd * torch.randn(S, C, device=device, generator=gen) if coup_frailty_sd else 0.0
 
     # observed rates over the `align_window` years before the origin (alignment targets), optionally blended with the
@@ -1065,7 +1076,20 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         del Z
         if haz_offset is not None:
             if ENS_REFRESH and k > 1 and (k - 1) % ENS_REFRESH == 0 and getattr(net, "ens_models", None):
-                haz_off_t = _ens_refresh(net.ens_models, Xh, haz, haz_offset)          # [S, C, 3] from now on
+                new_off = _ens_refresh(net.ens_models, Xh, haz, haz_offset)            # [S, C, 3] from now on
+                if ENS_REFRESH_LEVEL:
+                    old_off = haz_off_t if haz_off_t.dim() == 3 else haz_off_t[None].expand_as(new_off)
+                    peace_ = h["conflict"][..., -1] <= 0.5
+                    for j_, risk_ in ((0, peace_), (2, torch.ones_like(peace_))):
+                        z_ = haz[..., j_][risk_]
+                        tgt_ = float(torch.sigmoid(z_ + old_off[..., j_][risk_]).mean())
+                        zn_ = z_ + new_off[..., j_][risk_]
+                        lo_, hi_ = -4.0, 4.0
+                        for _ in range(40):
+                            mid_ = (lo_ + hi_) / 2
+                            lo_, hi_ = (mid_, hi_) if float(torch.sigmoid(zn_ + mid_).mean()) < tgt_ else (lo_, mid_)
+                        new_off[..., j_] = new_off[..., j_] + (lo_ + hi_) / 2
+                haz_off_t = new_off
             haz = haz + (haz_off_t if haz_off_t.dim() == 3 else haz_off_t[None])
         Xh_d = Xh if Xh is not X else None          # kept for the democracy step below
         mood_world = mood_rho * mood_world + mood_sd[0] * torch.randn(S, 1, device=device, generator=gen)
