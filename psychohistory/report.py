@@ -99,6 +99,25 @@ def _summary_vars():
     v["coup_top"] = and_([r["name"] for r in top("coup_5y")])
     us = next(r for r in rows if r["code"] == "USA")
     v["us_aut"] = p(num(us, "autocratization_5y"))
+    # the next twelve months (monthly ledger, direct 12-month model) and what moves the 2065 war numbers
+    lf = OUT / "ledger_summary.json"
+    if lf.exists():
+        led = json.loads(lf.read_text())
+        names = {r["code"]: r["name"] for r in rows}
+        top3 = list(led.get("annual_new", {}).items())[:3]
+        v["ledger_top"] = and_([f"{names.get(c, c)} ({p(x)})" for c, x in top3])
+    ur = OUT / "uncertainty_ranges.json"
+    if ur.exists():
+        g = json.loads(ur.read_text()).get("great_power_war", {}).get("drivers", {}).get("nuclear_war_factor")
+        if g:
+            v["gpw_nuc_lo"], v["gpw_nuc_hi"] = p(g["low_fifth"]), p(g["high_fifth"])
+    sk = OUT / "skill_horizon.json"
+    v["skill_note"] = ""
+    if sk.exists():
+        S = json.loads(sk.read_text())["by_horizon"]
+        pos = [int(h) for h, r in S.items() if r.get("conflict", {}).get("ci90", [0])[0] > 0]
+        v["skill_note"] = (f" Against a fair naive forecast, its country-level war forecasts keep measurable skill up to "
+                           f"{max(pos)} years ahead in hindcasts." if pos else "")
     c21 = OUT / "climate_2100.json"
     if c21.exists():
         sc = json.loads(c21.read_text())["scenarios"]

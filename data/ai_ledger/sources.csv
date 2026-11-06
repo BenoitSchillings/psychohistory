@@ -1,0 +1,8 @@
+quarter,source,year,cum_prob,retrieved,note
+2026Q4,metaculus,2028,0.25,2026-10-28,community lower quartile; read from secondary write-ups (site refused automated access)
+2026Q4,metaculus,2032,0.50,2026-10-28,community median about 2031-33
+2026Q4,ai_impacts_2023,2027,0.10,2026-10-28,Grace et al. 2024: high-level machine intelligence 10 percent by 2027
+2026Q4,ai_impacts_2023,2047,0.50,2026-10-28,Grace et al. 2024: 50 percent by 2047
+2026Q4,fri_leap_w8,2039,0.20,2026-10-28,AGI question: 80 percent by 2100 x quartiles if it comes (2039 / 2050 / 2065)
+2026Q4,fri_leap_w8,2050,0.40,2026-10-28,
+2026Q4,fri_leap_w8,2065,0.60,2026-10-28,

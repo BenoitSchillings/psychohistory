@@ -7,12 +7,12 @@ cd "$(dirname "$0")/.."
 SITE_ID=1b90db7f-d19e-442a-aa3f-13d5740e6303
 mkdir -p outputs/netlify_site
 grep -v 'name="claude:viewport-fit-sides"' outputs/seldon_report.html \
-  | sed 's#https://benoitschillings.github.io/psychohistory/\(methodology\|data_sources\)\.html#\1.html#g' > outputs/netlify_site/index.html
+  | sed 's#https://benoitschillings.github.io/psychohistory/\(methodology\|data_sources\|ethics\)\.html#\1.html#g' > outputs/netlify_site/index.html
 python3 -P scripts/draw_dependencies.py
 cp docs/data_dependencies.svg outputs/netlify_site/
 python3 -P scripts/build_site_pages.py   # methodology.html, data_sources.html
 cp site/notes.js outputs/netlify_site/
-for f in index methodology data_sources; do
+for f in index methodology data_sources ethics; do
   grep -q 'src="/notes.js"' outputs/netlify_site/$f.html || \
     sed -i 's#</html>\s*$#<script src="/notes.js" defer></script>\n</html>#' outputs/netlify_site/$f.html
   grep -q 'src="/notes.js"' outputs/netlify_site/$f.html || echo '<script src="/notes.js" defer></script>' >> outputs/netlify_site/$f.html

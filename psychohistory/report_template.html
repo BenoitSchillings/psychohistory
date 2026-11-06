@@ -121,7 +121,7 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
       <span class="eyebrow" id="hero-eyebrow">A simulation of humanity, 2026–2065</span>
       <h1>Seldon Report<br><em>2026–2065</em></h1>
       <p class="lede">The next forty years of humanity, simulated ten thousand times: how rich the world becomes, what AI and other breakthroughs change, what warming costs, where wars and coups break out, and whether democracy holds. Built from eighty years of history for every country, it speaks in probabilities about large populations, never in certainties about single events.</p>
-      <p class="credit">A study conceived and directed by <b>Benoit Schillings</b>. <a href="https://benoitschillings.github.io/psychohistory/methodology.html" target="_blank" rel="noopener">Methodology</a> · <a href="https://benoitschillings.github.io/psychohistory/data_sources.html" target="_blank" rel="noopener">Data source tree</a></p>
+      <p class="credit">A study conceived and directed by <b>Benoit Schillings</b>. <a href="https://benoitschillings.github.io/psychohistory/methodology.html" target="_blank" rel="noopener">Methodology</a> · <a href="https://benoitschillings.github.io/psychohistory/data_sources.html" target="_blank" rel="noopener">Data source tree</a> · <a href="https://benoitschillings.github.io/psychohistory/ethics.html" target="_blank" rel="noopener">Purpose and ethics</a></p>
       <p class="credit version"><!--__VERSION__--></p>
     </div>
     <figure class="hero-paths" style="margin:0">
@@ -133,7 +133,7 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
   <section aria-labelledby="s-summary">
     <div class="tiles tiles-3" id="tiles"></div>
     <div class="card" id="card-changes"><h3 id="changes-title">What changed in this version</h3><p class="sub" id="changes-sub"></p><div class="tablewrap"><table id="t-changes"></table></div></div>
-    <nav class="toc" aria-label="Contents"><a href="#s-onepage">In one page</a><a href="#s-drivers">What decides it</a><a href="#s-world">Fan of futures</a><a href="#part-econ">Economy, AI and technology</a><a href="#part-climate">Climate and food</a><a href="#part-conflict">Conflict and war</a><a href="#s-flash">Flashpoints</a><a href="#part-tails">Worst futures</a><a href="#part-places">Countries</a><a href="#part-trust">Can you trust it?</a><a href="#part-appendix">Appendix</a><a href="https://benoitschillings.github.io/psychohistory/methodology.html" target="_blank" rel="noopener">Full methodology</a><a href="https://benoitschillings.github.io/psychohistory/data_sources.html" target="_blank" rel="noopener">Data sources</a></nav>
+    <nav class="toc" aria-label="Contents"><a href="#s-onepage">In one page</a><a href="#s-drivers">What decides it</a><a href="#s-world">Fan of futures</a><a href="#part-econ">Economy, AI and technology</a><a href="#part-climate">Climate and food</a><a href="#part-conflict">Conflict and war</a><a href="#s-flash">Flashpoints</a><a href="#part-tails">Worst futures</a><a href="#part-places">Countries</a><a href="#part-trust">Can you trust it?</a><a href="#part-appendix">Appendix</a><a href="https://benoitschillings.github.io/psychohistory/methodology.html" target="_blank" rel="noopener">Full methodology</a><a href="https://benoitschillings.github.io/psychohistory/data_sources.html" target="_blank" rel="noopener">Data sources</a><a href="https://benoitschillings.github.io/psychohistory/ethics.html" target="_blank" rel="noopener">Purpose and ethics</a></nav>
   </section>
   <section aria-labelledby="s-onepage">
     <div class="section-head"><span class="eyebrow">The future in one page</span><h2 id="s-onepage">What the simulations say</h2>
@@ -214,7 +214,12 @@ td.best { font-weight: 600; color: var(--ink); background: var(--accent-soft); }
   <div class="part" id="part-conflict"><span class="eyebrow">Part III</span><h2 class="part-title">Conflict and war</h2><p class="lede">Civil war stays near its post-1946 high, concentrated in the Sahel, the Horn of Africa and the Middle East; coups cluster in West Africa. Wars between great powers are rare but not remote, and their size, more than their number, sets the death toll.</p></div>
   <section aria-labelledby="s-risk">
     <div class="section-head"><span class="eyebrow">Five-year risk, 2026–2030</span><h2 id="s-risk">Where the risk concentrates</h2>
-      <p class="muted">Direct estimates from the model ensemble, using each country's 2025 situation. The bracket on each bar spans the lowest and highest of the three model families, a measure of how much the models disagree. Civil-conflict onset is only defined for countries at peace; countries already at war are shown separately.</p></div>
+      <p class="muted">Direct estimates from the model ensemble, using each country's 2025 situation. The bracket on each bar spans the lowest and highest of the three model families, a measure of how much the models disagree; "× base rate" compares each risk with the average country's since 1955. Civil-conflict onset is only defined for countries at peace; countries already at war are shown separately. These numbers rank where to look harder; they are not grounds for action on their own (<a href="https://benoitschillings.github.io/psychohistory/ethics.html" target="_blank" rel="noopener">purpose and ethics</a>).</p></div>
+    <div class="card" style="margin-bottom:14px"><h3>Recent misses and blind spots</h3><ul class="sub" style="margin:6px 0 0 18px;padding:0">
+      <li>The 2025 Thailand–Cambodia border war: the pair model gave it under 1%. Annual structural data miss sudden escalations between countries with no recent fighting.</li>
+      <li>The 2026 US–Iran war: 0.1% for 2026–2030, and 4% for any use of force. The rivalry data stop in 2010 and never coded that rivalry; the AI analysts and the crowds saw it coming.</li>
+      <li>The 2010s rise in wars between states: simulated from 2010 and 2014, the simulator expected 0.7–0.9 active interstate conflicts a year against 1.5–2.3 recorded.</li>
+      <li>Over 1995–2009 the simulator expected two or three new civil wars among the 20 safest countries within 15 years; none happened.</li></ul></div>
     <div class="controls"><div class="seg" id="task-seg" role="group" aria-label="Crisis type"></div></div>
     <div class="card"><div class="chart" id="c-map"></div><div class="legend" id="map-legend"></div></div>
     <div class="controls"><label for="risk-search" class="muted" style="font-size:13px">Find a country</label><input type="search" id="risk-search" placeholder="e.g. Nigeria"></div>
@@ -633,9 +638,10 @@ function riskTable() {
   const Y5 = M.origin + 5, simKey = {civil_conflict_5y: `p_onset_by_${Y5}`, coup_5y: `p_coup_by_${Y5}`, econ_collapse_5y: `p_collapse_by_${Y5}`, autocratization_5y: `p_autoc_by_${Y5}`}[TASK];
   const simKey2 = simKey.replace(String(Y5), "2035");
   document.getElementById("risk-table").innerHTML =
-    `<thead><tr><th class="num">#</th><th>Country</th><th>Region</th><th class="num">5-year risk</th><th>Range</th><th class="num">Simulator ${M.origin + 1}–${String(M.origin + 5).slice(2)}</th><th class="num">Simulator by 2035</th><th>Top risk factors</th></tr></thead><tbody>` +
+    `<thead><tr><th class="num">#</th><th>Country</th><th>Region</th><th class="num">5-year risk</th><th class="num">× base rate</th><th>Range</th><th class="num">Simulator ${M.origin + 1}–${String(M.origin + 5).slice(2)}</th><th class="num">Simulator by 2035</th><th>Top risk factors</th></tr></thead><tbody>` +
     rows.map(c => `<tr><td class="num">${c.rank}</td><td>${c.name}${c.in_conflict ? ' <span class="pill">in conflict</span>' : ""}</td><td class="muted">${c.region}</td>
       <td class="num">${pct(c[TASK], 1)}</td>
+      <td class="num muted">${M.base_rates && M.base_rates[TASK] ? (c[TASK] / M.base_rates[TASK]).toFixed(1) + "×" : "–"}</td>
       <td><div class="bar" aria-hidden="true"><span style="width:${100 * c[TASK] / mx}%"></span><em style="left:${100 * c[TASK + "_lo"] / mx}%;width:${100 * (c[TASK + "_hi"] - c[TASK + "_lo"]) / mx}%"></em></div></td>
       <td class="num">${pct(c[simKey])}</td><td class="num">${pct(c[simKey2])}</td>
       <td>${(c[TASK + "_drivers"] || []).map(d => `<span class="chip">${d.replaceAll("_", " ")}</span>`).join("")}</td></tr>`).join("") + "</tbody>";
