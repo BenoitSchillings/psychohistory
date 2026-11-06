@@ -10,6 +10,15 @@ elections, currency and recession questions -- the model forecasts none of these
 Five-year probabilities are turned into the question's window (from the crowd snapshot to the close date) assuming
 a constant hazard. The crowd is taken one week after the question opened (p_open_7d) and at the midpoint.
 
+--labels ucdp: the model trained on UCDP/PRIO interstate conflict (labels through 2024, refitted for each question's
+year on windows complete before it) -> outputs/crowd_benchmark_ucdp.json. Pre-registered 2026-11-05, before running:
+the benchmark keeps whichever label set has the lower leave-one-pair-out Brier on the resolved questions, and the
+logged pool weight stays 0.1 for every question resolving from now on, whatever the comparison shows.
+Result (2026-11-05, one week after opening, 63 questions): Brier UCDP 0.130, MID 0.132, crowd 0.100; leave-one-pair-out
+blend 0.104 / 0.111. UCDP labels are the default since. Either label is rarer than the questions' events (13% of
+questions resolved yes; the model's mean is 2% with UCDP, 8% with MID): the stale MID labels were not why the crowd
+wins, the mismatch between "use of force" and a 25-death conflict is a larger part.
+
 Scores: Brier of model and crowd on the same questions, the mean log-score, and a leave-one-out logistic blend of
 the two (does the model add anything to the crowd?). Standard errors cluster by country pair.
 """
@@ -70,8 +79,23 @@ def main():
     sel = q[(q.category == "interstate") & ~q.subtype.isin(SKIP_SUB) & q.iso3_a.notna() & q.iso3_b.notna()
             & q.title.str.contains(FORCE)].copy()
     df = I.build(False)
-    tr = df.force_5y.notna()
-    m = I.DyadModel().fit(df.loc[tr, I.FEATS].to_numpy(float), df.loc[tr, "force_5y"].to_numpy())   # labels end 2010
+    labels = sys.argv[sys.argv.index("--labels") + 1] if "--labels" in sys.argv else "ucdp"   # (mid until 2026-11-05)
+    if labels == "mid":
+        tr = df.force_5y.notna()
+        m_mid = I.DyadModel().fit(df.loc[tr, I.FEATS].to_numpy(float), df.loc[tr, "force_5y"].to_numpy())   # labels end 2010
+        model_for = lambda y0: m_mid
+    else:
+        # UCDP/PRIO interstate conflict (25+ battle deaths in a year) within five years, labels through 2024; each
+        # question's model is trained only on five-year windows complete by the year before it opened (debate
+        # 2026-11-05: the MID labels end in 2010, five years before the first question). A higher bar than "use of
+        # force" (strikes need not kill 25), so the two are reported side by side.
+        fits = {}
+
+        def model_for(y0):
+            if y0 not in fits:
+                tr = df.interstate_5y.notna() & (df.year + 5 <= y0)
+                fits[y0] = I.DyadModel().fit(df.loc[tr, I.FEATS].to_numpy(float), df.loc[tr, "interstate_5y"].to_numpy())
+            return fits[y0]
     rows, skipped, conts = [], 0, {}
     for _, r in sel.iterrows():
         a, b = sorted((r.iso3_a, r.iso3_b))
@@ -79,7 +103,7 @@ def main():
         x = df[(df.a == a) & (df.b == b) & (df.year == y0)]
         if x.empty:
             continue
-        p5 = float(m.predict(x[I.FEATS].to_numpy(float))[0])
+        p5 = float(model_for(y0).predict(x[I.FEATS].to_numpy(float))[0])
         # a war already in progress: next year's continuation is a floor (as in interstate.run)
         run_y = int(np.clip(np.nan_to_num(x.conflict_run_years.iloc[0]), 0, 3))
         if run_y > 0:
@@ -100,7 +124,7 @@ def main():
                              "y": float(r.resolution), "crowd": float(r[col]), "model": float(window_prob(p5, s_, end)),
                              "model_5y": p5, "days": (end - s_).days, "year": int(r.open_date.year)})
     R = pd.DataFrame(rows)
-    out = {"n_questions_total": int(len(q)), "n_matched": int(sel.shape[0]), "n_skipped_no_deadline": skipped, "note": __doc__.strip().split("\n\n")[0]}
+    out = {"labels": labels, "n_questions_total": int(len(q)), "n_matched": int(sel.shape[0]), "n_skipped_no_deadline": skipped, "note": __doc__.strip().split("\n\n")[0]}
     lo = lambda p: np.log(np.clip(p, 0.005, 0.995) / (1 - np.clip(p, 0.005, 0.995)))
     for snap, g in R.groupby("snap"):
         y, c, mo = g.y.to_numpy(), g.crowd.to_numpy(), g.model.to_numpy()
@@ -133,7 +157,7 @@ def main():
                      "brier_diff_blend_minus_crowd_90ci": np.percentile(db, [5, 95]).round(4).tolist(),
                      "mean_crowd": float(c.mean()), "mean_model": float(mo.mean())}
     out["questions"] = R[R.snap == "open"].sort_values("year").round(4).to_dict("records")
-    json.dump(out, open(os.path.join(ROOT, "outputs", "crowd_benchmark.json"), "w"), indent=1)
+    json.dump(out, open(os.path.join(ROOT, "outputs", "crowd_benchmark.json" if labels == "ucdp" else f"crowd_benchmark_{labels}.json"), "w"), indent=1)
     print(json.dumps({k: v for k, v in out.items() if k != "questions"}, indent=1))
 
 

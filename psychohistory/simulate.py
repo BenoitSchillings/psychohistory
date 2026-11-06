@@ -279,6 +279,13 @@ class Transition:
                 a_all = torch.where(self.shocks_t > 0, ASYM_SHOCK[0] * self.shocks_t, ASYM_SHOCK[1] * self.shocks_t)
                 self._asym_mu = float(a_all.mean() - getattr(self, "shock_scale", 1.0) * self.shocks_t.mean())
             sh = torch.where(sh > 0, ASYM_SHOCK[0] * sh, ASYM_SHOCK[1] * sh) - self._asym_mu
+        elif getattr(self, "split", None) is not None:
+            # the replayed year = its decade's mean + the year's deviation from it, scaled apart (SHOCK_SPLIT)
+            if getattr(self, "_dec_mu_t", None) is None:
+                dm = np.array([self.year_shocks[self.shock_years // 10 == d].mean() for d in self.shock_years // 10])
+                self._dec_mu_t = torch.as_tensor(dm, dtype=self.shocks_t.dtype, device=self.shocks_t.device)
+            mu_ = self._dec_mu_t[shock_idx]
+            sh = self.split[0] * mu_ + self.split[1] * (sh - mu_)
         else:
             sh = getattr(self, "shock_scale", 1.0) * sh
         return (mean + sh[:, None] + regime + eps).clamp(self.lo, self.hi)
@@ -484,9 +491,18 @@ ENS_REFRESH_LEVEL = True  # re-solve each hazard's level at a refresh so the wor
 # country frailty correlated between neighbours: z mixed with its distance-weighted neighbours' (features.SPATIAL W,
 # exp(-km / 800), rows normalised) by this weight, rescaled so every country keeps variance frailty_sd^2 (0: independent)
 FRAILTY_SPATIAL = 0.0
+# the year-1 alignment solved on the previous decade's own risk sets (pipeline.align_delta) for these hazards ("o"
+# onsets, "t" endings): scripts/align_oracle.py found it closer to the next decade's right shift for endings in 3 of
+# 4 decades, for onsets in 1 of 4 (2026-11-05); "" = the origin's risk sets, as before
+ALIGN_MATCHED = ""
+ABSENT_MASK = True        # countries not yet existing at a hindcast origin: out of the alignment, no wars or coups
 ONSET_SLOPE = 1.0         # onset log-odds x this before alignment (1.15-1.5 rejected 2026-11-03: worse on 1970-1998)
 # 2026-11-02 tests (off = the adopted model):
 VOL_NOISE = False         # B: growth noise scaled by the country's own 10-year growth volatility (slope estimated in fit)
+# replayed world growth shocks split into the decade's mean and the year's deviation from it, scaled (era, year) in
+# place of year_shock_scale. The 0.7 scale was chosen on 10-year world GDP spread, which decade means drive (64-82% of
+# its variance); it also damped the yearly swings, and simulated world recessions are too rare (debate 2026-11-05)
+SHOCK_SPLIT = None
 ASYM_SHOCK = None         # C: (boom scale, bust scale) for the replayed world shocks, recentred, in place of shock_scale
 DEM_INTER = ()            # D: interaction pairs added to the democracy equation, e.g. (("democracy", "freexp_change_5y"),)
 DEMOG_COHORT = False
@@ -634,6 +650,23 @@ def _ens_refresh(models, Xh, haz_net, haz_offset0):
     return torch.nan_to_num(torch.where(keep, off, torch.zeros_like(off)))
 
 
+def _config_record(net, WS, struct_ran, offset_ran, call):
+    """what this run actually simulated, for scripts/config_parity.py: the network's provenance (pipeline.build_sim_env),
+    whether the structural draw and the ensemble offset ran, every module switch, the world layer's settings"""
+    import dataclasses
+    mod = {k: v for k, v in globals().items() if k.isupper() and isinstance(v, (int, float, str, bool, tuple, type(None)))}
+    cfg = None
+    if WS is not None:
+        cfg = {}
+        for fl in dataclasses.fields(WS.cfg):
+            v = getattr(WS.cfg, fl.name)
+            cfg[fl.name] = v if isinstance(v, (int, float, str, bool, type(None))) else repr(v)
+    return {"net": dict(getattr(net, "env", None) or {"standalone": True, "n_nets": len(getattr(net, "nets", []))}),
+            "struct_ran": bool(struct_ran), "offset_ran": bool(offset_ran), "world": cfg,
+            "call": {k: (list(v) if isinstance(v, tuple) else v) for k, v in call.items()},
+            "module": {k: (list(v) if isinstance(v, tuple) else v) for k, v in mod.items()}}
+
+
 @torch.no_grad()
 def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, origin: int, end: int,
              n_scen=4000, seed=0, device=DEVICE, record_paths=8, chronicle=0, mood_sd=(0.10, 0.10), mood_rho=0.9,
@@ -641,8 +674,10 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
              align=True, world=None, dyads=None, slow_dynamics=True, migration=True, damage_feedback=True,
              align_window=10, align_longrun_w=0.0, year_shock_scale=0.7, align_longrun_targets="otc",
              dem_regime_scale=None, dem_shock_scale=1.0, frailty_sd=0.6, frailty_end=1.0, coup_frailty_sd=0.0, coup_align_window=None, coup_align_mult=None,
-             haz_offset=None):
-    """`growth_regime_scale` and `mood_sd` are dispersion settings chosen with the hindcasts
+             haz_offset=None, struct=None):
+    """`struct`: run the structural draw (STRUCT_MODE) - default only with a world layer that samples its parameters,
+    as the forecast; True runs it without the world layer too (scripts/sim_eval.py, in the forecast's configuration).
+    `growth_regime_scale` and `mood_sd` are dispersion settings chosen with the hindcasts
     (see README: their coverage is therefore mildly optimistic). mood_sd was lowered from 0.20 to 0.10 on 2026-10-27:
     with 0.20 the world conflict level was over-dispersed (scripts/conflict_clustering_check.py, dev origins 1970-1998:
     CRPS -7.6%, better at 11 of 15 origins; realised value in the middle half of the forecast 53% instead of 67%).
@@ -658,6 +693,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     (the risk-model ensemble's view at the origin minus the network's). None: `net.haz_offset` if the caller attached one
     (pipeline.attach_ensemble), restricted to the hazards in ENS_OFFSET.
     `coup_align_mult`: None = 0.66 with the ensemble's coup offset, 0.7 without (both chosen on 1970-1998 hindcasts)."""
+    _call = {k: v for k, v in locals().items() if isinstance(v, (int, float, str, bool, tuple, type(None)))}
     gen = torch.Generator(device=device).manual_seed(seed)
     C = len(p.codes)
     if haz_offset is None and getattr(net, "haz_offset", None) is not None:
@@ -675,6 +711,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     # scale of the replayed global year shock (growth only): 0.7 since 2026-10-27, world GDP was over-dispersed
     # (scripts/sim_eval.py: world GDP CRPS -2.2% on dev origins 1970-1998, -3.1% on test origins 2000-2012)
     growth.shock_scale = year_shock_scale
+    growth.split, growth._dec_mu_t = SHOCK_SPLIT, None
     ddem.shock_scale = dem_shock_scale
     tt = lambda a: torch.as_tensor(np.asarray(a), dtype=torch.float32, device=device)
     regions = torch.as_tensor(p.regions, device=device)
@@ -686,6 +723,11 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     for k in WINDOW_VARS:
         if k != "conflict":
             h[k] = _ffill_window(h[k])          # bridge 1-3 year reporting lags at the origin
+    # countries that do not exist yet at the origin (hindcasts only; none at 2025): left out of the alignment's risk
+    # sets and held out of wars and coups (ABSENT_MASK). They used to count as countries at peace, which diluted the
+    # year-1 onset alignment and pushed its shift up for everyone (debate 2026-11-05; open since the 2026-10-28 review)
+    absent = torch.as_tensor(~np.isfinite(base["conflict"][:, t0]), device=device) if ABSENT_MASK else \
+        torch.zeros(len(p.codes), dtype=torch.bool, device=device)
     h["conflict"] = torch.nan_to_num(h["conflict"])
     cur = {k: tt(base[k][:, t0])[None].repeat(S, 1) for k in CURRENT_VARS}
     # trends (country-level, deterministic)
@@ -785,7 +827,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     trans_prev = torch.zeros(S, C, device=device)
     struct_sd = struct_shift = None
     struct_var = None
-    if WS is not None and WS.cfg.sample_params and STRUCT_MODE in ("family", "familyc", "ens_onset") and getattr(net, "struct_fam", None) is not None:
+    struct_on = bool(struct) if struct is not None else (WS is not None and WS.cfg.sample_params)
+    if struct_on and STRUCT_MODE in ("family", "familyc", "ens_onset") and getattr(net, "struct_fam", None) is not None:
         # each world and hazard takes one family's view of every country (within the families' range by construction);
         # "familyc": the offsets centred on their weighted mean, so the draw spreads risk without moving its level;
         # "ens_onset": centred for war ending and coups, uncentred for war onset (the onset level becomes the
@@ -806,7 +849,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         g_s = torch.Generator(device=device).manual_seed(seed + 4242)
         fi = torch.multinomial(tt(net.struct_w).expand(S * 3, -1), 1, replacement=True, generator=g_s).view(S, 3)
         struct_shift = torch.stack([sf[fi[:, j], :, j] for j in range(3)], -1)        # [S, C, 3]
-    elif WS is not None and WS.cfg.sample_params and STRUCT_MODE == "gauss" and getattr(net, "struct_sd", None) is not None:
+    elif struct_on and STRUCT_MODE == "gauss" and getattr(net, "struct_sd", None) is not None:
         struct_sd = tt(np.clip(net.struct_sd, 0, 1.5))
         g_s = torch.Generator(device=device).manual_seed(seed + 4242)
         z_struct = torch.randn(S, 3, device=device, generator=g_s)
@@ -1153,7 +1196,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         if k == 1 and align:
             # solve for the log-odds shift that matches each target rate on the origin's risk sets
             conf0 = h["conflict"][..., -1] > 0.5
-            for j, (target, risk) in enumerate([(r_on, ~conf0), (r_te, conf0), (r_cp, torch.ones_like(conf0))]):
+            here = ~absent[None].expand_as(conf0)
+            for j, (target, risk) in enumerate([(r_on, ~conf0 & here), (r_te, conf0 & here), (r_cp, here)]):
                 if target is None or not bool(risk.any()) or not (0 < target < 1):
                     continue
                 z = haz[..., j][risk]
@@ -1165,6 +1209,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                     else:
                         hi_ = mid
                 shift[j] = (lo_ + hi_) / 2
+                if "otc"[j] in ALIGN_MATCHED and getattr(net, "align_delta", None) is not None:
+                    shift[j] = shift[j] + float(net.align_delta[j])
         haz = haz + shift
         if not SHIFTERS_BEFORE_ALIGN:
             haz = _shifters(haz)
@@ -1200,6 +1246,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         conf = h["conflict"][..., -1]
         u = torch.rand(S, C, device=device, generator=gen)
         conf_next = torch.where(conf > 0.5, (u >= haz[..., 1]).float(), (u < haz[..., 0]).float())
+        conf_next = conf_next * (~absent).float()
         onset_next = ((conf < 0.5) & (conf_next > 0.5)).float()
         if WS is not None:
             # a new war starts with the first-year mean number of rebel groups, and groups multiply as it ages (the
@@ -1214,7 +1261,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         u_i = torch.rand(S, C, device=device, generator=gen)
         intl = torch.where((conf > 0.5) & (conf_next > 0.5), intl,
                            torch.where(onset_next > 0, (u_i < R_.INTL_SHARE).float(), torch.zeros_like(intl)))
-        coup_next = (torch.rand(S, C, device=device, generator=gen) < haz[..., 2]).float()
+        coup_next = (torch.rand(S, C, device=device, generator=gen) < haz[..., 2]).float() * (~absent).float()
         coup_last = coup_next
         # interstate wars between country pairs (learned hazard, duration table, alliance cascade)
         if WS is not None and WS.dy is not None:
@@ -1961,6 +2008,9 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                           else -1).cpu().numpy() for k, v in rec.items()}
     out["paths"] = {k: torch.stack(v, -1).cpu().numpy() for k, v in paths.items()}
     out["years"] = np.arange(origin + 1, end + 1)
+    out["config"] = _config_record(net, WS, struct_on and (struct_shift is not None or struct_sd is not None),
+                                   haz_offset is not None and bool(np.any(np.asarray(haz_offset) != 0)),
+                                   {k: v for k, v in _call.items()})
     from .dynamics import SPEC as _SLOW_SPEC
     if mc_models is not None:
         out["macro_crises"] = {k: torch.stack(v, -1).cpu().numpy() for k, v in mc_rec.items()}     # [S, T] countries hit

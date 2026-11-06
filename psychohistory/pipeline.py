@@ -198,7 +198,86 @@ def sim_net(ens, X_now):
     net = copy.copy(ens.fam["N"][0])
     net.nets = [n for m in ens.fam["N"] for n in m.nets]
     net.ens_models = {f: ens.fam[f] for f in ("G", "G60", "N", "F") if f in ens.fam}   # (simulate.ENS_REFRESH)
+    # what the simulator was built from (recorded in simulate's output config; scripts/config_parity.py)
+    net.env = {"members": int(ens.members), "ens_seed": int(getattr(ens, "seed", 0)), "n_nets": len(net.nets),
+               "families": sorted(f for f in ens.fam if f in ("G", "G60", "N", "F")),
+               "first_year": int(min(ens.first_year.values()))}
     return attach_ensemble(net, ens, X_now)
+
+
+# the simulator's network as the forecast builds it (step_forecast): the risk ensemble fitted on every row from 1860
+# (each family on its own window), the PsychoNet members of both seeds pooled, the family draw's inputs attached.
+# Every harness builds it with build_sim_env, so tests run the forecast's configuration (debate 2026-11-05: the
+# 10-year harness ran a stand-alone 8-member network without the family draw, the full-system cache a 3-member ensemble)
+SIM_ENV = {"members": 10, "families": ("G", "G60", "N", "F"), "first_year": 1860}
+
+
+def align_delta(net, p, X, base, origin, window=10):
+    """[3] log-odds to add to the year-1 alignment shift (onset, ending, coups) so that it is solved on the previous
+    decade's own yearly risk sets instead of the origin's (simulate.ALIGN_MATCHED): the network's shift matching the
+    decade's rate on that decade's rows, minus the one matching it on the origin's risk set. Data before the origin only.
+    scripts/align_oracle.py: closer to the next decade's right shift for war endings in 3 of 4 decades, not for onsets"""
+    from .features import TASKS
+    cf = base["conflict"]
+    lg = lambda v: np.log(np.clip(v, 1e-5, 1 - 1e-5) / (1 - np.clip(v, 1e-5, 1 - 1e-5)))
+
+    def solve(z, target):
+        lo, hi = -4.0, 4.0
+        for _ in range(50):
+            mid = (lo + hi) / 2
+            lo, hi = (mid, hi) if np.mean(1 / (1 + np.exp(-(z + mid)))) < target else (lo, mid)
+        return (lo + hi) / 2
+    out = np.zeros(3)
+    t0 = p.yi(origin)
+    for j, (task, at_war) in enumerate((("onset_1y", False), ("termination_1y", True))):
+        k = TASKS.index(task)
+        zs, ys = [], []
+        for y in range(origin - window, origin):
+            t = p.yi(y)
+            now, nxt = cf[:, t], cf[:, t + 1]
+            risk = np.isfinite(now) & np.isfinite(nxt) & ((now == 1) if at_war else (now == 0))
+            pr = net.predict(X[:, t])[:, k]
+            ok = risk & np.isfinite(pr)
+            zs.append(lg(pr[ok]))
+            ys.append((nxt[ok] == 0) if at_war else (nxt[ok] == 1))
+        zp, yp = np.concatenate(zs), np.concatenate(ys).astype(float)
+        now = cf[:, t0]
+        risk0 = np.isfinite(now) & ((now == 1) if at_war else (now == 0))
+        z0 = lg(net.predict(X[:, t0])[:, k])[risk0 & np.isfinite(net.predict(X[:, t0])[:, k])]
+        if len(zp) and len(z0) and 0 < yp.mean() < 1:
+            out[j] = solve(zp, yp.mean()) - solve(z0, yp.mean())
+    return out
+
+
+def build_sim_env(p, X, Xf, Yf, ci, year, origin, members=None, seed=0, cache=True, base=None):
+    """the forecast's simulator network at a past origin, trained only on data before it; cached on disk
+    (outputs/sim_env/<origin>_m<members>_s<seed>.pkl). seed offsets every family's seeds (0 = the forecast's)."""
+    import pickle
+    from .backtest import train_mask
+    from .models import SeldonEnsemble, load_combine
+    members = members or SIM_ENV["members"]
+    d = OUT / "sim_env"
+    d.mkdir(parents=True, exist_ok=True)
+    f = d / f"{origin}_m{members}_s{seed}.pkl"
+    if cache and f.exists():
+        with open(f, "rb") as fh:
+            net = pickle.load(fh)
+        if base is not None and getattr(net, "align_delta", None) is None:
+            net.align_delta = align_delta(net, p, X, base, origin)
+        return net
+    Ytr, tr = train_mask(Yf, year, origin, first_year=SIM_ENV["first_year"])
+    ens = SeldonEnsemble(load_combine(), members=members, families=list(SIM_ENV["families"]), seed=seed).fit(
+        Xf[tr], Ytr[tr], ci[tr], year[tr])
+    net = sim_net(ens, X[:, p.yi(origin)])
+    net.env["origin"] = int(origin)
+    net.fam_p1 = {k: v for k, v in ens.predict_families(X[:, p.yi(origin)]).items()}   # [C, tasks] per family
+    net.align_delta = align_delta(net, p, X, base, origin) if base is not None else None
+    if cache:
+        refresh, net.ens_models = net.ens_models, None        # the tree families are large; ENS_REFRESH is off
+        with open(f, "wb") as fh:
+            pickle.dump(net, fh)
+        net.ens_models = refresh
+    return net
 
 
 def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, members=10,
@@ -225,6 +304,7 @@ def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, 
     # world draws which model family is right (simulate.STRUCT_MODE = "familyc"), around the ensemble's central view
     # of onsets and coups (simulate.ENS_OFFSET, 2026-11-03)
     net = sim_net(ens, X_now)
+    net.align_delta = align_delta(net, p, X, base, origin)          # (used only if simulate.ALIGN_MATCHED)
     clim = climate_summary(p, base, origin, end)
     # world-system layer: interstate wars between country pairs, food, energy, pandemics (AI off in the baseline)
     from . import interstate as INTER
@@ -237,6 +317,8 @@ def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, 
     _log(f"simulating {n_scen} worlds {origin}->{end} under {scenario}, climate damage x{climate_damage}, world system on")
     sim = simulate(p, base, net, growth, ddem, origin, end, n_scen=n_scen, clim=clim[scenario]["inputs"],
                    climate_damage=climate_damage, world=wbase, dyads=dy)
+    # the configuration the forecast simulated: the reference for scripts/config_parity.py
+    (OUT / "sim_config_forecast.json").write_text(json.dumps(sim["config"], indent=1, default=str))
     # the same world under every climate scenario, with and without economic damage
     q = lambda a: np.quantile(a, [.05, .25, .5, .75, .95], 0).round(4).tolist()
     scen_out = {}
@@ -402,6 +484,28 @@ def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, 
     o = simulate(p, base, net, growth, ddem, origin, end, n_scen=scen_n, clim=clim[scenario]["inputs"],
                  climate_damage=climate_damage, seed=2, world=WorldConfig(cascade_q=0.5, sample_params=True), dyads=dy)
     ai_out["alliances_1914"] = world_summary(o)
+    # the alliance rule before treaty scope (2026-11-05): a permanent Security Council member joins any ally's war at
+    # the full rate, wherever it is (France in a US-China war over Taiwan as often as in a Russian attack on Estonia)
+    _log("  scenario: alliances without treaty scope")
+    o = simulate(p, base, net, growth, ddem, origin, end, n_scen=scen_n, clim=clim[scenario]["inputs"],
+                 climate_damage=climate_damage, seed=2,
+                 world=WorldConfig(ai=AI_SCENARIOS["uncertain"], sample_params=True, ally_out_scope=1.0), dyads=dy)
+    ai_out["alliances_any_scope"] = world_summary(o)
+    # labelled scenario (not the headline): wars between states last as long as in the last decade. The simulator
+    # missed the 2010s rise in active interstate conflicts two- to threefold, mostly in how long they last; fitting it
+    # would use the outcomes that should test it (docs/adopt_rule.md), so it is shown beside the headline instead:
+    # the continuation table weighted with a 5-year half-life (25 in the headline)
+    _log("  scenario: interstate wars as long as in the 2010s")
+    hl0 = INTER.CONT_HALFLIFE
+    try:
+        INTER.CONT_HALFLIFE = 5
+        dy10 = INTER.sim_inputs(INTER.run(verbose=False, origin=origin, backtests=False))
+    finally:
+        INTER.CONT_HALFLIFE = hl0
+    o = simulate(p, base, net, growth, ddem, origin, end, n_scen=scen_n, clim=clim[scenario]["inputs"],
+                 climate_damage=climate_damage, seed=2, world=WorldConfig(ai=AI_SCENARIOS["uncertain"], sample_params=True),
+                 dyads=dy10)
+    ai_out["interstate_2010s"] = world_summary(o)
     # water and glaciers (assumptions): the same worlds with the effects off, at their sampled values, and with
     # disputes, scarcity and the yield response at the top of their ranges (the Indus stress test)
     for key, cfg_ in (("water_off", dict(water=False)), ("water_ref", {}),

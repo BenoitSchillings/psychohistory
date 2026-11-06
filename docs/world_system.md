@@ -2372,3 +2372,51 @@ The earlier tests above ran a stand-alone network without the family draw, which
   interstate -1.1% on 2000-2009). Joint test (scripts/joint_hindcast_test.py, 13 origins 1970-2006, 15 years, same
   network per origin): per-country conflict variogram score -0.02% (8/13), energy score +0.02% (4/13); world conflict
   by year energy score +0.45% (2/13). No gain in co-movement: rejected, FRAILTY_SPATIAL stays 0.
+
+## Debate and harness parity (2026-11-05)
+Six independent reviews (three per AI lab, two rounds; positions and rebuttals in the session's scratchpad, summary
+below) agreed that the binding problem was the testing, not the model. What changed:
+
+- **One simulator construction.** `pipeline.build_sim_env` builds the simulator's network exactly as `step_forecast`
+  does (the risk ensemble from 1860 with 10 members, both PsychoNet seeds pooled into 20 nets, the family draw's inputs
+  attached), cached per origin and refit seed in `outputs/sim_env/` (about 30 s per origin to fit). world_hindcast,
+  sim_eval and joint_hindcast_test all use it. Before: sim_eval ran a stand-alone 8-member network and never ran the
+  family draw (simulate applied it only with a world layer; `simulate(struct=True)` now runs it without one); the
+  full-system cache (scripts/ens_cache.py) held a 3-member ensemble. `SeldonEnsemble(seed=)` offsets every family's
+  seeds for independent refits.
+- **Configuration records.** Every simulate() call returns `config` (network provenance, whether the family draw and
+  the offset ran, every module switch, the world layer's settings, the call's arguments); world_hindcast and sim_eval
+  save it and the forecast writes `outputs/sim_config_forecast.json`. `scripts/config_parity.py` lists every
+  difference from the forecast that a hindcast does not need. It caught a run made before a switch existed.
+- **joint_hindcast_test** now runs the forecast's configuration with the world layer on (it ran without interstate
+  wars or cascades), resets module constants between variants (they leaked from one variant to the next), and adds a
+  distance-weighted variogram (exp(-km / 800)) next to the unweighted one, which the many distant pairs dominated.
+- **The adopt rule** is rewritten in docs/adopt_rule.md before any decision under it: 16 origins 1970-2009 at 15 years,
+  three ensemble refits, one composite with fixed weights, at least 3 of 4 decades better, beyond the measured noise
+  floor, no weighted statistic worse by more than 3%. scripts/adopt_score.py applies it.
+- A regression test now checks that `simulate` stays under `@torch.no_grad()`: inserting a helper above it moved the
+  decorator for the second time, and 2,000 worlds then ran out of GPU memory.
+
+Bug fixes (open since the 2026-10-28 review):
+- Countries not yet existing at a hindcast origin counted as countries at peace (simulate's nan_to_num on conflict):
+  they diluted the year-1 onset alignment's risk set, so the shift went up for every country. They are now out of
+  the alignment and have no wars or coups until the data has them (simulate.ABSENT_MASK; no effect at 2025).
+- US tariff exposure divided nominal imports by PPP GDP (about half the exposure of developing exporters; Taiwan got
+  none). It now uses current-dollar GDP from the External Wealth of Nations dataset (2024): Vietnam 2.7% of GDP, Cambodia
+  6.1%, Mexico 1.1%, China 0.5%, Taiwan 0.3%.
+- The annual ledger's persistence baseline gave every country at peace a 10% chance of war; it now uses the two rates
+  estimated on the same proxy over the previous ten years (2025: staying at war 0.90, starting one 0.025). One
+  canonical frozen forecast per release (`annual_ledger.py canonical`): version 53 is 737e06bf69cd.
+
+Report:
+- The methodology's headline paragraph is written from outputs/forecast.json with each number's known hindcast bias
+  (scripts/headline_sync.py, `--check` before a release); it still quoted the 29 October forecast.
+- A labelled scenario, not the headline: wars between states last as long as in the 2010s (continuation table
+  half-life 5 years instead of 25: a first-year war continues with 0.75 instead of 0.43, a third year 0.91 instead
+  of 0.78). Fitting the 2010s rise would use the outcomes that should test it.
+- Crowd benchmark rebuilt on UCDP labels through 2024, refitted for each question's year (the MID labels end in
+  2010). Pre-registered: keep the label set with the lower leave-one-pair-out Brier; pool weight stays 0.1. Result,
+  63 questions: model Brier 0.130 (UCDP) / 0.132 (MID), crowd 0.100, blend 0.104 / 0.111; the 0.1 pool 0.0988 against
+  the crowd's 0.0998. UCDP is now the default. The stale labels were not why the crowd wins: 13% of the questions
+  resolved yes, while the model's mean probability is 2% (UCDP, 25 battle deaths) or 8% (MID): "use of force" is a
+  lower bar than either label.

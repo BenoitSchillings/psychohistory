@@ -105,3 +105,20 @@ def test_uncertain_ai_arrival(panel):
     assert abs((arr <= 2032.5).mean() - dict(ARRIVAL_CDF)[2032.5]) < 0.03
     A, _, fr = W.adoption(LAST_OBS_YEAR + 40)
     assert float(A[torch.isinf(W.arrival_w).ravel()].max()) == 0.0
+
+
+def test_simulate_runs_without_gradients():
+    """simulate must stay under torch.no_grad: without it the hazards record gradients and 2,000 worlds exhaust the
+    GPU (the decorator moved onto a helper twice, 2026-11-04 and 2026-11-05)"""
+    import inspect
+    from psychohistory import simulate as SIM
+    src = inspect.getsource(SIM)
+    i = src.index("\ndef simulate(")
+    assert src[:i].rstrip().endswith("@torch.no_grad()")
+
+
+def test_config_parity_self_test():
+    import subprocess, sys, os
+    r = subprocess.run([sys.executable, "-P", os.path.join(os.path.dirname(__file__), "..", "scripts", "config_parity.py"),
+                        "--self-test"], capture_output=True, text=True, env={**os.environ, "PYTHONPATH": "."})
+    assert r.returncode == 0 and "self-test passed" in r.stdout

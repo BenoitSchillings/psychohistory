@@ -1,6 +1,7 @@
 """Evaluation harness for simulator changes: hindcasts from past origins (models trained only on data before each
-origin, demography extrapolated), scored with proper scores on what happened. Settings are chosen on the dev origins
-(1970-1998) and confirmed on the test origins (2000-2012); a change is kept only if it wins on both.
+origin, demography extrapolated), scored with proper scores on what happened. The network is the forecast's
+(pipeline.build_sim_env, with the family draw; since 2026-11-05) and only the world layer is off. Decisions follow
+docs/adopt_rule.md (leave-one-decade-out over all origins, a pre-registered composite, measured noise floors).
 
 python -P scripts/sim_eval.py TAG FIRST LAST STEP ['{"simulate kwarg": value}'] ['{"module.CONST": value}']
 -> outputs/sim_eval/TAG.json (per origin)          python -P scripts/sim_eval.py --compare TAG_A TAG_B
@@ -83,37 +84,30 @@ def main():
     S, H = int(kw.pop("n_scen", 3000)), int(kw.pop("horizon", 10))
     net_seed = int(kw.pop("net_seed", 0))
     # the ensemble's central offset (simulate.ENS_OFFSET, adopted 2026-11-03) from scripts/ens_cache.py; "" = without
-    ens_off, ens_w = kw.pop("ens_offset", SIM.ENS_OFFSET), float(kw.pop("ens_w", 1.0))       # seed of the hazard networks (to measure their initialisation noise)
+    # net_seed: refit of the forecast's ensemble with every seed offset (pipeline.build_sim_env); members: its size
+    legacy, members = bool(kw.pop("legacy", 0)), kw.pop("members", None)
+    if "ens_offset" in kw:                                    # the ensemble's central offset (simulate.ENS_OFFSET)
+        SIM.ENS_OFFSET = kw.pop("ens_offset")
     p, base, X, Yl = PL.prepare(False)
     Xf, Yf, ci, year = flatten(p, X, Yl)
     os.makedirs(OUT, exist_ok=True)
     f = os.path.join(OUT, f"{tag}.json")
-    out = json.load(open(f))["by_origin"] if os.path.exists(f) else {}
+    prev = json.load(open(f)) if os.path.exists(f) else {}
+    out, cfgs = prev.get("by_origin", {}), prev.get("config", {})
     for O in range(first, last + 1, step):
         if str(O) in out:
             continue
         E = min(O + H, LAST_OBS_YEAR)
-        Ytr, tr = train_mask(Yf, year, O)
-        net = PsychoNet(members=8, seed=net_seed, **NET_TUNED).fit(Xf[tr], Ytr[tr], ci[tr])
         growth, ddem = SIM.fit_transitions(p, X, base, O)
         kw_o = dict(kw)
-        if ens_off:
-            # the risk-model ensemble's one-year log-odds at the origin (scripts/ens_cache.py: equal-weight probabilities
-            # of the G, G60, N, F families, the forecast's default) minus this network's, for the tasks in ens_off
-            # ("o" onset, "t" termination, "c" coups), held for the whole run
-            from psychohistory.features import TASKS
-            fc = os.path.join(OUT, "ens_cache", f"{O}.npz")
-            if not os.path.exists(fc):
-                sys.exit(f"no ensemble cache for {O}: run scripts/ens_cache.py {O} {O} 1 (or pass ens_offset \"\")")
-            ec = np.load(fc)
-            lgt = lambda q: np.log(np.clip(q, 1e-4, 1 - 1e-4) / (1 - np.clip(q, 1e-4, 1 - 1e-4)))
-            pe = ec["p"].mean(0)                                                         # [C, 3]
-            pn = net.predict(X[:, p.yi(O)])[:, [TASKS.index(t) for t in ("onset_1y", "termination_1y", "coup_1y")]]
-            off = np.nan_to_num(np.clip(lgt(pe) - lgt(pn), -3, 3))
-            for j, t in enumerate("otc"):
-                if t not in ens_off:
-                    off[:, j] = 0.0
-            kw_o["haz_offset"] = off * ens_w
+        if legacy:
+            # (before 2026-11-05: a stand-alone 8-member network, no family draw; for reproducing old tags only)
+            Ytr, tr = train_mask(Yf, year, O)
+            net = PsychoNet(members=8, seed=net_seed, **NET_TUNED).fit(Xf[tr], Ytr[tr], ci[tr])
+        else:
+            # the forecast's simulator network and its family draw (pipeline.build_sim_env), without the world layer
+            net = PL.build_sim_env(p, X, Xf, Yf, ci, year, O, members=members, seed=net_seed, base=base)
+            kw_o["struct"] = True
         o = SIM.simulate(p, base, net, growth, ddem, O, E, n_scen=S, demography="extrapolate", record_paths=S,
                          seed=O + 7, **kw_o)
         cf, gdp, dem = o["paths"]["conflict"], o["paths"]["gdp"], o["paths"]["dem"]       # [S, C, T]
@@ -201,7 +195,9 @@ def main():
             r["diag_coups_ratio"] = float(n_sim.mean() / max((ca[okc] > 0).sum(), 1))
         out[str(O)] = r
         print(O, E, json.dumps({k: round(v, 5) for k, v in r.items()}), flush=True)
-        json.dump({"tag": tag, "kwargs": kw, "consts": consts, "by_origin": out}, open(f, "w"), indent=1)
+        cfgs[str(O)] = o["config"]
+        json.dump({"tag": tag, "kwargs": kw, "consts": consts, "by_origin": out, "config": cfgs}, open(f, "w"), indent=1,
+                  default=str)
 
 
 if __name__ == "__main__":

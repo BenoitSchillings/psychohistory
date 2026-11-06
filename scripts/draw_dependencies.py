@@ -38,7 +38,7 @@ N = {
     "ocean": (0, "Ocean food: FAO fisheries (OWID), IFCD", "catch, aquaculture, fish in diets; fishery conflicts 1974-2016"),
     "innov": (0, "Innovation: PWT 11, WDI R&D, OECD MSTI, NSF, Epoch AI", "TFP, R&D, researchers, articles, patents; US frontier since 1929; AI compute"),
     "interv": (0, "UN peacekeeping, OECD/US aid, commodity exports", "UN Data Hub personnel 1990-2026; ODA; 2025 USAID cut; export shares; tariffs (Census, Yale)"),
-    "struct": (0, "UCDP dyadic & ESD, EPR-TEK, CCP, SSF, ECI, WDI IDS", "rebel groups, outside support, ethnic kin, term limits, coup-proofing, external debt"),
+    "struct": (0, "UCDP dyadic & ESD, EPR-TEK, CCP, SSF, ECI, WDI IDS, External Wealth of Nations", "rebel groups, outside support, ethnic kin, term limits, coup-proofing, external debt, nominal dollar GDP (tariff exposure)"),
     "pe": (0, "BoC-BoE defaults, Martinez lights, alliance reliability, IVS", "sovereign defaults, night lights vs GDP, honored alliances, public trust"),
     "us": (0, "US states: BEA, BLS, FHFA, CDC, NOAA…", "income, jobs, housing, overdoses, shootings, elections, climate"),
     "ushist": (0, "US history: USPVD, Voteview, JST", "political violence 1780-, polarisation, macro history"),
