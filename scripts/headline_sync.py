@@ -22,6 +22,15 @@ def paragraph():
     u = fc["ai"]["uncertain"]
     c_lo, c_hi = (f"{100 * u['world_conflict_q'][i][-1]:.0f}%" for i in (0, -1))
     ver, date = R.VERSION
+    nf = "the nuclear-pair war factor, whose range moves it a lot"
+    fr = R.OUT / "uncertainty_ranges.json"
+    if fr.exists():
+        g = json.loads(fr.read_text()).get("great_power_war", {}).get("drivers", {}).get("nuclear_war_factor")
+        if g:
+            nf = (f"the nuclear-pair war factor, whose range alone moves great-power war from "
+                  f"{100 * g['low_fifth']:.0f}% to {100 * g['high_fifth']:.0f}%")
+    gpw_any = fc["ai"].get("alliances_any_scope", {}).get("great_power_war_by", [None])[-1]
+    any_s = f"; {100 * gpw_any:.0f}% if allies joined any war wherever it was fought, the rule before November 2026" if gpw_any else ""
     return (f"The current headline (version {ver}, {date}): median world GDP per person in 2065 is {v['gdp_med']} "
             f"(90% band {v['gdp_lo']}–{v['gdp_hi']}; {v['gdp_noai']} with no AI shock). In hindcasts its 90% bands held "
             f"about 92% of the time at ten years, but countries' growth drifts apart 1.3–1.9 times too much since the "
@@ -30,9 +39,8 @@ def paragraph():
             f"{v['p_record']} of worlds; simulated from 2000–2012 the share at war came out about 6% low, while the safest "
             f"countries got too many new wars (two or three expected in 15 years from 1995–2009 origins, none happened). "
             f"A war between great powers of at least 1,000 battle deaths a year happens by 2065 in {v['gpw']} of worlds "
-            f"({v['gpw_cow']} among the traditional majors alone), and nuclear weapons are used in {v['nuke']}. These rest on "
-            f"the war model more than on assumptions, except the nuclear-pair war factor, whose range alone moves "
-            f"great-power war from 33% to 54%; the simulator missed the 2010s rise in wars between states two- to "
+            f"({v['gpw_cow']} among the traditional majors alone{any_s}), and nuclear weapons are used in {v['nuke']}. These rest on "
+            f"the war model more than on assumptions, except {nf}; the simulator missed the 2010s rise in wars between states two- to "
             f"threefold. The worst 1% of worlds on each measure are traced to their causes (see Disaster worlds).")
 
 

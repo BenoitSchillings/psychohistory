@@ -15,7 +15,7 @@ The second layer is a Monte Carlo simulator. It runs those hazards forward year 
 Every learned component is judged on data it did not see: rolling-origin backtests, one origin (2015) never used for any tuning choice, simulator hindcasts from 1970–2015, a scored 2025 out-of-sample year and comparisons with forecasting crowds. The guiding rule is that a new data family or mechanism is kept only if it improves forecasts it was not fitted to. Otherwise it stays a labelled assumption.
 
 <!-- headline -->
-The current headline (version 53, 4 November 2026): median world GDP per person in 2065 is $34k (90% band $18k–$88k; $24k with no AI shock). In hindcasts its 90% bands held about 92% of the time at ten years, but countries' growth drifts apart 1.3–1.9 times too much since the 1990s, so single-country bands are probably too wide. About 23% of countries are in civil conflict in 2065 (band 14%–35%), against 18% in 2025, and the 1990 record is broken in 78% of worlds; simulated from 2000–2012 the share at war came out about 6% low, while the safest countries got too many new wars (two or three expected in 15 years from 1995–2009 origins, none happened). A war between great powers of at least 1,000 battle deaths a year happens by 2065 in 48% of worlds (25% among the traditional majors alone), and nuclear weapons are used in 14%. These rest on the war model more than on assumptions, except the nuclear-pair war factor, whose range alone moves great-power war from 33% to 54%; the simulator missed the 2010s rise in wars between states two- to threefold. The worst 1% of worlds on each measure are traced to their causes (see Disaster worlds).
+The current headline (version 54, 5 November 2026): median world GDP per person in 2065 is $34k (90% band $18k–$88k; $24k with no AI shock). In hindcasts its 90% bands held about 92% of the time at ten years, but countries' growth drifts apart 1.3–1.9 times too much since the 1990s, so single-country bands are probably too wide. About 23% of countries are in civil conflict in 2065 (band 14%–35%), against 18% in 2025, and the 1990 record is broken in 78% of worlds; simulated from 2000–2012 the share at war came out about 6% low, while the safest countries got too many new wars (two or three expected in 15 years from 1995–2009 origins, none happened). A war between great powers of at least 1,000 battle deaths a year happens by 2065 in 45% of worlds (21% among the traditional majors alone; 48% if allies joined any war wherever it was fought, the rule before November 2026), and nuclear weapons are used in 13%. These rest on the war model more than on assumptions, except the nuclear-pair war factor, whose range alone moves great-power war from 31% to 55%; the simulator missed the 2010s rise in wars between states two- to threefold. The worst 1% of worlds on each measure are traced to their causes (see Disaster worlds).
 <!-- /headline -->
 
 ## Data
@@ -88,6 +88,7 @@ On the untouched 2015 origin, the risk models beat or match the naive baseline o
 | Simulator hindcasts | Simulate 1975, 1985, 1995, 2004, 2015 forward with models trained before each origin | Conflict ranking AUC 0.86–0.96; world conflict share inside the 90% band in 95–100% of years; GDP 90% band holds about 92% at ten years (too narrow from 1975, too wide from 2015) |
 | Out-of-sample year (2025) | Models trained to 2024, scored on 2025 | Ranked the only new civil war, South Sudan, 3rd of 142; a monthly version beat ViEWS on its own target |
 | Crowd benchmarks | Same questions as Metaculus and other crowds, same dates | Crowds win: interstate Brier 0.100 vs 0.132 (63 questions), leaders 0.088 vs 0.128 (64) |
+| Testing rule | Since 5 November 2026: the forecast's own configuration, 16 origins 1970–2009 at 15 years, three ensemble refits, one combined score decided by decade (docs/adopt_rule.md) | Noise between refits: combined 1.1%, new civil wars 11%, world share at war 9%; growth regimes and the oil fix confirmed, mood and debt pools below the noise |
 | Independent review | Seven rounds of independent code review; each finding checked in the code before acting | About 85 confirmed bugs fixed; about a third of the claims were wrong and rejected; no leakage of outcomes into training |
 | Joint hindcasts | 39 origins 1970–2008, 15 years ahead; energy and variogram scores against the same forecasts with countries or years shuffled independently | Year-to-year persistence of world conflict right at 39 of 39 origins, regional GDP co-movement at 38, country GDP co-movement at 34; which countries fight together: no skill (23 of 39); unchanged by country frailty |
 | Conflict clustering | 15 origins 1970–1998, 10 years ahead: spread of the world conflict level across worlds against the realised error | Too wide (0.047 vs 0.027; 67% of outcomes in the middle half). Mood factor halved: CRPS −7.6%, better at 11 of 15 origins, 53% in the middle half |
@@ -180,6 +181,46 @@ In the disaster analysis, climate damage is now a fifth of the economic-collapse
 ## Review fixes, five tests and an AI tail (2 November 2026)
 
 An independent review found that the new structural draw lacked the correction that keeps low risks from being inflated by random spread (fixed; the very-safe-country tail now improves slightly), that two random draws shared a seed (separated), and that one disaster knockout let engineered pathogens through (fixed). Five ideas were tested on history and rejected: growth noise scaled by each country's recent volatility (better GDP forecasts on 2000–2012, but countries spread apart more on 1970–1998), deeper world recessions (closer to the real recession count, worse scores), a free-speech-in-democracies interaction (no gain), a cohort-based working-age share for hindcasts (too crude), and the ensemble's level for war onset, which nearly removes the very-safe-country tail but lowers world war risk in the 2000s, before the 2010s rise. An AI loss-of-control catastrophe is now drawn in the headline as an assumption: after near-free AI arrives, a chance between superforecasters' and experts' estimates (about 2.5% of worlds by 2065 with AI timing uncertain) of a catastrophe killing 1–10% of humanity. The report gained a "build your own world" tool, a flashpoint explorer and a panel of what changed since the previous version.
+
+## How changes are tested, and alliances (5 November 2026)
+
+Six independent reviews, three from each of two AI labs, found that the main weakness was the testing rather than the model. Their findings, each checked in the code:
+
+- **The tests did not run the forecast.** The 10-year test ran a smaller neural network without the forecast's draw of which model family is right. The full-system test used a 3-member ensemble where the forecast uses 10.
+- **The test period was used up.** About 60 variants had been scored on the 2000–2012 origins, so they had become tuning data.
+- **No single objective.** With a dozen scores, two periods and two seeds, almost any change was "worse on something", so adoptions depended on which comparison counted.
+
+Every test now builds the simulator exactly as the forecast does, records its configuration, and is checked against the forecast's. A written rule decides changes:
+
+- 16 origins from 1970 to 2009, simulated 15 years ahead, with three independent refits of the risk ensemble;
+- one combined score with fixed weights;
+- the change must be better in at least three of the four decades and by more than the noise between refits;
+- no weighted score may be more than 3% worse.
+
+**Refit noise is large for the war counts.** Refitting the ensemble alone moves the count of new civil wars by up to 11% and the world share at war by 9%; the combined score's noise is 1.1%. The withdrawal of the ensemble's central view on 4 November had rested on a +12% move in new wars, inside that noise. Retested under the rule, it neither helps nor hurts overall, though it removes 40% of the safest countries' excess wars.
+
+**Earlier choices re-checked.** Undoing them showed that two were clearly right: the narrower growth regimes (combined +3.1%) and the oil fix (+1.2%). The halved mood factor (+0.9%) and the debt-split growth noise (+0.6%) are probably right but below the noise. Country war-proneness cannot be told apart from noise. Nothing was reverted.
+
+**Rejected.** Two new ideas failed the rule:
+
+- solving the war-ending alignment on the previous decade's own countries;
+- replaying world growth shocks with full year-to-year swings, to get more recessions.
+
+A check on the cheaper data rejected the idea that the alignment's choice of countries explains the safest countries' wars.
+
+**Bugs fixed:**
+
+- Countries that did not exist yet at a hindcast's start counted as countries at peace, which raised the year-1 war rate for everyone.
+- US tariff exposure used purchasing-power rather than dollar GDP, which halved it for developing exporters.
+- The yearly forecast record compared the model with a baseline that gave every peaceful country a 10% chance of war. It now uses the observed rates: 2.5% for a new war, 90% for a war continuing.
+
+One forecast per release is now named as the record before any of its outcomes are known.
+
+**Alliances follow the treaties' areas.** A permanent Security Council member used to join any ally's war at the full rate wherever it was fought. A US–China war over Taiwan therefore drew France in as often as a Russian attack on Estonia, and a France–China war counted as a great-power war. Now a global power joins at the full rate only if the enemy is near the ally it defends or near itself, which covers NATO's Article 6 area and the US Pacific treaties. Outside that area it joins at a sampled 0–50% of that rate, an assumption based on the Korean War, where Britain and France fought China. History cannot test this: the hindcasts were unchanged, since 1970–2024 holds almost no such cases. The report shows great-power war under both rules.
+
+**Two more scenarios, outside the headline.** Wars between states lasting as long as they did in the 2010s, which the simulator missed two- to threefold. Fitting that rise would use the very outcomes that should test it.
+
+**Crowd comparison rebuilt.** The model in the comparison is now trained on UCDP labels through 2024 instead of militarized-dispute labels that end in 2010. Its Brier score barely moved, from 0.132 to 0.130, against the crowd's 0.100. The stale labels were not why the crowd wins. The questions ask about any use of force, which happened in 13% of them, while the model forecasts a 25-death war and gives these questions about 2% on average.
 
 ## Oil prices and the safest countries (3 November 2026, evening)
 
@@ -279,26 +320,27 @@ Two model weaknesses surfaced. The structural-uncertainty term pushes very-low-r
 
 ## What drives the uncertainty
 
-To see which assumptions matter, 48,000 headline worlds were simulated with every assumption drawn from its range (rerun on 29 October 2026 after the climate update and again after the limits round), and a gradient-boosted surrogate of each outcome was fitted on the assumptions (cross-validated). Correlated assumptions are credited as groups: a group's share is what the surrogate loses when the whole group is left out. Together the assumptions explain 67% of the spread in world GDP per person in 2065 and 27% in 2045. The rest is luck inside the simulator: replayed shocks, wars, coups and pandemics. For wars they explain only 2–6% of the variance, but they still move the probabilities by up to 30 points.
+To see which assumptions matter, 48,000 headline worlds were simulated with every assumption drawn from its range (rerun on 29 October 2026 after the climate update and again on 5 November with treaty scope for alliances), and a gradient-boosted surrogate of each outcome was fitted on the assumptions (cross-validated). Correlated assumptions are credited as groups: a group's share is what the surrogate loses when the whole group is left out. Together the assumptions explain 67% of the spread in world GDP per person in 2065 and 27% in 2045. The rest is luck inside the simulator: replayed shocks, wars, coups and pandemics. For wars they explain only 2–6% of the variance, but they still move the probabilities by up to 30 points.
 
 | Outcome | All assumptions | AI and robot timing | Climate | Nuclear |
 | --- | --- | --- | --- | --- |
-| World GDP per person, 2065 | 67% | 49% | 9% | 0% |
-| World GDP per person, 2045 | 27% | 11% | 12% | 0% |
-| Countries in civil conflict, 2065 | 2% | 1% | 0% | 0% |
-| Great-power war by 2065 | 3% | 1% | 0% | 3% |
-| India–Pakistan war | 6% | 1% | 0% | 6% |
+| World GDP per person, 2065 | 69% | 38% | 6% | 0% |
+| World GDP per person, 2045 | 28% | 10% | 12% | 0% |
+| Countries in civil conflict, 2065 | 6% | 2% | 0% | 0% |
+| Great-power war by 2065 | 4% | 0% | 0% | 3% |
+| India–Pakistan war | 7% | 0% | 0% | 6% |
 
 | Outcome | Assumption | Lowest fifth of its range | Highest fifth |
 | --- | --- | --- | --- |
-| World GDP per person, 2065 | AI arrival year (early vs late) | $56.3k | $24.9k |
-| World GDP per person, 2065 | AI growth dividend | $30.4k | $40.4k |
-| World GDP per person, 2045 | Climate damage estimate (level vs global) | $23.9k | $20.2k |
-| Great-power war by 2065 | Nuclear-pair war factor | 33% | 54% |
-| China–India war | Nuclear-pair war factor | 12% | 34% |
-| India–Pakistan war | Nuclear-pair war factor | 20% | 50% |
+| World GDP per person, 2065 | AI arrival year (early vs late) | $56.9k | $25.2k |
+| World GDP per person, 2065 | AI growth dividend | $30.5k | $40.3k |
+| World GDP per person, 2045 | Climate damage estimate (level vs global) | $23.3k | $20.1k |
+| Great-power war by 2065 | Nuclear-pair war factor | 31% | 55% |
+| Great-power war by 2065 | Allies joining a war (cascade) | 40% | 47% |
+| China–India war | Nuclear-pair war factor | 13% | 36% |
+| India–Pakistan war | Nuclear-pair war factor | 21% | 53% |
 | Nuclear use | Use against a non-nuclear state | 7% | 19% |
-| Countries in civil conflict, 2065 | Rebel drones and war length | 21% | 23% |
+| Countries in civil conflict, 2065 | Rebel drones and war length | 21% | 25% |
 
 The nuclear-pair factor (0.1–0.55) remains the largest driver of the war outcomes; China–Taiwan and Russia–Poland hardly depend on any assumption.
 
@@ -308,9 +350,9 @@ Every month a script downloads UCDP's newest preliminary release. It issues a 12
 
 ## Limits
 
-- **Assumptions dominate the far future.** In the headline worlds the sampled assumptions explain about half of the spread in 2065 world output, mostly the AI and robot arrival years. Those numbers describe the stated assumptions, not evidence.
-- **Crowds still win on near-term questions.** Forecasting crowds beat the model on interstate and leader questions, because they react to news faster than annual data can. On 63 resolved use-of-force questions a fixed pool giving the model 10% weight was slightly better than the crowd (Brier 0.0965 against 0.0998) but within noise, and a fitted blend was worse (0.111). The report shows the crowd's number; the pool is logged to be tested on new questions.
-- **One clean test year.** Only the 2015 origin is untouched by tuning. Whether the ensemble truly beats the simple civil-war rule needs more years.
+- **Assumptions dominate the far future.** In the headline worlds the sampled assumptions explain about two-thirds of the spread in 2065 world output (69%), the AI and robot arrival years alone 38%; for the war outcomes they explain 4–7%. Those numbers describe the stated assumptions, not evidence.
+- **Crowds still win on near-term questions.** Forecasting crowds beat the model on interstate and leader questions. Part of the reason is that they react to news faster than annual data can. The larger part, a November 2026 rebuild found, is that the questions ask about any use of force (13% resolved yes) while the model forecasts a 25-death war (2% on average). On 63 resolved use-of-force questions a fixed pool giving the model 10% weight scored 0.0988 against the crowd's 0.0998, within noise. The report shows the crowd's number; the 10% pool is logged, fixed in advance, for new questions.
+- **No clean test left for the simulator.** Only the 2015 origin is untouched by tuning for the risk models, and every year to 2024 has been seen by simulator tests. Since November 2026 the testing rule guards against selection (decades held out, refit noise measured), but the only clean test is the forecast record, and with two to five new civil wars a year it will not tell simulator versions apart for years.
 - **Stale sources.** Several sources end before 2025 (elections 2021, protest 2019–2020) and are carried forward or faded. Weather observations now run to 2025. Protest counts rebuilt to 2025 from machine-coded events (ICEWS to 2022, then GDELT) added nothing in backtests: the two sources agree only moderately on which countries protest most (rank correlation 0.4–0.6), so the splice adds noise where the refresh was meant to help.
 - **Recent calm.** GDP bands from 2015 were too wide at ten years: the simulator replays all post-war decades, including the volatile 1970s–1990s.
 - **Sudden escalations.** Annual structural models are weakest on surprise escalations between pairs with no recent fighting, such as the 2025 Thailand–Cambodia war or the 2026 US–Iran strikes.

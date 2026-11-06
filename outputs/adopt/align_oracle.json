@@ -1,0 +1,381 @@
+{
+ "seed": 0,
+ "by_origin": {
+  "1970": {
+   "on": {
+    "target": 0.03,
+    "future_rate": 0.0307,
+    "current": 0.285,
+    "matched": 0.265,
+    "oracle": 0.188,
+    "err_current": 0.097,
+    "err_matched": 0.077
+   },
+   "te": {
+    "target": 0.1915,
+    "future_rate": 0.1414,
+    "current": 0.261,
+    "matched": 0.058,
+    "oracle": -0.402,
+    "err_current": 0.663,
+    "err_matched": 0.461
+   }
+  },
+  "1973": {
+   "on": {
+    "target": 0.0286,
+    "future_rate": 0.0306,
+    "current": 0.292,
+    "matched": 0.311,
+    "oracle": 0.384,
+    "err_current": 0.092,
+    "err_matched": 0.073
+   },
+   "te": {
+    "target": 0.1863,
+    "future_rate": 0.1116,
+    "current": -0.117,
+    "matched": -0.036,
+    "oracle": -0.775,
+    "err_current": 0.658,
+    "err_matched": 0.739
+   }
+  },
+  "1976": {
+   "on": {
+    "target": 0.0251,
+    "future_rate": 0.0274,
+    "current": 0.417,
+    "matched": 0.226,
+    "oracle": 0.328,
+    "err_current": 0.089,
+    "err_matched": 0.102
+   },
+   "te": {
+    "target": 0.1552,
+    "future_rate": 0.0913,
+    "current": -0.07,
+    "matched": -0.172,
+    "oracle": -0.691,
+    "err_current": 0.621,
+    "err_matched": 0.519
+   }
+  },
+  "1979": {
+   "on": {
+    "target": 0.0292,
+    "future_rate": 0.0261,
+    "current": 0.263,
+    "matched": 0.315,
+    "oracle": 0.14,
+    "err_current": 0.123,
+    "err_matched": 0.175
+   },
+   "te": {
+    "target": 0.139,
+    "future_rate": 0.0951,
+    "current": -0.117,
+    "matched": -0.154,
+    "oracle": -0.381,
+    "err_current": 0.265,
+    "err_matched": 0.227
+   }
+  },
+  "1980": {
+   "on": {
+    "target": 0.0307,
+    "future_rate": 0.0319,
+    "current": 0.141,
+    "matched": 0.226,
+    "oracle": 0.241,
+    "err_current": 0.1,
+    "err_matched": 0.015
+   },
+   "te": {
+    "target": 0.1414,
+    "future_rate": 0.1073,
+    "current": 0.099,
+    "matched": -0.064,
+    "oracle": -0.097,
+    "err_current": 0.196,
+    "err_matched": 0.032
+   }
+  },
+  "1983": {
+   "on": {
+    "target": 0.0306,
+    "future_rate": 0.0364,
+    "current": -0.054,
+    "matched": -0.098,
+    "oracle": 0.045,
+    "err_current": 0.099,
+    "err_matched": 0.143
+   },
+   "te": {
+    "target": 0.1116,
+    "future_rate": 0.1415,
+    "current": 0.136,
+    "matched": -0.134,
+    "oracle": 0.418,
+    "err_current": 0.282,
+    "err_matched": 0.552
+   }
+  },
+  "1986": {
+   "on": {
+    "target": 0.0274,
+    "future_rate": 0.0389,
+    "current": 0.048,
+    "matched": -0.183,
+    "oracle": 0.109,
+    "err_current": 0.061,
+    "err_matched": 0.291
+   },
+   "te": {
+    "target": 0.0913,
+    "future_rate": 0.1723,
+    "current": 0.243,
+    "matched": -0.111,
+    "oracle": 0.914,
+    "err_current": 0.672,
+    "err_matched": 1.025
+   }
+  },
+  "1989": {
+   "on": {
+    "target": 0.0261,
+    "future_rate": 0.0424,
+    "current": 0.113,
+    "matched": -0.008,
+    "oracle": 0.307,
+    "err_current": 0.194,
+    "err_matched": 0.315
+   },
+   "te": {
+    "target": 0.0951,
+    "future_rate": 0.1982,
+    "current": -0.221,
+    "matched": 0.099,
+    "oracle": 0.961,
+    "err_current": 1.181,
+    "err_matched": 0.862
+   }
+  },
+  "1990": {
+   "on": {
+    "target": 0.0319,
+    "future_rate": 0.038,
+    "current": -0.04,
+    "matched": 0.125,
+    "oracle": 0.055,
+    "err_current": 0.095,
+    "err_matched": 0.07
+   },
+   "te": {
+    "target": 0.1073,
+    "future_rate": 0.1975,
+    "current": 0.204,
+    "matched": 0.106,
+    "oracle": 0.781,
+    "err_current": 0.576,
+    "err_matched": 0.675
+   }
+  },
+  "1993": {
+   "on": {
+    "target": 0.0364,
+    "future_rate": 0.0316,
+    "current": -0.093,
+    "matched": 0.035,
+    "oracle": -0.269,
+    "err_current": 0.176,
+    "err_matched": 0.304
+   },
+   "te": {
+    "target": 0.1415,
+    "future_rate": 0.1797,
+    "current": -0.073,
+    "matched": 0.196,
+    "oracle": 0.328,
+    "err_current": 0.401,
+    "err_matched": 0.132
+   }
+  },
+  "1996": {
+   "on": {
+    "target": 0.0389,
+    "future_rate": 0.0323,
+    "current": 0.314,
+    "matched": 0.261,
+    "oracle": 0.027,
+    "err_current": 0.287,
+    "err_matched": 0.234
+   },
+   "te": {
+    "target": 0.1723,
+    "future_rate": 0.1882,
+    "current": 0.642,
+    "matched": 0.482,
+    "oracle": 0.55,
+    "err_current": 0.092,
+    "err_matched": 0.068
+   }
+  },
+  "1999": {
+   "on": {
+    "target": 0.0424,
+    "future_rate": 0.0286,
+    "current": 0.466,
+    "matched": 0.343,
+    "oracle": 0.114,
+    "err_current": 0.352,
+    "err_matched": 0.229
+   },
+   "te": {
+    "target": 0.1982,
+    "future_rate": 0.1692,
+    "current": 0.409,
+    "matched": 0.297,
+    "oracle": 0.086,
+    "err_current": 0.323,
+    "err_matched": 0.211
+   }
+  },
+  "2000": {
+   "on": {
+    "target": 0.038,
+    "future_rate": 0.0271,
+    "current": 0.356,
+    "matched": 0.272,
+    "oracle": 0.158,
+    "err_current": 0.198,
+    "err_matched": 0.113
+   },
+   "te": {
+    "target": 0.1975,
+    "future_rate": 0.1628,
+    "current": 0.569,
+    "matched": 0.291,
+    "oracle": 0.027,
+    "err_current": 0.541,
+    "err_matched": 0.263
+   }
+  },
+  "2003": {
+   "on": {
+    "target": 0.0316,
+    "future_rate": 0.029,
+    "current": 0.351,
+    "matched": 0.222,
+    "oracle": 0.446,
+    "err_current": 0.096,
+    "err_matched": 0.224
+   },
+   "te": {
+    "target": 0.1797,
+    "future_rate": 0.1589,
+    "current": 0.211,
+    "matched": 0.208,
+    "oracle": 0.027,
+    "err_current": 0.184,
+    "err_matched": 0.18
+   }
+  },
+  "2006": {
+   "on": {
+    "target": 0.0323,
+    "future_rate": 0.032,
+    "current": 0.916,
+    "matched": 0.426,
+    "oracle": 0.784,
+    "err_current": 0.132,
+    "err_matched": 0.357
+   },
+   "te": {
+    "target": 0.1882,
+    "future_rate": 0.1304,
+    "current": 0.35,
+    "matched": 0.216,
+    "oracle": -0.277,
+    "err_current": 0.628,
+    "err_matched": 0.493
+   }
+  },
+  "2009": {
+   "on": {
+    "target": 0.0286,
+    "future_rate": 0.0325,
+    "current": 0.598,
+    "matched": 0.3,
+    "oracle": 0.664,
+    "err_current": 0.067,
+    "err_matched": 0.364
+   },
+   "te": {
+    "target": 0.1692,
+    "future_rate": 0.1296,
+    "current": 0.309,
+    "matched": 0.157,
+    "oracle": -0.271,
+    "err_current": 0.58,
+    "err_matched": 0.428
+   }
+  }
+ },
+ "summary": {
+  "on": {
+   "by_decade": {
+    "1970s": {
+     "err_current": 0.1,
+     "err_matched": 0.107,
+     "n": 4
+    },
+    "1980s": {
+     "err_current": 0.114,
+     "err_matched": 0.191,
+     "n": 4
+    },
+    "1990s": {
+     "err_current": 0.228,
+     "err_matched": 0.209,
+     "n": 4
+    },
+    "2000s": {
+     "err_current": 0.123,
+     "err_matched": 0.264,
+     "n": 4
+    }
+   },
+   "decades_matched_closer": 1,
+   "of": 4,
+   "earns_simulator_test": false
+  },
+  "te": {
+   "by_decade": {
+    "1970s": {
+     "err_current": 0.552,
+     "err_matched": 0.486,
+     "n": 4
+    },
+    "1980s": {
+     "err_current": 0.583,
+     "err_matched": 0.618,
+     "n": 4
+    },
+    "1990s": {
+     "err_current": 0.348,
+     "err_matched": 0.272,
+     "n": 4
+    },
+    "2000s": {
+     "err_current": 0.483,
+     "err_matched": 0.341,
+     "n": 4
+    }
+   },
+   "decades_matched_closer": 3,
+   "of": 4,
+   "earns_simulator_test": true
+  }
+ }
+}

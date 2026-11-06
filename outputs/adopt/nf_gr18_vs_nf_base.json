@@ -1,0 +1,68 @@
+{
+ "base": "nf_base",
+ "variant": "nf_gr18",
+ "seeds": [
+  0,
+  1,
+  2
+ ],
+ "origins": [
+  1970,
+  1973,
+  1976,
+  1979,
+  1980,
+  1983,
+  1986,
+  1989,
+  1990,
+  1993,
+  1996,
+  1999,
+  2000,
+  2003,
+  2006,
+  2009
+ ],
+ "weights": {
+  "country_brier": 0.25,
+  "conflict_share": 0.15,
+  "coups": 0.1,
+  "gdp_growth": 0.1,
+  "gdp_dispersion": 0.1,
+  "dem_change": 0.05,
+  "interstate": 0.05,
+  "oil_change": 0.05,
+  "gdp_vol": 0.05
+ },
+ "relative_change": {
+  "country_brier": -0.0002,
+  "conflict_share": -0.0029,
+  "coups": -0.0028,
+  "gdp_growth": 0.0465,
+  "gdp_dispersion": 0.2452,
+  "dem_change": -0.0035,
+  "interstate": 0.0002,
+  "oil_change": 0.0003,
+  "gdp_vol": -0.0013
+ },
+ "composite": 0.0313,
+ "composite_by_decade": {
+  "1970s": 0.0382,
+  "1980s": -0.0359,
+  "1990s": 0.0478,
+  "2000s": 0.0455
+ },
+ "decades_better": 1,
+ "noise_floor": 0.0113,
+ "guardrail_breaches": {
+  "gdp_growth": 0.046465263174574556,
+  "gdp_dispersion": 0.24516469072905078
+ },
+ "adopt": false,
+ "verdict": "reject",
+ "diagnostics": {
+  "safe20_wars": -0.0092,
+  "gdp_falls": 0.0208
+ }
+}
