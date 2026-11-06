@@ -31,6 +31,16 @@ PKO_BETA = 0.315
 COMMOD_COUP = -2.8
 
 
+def _nominal_gdp_usd(codes, last_year=2024):
+    """GDP in current US dollars (External Wealth of Nations dataset, millions), each country's latest year"""
+    try:
+        e = pd.read_csv(RAW / "structure" / "ewn_country_year.csv", usecols=["iso3", "year", "gdp_usd"])
+    except (FileNotFoundError, ValueError):
+        return np.full(len(codes), np.nan)
+    e = e[(e.year <= last_year) & e.gdp_usd.notna()].sort_values("year").groupby("iso3").gdp_usd.last() * 1e6
+    return np.array([float(e.get(c, np.nan)) for c in codes])
+
+
 def inputs(codes, origin, gdp=None):
     pk = pd.read_csv(IV / "un_pko_personnel_cy.csv")
     pk = pk[pk.year <= origin].sort_values("year").groupby("iso3").last()
@@ -47,10 +57,15 @@ def inputs(codes, origin, gdp=None):
     du = pd.read_csv(RAW / "political_economy" / "us_import_duties_by_partner.csv")
     du = du[du.is_group == 0].set_index(["iso3", "year"])
     tariff = np.zeros(len(codes))
+    # exports to the US over GDP in current dollars (External Wealth of Nations, latest year to 2024). The simulator's
+    # GDP is in 2011 PPP dollars, about twice nominal for developing exporters, which halved their exposure; it is the
+    # fallback only where the nominal figure is missing (debate 2026-11-05; open since the 2026-10-28 review)
+    nom = _nominal_gdp_usd(codes)
     for i, c in enumerate(codes):
-        if (c, 2024) in du.index and (c, 2025) in du.index and gdp is not None and np.isfinite(gdp[i]) and gdp[i] > 0:
+        g_ = nom[i] if np.isfinite(nom[i]) and nom[i] > 0 else (gdp[i] if gdp is not None else np.nan)
+        if (c, 2024) in du.index and (c, 2025) in du.index and np.isfinite(g_) and g_ > 0:
             imp = float(du.imports_cons_usd[(c, 2024)])
             rise = float(np.nan_to_num(du.last_month_eff_tariff_pct[(c, 2025)] - du.eff_tariff_pct[(c, 2024)])) / 100
-            tariff[i] = min(imp / gdp[i], 0.5) * max(rise, 0.0)
+            tariff[i] = min(imp / g_, 0.5) * max(rise, 0.0)
     return {"pko": pk_n, "tariff": tariff, "aid_cut": np.clip(aid_cut, 0, 0.2),
             "fuel": np.nan_to_num(last("fuel_pct_merch") / 100) * ex, "food": np.nan_to_num(last("food_pct_merch") / 100) * ex}

@@ -13,7 +13,11 @@ and a line in outputs/ledger/model_versions.jsonl.
 score: for every calendar year that is complete in the UCDP data (final GED or a December candidate file), the
 per-country P(in conflict) against "25 or more state-based battle deaths in the year" (UCDP GED events located in the
 country: a proxy for the training label, the UCDP/PRIO conflict list, which is published later), with the same-proxy
-persistence baseline (in conflict the year before: probability 0.9 / 0.1) and the world share against the fan.
+persistence baseline (in conflict the year before or not, each with its rate over the previous ten years; the old
+fixed 0.9 / 0.1 is also reported) and the world share against the fan.
+Canonical versions: one per published release, named before any of its outcomes is known
+(python -P scripts/annual_ledger.py canonical VERSION "release label"); the score lists them first. Other logged
+versions are scored too but are not the release's record (debate 2026-11-05: five versions were frozen in a week).
 Coups and new conflicts need the end of 2030 (or a coup list for each year) and are scored then.
 """
 import datetime as dt
@@ -68,6 +72,26 @@ def issue():
     return f"logged {os.path.basename(f)}"
 
 
+def canonical_versions():
+    """{version: release label} from outputs/ledger/canonical.jsonl"""
+    f = os.path.join(LEDGER, "canonical.jsonl")
+    if not os.path.exists(f):
+        return {}
+    return {r["version"]: r["release"] for r in map(json.loads, open(f)) if r.get("version")}
+
+
+def mark_canonical(version, release):
+    vs = [json.loads(l)["version"] for l in open(os.path.join(LEDGER, "model_versions.jsonl"))]
+    hit = [v for v in vs if v.startswith(version)]
+    if len(hit) != 1:
+        return f"version {version} matches {len(hit)} logged versions"
+    if hit[0] in canonical_versions():
+        return f"{hit[0]} is already canonical"
+    with open(os.path.join(LEDGER, "canonical.jsonl"), "a") as g:
+        g.write(json.dumps({"version": hit[0], "release": release, "named": dt.date.today().isoformat()}) + "\n")
+    return f"{hit[0]} is the canonical record of {release}"
+
+
 def completed_years():
     """calendar years whose twelve months are all in the UCDP data"""
     from psychohistory import monthly as MO
@@ -81,7 +105,8 @@ def score():
     D = MO.deaths(codes, gw2iso, last_full, 12)
     ci = {c: i for i, c in enumerate(codes)}
     yearly = lambda y: D[:, MO.midx(y, 1):MO.midx(y, 12) + 1].sum(1)
-    out = {"complete_through": last_full, "versions": {}}
+    canon = canonical_versions()
+    out = {"complete_through": last_full, "canonical": canon, "versions": {}}
     for f in sorted(glob.glob(os.path.join(LEDGER, "annual_*.json"))):
         L = json.load(open(f))
         res = {}
@@ -92,16 +117,30 @@ def score():
             rows = [(c, v["p_conflict_year"][j]) for c, v in L["countries"].items() if c in ci and v["p_conflict_year"][j] is not None]
             p = np.array([r[1] for r in rows])
             yv = np.array([float(obs[ci[c]] >= 25) for c, _ in rows])
-            pers = np.array([0.9 if prev[ci[c]] >= 25 else 0.1 for c, _ in rows])
+            # persistence with its two rates estimated on the same proxy over the ten years before (the fixed 0.9 / 0.1
+            # gave every country at peace a 10% chance of war, about four times the rate of new wars: a weak baseline
+            # that flattered the model; debate 2026-11-05). The fixed version is kept for continuity.
+            st = np.stack([yearly(y_) >= 25 for y_ in range(y - 11, y)], 1)            # [C, 11] years y-11..y-1
+            was, now_ = st[:, :-1], st[:, 1:]
+            p_stay = float((was & now_).sum() / max(was.sum(), 1))
+            p_new = float((~was & now_).sum() / max((~was).sum(), 1))
+            pers = np.array([p_stay if prev[ci[c]] >= 25 else p_new for c, _ in rows])
+            pers_fixed = np.array([0.9 if prev[ci[c]] >= 25 else 0.1 for c, _ in rows])
             share = float(yv.mean())
             q = L["world"]["world_conflict_q"][j]
             res[str(y)] = {"n": len(rows), "in_conflict": int(yv.sum()), "brier_model": round(float(np.mean((p - yv) ** 2)), 5),
-                           "brier_persistence": round(float(np.mean((pers - yv) ** 2)), 5), "share_observed": round(share, 4),
+                           "brier_persistence": round(float(np.mean((pers - yv) ** 2)), 5),
+                           "persistence_rates": [round(p_stay, 4), round(p_new, 4)],
+                           "brier_persistence_fixed": round(float(np.mean((pers_fixed - yv) ** 2)), 5),
+                           "share_observed": round(share, 4),
                            "share_fan_5_95": [q[0], q[4]], "share_in_90": bool(q[0] <= share <= q[4])}
-        out["versions"][L["version"]] = res or f"first year ({L['years'][0]}) not complete yet (data through {last_full})"
+        res = res or None
+        out["versions"][L["version"]] = {"canonical": canon.get(L["version"]), "years": res} if res else \
+            {"canonical": canon.get(L["version"]), "years": f"first year ({L['years'][0]}) not complete yet (data through {last_full})"}
     return out
 
 
 if __name__ == "__main__":
-    r = issue() if sys.argv[1] == "issue" else score()
+    r = issue() if sys.argv[1] == "issue" else mark_canonical(sys.argv[2], sys.argv[3]) if sys.argv[1] == "canonical" \
+        else score()
     print(json.dumps(r, indent=1) if isinstance(r, dict) else r)

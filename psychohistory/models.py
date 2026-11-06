@@ -401,15 +401,19 @@ class SeldonEnsemble:
     uses_years = True
     DEFAULT = {"w": {"G": 0.25, "G60": 0.25, "N": 0.25, "F": 0.25}, "mode": "prob"}
 
-    def __init__(self, combine=None, members=8, families=None):
+    def __init__(self, combine=None, members=8, families=None, seed=0):
+        """seed: offsets every family's random seeds by 100 x seed (0 = the forecast's ensemble), so independent refits
+        of the same ensemble can be compared (scripts/noise_floor.py)"""
         self.combine = combine or {}
         self.members = members
+        self.seed = seed
+        o_ = 100 * seed
         mk = {
-            "G": lambda s: GBMModel({**GBM_TUNED, "random_state": s}, GBM_TUNED_TASK),
-            "G60": lambda s: GBMModel({**GBM_TUNED, "random_state": s}, GBM_TUNED_TASK),
-            "N": lambda s: PsychoNet(members=members, seed=s * 5, **NET_TUNED),
-            "Nq": lambda s: QuantileNet(members=members, seed=s * 5),
-            "F": lambda s: ForestModel(seed=s),
+            "G": lambda s: GBMModel({**GBM_TUNED, "random_state": s + o_}, GBM_TUNED_TASK),
+            "G60": lambda s: GBMModel({**GBM_TUNED, "random_state": s + o_}, GBM_TUNED_TASK),
+            "N": lambda s: PsychoNet(members=members, seed=s * 5 + o_, **NET_TUNED),
+            "Nq": lambda s: QuantileNet(members=members, seed=s * 5 + o_),
+            "F": lambda s: ForestModel(seed=s + o_),
             "L": lambda s: LogitModel(),
         }
         seeds = {"G": 3, "G60": 2, "N": 2, "Nq": 2, "F": 1, "L": 1}

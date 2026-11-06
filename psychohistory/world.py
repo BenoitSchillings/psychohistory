@@ -313,6 +313,11 @@ class WorldConfig:
     # half a war site each (assumption; the 1951-2023 estimate has no such case)
     expeditionary: tuple = ("USA", "GBR", "FRA", "RUS", "AUS", "CAN", "CHN")
     ally_reach_km: float = 2500.0     # allies join only if major powers or within this distance of the enemy
+    # treaty scope (2026-11-05): a permanent Security Council member joins an ally's war at the full cascade_q only if
+    # the enemy is near the ally it defends or near itself (NATO's Article 6 area, the US Pacific pacts); outside that
+    # area at this share of it (sampled 0-0.5; 1.0 = the earlier rule, in which France could join any US war at the
+    # full rate, so a US-China war over Taiwan drew France in as often as a Russian attack on Estonia)
+    ally_out_scope: float = 0.25
     # clean-energy transition: world wind+solar share of primary energy on an S-curve fitted to 2005-2024
     # (OWID/Energy Institute; growth rate 0.155 +/- 0.03 a year), with an unidentified ceiling drawn per world.
     # Clean energy displaces fossil fuels pro rata; oil demand follows, the oil price moves oil_eta x the demand
@@ -411,6 +416,9 @@ EXTRA_RANGES = {
     "aid_mult": ("u", 0.0, 1.0), "commod_coup": ("n", -2.8, 1.0),
     "tariff_pass": ("u", 0.0, 1.5), "tariff_us": ("u", 0.0, 0.01),
     "frag_beta": ("n", -1.93, 0.41), "st_debt_beta": ("n", 0.596, 0.112), "peer_coup": ("n", 2.645, 0.86),
+    # (appended last so every earlier draw is unchanged) a global power joining an ally's war outside the treaty's
+    # area, as a share of cascade_q: an assumption (Korea 1950: Britain and France fought China under a UN mandate)
+    "ally_out_scope": ("u", 0.0, 0.5),
 }
 # climate assumptions and estimates (2026-10-29): drawn from a fourth generator, so the earlier draws are unchanged
 CLIMATE_RANGES = {
@@ -871,6 +879,7 @@ class World:
         self.near = f(near) > 0
         # global reach (joining wars far from home): the permanent Security Council members only
         self.is_major_c = torch.as_tensor([c in ("USA", "RUS", "CHN", "GBR", "FRA") for c in p.codes], device=self.dev)
+        self._near_cc = None                                        # [C, C] near pairs (built with pair_index)
         # great powers for war size and the great-power-war count: the COW majors (as in the dyad model's features),
         # plus any nuclear-armed state with at least GP_SHARE of world output, re-evaluated every simulated year
         # (India today; others if they grow or arm). The dyad hazard keeps the COW coding it was trained on.
@@ -1032,6 +1041,16 @@ class World:
             J &= ~exclude[worlds][:, None, :]
         cand[worlds] = J.any(1)
         q = q[worlds][:, :, None] if torch.is_tensor(q) else q
+        # treaty scope: in scope when the enemy i is near a partner j that c defends, or near c itself; a global power
+        # (is_major_c) outside that area joins at ally_out_scope x q (others are held to nearness below, as before)
+        if self._near_cc is None:
+            pi = self.pair_index
+            self._near_cc = (pi >= 0) & self.near[pi.clamp(min=0)]
+        nc = self._near_cc.float()
+        scope = (torch.matmul(Nw * nc[None], self.ally) > 0) | self._near_cc[None]
+        out = self.prm("ally_out_scope")
+        out = out[worlds][:, :, None] if torch.is_tensor(out) else out
+        q = q * torch.where(scope, torch.ones((), device=dev), out * torch.ones((), device=dev))
         J &= torch.rand(J.shape, device=dev, generator=self.gen_cascade) < q
         w2, i2, c2 = torch.nonzero(J, as_tuple=True)
         s2 = worlds[w2]

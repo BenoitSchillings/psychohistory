@@ -4,8 +4,10 @@ origin. Saves, per origin, each world's sampled assumptions and summary statisti
 for testing the assumption ranges against history (scripts/world_history_match.py).
 
 python -P scripts/world_hindcast.py TAG HORIZON ORIGIN [ORIGIN ...] [--n N] [--cfg '{"WorldConfig field": value}']
-    [--consts '{"module.CONST": value}']
+    [--consts '{"module.CONST": value}'] [--kw '{"simulate argument": value}'] [--members M] [--ens-seed S]
 -> outputs/world_hindcast/TAG_<origin>.npz
+The simulator is built as the forecast builds it (pipeline.build_sim_env; since 2026-11-05) and each run records its
+configuration (scripts/config_parity.py). Decisions: scripts/adopt_score.py and docs/adopt_rule.md.
 python -P scripts/world_hindcast.py --compare TAG_A TAG_B ORIGIN [ORIGIN ...]   (CRPS of each statistic, B against A)"""
 import os
 import sys
@@ -59,15 +61,21 @@ def main():
     n = int(argv.pop(argv.index("--n") + 1)) if "--n" in argv else 2000
     wkw = json.loads(argv.pop(argv.index("--cfg") + 1)) if "--cfg" in argv else {}      # WorldConfig settings to test
     consts = json.loads(argv.pop(argv.index("--consts") + 1)) if "--consts" in argv else {}   # {"module.CONST": value}
+    skw = json.loads(argv.pop(argv.index("--kw") + 1)) if "--kw" in argv else {}             # simulate() arguments
+    if "mood_sd" in skw:
+        skw["mood_sd"] = tuple(skw["mood_sd"])
     # --struct off,gauss,family: fit the risk ensemble at each origin and run each structural-uncertainty mode on it
     # (a mode may name the ensemble offset too, paired on the same ensemble: familyc+oc, familyc+ for none)
     # (outputs TAG<mode>_<origin>.npz)
     struct = argv.pop(argv.index("--struct") + 1).split(",") if "--struct" in argv else None
+    members = int(argv.pop(argv.index("--members") + 1)) if "--members" in argv else None     # (None: the forecast's)
+    ens_seed = int(argv.pop(argv.index("--ens-seed") + 1)) if "--ens-seed" in argv else 0       # independent refits
     modes = struct or [""]
     import importlib
     for k, v in consts.items():
         mod, name = k.rsplit(".", 1)
         setattr(importlib.import_module(f"psychohistory.{mod}"), name, v)
+    defaults_ = {"ENS_OFFSET": SIM.ENS_OFFSET}
     args = [a for a in argv if not a.startswith("--")]
     tag, H, origins = args[0], int(args[1]), [int(a) for a in args[2:]]
     os.makedirs(OUT, exist_ok=True)
@@ -79,23 +87,9 @@ def main():
         if not todo:
             continue
         E = min(O + H, LAST_OBS_YEAR)
-        if struct:
-            # the risk-model ensemble at the origin (as in the forecast), for the structural-uncertainty test
-            from psychohistory.models import SeldonEnsemble, load_combine
-            Ytr, tr = train_mask(Yf, year, O, first_year=1860)
-            ens = SeldonEnsemble(load_combine(), members=3, families=["G", "G60", "N", "F"]).fit(Xf[tr], Ytr[tr], ci[tr], year[tr])
-            net = PL.sim_net(ens, X[:, p.yi(O)])
-        else:
-            Ytr, tr = train_mask(Yf, year, O)
-            net = PsychoNet(members=8, **NET_TUNED).fit(Xf[tr], Ytr[tr], ci[tr])
-            if SIM.ENS_OFFSET or SIM.STRUCT_MODE in ("family", "familyc", "ens_onset"):
-                # the ensemble's central view of onsets and coups (scripts/ens_cache.py; adopted 2026-11-03)
-                fc = os.path.join(OUT, "..", "sim_eval", "ens_cache", f"{O}.npz")
-                if not os.path.exists(fc):
-                    sys.exit(f"no ensemble cache for {O}: run scripts/ens_cache.py {O} {O} 1 (the offset and the family draw need it)")
-                # (and the structural draw's family offsets, as the forecast: production attaches both, 2026-11-04)
-                ec = np.load(fc)
-                PL.attach_cached(net, ec["fams"], ec["p"], X[:, p.yi(O)])
+        # the simulator's network exactly as the forecast builds it (pipeline.build_sim_env: the risk ensemble from
+        # 1860 with 10 members, both PsychoNet seeds pooled, the family draw attached), cached per origin and seed
+        net = PL.build_sim_env(p, X, Xf, Yf, ci, year, O, members=members, seed=ens_seed, base=base)
         growth, ddem = SIM.fit_transitions(p, X, base, O)
         dy = INTER.sim_inputs(INTER.run(verbose=False, origin=O, backtests=False, df=df))
         for mode in todo:
@@ -105,12 +99,11 @@ def main():
                 # (a third part rN refreshes the ensemble's view every N simulated years: simulate.ENS_REFRESH)
                 parts_ = mode.split("+")
                 SIM.STRUCT_MODE = parts_[0]
-                if len(parts_) > 1:
-                    SIM.ENS_OFFSET = parts_[1]
+                SIM.ENS_OFFSET = parts_[1] if len(parts_) > 1 else defaults_["ENS_OFFSET"]      # (reset per mode)
                 SIM.ENS_REFRESH = int(parts_[2][1:]) if len(parts_) > 2 else 0
             cfg = WM.WorldConfig(ai=WM.AI_SCENARIOS["none"], sample_params=True, **wkw)
             o = SIM.simulate(p, base, net, growth, ddem, O, E, n_scen=n, demography="extrapolate", record_paths=n,
-                             seed=O + 11, world=cfg, dyads=dy)
+                             seed=O + 11, world=cfg, dyads=dy, **skw)
             i0, i1 = p.yi(O), p.yi(E)
             T = i1 - i0
             cf, gdp, dem = o["paths"]["conflict"], o["paths"]["gdp"], o["paths"]["dem"]           # [S, C, T]
@@ -178,7 +171,7 @@ def main():
             np.savez_compressed(f, origin=O, end=E, T=T, names=np.array(sorted(sim)),
                                 sim=np.stack([sim[k] for k in sorted(sim)], 1), obs=np.array([obs[k] for k in sorted(sim)]),
                                 pnames=np.array(sorted(params)), params=np.stack([params[k] for k in sorted(params)], 1),
-                                country=json.dumps(country))
+                                country=json.dumps(country), config=json.dumps(o["config"], default=str))
             print(O, E, {k: (round(float(np.median(sim[k])), 4), round(float(obs[k]), 4),
                              round(float((sim[k] < obs[k]).mean()), 2)) for k in sorted(sim)}, country, flush=True)
 
