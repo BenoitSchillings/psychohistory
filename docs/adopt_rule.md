@@ -78,3 +78,21 @@ confirm on 2000–2012, two network seeds"):
 ## Changes to this rule
 
 (none yet)
+
+## Release policy (6 November 2026)
+
+- **Model versions are released quarterly**, each with its canonical frozen forecast named in the ledger. The next
+  model release is planned for February 2027. Between releases the model's settings do not change.
+- **Data refreshes are monthly**: the monthly conflict ledger, prediction-market prices and UCDP releases. They are
+  labelled as data updates and do not change the model.
+- **Fixes between releases are patch versions** (54.1, 54.2), limited to code that did not do what it said or to text.
+  Each is listed with what changed, and none changes a model setting.
+- **Before any release**, `scripts/number_parity.py` must pass: every headline number in the prose equals the
+  current results.
+
+## Changes to this rule (continued)
+
+- 6 November 2026: release policy added (second debate). The tail diagnostics (safe-country wars) become a
+  non-regression guardrail: a change may not raise the 15-year expected count of new wars among the 20 safest
+  countries by more than its noise floor. Recession frequency stays a diagnostic: raising shock amplitude to hit it
+  would widen the spread between countries, which is already too wide.

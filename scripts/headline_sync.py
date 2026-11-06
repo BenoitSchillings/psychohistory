@@ -39,8 +39,8 @@ def paragraph():
             f"{v['p_record']} of worlds; simulated from 2000–2012 the share at war came out about 6% low, while the safest "
             f"countries got too many new wars (two or three expected in 15 years from 1995–2009 origins, none happened). "
             f"A war between great powers of at least 1,000 battle deaths a year happens by 2065 in {v['gpw']} of worlds "
-            f"({v['gpw_cow']} among the traditional majors alone{any_s}), and nuclear weapons are used in {v['nuke']}. These rest on "
-            f"the war model more than on assumptions, except {nf}; the simulator missed the 2010s rise in wars between states two- to "
+            f"({v['gpw_cow']} among the traditional majors alone{any_s}), and nuclear weapons are used in {v['nuke']}. These depend "
+            f"heavily on assumptions, above all {nf}, and on a war model fitted to 1946–2024; the simulator missed the 2010s rise in wars between states two- to "
             f"threefold. The worst 1% of worlds on each measure are traced to their causes (see Disaster worlds).")
 
 

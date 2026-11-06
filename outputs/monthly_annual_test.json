@@ -1,0 +1,258 @@
+{
+ "2017": {
+  "product": {
+   "brier": 0.04155,
+   "logloss": 0.14973,
+   "ece": 0.0534,
+   "mean_p": 0.1569,
+   "rate": 0.1257
+  },
+  "direct": {
+   "brier": 0.03356,
+   "logloss": 0.11426,
+   "ece": 0.0264,
+   "mean_p": 0.1285,
+   "rate": 0.1257
+  },
+  "new_only": {
+   "product": {
+    "brier": 0.02548,
+    "logloss": 0.09138,
+    "ece": 0.0307,
+    "mean_p": 0.0467,
+    "rate": 0.0301
+   },
+   "direct": {
+    "brier": 0.02349,
+    "logloss": 0.08829,
+    "ece": 0.0178,
+    "mean_p": 0.0247,
+    "rate": 0.0301
+   }
+  }
+ },
+ "2018": {
+  "product": {
+   "brier": 0.02225,
+   "logloss": 0.09666,
+   "ece": 0.0417,
+   "mean_p": 0.1599,
+   "rate": 0.1466
+  },
+  "direct": {
+   "brier": 0.03175,
+   "logloss": 0.10548,
+   "ece": 0.0373,
+   "mean_p": 0.1336,
+   "rate": 0.1466
+  },
+  "new_only": {
+   "product": {
+    "brier": 0.01652,
+    "logloss": 0.06631,
+    "ece": 0.033,
+    "mean_p": 0.0489,
+    "rate": 0.0299
+   },
+   "direct": {
+    "brier": 0.02072,
+    "logloss": 0.06932,
+    "ece": 0.021,
+    "mean_p": 0.0306,
+    "rate": 0.0299
+   }
+  }
+ },
+ "2019": {
+  "product": {
+   "brier": 0.02989,
+   "logloss": 0.10242,
+   "ece": 0.0441,
+   "mean_p": 0.1693,
+   "rate": 0.1518
+  },
+  "direct": {
+   "brier": 0.03038,
+   "logloss": 0.10204,
+   "ece": 0.0243,
+   "mean_p": 0.1452,
+   "rate": 0.1518
+  },
+  "new_only": {
+   "product": {
+    "brier": 0.01742,
+    "logloss": 0.07086,
+    "ece": 0.0291,
+    "mean_p": 0.0415,
+    "rate": 0.0307
+   },
+   "direct": {
+    "brier": 0.02002,
+    "logloss": 0.07476,
+    "ece": 0.0169,
+    "mean_p": 0.0276,
+    "rate": 0.0307
+   }
+  }
+ },
+ "2020": {
+  "product": {
+   "brier": 0.03588,
+   "logloss": 0.13877,
+   "ece": 0.0403,
+   "mean_p": 0.168,
+   "rate": 0.1309
+  },
+  "direct": {
+   "brier": 0.03119,
+   "logloss": 0.1075,
+   "ece": 0.034,
+   "mean_p": 0.1357,
+   "rate": 0.1309
+  },
+  "new_only": {
+   "product": {
+    "brier": 0.0161,
+    "logloss": 0.06654,
+    "ece": 0.0168,
+    "mean_p": 0.0368,
+    "rate": 0.0247
+   },
+   "direct": {
+    "brier": 0.01609,
+    "logloss": 0.06096,
+    "ece": 0.0112,
+    "mean_p": 0.0189,
+    "rate": 0.0247
+   }
+  }
+ },
+ "2021": {
+  "product": {
+   "brier": 0.03261,
+   "logloss": 0.14217,
+   "ece": 0.0354,
+   "mean_p": 0.1641,
+   "rate": 0.1414
+  },
+  "direct": {
+   "brier": 0.03789,
+   "logloss": 0.11856,
+   "ece": 0.0225,
+   "mean_p": 0.1427,
+   "rate": 0.1414
+  },
+  "new_only": {
+   "product": {
+    "brier": 0.02085,
+    "logloss": 0.08477,
+    "ece": 0.0276,
+    "mean_p": 0.0505,
+    "rate": 0.0301
+   },
+   "direct": {
+    "brier": 0.02453,
+    "logloss": 0.085,
+    "ece": 0.0142,
+    "mean_p": 0.0327,
+    "rate": 0.0301
+   }
+  }
+ },
+ "2022": {
+  "product": {
+   "brier": 0.03015,
+   "logloss": 0.10072,
+   "ece": 0.0323,
+   "mean_p": 0.1711,
+   "rate": 0.1414
+  },
+  "direct": {
+   "brier": 0.02844,
+   "logloss": 0.09791,
+   "ece": 0.0351,
+   "mean_p": 0.1454,
+   "rate": 0.1414
+  },
+  "new_only": {
+   "product": {
+    "brier": 0.02319,
+    "logloss": 0.08326,
+    "ece": 0.0295,
+    "mean_p": 0.0554,
+    "rate": 0.0305
+   },
+   "direct": {
+    "brier": 0.0233,
+    "logloss": 0.08405,
+    "ece": 0.0302,
+    "mean_p": 0.0385,
+    "rate": 0.0305
+   }
+  }
+ },
+ "2023": {
+  "product": {
+   "brier": 0.02374,
+   "logloss": 0.09332,
+   "ece": 0.032,
+   "mean_p": 0.1693,
+   "rate": 0.1414
+  },
+  "direct": {
+   "brier": 0.01845,
+   "logloss": 0.07399,
+   "ece": 0.0187,
+   "mean_p": 0.1448,
+   "rate": 0.1414
+  },
+  "new_only": {
+   "product": {
+    "brier": 0.01665,
+    "logloss": 0.07176,
+    "ece": 0.0232,
+    "mean_p": 0.0394,
+    "rate": 0.0183
+   },
+   "direct": {
+    "brier": 0.01525,
+    "logloss": 0.06416,
+    "ece": 0.0147,
+    "mean_p": 0.0242,
+    "rate": 0.0183
+   }
+  }
+ },
+ "pooled": {
+  "product": {
+   "brier": 0.03087,
+   "logloss": 0.11768,
+   "ece": 0.0256,
+   "mean_p": 0.1655,
+   "rate": 0.1399
+  },
+  "direct": {
+   "brier": 0.03024,
+   "logloss": 0.10282,
+   "ece": 0.0086,
+   "mean_p": 0.1394,
+   "rate": 0.1399
+  }
+ },
+ "pooled_new_only": {
+  "product": {
+   "brier": 0.01947,
+   "logloss": 0.07645,
+   "ece": 0.0184,
+   "mean_p": 0.0457,
+   "rate": 0.0278
+  },
+  "direct": {
+   "brier": 0.02051,
+   "logloss": 0.07527,
+   "ece": 0.0035,
+   "mean_p": 0.0282,
+   "rate": 0.0278
+  }
+ }
+}
