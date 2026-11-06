@@ -1,6 +1,6 @@
 """Companion pages for the public site: the methodology (docs/methodology.md) and the data source tree
 (raw sources from scripts/draw_dependencies.py, the files under data/raw, each folder's README summary).
-python -P scripts/build_site_pages.py  -> outputs/netlify_site/{methodology,data_sources}.html
+python -P scripts/build_site_pages.py  -> outputs/netlify_site/{methodology,data_sources,ethics}.html
 """
 import os
 import re
@@ -51,7 +51,7 @@ footer{margin-top:48px;font-size:14px;color:var(--muted)}
 """
 
 NAV = ('<nav class="top"><a href="index.html">Report</a><a href="methodology.html">Methodology</a>'
-       '<a href="data_sources.html">Data source tree</a></nav>')
+       '<a href="data_sources.html">Data source tree</a><a href="ethics.html">Purpose and ethics</a></nav>')
 CREDIT = "<footer>Study conceived and directed by Benoit Schillings.</footer>"
 
 
@@ -162,9 +162,15 @@ def methodology():
     return page("Seldon methodology", html, "How the Seldon world crisis forecasting engine works and how it is tested.")
 
 
+def ethics():
+    md = open(os.path.join(ROOT, "docs", "ethics.md"), encoding="utf-8").read()
+    html = markdown.markdown(md, extensions=["tables"])
+    return page("Purpose and ethics", html, "Why Seldon publishes named-country forecasts, what they are for, and how harm is limited.")
+
+
 if __name__ == "__main__":
     os.makedirs(SITE, exist_ok=True)
-    for name, fn in (("data_sources.html", data_sources), ("methodology.html", methodology)):
+    for name, fn in (("data_sources.html", data_sources), ("methodology.html", methodology), ("ethics.html", ethics)):
         with open(os.path.join(SITE, name), "w", encoding="utf-8") as f:
             f.write(fn())
         print(os.path.join(SITE, name))
