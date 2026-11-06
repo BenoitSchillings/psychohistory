@@ -318,6 +318,8 @@ class WorldConfig:
     # area at this share of it (sampled 0-0.5; 1.0 = the earlier rule, in which France could join any US war at the
     # full rate, so a US-China war over Taiwan drew France in as often as a Russian attack on Estonia)
     ally_out_scope: float = 0.25
+    param_block: int = 1               # worlds per block sharing every sampled assumption (1 = each world its own)
+    major_era_mult: float = 1.0       # onset odds of major-power pairs x this (1.3 = the pre-1945 era; scenario only)
     # clean-energy transition: world wind+solar share of primary energy on an S-curve fitted to 2005-2024
     # (OWID/Energy Institute; growth rate 0.155 +/- 0.03 a year), with an unidentified ceiling drawn per world.
     # Clean energy displaces fossil fuels pro rata; oil demand follows, the oil price moves oil_eta x the demand
@@ -613,6 +615,16 @@ class World:
             self.params["ai_arrival"] = self.arrival_w.clamp(max=2070.0)         # for the attribution of uncertainty
         if self.cfg.ai.arrival:
             self._draw_robot_arrival(S, device, g, u if self.cfg.ai.arrival_cdf else None)
+        if self.cfg.param_block > 1:
+            # two-level runs (second debate, 2026-11-06): worlds in blocks of param_block share every assumption, so
+            # each block's share of outcomes is a probability given those assumptions, and the spread across blocks is
+            # the part of the uncertainty that comes from the assumptions (scripts/credence.py)
+            B = self.cfg.param_block
+            blk = lambda x: x[::B].repeat_interleave(B, 0)[:S] if torch.is_tensor(x) and x.shape[0] == S else x
+            self.params = {k: blk(v) for k, v in self.params.items()}
+            for a_ in ("arrival_w", "robot_w", "amoc_year"):
+                if hasattr(self, a_):
+                    setattr(self, a_, blk(getattr(self, a_)))
 
     def _draw_robot_arrival(self, S, device, g, u_ai):
         """robotics arrival year per world: the ROBOT_CDF quantile of a normal score correlated (robot_corr) with the
@@ -859,6 +871,8 @@ class World:
             else torch.zeros(P, device=self.dev)
         g_ps = torch.Generator(device=self.dev).manual_seed((int(self.gen.initial_seed()) if self.gen is not None else 0) + 5151)
         self.z_pair = torch.randn(self.S, 1, device=self.dev, generator=g_ps)
+        if self.cfg.param_block > 1:
+            self.z_pair = self.z_pair[::self.cfg.param_block].repeat_interleave(self.cfg.param_block, 0)[:self.S]
         self.onset_target = d.get("onset_rate")
         self.dyad_shift = 0.0
         cont = d["continuation"]
@@ -1210,6 +1224,11 @@ class World:
             else:
                 raise ValueError(f"DYAD_CALIB must be none, long or drift, not {DYAD_CALIB!r}")
         logit_onset = logit_onset + self.dyad_shift
+        if self.cfg.major_era_mult != 1.0:
+            # era scenario (scripts/era_test.py, 2026-11-06): the pair model fitted on 1946-2005 and scored on
+            # 1816-1938 is calibrated overall (observed / predicted 1.03) but under-predicts fatal disputes between two
+            # major powers by 30% (1.30); this multiplies the onset odds of major-power pairs (a scenario, not the headline)
+            logit_onset = logit_onset + float(np.log(self.cfg.major_era_mult)) * self.major_pair[None]
         if mil_mult is not None:
             # AI and war (assumptions): rivals drift toward war when one pulls ahead in AI adoption (a window of
             # preventive advantage, as in the dreadnought race), and nuclear rivals lose some second-strike

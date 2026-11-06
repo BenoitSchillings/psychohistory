@@ -491,6 +491,12 @@ def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, 
                  climate_damage=climate_damage, seed=2,
                  world=WorldConfig(ai=AI_SCENARIOS["uncertain"], sample_params=True, ally_out_scope=1.0), dyads=dy)
     ai_out["alliances_any_scope"] = world_summary(o)
+    # era scenario: major powers fight as often, given their circumstances, as they did in 1816-1938 (scripts/era_test.py)
+    _log("  scenario: great powers in the pre-1945 era")
+    o = simulate(p, base, net, growth, ddem, origin, end, n_scen=scen_n, clim=clim[scenario]["inputs"],
+                 climate_damage=climate_damage, seed=2,
+                 world=WorldConfig(ai=AI_SCENARIOS["uncertain"], sample_params=True, major_era_mult=1.3), dyads=dy)
+    ai_out["era_pre1945"] = world_summary(o)
     # labelled scenario (not the headline): wars between states last as long as in the last decade. The simulator
     # missed the 2010s rise in active interstate conflicts two- to threefold, mostly in how long they last; fitting it
     # would use the outcomes that should test it (docs/adopt_rule.md), so it is shown beside the headline instead:

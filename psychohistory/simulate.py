@@ -848,6 +848,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         sf = tt(fam_)                                                                     # [F, C, 3]
         g_s = torch.Generator(device=device).manual_seed(seed + 4242)
         fi = torch.multinomial(tt(net.struct_w).expand(S * 3, -1), 1, replacement=True, generator=g_s).view(S, 3)
+        if WS is not None and WS.cfg.param_block > 1:                                  # (two-level runs)
+            fi = fi[::WS.cfg.param_block].repeat_interleave(WS.cfg.param_block, 0)[:S]
         struct_shift = torch.stack([sf[fi[:, j], :, j] for j in range(3)], -1)        # [S, C, 3]
     elif struct_on and STRUCT_MODE == "gauss" and getattr(net, "struct_sd", None) is not None:
         struct_sd = tt(np.clip(net.struct_sd, 0, 1.5))

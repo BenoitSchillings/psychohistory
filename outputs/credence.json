@@ -1,0 +1,74 @@
+{
+ "blocks": 200,
+ "worlds_per_block": 50,
+ "origin": 2025,
+ "great_power_war": {
+  "overall": 0.4394,
+  "range_across_assumptions_5_95": [
+   0.179,
+   0.76
+  ],
+  "quartiles": [
+   0.3,
+   0.42,
+   0.545
+  ],
+  "assumption_share": 0.1102
+ },
+ "great_power_war_majors": {
+  "overall": 0.2077,
+  "range_across_assumptions_5_95": [
+   0.08,
+   0.4
+  ],
+  "quartiles": [
+   0.14,
+   0.2,
+   0.26
+  ],
+  "assumption_share": 0.03
+ },
+ "nuclear_use": {
+  "overall": 0.1246,
+  "range_across_assumptions_5_95": [
+   0.02,
+   0.26
+  ],
+  "quartiles": [
+   0.08,
+   0.12,
+   0.16
+  ],
+  "assumption_share": 0.0278
+ },
+ "civil_conflict_2065_above_25pct": {
+  "overall": 0.3989,
+  "range_across_assumptions_5_95": [
+   0.219,
+   0.6
+  ],
+  "quartiles": [
+   0.32,
+   0.38,
+   0.5
+  ],
+  "assumption_share": 0.0444
+ },
+ "world_gdp_per_person_2065": {
+  "overall_median": 32766,
+  "block_medians_5_95": [
+   19773,
+   83514
+  ]
+ },
+ "great_power_war_drivers_rank_corr": {
+  "nuclear_war_factor": 0.413,
+  "cascade_q": 0.285,
+  "robot_arrival": -0.224,
+  "drone_onset": 0.211,
+  "pko_decay": 0.198,
+  "ai_arrival": -0.19,
+  "prolif_mult": 0.183,
+  "quasi_RUS_IRN": 0.165
+ }
+}

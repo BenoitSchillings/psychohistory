@@ -182,6 +182,49 @@ In the disaster analysis, climate damage is now a fifth of the economic-collapse
 
 An independent review found that the new structural draw lacked the correction that keeps low risks from being inflated by random spread (fixed; the very-safe-country tail now improves slightly), that two random draws shared a seed (separated), and that one disaster knockout let engineered pathogens through (fixed). Five ideas were tested on history and rejected: growth noise scaled by each country's recent volatility (better GDP forecasts on 2000–2012, but countries spread apart more on 1970–1998), deeper world recessions (closer to the real recession count, worse scores), a free-speech-in-democracies interaction (no gain), a cohort-based working-age share for hindcasts (too crude), and the ensemble's level for war onset, which nearly removes the very-safe-country tail but lowers world war risk in the 2000s, before the 2010s rise. An AI loss-of-control catastrophe is now drawn in the headline as an assumption: after near-free AI arrives, a chance between superforecasters' and experts' estimates (about 2.5% of worlds by 2065 with AI timing uncertain) of a catastrophe killing 1–10% of humanity. The report gained a "build your own world" tool, a flashpoint explorer and a panel of what changed since the previous version.
 
+## How far ahead it has skill (6 November 2026)
+
+From each of the 16 starting years used to test changes (1970–2009), the forecast's own simulator ran 15 years ahead with the world layer on and AI off. At every horizon its country-level forecasts were scored against fair naive forecasts built only from data before the starting year:
+
+- **Who is at war in a given year.** The naive forecast is persistence with its historical decay: the chance of being at war h years later, given whether a country was at war at the start.
+- **New civil wars by a given year.** The naive forecast is the historical onset rate for countries at peace.
+- **Income growth.** The naive forecast is each country's own 20-year trend, plus the historical spread around such trends.
+
+| Years ahead | Who is at war | New civil wars | Income |
+| --- | --- | --- | --- |
+| 1 | +12% | +5% | +13% |
+| 5 | +10% | +15% | +17% |
+| 10 | +12% | +19% | +23% |
+| 15 | +11% | +22% | +26% |
+
+The numbers are skill scores: Brier for war and CRPS for income, against the naive forecast. Every 90% interval across starting years stays above zero. The skill does not fade by year 5, as some expected, and it lasts to the longest horizon that can be tested. These starting years also informed the simulator's settings, so the true edge is somewhat smaller.
+
+The report therefore calls country-level numbers forecasts up to about 15 years ahead. The 2065 numbers lie 40 years out, beyond anything history can test, and are presented as explorations of stated assumptions. Script: scripts/skill_horizon.py.
+
+## Long-run numbers as credences (6 November 2026)
+
+The headline integrates over every assumption at once, so "45% great-power war" mixes what the assumptions say with chance. To separate the two, the 2025 forecast was rerun as 200 blocks of 50 worlds. The worlds in a block share one draw of every assumption, including which model family is right. Each block's share is then a probability given its assumptions, and the spread across blocks is what the assumptions alone produce (scripts/credence.py).
+
+| By 2065 | All worlds | Range across assumption draws (5–95%) | Share of the spread due to assumptions |
+| --- | --- | --- | --- |
+| Great-power war, counting India | 44% | 18–76% | 11% |
+| Great-power war, traditional majors | 21% | 8–40% | 3% |
+| Nuclear use | 12% | 2–26% | 3% |
+| More than 25% of countries in civil conflict in 2065 | 40% | 22–60% | 4% |
+
+Chance within a block adds about ±7 points, so the ranges slightly overstate what comes from the assumptions. The share due to assumptions is measured on block probabilities, net of that chance. It is about three times what the earlier attribution showed (4%), because that method scored a yes-or-no outcome in each world. The assumptions that move great-power war most are the escalation between nuclear-armed rivals (rank correlation 0.41) and how often allies join a war (0.29). The report gives each long-run war number with its range.
+
+## The war model in another era (6 November 2026)
+
+Every test of the simulator lives inside 1946–2024, so its great-power war numbers assume the post-1945 order persists. The pair model was refitted on one era and scored on the other, both ways. The outcome was the only one coded consistently since 1816: a militarized dispute with more than 25 deaths within five years (scripts/era_test.py).
+
+| Fitted on | Scored on | Observed / predicted, all pairs | Major-power pairs | Ranking (AUC) |
+| --- | --- | --- | --- | --- |
+| 1946–2005 | 1816–1938 | 1.03 | 1.30 | 0.73 |
+| 1816–1938 | 1946–2005 | 0.28 | 0.37 | 0.76 |
+
+The post-war model transfers back well overall: rivalries, borders and conflict history carry most of the difference between eras. But it expects 30% too few fatal disputes between two major powers. The model fitted before 1945 predicts more than three times too much fighting after it. The report adds a labelled scenario in which major-power pairs fight as often as before 1945, given their circumstances; it is not the headline.
+
 ## How changes are tested, and alliances (5 November 2026)
 
 Six independent reviews, three from each of two AI labs, found that the main weakness was the testing rather than the model. Their findings, each checked in the code:
