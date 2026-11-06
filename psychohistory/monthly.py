@@ -30,9 +30,10 @@ def gw_map():
     return dict(zip(vw.gwcode, vw.iso3)), sorted(vw.iso3.unique())
 
 
-def _events(path, gw2iso, years=None):
+def _events(path, gw2iso, years=None, types=(1,)):
+    """types: UCDP type_of_violence (1 state-based, 2 non-state, 3 one-sided violence against civilians)"""
     e = pd.read_csv(path, usecols=["type_of_violence", "country_id", "date_start", "best"])
-    e = e[e.type_of_violence == 1]
+    e = e[e.type_of_violence.isin(types)]
     e["iso3"] = e.country_id.map(gw2iso)
     e = e.dropna(subset=["iso3"])
     d = pd.to_datetime(e.date_start)
@@ -71,7 +72,7 @@ def last_observed():
     return y, cf[y][1]
 
 
-def deaths(codes, gw2iso, end_year, end_month, vintage_2024=False):
+def deaths(codes, gw2iso, end_year, end_month, vintage_2024=False, types=(1,)):
     """country x month state-based deaths, 1989-01 .. end month: final GED 26.1 to 2025-12, then for each later year
     its newest cumulative candidate file; with vintage_2024, 2024 comes from the candidate file released 2025-01-24."""
     M = midx(end_year, end_month) + 1
@@ -82,14 +83,14 @@ def deaths(codes, gw2iso, end_year, end_month, vintage_2024=False):
         for (c, m), v in g.items():
             if c in ci and m < M and (lo is None or lo <= m < hi):
                 D[ci[c], m] = v
-    put(_events(O / "ucdp" / "ged261-csv" / "GEDEvent_v26_1.csv", gw2iso))
+    put(_events(O / "ucdp" / "ged261-csv" / "GEDEvent_v26_1.csv", gw2iso, types=types))
     if vintage_2024:
         lo, hi = midx(2024, 1), midx(2025, 1)
         D[:, lo:hi] = 0
-        put(_events(O / "ucdp" / "candidate2024" / "GEDEvent_v24_01_24_12.csv", gw2iso, [2024]), lo, hi)
+        put(_events(O / "ucdp" / "candidate2024" / "GEDEvent_v24_01_24_12.csv", gw2iso, [2024], types=types), lo, hi)
     for y, (f, _) in sorted(candidate_files().items()):
         if y <= end_year:
-            put(_events(f, gw2iso, [y]))
+            put(_events(f, gw2iso, [y], types=types))
     return D
 
 

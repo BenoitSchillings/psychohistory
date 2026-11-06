@@ -1051,7 +1051,7 @@ function aiSection() {
              {k: "Headline: democracy index 2065", v: U.world_dem_q[2][yi].toFixed(2), s: `no AI shock ${AI.none.world_dem_q[2][yi].toFixed(2)}`}] : []),
     {k: "World GDP per person 2065, near-free cognition 2030", v: money(g("2030")), s: `no AI shock ${money(g("none"))} (×${(g("2030") / g("none")).toFixed(1)})`},
     {k: "Countries in civil conflict 2065, AI in 2030", v: pct(AI["2030"].world_conflict_q[2][yi]), s: `no AI shock ${pct(AI.none.world_conflict_q[2][yi])}`},
-    {k: "Great-power war by 2065, AI in 2030", v: pct(AI["2030"].great_power_war_by.at(-1)), s: `no AI shock ${pct(AI.none.great_power_war_by.at(-1))}; 1914-style alliances ${pct((AI.alliances_1914 || AI.none).great_power_war_by.at(-1))}${AI.alliances_any_scope ? `; allies joining any war wherever it is (the rule before November 2026) ${pct(AI.alliances_any_scope.great_power_war_by.at(-1))}` : ""}${AI.interstate_2010s ? `; if wars between states last as long as in the 2010s (scenario: the simulator missed that rise two- to threefold) ${pct(AI.interstate_2010s.great_power_war_by.at(-1))}` : ""}`},
+    {k: "Great-power war by 2065, AI in 2030", v: pct(AI["2030"].great_power_war_by.at(-1)), s: `no AI shock ${pct(AI.none.great_power_war_by.at(-1))}; 1914-style alliances ${pct((AI.alliances_1914 || AI.none).great_power_war_by.at(-1))}${AI.alliances_any_scope ? `; allies joining any war wherever it is (the rule before November 2026) ${pct(AI.alliances_any_scope.great_power_war_by.at(-1))}` : ""}${AI.era_pre1945 ? `; if great powers fought as often as in 1816–1938 ${pct(AI.era_pre1945.great_power_war_by.at(-1))}` : ""}${AI.interstate_2010s ? `; if wars between states last as long as in the 2010s (scenario: the simulator missed that rise two- to threefold) ${pct(AI.interstate_2010s.great_power_war_by.at(-1))}` : ""}`},
     {k: `Pandemics per world, ${M.origin + 1}–2065, AI in 2030`, v: AI["2030"].pandemics_mean.toFixed(1), s: `no AI shock ${AI.none.pandemics_mean.toFixed(1)}`},
     {k: "Democracy index 2065, AI in 2030", v: AI["2030"].world_dem_q[2][yi].toFixed(2), s: `no AI shock ${AI.none.world_dem_q[2][yi].toFixed(2)}`},
     {k: "Coup attempts per year, 2045–2065, AI in 2030", v: d3.format(".1f")(d3.mean(AI["2030"].coups_q[2].slice(20))), s: `no AI shock ${d3.format(".1f")(d3.mean(AI.none.coups_q[2].slice(20)))}`},
@@ -1519,6 +1519,12 @@ function ledgerSection() {
   document.getElementById("t-ledger").innerHTML = "<thead><tr><th>Country</th><th class=num>Next 12 months</th></tr></thead><tbody>" +
     Object.entries(L.annual_new).slice(0, 25).map(([c, v]) => `<tr><td>${nm(c)}</td><td class="num">${pct(v)}</td></tr>`).join("") + "</tbody>";
   document.getElementById("ledger-card-sub").textContent += ` (${L.n_active} countries had such fighting in the past year and are near-certain to again).`;
+  if (L.civilian) {
+    const card = document.getElementById("t-ledger").closest(".card");
+    card.insertAdjacentHTML("afterend", `<div class="card" style="margin-top:16px"><h3>Violence against civilians and between militias, next twelve months</h3><p class="sub">UCDP non-state and one-sided violence (communal and militia fighting, massacres of civilians), which battle counts leave out. Countries with no month of 25 or more such deaths in the past year: probability of at least one in the twelve months after ${L.civilian.data_to}. In backtests (2018–2024) this beat persistence by 27% (15% for these countries). ${L.civilian.n_active} countries had such violence in the past year.</p><div class="tablewrap" style="max-height:420px"><table>` +
+      "<thead><tr><th>Country</th><th class=num>Next 12 months</th></tr></thead><tbody>" +
+      Object.entries(L.civilian.new).slice(0, 25).map(([c, v]) => `<tr><td>${nm(c)}</td><td class="num">${pct(v)}</td></tr>`).join("") + "</tbody></table></div></div>");
+  }
   const A = AI && AI.none && AI.none.attribution, A2 = AI && AI.uncertain && AI.uncertain.attribution;
   if (!A) return;
   const lab = {cascade_q: "Alliance joining rate", war_spillover: "Trade spillover from wars", war_site_loss: "Output loss at war sites",

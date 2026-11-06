@@ -1,0 +1,91 @@
+{
+ "features": [
+  "contig_land",
+  "contig_sea",
+  "log_cap_dist",
+  "rival",
+  "major_pair",
+  "one_major",
+  "abs_power_ratio",
+  "power_shift_10y",
+  "log_joint_gdp",
+  "cinc_ratio",
+  "both_nuclear",
+  "one_nuclear",
+  "allied",
+  "terr_threat_max",
+  "dem_min",
+  "dem_max",
+  "dem_gap",
+  "civil_war_any",
+  "coup_recent_max",
+  "milex_max",
+  "conflict_past_10y",
+  "log_years_since_conflict",
+  "ever_conflict"
+ ],
+ "fit_1816_1938_score_1946_2005": {
+  "in_sample": {
+   "rows": 35349,
+   "events": 1365,
+   "expected": 1358.9,
+   "obs_over_pred": 1.004,
+   "auc": 0.888,
+   "major_pairs": {
+    "rows": 1638,
+    "events": 269,
+    "expected": 251.2,
+    "obs_over_pred": 1.071
+   }
+  },
+  "other_era": {
+   "rows": 88890,
+   "events": 1414,
+   "expected": 5131.5,
+   "obs_over_pred": 0.276,
+   "auc": 0.761,
+   "major_pairs": {
+    "rows": 749,
+    "events": 67,
+    "expected": 182.58,
+    "obs_over_pred": 0.367
+   }
+  }
+ },
+ "fit_1946_2005_score_1816_1938": {
+  "in_sample": {
+   "rows": 88890,
+   "events": 1414,
+   "expected": 1410.6,
+   "obs_over_pred": 1.002,
+   "auc": 0.957,
+   "major_pairs": {
+    "rows": 749,
+    "events": 67,
+    "expected": 59.1,
+    "obs_over_pred": 1.134
+   }
+  },
+  "other_era": {
+   "rows": 35349,
+   "events": 1365,
+   "expected": 1326.0,
+   "obs_over_pred": 1.029,
+   "auc": 0.733,
+   "major_pairs": {
+    "rows": 1638,
+    "events": 269,
+    "expected": 207.58,
+    "obs_over_pred": 1.296
+   }
+  }
+ },
+ "rate_1816_1938": {
+  "all": 0.0386,
+  "major_pairs": 0.1642
+ },
+ "rate_1946_2005": {
+  "all": 0.0159,
+  "major_pairs": 0.0895
+ }
+}
