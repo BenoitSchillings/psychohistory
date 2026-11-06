@@ -15,7 +15,7 @@ from .data import RAW, ROOT
 OUT = ROOT / "outputs"
 TEMPLATE = ROOT / "psychohistory" / "report_template.html"
 # the report's release number: bump on every published change (the private copy's own revision counter can run ahead)
-VERSION = ("54", "5 November 2026")
+VERSION = ("54.1", "6 November 2026")
 
 
 def _world_topology():
@@ -174,10 +174,11 @@ def _release_changes():
         cur["excess_deaths"] = f"{ed[2] / 1e6:.0f} million"
     hist[VERSION[0]] = {"date": VERSION[1], "headline": cur}
     hist_f.write_text(json.dumps(hist, indent=1))
-    prev = [k for k in hist if int(k) < int(VERSION[0])]
+    vk = lambda k: tuple(int(x) for x in str(k).split("."))          # versions and patch versions (54, 54.1)
+    prev = [k for k in hist if vk(k) < vk(VERSION[0])]
     if not prev:
         return None
-    pk = max(prev, key=int)
+    pk = max(prev, key=vk)
     return {"version": VERSION[0], "prev": pk, "prev_date": hist[pk]["date"], "now": cur, "before": hist[pk]["headline"]}
 
 
@@ -191,7 +192,10 @@ def build(path=None) -> str:
     panel = OUT / "llm_panel.json"
     page = page.replace("/*__PANEL__*/null", _anon_panel(panel.read_text()) if panel.exists() else "null")
     extra = {}
-    for key, fn in [("score_2025", "score_2025.json"), ("crisis_explorer", "crisis_explorer.json"), ("chronicles", "chronicles.json"),
+    # (the narrated single worlds, outputs/chronicles.json, are no longer shown (6 November 2026): one draw read as a
+    # story, with coups in Canada and Iceland that come from the simulator's safe-country tail, misleads more than it
+    # explains; the tail itself is an open item in docs/world_system.md)
+    for key, fn in [("score_2025", "score_2025.json"), ("crisis_explorer", "crisis_explorer.json"),
                     ("us_history", "us_history.json"), ("seshat", "seshat.json"), ("calibration_top", "calibration_top.json"),
                     ("monthly", "monthly_2025_vintage.json"), ("ledger", "ledger_summary.json"),
                     ("crowd", "crowd_benchmark.json"), ("gulf", "gulf_2026.json"), ("leaders", "leader_benchmark.json"),

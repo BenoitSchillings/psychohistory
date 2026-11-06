@@ -154,5 +154,26 @@ def predict(model, F, t, horizons=range(1, 13)):
 
 
 def annual_probability(pred):
-    """P(at least one 25-death month in the next 12 months), treating months as independent given the forecast"""
+    """P(at least one 25-death month in the next 12 months), treating months as independent given the forecast.
+    An upper bound: a country's months are positively correlated, so this overstates the 12-month risk (Benin 0.76 in
+    the October 2026 ledger). Use fit_annual / predict_annual (debate 2026-11-06; scripts/monthly_annual_test.py)."""
     return 1 - np.prod([1 - pred[h] for h in sorted(pred)], 0)
+
+
+def fit_annual(F, hit, last_obs):
+    """direct 12-month model: P(any 25-death month in t+1..t+12), trained on every t whose 12 months are observed"""
+    names = list(F)
+    Xs, ys = [], []
+    for t in range(12, last_obs - 12 + 1):
+        Xs.append(np.stack([F[f][:, t] for f in names], 1))
+        ys.append(hit[:, t + 1:t + 13].max(1))
+    model = lgb.LGBMClassifier(n_estimators=400, learning_rate=0.03, num_leaves=15, min_child_samples=200,
+                               subsample=0.8, subsample_freq=1, colsample_bytree=0.8, reg_lambda=10, verbose=-1)
+    model.fit(np.concatenate(Xs), np.concatenate(ys))
+    model.names_ = names
+    return model
+
+
+def predict_annual(model, F, t):
+    """[C] P(any 25-death month in the 12 months after month t)"""
+    return model.predict_proba(np.stack([F[f][:, t] for f in model.names_], 1))[:, 1]

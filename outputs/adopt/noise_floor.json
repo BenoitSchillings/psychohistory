@@ -23,6 +23,7 @@
   2006,
   2009
  ],
+ "safe20_floor": 0.3149,
  "stat_floor": {
   "country_brier": 0.0105,
   "conflict_share": 0.0906,

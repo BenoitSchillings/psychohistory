@@ -2453,3 +2453,34 @@ Re-checks, each undoing an earlier adoption (positive = the adoption helped):
 - country frailty off: +0.2% (+3.2 / -1.2 / -2.1 / +4.6): not distinguishable from refit noise.
 Nothing is reverted: the rule decides changes, and undoing on weak evidence would be the same mistake in reverse.
 Outputs: outputs/adopt/noise_floor.json, outputs/adopt/nf_*_vs_nf_base.json, outputs/adopt/align_oracle.json.
+
+## Second debate: what Seldon should become (2026-11-06)
+Eight personas (historian, government foresight client, philosopher of forecasting, AI-transition economist; catastrophe
+actuary, conflict-prevention ethicist, science journalist, climate scientist), three rounds, a 20-item ballot and two
+independent judges. Unanimous: one source of truth for every published number, quarterly model releases, and fixing
+the 12-month roll-up of the monthly forecasts. Near-unanimous: named-country numbers stay public with ranges (gating
+vetoed 7 of 8); 2065 as a labelled credence beside base rates; a skill-versus-horizon curve; Forecasts / Explorations.
+Roadmap in progress (this section is updated as items land).
+
+Week one, done:
+- 12-month probability: monthly.annual_probability multiplied 12 monthly forecasts as independent; a country's months
+  are positively correlated, so it overstated the risk. A model fitted directly on "any 25-death month in the next 12"
+  (monthly.fit_annual), issued each December 2017-2023 and scored on the next year (scripts/monthly_annual_test.py):
+  mean forecast 13.9% against 14.0% observed (product 16.6%), calibration error 0.009 (0.026), log loss 0.103 (0.118),
+  Brier 0.0302 (0.0309); on countries without fighting in the past year the product keeps a Brier edge (0.0195
+  against 0.0205: it ranks them a little better while overstating their level). The ledger summary and new ledgers
+  use the direct model: Benin 0.76 -> 0.39, Kenya 0.58 -> 0.22, Burundi 0.35.
+- scripts/number_parity.py checks 17 headline claims in outputs/narrative.md (inlined in the report) and the
+  methodology headline against outputs/forecast.json and outputs/country_forecasts.csv (--fix writes the current
+  values). It found 12 stale numbers from 1 November (great-power war 49% -> 45%, $36k -> $34k, nuclear use 14% -> 13%,
+  majors 26% -> 21% ...), all fixed.
+- "War outcomes rest on the model more than on assumptions" withdrawn: the 4-7% share is R^2 on a yes-or-no outcome
+  per world; the same assumptions move great-power war by up to 24 points.
+- Chronicles removed from the report.
+- Release policy (docs/adopt_rule.md): model versions quarterly; data refreshes monthly; fixes between releases as
+  labelled patch versions that change no model setting.
+
+Open item (from the chronicles): the simulator's own event logs (outputs/chronicles_raw.json) contain new civil wars
+in Canada (2037), France, Denmark and Iceland, and a Costa Rica vs Russia interstate war, in single worlds. These are
+the safe-country tail (Limits) and the pair model's tail for distant, unrelated pairs; to be checked against a
+non-regression guardrail on the 20 safest countries (debate judges) and the cross-era war test.

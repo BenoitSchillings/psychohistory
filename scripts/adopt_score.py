@@ -10,7 +10,8 @@ Decision (all must hold):
  1. the composite improves in at least 3 of the 4 decades of origins (1970s, 1980s, 1990s, 2000s);
  2. the pooled composite improves by more than the noise floor (twice the standard deviation of the composite
     between ensemble refits of the baseline itself, outputs/adopt/noise_floor.json; scripts/adopt_score.py --floor);
- 3. no statistic with weight is worse by more than 3% pooled (guardrail);
+ 3. no statistic with weight is worse by more than 3% pooled (guardrail), and the safe-country war score is not worse
+    by more than its own noise floor (non-regression guardrail, added 6 November 2026);
  4. the configuration matches the forecast's (scripts/config_parity.py; the variant's own change aside).
 Statistics whose noise floor exceeds 10% carry no weight (listed in the noise-floor file).
 
@@ -90,6 +91,13 @@ def decide(base, var, seeds, origins):
     better_dec = sum(v < 0 for v in by_dec.values())
     floor = nf["composite_floor"] if nf else None
     guard = {k: v for k, v in rel.items() if v > GUARD}
+    # non-regression guardrail on the safe-country tail (second debate, 6 November 2026): the 15-year score of new
+    # wars among the 20 safest countries may not get worse by more than its noise between refits
+    if "safe20_wars" in A[origins[0]]:
+        s20 = float(np.mean([B[o]["safe20_wars"] for o in origins]) / max(np.mean([A[o]["safe20_wars"] for o in origins]), 1e-12) - 1)
+        s20_floor = (nf or {}).get("safe20_floor")
+        if s20_floor is not None and s20 > s20_floor:
+            guard["safe20_wars"] = s20
     ok = better_dec >= 3 and (floor is not None and comp < -floor) and not guard
     res = {"base": base, "variant": var, "seeds": seeds, "origins": origins, "weights": w,
            "relative_change": {k: round(v, 4) for k, v in rel.items()}, "composite": round(comp, 4),
@@ -126,7 +134,12 @@ def floor(base, seeds, origins):
         others = [t for t in seeds if t != s]
         M = {o: {k: float(np.mean([T[t][o][k] for t in others])) for k in T[s][o]} for o in origins}
         comps_w.append(composite(M, T[s], origins, w)[1])
-    res = {"base": base, "seeds": seeds, "origins": origins,
+    s20 = []
+    for s in seeds:
+        others = [t for t in seeds if t != s]
+        a_ = np.mean([np.mean([T[t][o]["safe20_wars"] for t in others]) for o in origins])
+        s20.append(np.mean([T[s][o]["safe20_wars"] for o in origins]) / max(a_, 1e-12) - 1)
+    res = {"base": base, "seeds": seeds, "origins": origins, "safe20_floor": round(2 * float(np.std(s20, ddof=1)), 4),
            "stat_floor": {k: round(2 * v, 4) for k, v in sd.items()}, "dropped": dropped,
            "composite_floor": round(2 * float(np.std(comps_w, ddof=1)), 4),
            "note": "floor = 2 x sd between ensemble refits of the baseline (each against the mean of the others)"}
