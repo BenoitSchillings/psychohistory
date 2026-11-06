@@ -2420,3 +2420,36 @@ Report:
   the crowd's 0.0998. UCDP is now the default. The stale labels were not why the crowd wins: 13% of the questions
   resolved yes, while the model's mean probability is 2% (UCDP, 25 battle deaths) or 8% (MID): "use of force" is a
   lower bar than either label.
+
+### Noise floor and re-checks under the adopt rule (2026-11-05)
+Baseline nf_base: the forecast's configuration, 16 origins 1970-2009 at 15 years, 2,000 worlds, three ensemble refits.
+Noise floor (twice the sd between refits, each against the mean of the other two): each country's years at war 1.1%,
+world share at war 9.1%, new civil wars 10.8% (above 10%: no weight in the composite), coups 2.5%, world growth
+0.8%, growth spread 0.5%, democracy 0.7%, wars between states 0.8%, oil 0.1%, growth volatility 0.04%; composite 1.1%.
+So refitting the ensemble alone moves the war-level scores by up to a tenth: the ENS_OFFSET withdrawal (+11.6% new
+wars, 0/3) was inside that noise, and so were several earlier single-period decisions on war counts.
+
+Composite change against nf_base (negative = better; by decade 1970s / 80s / 90s / 2000s):
+- treaty scope for alliances (WorldConfig.ally_out_scope sampled 0-0.5 instead of 1): +0.05% (+0.1 / 0.0 / -0.1 /
+  +0.1); wars between states +0.6%, everything else within 0.1%. Hindcasts hold almost no out-of-area joining, so
+  history cannot tell; adopted as a correction (the treaties' own areas), with the old rule shown as a scenario.
+- year-1 alignment of war endings on the previous decade's risk sets (ALIGN_MATCHED "t"): +0.02% (-0.5 / +0.3 / +0.9 /
+  -1.9), world share at war +1.1%. Rejected, although scripts/align_oracle.py put the matched shift closer to the next
+  decade's right one for endings in 3 of 4 decades (onsets 1 of 4: the composition explanation of the safe-country
+  tail is rejected).
+- ensemble central offset (ENS_OFFSET "oc"): -0.05% (+0.1 / +1.1 / -1.6 / -0.8); safe-country wars -40%, coups -1.3%,
+  share at war +0.8%, democracy -1.0%. No gain beyond the floor: not adopted (the diagnostic gain is real but the
+  decision statistics do not move).
+- shock split (SHOCK_SPLIT 0.7 era, 1.0 year): -0.17% (0.0 / +1.9 / +0.1 / -0.9); growth volatility -3.4%, years with
+  falling world GDP +3.4% (diagnostic). Rejected. The CPU gate as written failed (between-decade share of yearly
+  shock variance 15-32%, gate 40%); run anyway because decade means drive 64-82% of the 10-year spread.
+- countries not yet existing treated as at peace again (ABSENT_MASK off): -0.14% (+1.4 / -0.7 / -1.4 / +0.2). The fix
+  stays (it corrects the code); its effect is within noise.
+Re-checks, each undoing an earlier adoption (positive = the adoption helped):
+- growth regime scale back to 1.8: +3.1% (+3.8 / -3.6 / +4.8 / +4.5), growth spread +24.5%: confirmed.
+- oil fix undone (OIL_INDEP off, pull 0.05): +1.2% (+0.6 / +6.7 / +1.0 / +0.7), oil +19.9%: confirmed.
+- mood back to 0.20: +0.9% (+1.3 / +1.4 / +0.1 / +3.2), share at war +4.8%: likely right, below the floor.
+- debt-split growth pools off: +0.6% (+0.2 / +0.9 / +1.1 / -0.1), growth spread +3.6%: below the floor.
+- country frailty off: +0.2% (+3.2 / -1.2 / -2.1 / +4.6): not distinguishable from refit noise.
+Nothing is reverted: the rule decides changes, and undoing on weak evidence would be the same mistake in reverse.
+Outputs: outputs/adopt/noise_floor.json, outputs/adopt/nf_*_vs_nf_base.json, outputs/adopt/align_oracle.json.
