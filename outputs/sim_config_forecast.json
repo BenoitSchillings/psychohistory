@@ -123,6 +123,8 @@
   "expeditionary": "('USA', 'GBR', 'FRA', 'RUS', 'AUS', 'CAN', 'CHN')",
   "ally_reach_km": 2500.0,
   "ally_out_scope": 0.25,
+  "param_block": 1,
+  "major_era_mult": 1.0,
   "transition": true,
   "trans_ceiling": "(0.4, 0.9)",
   "trans_rate": "(0.155, 0.03)",
