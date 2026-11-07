@@ -11,7 +11,7 @@ python3 -P scripts/draw_dependencies.py
 cp docs/data_dependencies.svg $SITE/
 python3 -P scripts/build_site_pages.py   # methodology.html, data_sources.html
 TMP=$(mktemp -d)
-cp $SITE/index.html $SITE/methodology.html $SITE/data_sources.html $SITE/ethics.html $SITE/data_dependencies.svg $TMP/
+cp $SITE/index.html $SITE/methodology.html $SITE/data_sources.html $SITE/ethics.html $SITE/tldr.html $SITE/data_dependencies.svg $TMP/
 touch $TMP/.nojekyll
 git -C $TMP init -q -b gh-pages
 git -C $TMP add -A

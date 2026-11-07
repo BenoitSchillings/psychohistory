@@ -50,7 +50,7 @@ ul.files .sz{color:var(--muted);margin-left:8px}
 footer{margin-top:48px;font-size:14px;color:var(--muted)}
 """
 
-NAV = ('<nav class="top"><a href="index.html">Report</a><a href="methodology.html">Methodology</a>'
+NAV = ('<nav class="top"><a href="tldr.html">In two minutes</a><a href="index.html">Report</a><a href="methodology.html">Methodology</a>'
        '<a href="data_sources.html">Data source tree</a><a href="ethics.html">Purpose and ethics</a></nav>')
 CREDIT = "<footer>Study conceived and directed by Benoit Schillings.</footer>"
 
@@ -168,9 +168,84 @@ def ethics():
     return page("Purpose and ethics", html, "Why Seldon publishes named-country forecasts, what they are for, and how harm is limited.")
 
 
+def tldr():
+    """the short top layer (reader feedback, 7 November 2026): forecasts, explorations by AI timing, track record, the
+    assumptions that decide the long run and the known biases with their direction; every number from the results"""
+    import csv
+    import json
+    sys.path.insert(0, ROOT)
+    from psychohistory.report import VERSION
+    O = os.path.join(ROOT, "outputs")
+    J = lambda f: json.load(open(os.path.join(O, f)))
+    fc, rng, cr, sk = J("forecast.json"), J("uncertainty_ranges.json"), J("credence.json"), J("skill_horizon.json")
+    led, crowd = J("ledger_summary.json"), J("crowd_benchmark.json")
+    hist = J("release_history.json")
+    A = fc["ai"]
+    pc = lambda x: f"{100 * x:.0f}%"
+    k = lambda x: f"${x / 1000:.0f}k"
+    rows = list(csv.DictReader(open(os.path.join(O, "country_forecasts.csv"))))
+    name = {r["code"]: r["name"] for r in rows}
+    num = lambda r, c: float(r[c]) if r.get(c) not in (None, "") else -1.0
+
+    def top(col, cond, n=6):
+        rs = sorted((r for r in rows if cond(r)), key=lambda r: -num(r, col))[:n]
+        return "".join(f"<tr><td>{i + 1}</td><td>{escape(r['name'])}</td><td>{pc(num(r, col + '_lo'))}–{pc(num(r, col + '_hi'))}</td>"
+                       f"<td class='muted'>{pc(num(r, col))}</td></tr>" for i, r in enumerate(rs))
+    peace = lambda r: r["in_conflict"] in ("0", "0.0")
+    nxt = list(led["annual_new"].items())[:5]
+    civ = list(led.get("civilian", {}).get("new", {}).items())[:5]
+    g = lambda key: A[key]["world_gdp_q"]
+    gdp_rows = "".join(f"<tr><td>{lab}</td><td><b>{k(g(key)[2][-1])}</b></td><td>{k(g(key)[0][-1])}–{k(g(key)[4][-1])}</td></tr>"
+                       for key, lab in (("none", "Near-free AI never arrives"), ("2035", "It arrives in 2035"),
+                                        ("2030", "It arrives in 2030"), ("2027", "It arrives in 2027")))
+    gp = cr["great_power_war"]
+    s15 = sk["by_horizon"]["15"]
+    D = lambda o, d: rng[o]["drivers"][d]
+    ver = [v["headline"]["gpw"] for _, v in sorted(hist.items(), key=lambda kv: tuple(int(x) for x in kv[0].split(".")))]
+    oc = crowd.get("open", {})
+    body = f"""
+<h1>Seldon in two minutes</h1>
+<p class="muted">Version {VERSION[0]}, {VERSION[1]}. The short version of the <a href="index.html">full report</a>; how it works and how it is tested is in the <a href="methodology.html">methodology</a>.</p>
+<p>Seldon simulates the next forty years for 175 countries, ten thousand times, from eighty years of history. Read it less as an oracle than as an instrument: near the present it makes forecasts that are scored as reality arrives; far out it shows which beliefs about AI, climate and nuclear escalation actually move the outcome.</p>
+
+<h2>Forecasts: scored as reality arrives</h2>
+<p><b>Where fighting could start in the next twelve months</b> (countries with none in the past year): {", ".join(f"{escape(name.get(c, c))} {pc(v)}" for c, v in nxt)}. Violence against civilians or between militias: {", ".join(f"{escape(name.get(c, c))} {pc(v)}" for c, v in civ)}.</p>
+<h3>New civil war, 2026–2030</h3>
+<p class="muted">Ranked, with the range across the model families; the single estimate is shown last and small, because for small states it is the least certain part.</p>
+<table><tr><th>#</th><th>Country</th><th>Range</th><th>Estimate</th></tr>{top("civil_conflict_5y", peace)}</table>
+<h3>Coup attempt, 2026–2030</h3>
+<table><tr><th>#</th><th>Country</th><th>Range</th><th>Estimate</th></tr>{top("coup_5y", lambda r: True)}</table>
+<p><b>Track record.</b> Trained on data to 2024, it ranked 2025's one new civil war (South Sudan) 3rd of 142 countries. Its monthly fatality layer ranks 2nd of 21 in the 2023/24 ViEWS challenge. In hindcasts its country forecasts beat fair naive forecasts at every horizon up to 15 years ({"+" + pc(s15["conflict"]["skill"])} on who is at war, {"+" + pc(s15["new_conflict"]["skill"])} on new wars at 15 years). Forecasting crowds beat it on near-term questions about wars between states (Brier {oc.get("brier_crowd", 0):.3f} against {oc.get("brier_model", 0):.3f}); where a crowd covers a question, trust the crowd. Every forecast is frozen and scored as UCDP publishes.</p>
+
+<h2>Explorations to 2065: what follows from stated assumptions</h2>
+<p>The long run hinges on when AI makes intellectual work nearly free. The worlds split by that, so the pooled median ({k(A["uncertain"]["world_gdp_q"][2][-1])}) describes few actual worlds. World output per person in 2065 (median, 90% band):</p>
+<table><tr><th>If…</th><th>Median</th><th>90% band</th></tr>{gdp_rows}</table>
+<p><b>A war between great powers by 2065</b> happens in {pc(A["uncertain"]["great_power_war_by"][-1])} of the headline worlds, but read it as <b>somewhere between {pc(gp["range_across_assumptions_5_95"][0])} and {pc(gp["range_across_assumptions_5_95"][1])}</b>: that is the spread across draws of the assumptions. The number has also moved between model versions, from 69% in October to {ver[-1]} today, through bug fixes and design choices; model choices are part of the uncertainty. Counting only the traditional great powers, {pc(A["uncertain"]["great_power_war_cow_by"][-1])}. Nuclear weapons are used in {pc(cr["nuclear_use"]["overall"])} of worlds ({pc(cr["nuclear_use"]["range_across_assumptions_5_95"][0])}–{pc(cr["nuclear_use"]["range_across_assumptions_5_95"][1])}).</p>
+
+<h2>The four assumptions that decide the long run</h2>
+<table><tr><th>Assumption (history cannot test it)</th><th>Moves</th><th>From lowest to highest fifth of its range</th></tr>
+<tr><td>When near-free AI arrives</td><td>World output per person, 2065</td><td>{k(D("log_world_gdp_2065", "ai_arrival")["low_fifth"])} (early) to {k(D("log_world_gdp_2065", "ai_arrival")["high_fifth"])} (late)</td></tr>
+<tr><td>Which estimate of climate damage is right</td><td>World output per person, 2045</td><td>{k(D("log_world_gdp_2045", "dmg_family")["low_fifth"])} to {k(D("log_world_gdp_2045", "dmg_family")["high_fifth"])}</td></tr>
+<tr><td>How readily nuclear-armed rivals fight</td><td>Great-power war by 2065</td><td>{pc(D("great_power_war", "nuclear_war_factor")["low_fifth"])} to {pc(D("great_power_war", "nuclear_war_factor")["high_fifth"])}</td></tr>
+<tr><td>How often allies join a war</td><td>Great-power war by 2065</td><td>{pc(D("great_power_war", "cascade_q")["low_fifth"])} to {pc(D("great_power_war", "cascade_q")["high_fifth"])}</td></tr></table>
+
+<h2>Known biases, and which way they push</h2>
+<ul>
+<li><b>Wars between states: too low.</b> It missed the 2010s rise two- to threefold, and it gave the 2025 Thailand–Cambodia war under 1% and the 2026 US–Iran war 0.1%. Its rivalry data end in 2010, so recent rivalries are partly invisible.</li>
+<li><b>The safest countries: too high.</b> It expected two or three new civil wars among the 20 safest countries in 15-year windows since 1995; none happened.</li>
+<li><b>World recessions: too rare.</b> Simulated world output falls in under 2% of years, against 3–10% recorded.</li>
+<li><b>Single countries' income: bands too wide.</b> Countries drift apart 1.3–1.9 times too much since the 1990s.</li>
+<li><b>World growth: no stable direction.</b> In 15-year hindcasts it ran 11–18% high from 1970s starts and 3–17% low from 1990s starts, so the headline is not corrected.</li>
+</ul>
+
+<p class="muted">Purpose and use of the country numbers: <a href="ethics.html">purpose and ethics</a>. Full version history and every test: <a href="methodology.html">methodology</a>.</p>
+"""
+    return page("Seldon in two minutes", body, "The short version of the Seldon report: forecasts, explorations by AI timing, track record and known biases.")
+
+
 if __name__ == "__main__":
     os.makedirs(SITE, exist_ok=True)
-    for name, fn in (("data_sources.html", data_sources), ("methodology.html", methodology), ("ethics.html", ethics)):
+    for name, fn in (("data_sources.html", data_sources), ("methodology.html", methodology), ("ethics.html", ethics), ("tldr.html", tldr)):
         with open(os.path.join(SITE, name), "w", encoding="utf-8") as f:
             f.write(fn())
         print(os.path.join(SITE, name))
