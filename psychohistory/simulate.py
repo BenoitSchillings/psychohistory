@@ -482,6 +482,7 @@ OIL_INDEP = True          # oil moves replayed from independent historical years
 # familyc+oc) new civil wars +11.6% and conflict share +7.2% on 2000-2009 (0/3), share +4.1% and coups +4.1% at 30
 # years; coups only ("c"): -1.2% / -9.3% / +5.6%. Not adopted; "" = the network's view, as before.
 ENS_OFFSET = ""
+ENS_OFFSET_DOWN = False   # apply the ensemble offset only where it lowers a country's risk (tested 2026-11-07)
 # the ensemble's view refreshed from each world's simulated state every this many years (0: the origin's offset for the
 # whole run). Offsets at the origin correlate only ~0.6 / 0.45 / 0.25 with the next origin's 5 / 10 / 20 years later
 # (outputs/sim_eval/ens_cache), so a fixed offset goes stale. Needs net.ens_models (pipeline.sim_net); under test 2026-11-04
@@ -701,6 +702,10 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         for j_, t_ in enumerate("otc"):
             if t_ not in ENS_OFFSET:
                 haz_offset[:, j_] = 0.0
+        if ENS_OFFSET_DOWN:
+            # only where the ensemble puts a country's risk lower than the network does (the safe-country tail);
+            # the year-1 alignment then restores the world level (pre-registered single variant, 2026-11-07)
+            haz_offset = np.minimum(haz_offset, 0.0)
     if coup_align_mult is None:
         coup_align_mult = 0.66 if haz_offset is not None and bool(np.any(np.asarray(haz_offset)[:, 2] != 0)) else 0.7
     haz_off_t = None if haz_offset is None else torch.as_tensor(np.nan_to_num(np.asarray(haz_offset, float)), dtype=torch.float32, device=device)

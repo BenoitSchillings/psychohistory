@@ -114,5 +114,42 @@
   ]
  ],
  "note": "a proposal for the next quarterly release; ARRIVAL_CDF changes only at a release (docs/ai_ledger.md)",
- "indicators": []
+ "indicators": [
+  {
+   "quarter": "2026Q3",
+   "indicator": "us_productivity_growth_8q",
+   "value": "2.36",
+   "unit": "percent per year (annualized over 8 quarters)",
+   "retrieved": "2026-11-07",
+   "url": "https://fred.stlouisfed.org/series/OPHNFB",
+   "note": "BLS output per hour nonfarm business; 10-year average 2.15"
+  },
+  {
+   "quarter": "2026Q3",
+   "indicator": "us_labour_share_index",
+   "value": "93.7",
+   "unit": "index 2017=100",
+   "retrieved": "2026-11-07",
+   "url": "https://fred.stlouisfed.org/series/PRS85006173",
+   "note": "BLS labor share nonfarm business; 96.4 two years earlier and 99.3 ten years earlier"
+  },
+  {
+   "quarter": "2026Q3",
+   "indicator": "hyperscaler_capex_3_of_4",
+   "value": "163.6",
+   "unit": "billion US dollars in the quarter",
+   "retrieved": "2026-11-07",
+   "url": "https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/",
+   "note": "Alphabet 51.4 + Amazon 77.3 + Meta 34.9 from secondary reports; Microsoft missing; UNVERIFIED - check the 10-Q filings"
+  },
+  {
+   "quarter": "2025",
+   "indicator": "us_data_centre_electricity_share",
+   "value": "7",
+   "unit": "percent of US electricity",
+   "retrieved": "2026-11-07",
+   "url": "https://thedeepdive.ca/us-data-centers-now-consume-7-of-total-national-power-demand-as-ai-buildout-rewires-the-grid/",
+   "note": "IEA figure via secondary coverage; LBNL 2025 report gives about 4.7 percent for 2024 (secondary); UNVERIFIED"
+  }
+ ]
 }

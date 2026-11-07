@@ -2522,3 +2522,28 @@ Month and quarter items (2026-11-06):
   the credence range and post-1945 base rates); base-rate multiples and a recent-misses box in the risk section;
   purpose and ethics page (docs/ethics.md, on the site).
 - Process slip: a waiter for the shock hindcast matched its own command line in pgrep and waited five hours.
+
+## After the roadmap (2026-11-07)
+- Oil and war, estimated with the four shock-test episodes held out (1973-75, 1990-92, 2003-05, 2022-24 excluded;
+  annual real oil log change 1947-2024 on a new war-level conflict involving an exporter or Bahrain, lags 0-2; n = 66
+  years; events 1948, 1956, 1980, 1987): +0.05 (s.e. 0.06) in the year, -0.13 (0.05) the year after, +0.01 the third;
+  three-year sum -0.07. No persistent war premium outside the test episodes; the 1973 rise was the embargo and OPEC's
+  pricing power, 2003-05 was demand. A channel fitted to the test episodes would pass a test it was built on, so none
+  is added; the crisis explorer stays an illustration. (The current spike also unwinds by construction the next year
+  and fires only when a listed exporter fights.)
+- AI ledger, first indicators (data/ai_ledger/indicators.csv): US nonfarm productivity 2.36% a year over the 8
+  quarters to 2026Q3 (10-year average 2.15%: no break yet); labour share index 93.7 (96.4 two years earlier, 99.3 ten
+  years earlier); hyperscaler capital spending in 2026Q3, Alphabet + Amazon + Meta about $164bn from secondary reports
+  (Microsoft missing; unverified); US data-centre share of electricity about 7% in 2025 (IEA via secondary coverage;
+  LBNL about 4.7% in 2024; unverified). Scoring against the simulator starts with the February release.
+- Joint test rerun in the forecast's configuration (scripts/joint_hindcast_test.py 1970 2006 3 v54: build_sim_env,
+  world layer on, constants reset between variants; outputs/joint_hindcast_test_v54.json), simulated against its own
+  worlds shuffled per country, 13 origins: conflict share by country, distance-weighted variogram -1.1% (better at 9
+  of 13), unweighted -0.3% (8 of 13), energy score +0.1% (6 of 13); GDP change by country, weighted -2.5% (11 of 13);
+  world conflict by year variogram -54% (13 of 13). The earlier "no skill" (23 of 39) was measured without the world
+  layer and with all pairs alike; neighbours now show weak co-movement skill (9 of 13 alone is not significant).
+- Safe-country tail, one pre-registered variant (simulate.ENS_OFFSET "o" with ENS_OFFSET_DOWN: the ensemble's onset
+  view only where it lowers a country's risk, then the year-1 alignment), adopt rule against nf_base, 3 refits x 16
+  origins: composite -0.04% (1970s +0.08, 1980s +0.18, 1990s -0.42, 2000s -0.06), no guardrail breach; each country's
+  years at war -0.3%, conflict share +0.3%; safe-country wars -25% (its noise floor is 31%). Rejected (no gain beyond the
+  floor); the rule is not changed after the result. ENS_OFFSET_DOWN stays off; the tail stays a documented limit.

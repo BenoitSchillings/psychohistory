@@ -1,1 +1,5 @@
-quarter,indicator,value,unit,retrieved,url
+quarter,indicator,value,unit,retrieved,url,note
+2026Q3,us_productivity_growth_8q,2.36,percent per year (annualized over 8 quarters),2026-11-07,https://fred.stlouisfed.org/series/OPHNFB,BLS output per hour nonfarm business; 10-year average 2.15
+2026Q3,us_labour_share_index,93.7,index 2017=100,2026-11-07,https://fred.stlouisfed.org/series/PRS85006173,BLS labor share nonfarm business; 96.4 two years earlier and 99.3 ten years earlier
+2026Q3,hyperscaler_capex_3_of_4,163.6,billion US dollars in the quarter,2026-11-07,https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/,Alphabet 51.4 + Amazon 77.3 + Meta 34.9 from secondary reports; Microsoft missing; UNVERIFIED - check the 10-Q filings
+2025,us_data_centre_electricity_share,7,percent of US electricity,2026-11-07,https://thedeepdive.ca/us-data-centers-now-consume-7-of-total-national-power-demand-as-ai-buildout-rewires-the-grid/,IEA figure via secondary coverage; LBNL 2025 report gives about 4.7 percent for 2024 (secondary); UNVERIFIED
