@@ -2547,3 +2547,8 @@ Month and quarter items (2026-11-06):
   origins: composite -0.04% (1970s +0.08, 1980s +0.18, 1990s -0.42, 2000s -0.06), no guardrail breach; each country's
   years at war -0.3%, conflict share +0.3%; safe-country wars -25% (its noise floor is 31%). Rejected (no gain beyond the
   floor); the rule is not changed after the result. ENS_OFFSET_DOWN stays off; the tail stays a documented limit.
+- AI indicators verified against primary sources: Q3 2026 capital spending of the four companies $208.7bn from their own
+  releases (Alphabet 51.4, Amazon 77.3, Meta 34.9 incl. finance-lease principal, Microsoft 45.2 incl. finance leases);
+  US data-centre electricity 4.7% in 2024 (LBNL 2025 update, 192 TWh); the secondary "7% in 2025" was dropped.
+- February release prepared: scripts/ai_ledger.py --apply writes the rebuilt ARRIVAL_CDF (dry run checked, file
+  restored), scripts/quarterly_release.sh runs every step to the canonical frozen forecast, docs/release_checklist.md.

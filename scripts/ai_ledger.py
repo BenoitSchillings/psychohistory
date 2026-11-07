@@ -59,6 +59,19 @@ def main():
     out["indicators"] = list(csv.DictReader(open(ind))) if os.path.exists(ind) else []
     json.dump(out, open(os.path.join(ROOT, "outputs", "ai_ledger.json"), "w"), indent=1)
     print(json.dumps({k: out[k] for k in ("proposal", "current")}))
+    if "--apply" in sys.argv:
+        # at a quarterly release only (docs/adopt_rule.md): write the rebuilt knots into world.ARRIVAL_CDF, keeping the
+        # first knot (the update date, probability 0) and the knot years
+        import re
+        wf = os.path.join(ROOT, "psychohistory", "world.py")
+        src = open(wf).read()
+        knots = [(round(asof, 2), 0.0)] + [(y, round(v, 3)) for y, v in out["proposal"]]
+        new_ = "ARRIVAL_CDF = (" + ", ".join(f"({y}, {v})" for y, v in knots) + ")"
+        src2, n = re.subn(r"ARRIVAL_CDF = \(\([^\n]*\n?[^\n]*\)\)", new_, src, count=1)
+        if n != 1:
+            sys.exit("ARRIVAL_CDF not found in world.py")
+        open(wf, "w").write(src2)
+        print("applied:", new_)
 
 
 if __name__ == "__main__":
