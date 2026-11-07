@@ -2484,3 +2484,41 @@ Open item (from the chronicles): the simulator's own event logs (outputs/chronic
 in Canada (2037), France, Denmark and Iceland, and a Costa Rica vs Russia interstate war, in single worlds. These are
 the safe-country tail (Limits) and the pair model's tail for distant, unrelated pairs; to be checked against a
 non-regression guardrail on the 20 safest countries (debate judges) and the cross-era war test.
+
+Month and quarter items (2026-11-06):
+- Skill versus horizon (scripts/skill_horizon.py; 16 origins 1970-2009, forecast configuration, world layer on, AI
+  off; Brier / CRPS skill against references from data before each origin): who is at war +12% at 1 year, +12% at
+  10, +11% at 15 (against persistence with its historical decay); new civil wars +5%, +19%, +22% (against the
+  historical onset rate); log GDP per person +13%, +23%, +26% (against each country's own 20-year trend and the
+  historical spread around it). Every 90% interval across origins is above zero at every horizon 1-15. The same
+  origins informed the simulator's settings, so true skill is lower. Country numbers are called forecasts to about
+  15 years; 2065 stays an exploration.
+- Credences (scripts/credence.py; WorldConfig.param_block: 200 blocks x 50 worlds sharing every assumption, the
+  family draw and the pair shift; 2025 origin, headline configuration): great-power war 44% overall, 18-76% across
+  blocks (5-95%; within-block chance adds about +/-7 points), quartiles 30 / 42 / 55%; majors 21% (8-40%); nuclear use
+  12% (2-26%); more than 25% of countries in civil conflict in 2065 40% (22-60%). Assumptions' share of the spread
+  measured on block probabilities net of within-block noise: great-power war 11% (binary attribution said 4%), majors
+  3%, nuclear 3%. Rank correlation of block probability with assumptions: nuclear-pair factor 0.41, alliance joining
+  0.29, robot arrival -0.22, drone onset 0.21.
+- Cross-era test (scripts/era_test.py; fatal MIDs within 5 years, features defined in both eras): fitted 1946-2005,
+  scored 1816-1938: observed / predicted 1.03 (AUC 0.73), major-power pairs 1.30 (269 vs 208); fitted 1816-1938, scored
+  1946-2005: 0.28 (AUC 0.76), majors 0.37. Base rates: 3.9% / 16.4% (majors) before, 1.6% / 9.0% after. Scenario
+  WorldConfig.major_era_mult 1.3 (pipeline "era_pre1945"), not the headline.
+- Non-state and one-sided violence (monthly.deaths types; scripts/monthly_civilian_test.py): direct 12-month model on
+  UCDP types 2 and 3, issued each December 2017-2023: Brier 0.0334 against persistence 0.0459 (skill +27%; better in
+  6 of 7 years), countries with none in the past year 0.0248 against 0.0293 (+15%); mean forecast 13.6% against 13.3%
+  observed. Frozen ledger outputs/ledger/civilian_2026-09.csv; shown in the report's forecast record.
+- AI ledger (docs/ai_ledger.md, scripts/ai_ledger.py, data/ai_ledger/): pre-registered mechanical rebuild of
+  ARRIVAL_CDF from its three sources (log-normal per source, conditioned on no arrival yet, equal mix). From the
+  current source values it gives 5 / 19 / 25 / 33 / 44 / 53 / 61 / 68% at the knots against the hand-set 5 / 18 / 24 /
+  33 / 47 / 56 / 64 / 72%; applied at the next quarterly release. Indicator series to be entered quarterly.
+- Shock propagation (scripts/shock_hindcast.py; pre-registered pass: forcing the war improves both the oil and the
+  affected countries' GDP score in at least 3 of 4 episodes): FAILED, 1 of 4. Yom Kippur 1973: oil rose 128% in
+  three years, the simulator's median stays near 0 with or without the war (no embargo channel); Kuwait 1990: both
+  better; Iraq 2003: both worse (oil +70% in three years, mostly demand); Ukraine 2022: GDP better, oil worse. Oil
+  reacts to a war only when two exporters fight (oil_war_jump). The crisis explorer stays an illustration, not a
+  service, until an embargo / war-premium channel passes this test.
+- Report: one-page summary split into scored Forecasts and conditional Explorations (with the measured skill horizon,
+  the credence range and post-1945 base rates); base-rate multiples and a recent-misses box in the risk section;
+  purpose and ethics page (docs/ethics.md, on the site).
+- Process slip: a waiter for the shock hindcast matched its own command line in pgrep and waited five hours.
