@@ -1,0 +1,739 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Seldon methodology</title><meta name="description" content="How the Seldon world crisis forecasting engine works and how it is tested."><style>
+:root{--bg:#f7f7f5;--card:#ffffff;--ink:#1f2328;--ink2:#57606a;--muted:#6e7781;--line:#d8dee4;--accent:#1d5fbf;--code:#eef1f4}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1115;--card:#171a21;--ink:#e6e8eb;--ink2:#b0b7c0;--muted:#8b949e;--line:#2d333b;--accent:#6ea8fe;--code:#22272e}}
+:root[data-theme="dark"]{--bg:#0f1115;--card:#171a21;--ink:#e6e8eb;--ink2:#b0b7c0;--muted:#8b949e;--line:#2d333b;--accent:#6ea8fe;--code:#22272e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,"Segoe UI",Helvetica,Arial,sans-serif}
+main{max-width:920px;margin:0 auto;padding:32px 16px 80px}
+a{color:var(--accent)}
+nav.top{font-size:14px;color:var(--muted);margin-bottom:24px}
+nav.top a{margin-right:16px}
+h1{font-size:30px;line-height:1.2;margin:0 0 8px}
+h2{font-size:21px;margin:40px 0 10px;padding-top:8px;border-top:1px solid var(--line)}
+h3{font-size:17px;margin:24px 0 6px}
+p,li{color:var(--ink)}
+.muted{color:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0;display:block;overflow-x:auto}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{color:var(--ink2);font-weight:600}
+code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:.88em}
+details{background:var(--card);border:1px solid var(--line);border-radius:8px;margin:8px 0;padding:8px 14px}
+details details{margin:6px 0;border-radius:6px}
+summary{cursor:pointer;font-weight:600}
+summary .meta{font-weight:400;color:var(--muted);font-size:14px;margin-left:8px}
+ul.files{list-style:none;padding-left:4px;margin:6px 0;font-size:14px}
+ul.files li{padding:1px 0}
+ul.files .sz{color:var(--muted);margin-left:8px}
+.feeds{font-size:14px;color:var(--ink2)}
+.figure{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px;overflow-x:auto}
+.figure img{display:block;max-width:none;width:1400px}
+footer{margin-top:48px;font-size:14px;color:var(--muted)}
+</style></head><body><main><nav class="top"><a href="index.html">Report</a><a href="methodology.html">Methodology</a><a href="data_sources.html">Data source tree</a><a href="ethics.html">Purpose and ethics</a></nav><h1>Seldon: methodology of a world crisis forecasting engine</h1>
+<p>29 October 2026 · Benoit Schillings</p>
+<p>This study was conceived and directed by <strong>Benoit Schillings</strong>. Interactive report: <a href="https://benoitschillings.github.io/psychohistory/">benoitschillings.github.io/psychohistory</a>. Every input is listed in the <a href="https://benoitschillings.github.io/psychohistory/data_sources.html">data source tree</a>.</p>
+<h2>Abstract</h2>
+<p>Seldon forecasts political and economic crises for 175 countries, five years ahead with learned models and to 2065 with a simulator of 10,000 possible worlds. It has two layers, and a third part that explains its worst outcomes.</p>
+<p>The first layer is a set of statistical risk models trained on a country-year panel that runs from 1946 (some series from 1800) to 2025. For each country it gives the five-year probability of a new civil war, a coup attempt, autocratization and economic collapse. It also gives one-year hazards for the same events and for interstate conflict between pairs of countries.</p>
+<p>The second layer is a Monte Carlo simulator. It runs those hazards forward year by year, together with estimated equations for growth and democracy, a model of wars between country pairs with alliance joining, oil, food, refugees, climate damage and slowly moving social variables. Where history offers no estimate, as for advanced AI, general-purpose robots and autonomous weapons, the simulator uses explicit assumptions. Each world draws its own value of every assumption from a stated range, and the report shows how much of the spread in each outcome each assumption explains.</p>
+<p>Every learned component is judged on data it did not see: rolling-origin backtests, one origin (2015) never used for any tuning choice, simulator hindcasts from 1970–2015, a scored 2025 out-of-sample year and comparisons with forecasting crowds. The guiding rule is that a new data family or mechanism is kept only if it improves forecasts it was not fitted to. Otherwise it stays a labelled assumption.</p>
+<!-- headline -->
+<p>The current headline (version 54.2, 6 November 2026): median world GDP per person in 2065 is $34k (90% band $18k–$88k; $24k with no AI shock). In hindcasts its 90% bands held about 92% of the time at ten years, but countries' growth drifts apart 1.3–1.9 times too much since the 1990s, so single-country bands are probably too wide. About 23% of countries are in civil conflict in 2065 (band 14%–35%), against 18% in 2025, and the 1990 record is broken in 78% of worlds; simulated from 2000–2012 the share at war came out about 6% low, while the safest countries got too many new wars (two or three expected in 15 years from 1995–2009 origins, none happened). A war between great powers of at least 1,000 battle deaths a year happens by 2065 in 45% of worlds (21% among the traditional majors alone; 48% if allies joined any war wherever it was fought, the rule before November 2026), and nuclear weapons are used in 13%. These depend heavily on assumptions, above all the nuclear-pair war factor, whose range alone moves great-power war from 31% to 55%, and on a war model fitted to 1946–2024; the simulator missed the 2010s rise in wars between states two- to threefold. The worst 1% of worlds on each measure are traced to their causes (see Disaster worlds).</p>
+<!-- /headline -->
+
+<h2>Data</h2>
+<p>The engine is built on one country-year panel: 175 countries (V-Dem countries with at least 100,000 people), 1800–2025, with 139 features in 15 groups. Most models train on 1946 onward; long-history models and labels reach back to 1860.</p>
+<ul>
+<li><strong>Outcomes.</strong> UCDP/PRIO armed conflict (civil and interstate, with UCDP candidate events to September 2026 treated as fact), Powell–Thyne coup attempts, V-Dem regime change (autocratization) and Maddison/World Bank GDP (collapse = GDP per person falling at least 10%).</li>
+<li><strong>Drivers.</strong> Income, growth and debt (Maddison, World Bank, Global Macro Database); population and age structure (UN World Population Prospects); institutions, elites, parties and repression (V-Dem, V-Party, EPR); leaders and elections (REIGN, to 2021); protest (NAVCO, Mass Mobilization, to 2019); energy and oil (OWID/Energy Institute, World Bank Pink Sheet); food (FAO food balances and prices); refugees (UNHCR); climate (ERA5 observations to 2025, CMIP6 projections); alliances and dyads (ATOP, distances, event data from ICEWS/POLECAT).</li>
+</ul>
+<p>Three rules keep the panel honest. First, a feature is only what was knowable in that year: lags are explicit, and sources that end early are carried forward for a bounded number of years or faded (protest campaigns lose 30% of their weight a year after 2019) rather than held fixed. Second, missing values stay missing: tree models use them natively, and the linear and neural models get missing-value indicators. Third, data families enter only through an ablation test (backtest with and without them); several plausible families, such as food-price spikes and monthly event surges, were rejected that way.</p>
+<h2>Country and pair risk models</h2>
+<p>Seven outcomes are forecast for every country: new civil war, coup attempt, autocratization and economic collapse within five years, and new civil war, civil-war ending and coup attempt within one year. Each forecast combines several model families, with weights set separately for each outcome:</p>
+<ul>
+<li><strong>Gradient-boosted trees</strong> (LightGBM, several seeds, one trained from 1955 and one from 1860), which handle missing data and interactions.</li>
+<li><strong>PsychoNet</strong>, a multi-task neural ensemble whose members are trained on resamples of whole countries, plus a quantile variant.</li>
+<li><strong>Regularised logistic regression</strong> with missing-value indicators, which also supplies the per-country driver breakdowns shown in the report.</li>
+<li><strong>A naive baseline</strong> (Fearon–Laitin variables: income, population, terrain, past conflict), kept as the bar every model must beat.</li>
+</ul>
+<p>The weights and hyper-parameters were chosen with nested leave-one-origin-out selection on development origins (1975–2005). Each candidate is scored on an origin it was not tuned on, which guards against fooling ourselves with weight search. A recalibration fitted on the development years (Platt scaling) made fresh forecasts worse and was dropped. Differences smaller than about ±0.005 in Brier score were treated as noise (paired bootstrap).</p>
+<p>Wars between states use a separate pair (dyad) model, covering about 2,120 pairs that border each other, involve a major power or have fought before. A logistic model and a gradient-boosted model predict the one-year onset of armed conflict between peaceful pairs. Their inputs are power ratios, joint democracy, alliances, rivalry, distance, recent hostile events and each pair's conflict history. Ongoing conflicts continue according to an observed duration table, and a minor conflict escalates to war level (1,000 battle deaths) at observed rates. Hazards are used as fitted. Until October 2026 they were scaled to the observed count of the previous decade, drifting back to the long-run ratio with a ten-year half-life. Tested at nine origins from 1975 to 2014 (model fitted before each origin, ratios from earlier data only), the previous decade's ratio did not predict the next decade's onsets, and the unscaled model was closer at eight origins (mean absolute log error of the 10-year count 0.23 against 0.36 on 1975–2005, 0.35 against 0.42 on 2010–2014), so the scaling was dropped. That lowered great-power war by 2065 from 58% to 51%. Run through the whole simulator, the unscaled model is closer from 1995 (1.21 active conflicts a year against 1.15 recorded, 1.34 before) but further off from 2004 (0.96 against 1.40, 1.09 before). Over eight such origins (1980–2014) the two rules tie (summed absolute log error 2.83 against 2.88, each better at four). The duration table weights recent decades (half-life 25 years) since October 2026: wars have lasted longer since 2010 (a war in its third year continued 92% of the time in 2010–2024, 59% in 1946–1989), and the weighting predicted continuation better on 2000–2014 origins (log-loss −3.6%, 84 outcomes; chosen on 1970–1998). It ties in whole-simulator hindcasts, since the change came mostly after 2018, and raises today's continuation rates from 0.37 / 0.48 / 0.71 to 0.43 / 0.62 / 0.78 by run length. The structural pair noise now has a mean-preserving correction: it raised rare onsets up to threefold and was never tested, because the hindcasts run without sampled parameters.</p>
+<h2>World simulator</h2>
+<p>The simulator turns one-year hazards into paths: 10,000 worlds from the 2025 origin to 2065 on a GPU, each year updating every country's features from what happened in that world. Its learned parts are the hazards above and two transition equations, fitted on 1955–2024:</p>
+<ul>
+<li><strong>Growth and democracy</strong> each follow a ridge regression on a small theory-chosen feature set plus that year's events (conflict, onset, coup, interstate war). The residual is split into a global shock replayed from a historical year (decades are drawn as blocks, so a world lives through a coherent era), a regional era, a country-decade regime and idiosyncratic noise, drawn from countries of similar income or regime type. The replayed global shock is scaled to 70%: at full size, world GDP spread too widely in the hindcasts (CRPS 2–3% better at 70% on both the 1970–1998 and the 2000–2012 origins).</li>
+<li><strong>Mood.</strong> A persistent world and regional factor shifts all onset and ending hazards together, so wars and coups cluster in waves. The spread of the growth regimes was chosen on the 1975–2004 hindcasts. The factor's size was first set the same way, then halved (yearly shock 0.20 → 0.10 on the log-odds) after a joint test showed the world conflict level too dispersed (see Validation).</li>
+<li><strong>Frailty.</strong> Each world gives every country a lasting war-proneness, a fixed shift (standard deviation 0.6 on the log-odds) that raises its onset hazard and lowers its war-ending hazard for the whole run. Without it, each country's risk was redrawn every year, so the simulator started and ended too many wars. The size was chosen on the 1970–1998 hindcasts and confirmed on 2000–2012 (see Validation).</li>
+<li><strong>Alignment.</strong> At the origin, each hazard is shifted so that the average predicted rate equals the rate observed over the previous ten years (standard microsimulation alignment). Coups are the exception: they have fallen in almost every decade since the 1960s, so a target from the previous decade made too many coup attempts at every hindcast origin (1.5 times on 1970–1998, 1.65 times on 2000–2012). The coup target is set to 70% of that rate (chosen on 1970–1998; on 2000–2012 country coup Brier −5%, world coup count CRPS −63%). Since 28 October 2026 the peer-contagion, succession, export-price, rebel-fragmentation and peacekeeping terms enter before this alignment, as the internationalization term already did, so the alignment absorbs their level at the origin and only their changes move the rates. Before, they were added on top of the aligned rates, which counted today's peacekeepers twice and made civil wars end too fast; the 2065 civil-conflict median rose from 15% to 18% (paired runs: 14.9% to 17.1%).</li>
+</ul>
+<p><strong>Noise scaled by country size (29 October 2026).</strong> Growth residuals were drawn from a pool dominated by small countries, so China and India swung like small economies and simulated world growth varied 1.7 times more than it has historically. Residual size now shrinks with population (log noise scale −0.077 per log unit of population, estimated on 1955–2024); pooled residuals and country-decade regimes are rescaled from their own country's size to the drawing country's. World GDP hindcast CRPS improved 6.9% on 1970–1998 (better at 11 of 15 origins) and 2.3% on 2000–2012 (4 of 7), averaged over three network seeds. The yearly world growth spread fell from 2.6 to 2.0 points (1.5 historically), and the 2065 GDP median moved from $37.3k to $35.2k.</p>
+<p>Around this core sit mechanisms estimated separately, each switchable:</p>
+<ul>
+<li><strong>Interstate wars</strong>, with allies joining new wars at a rate calibrated on the 1995 and 2004 hindcasts. Fighting at home costs 9% of growth a year (country and year fixed-effects estimate, 1951–2023), recovered by half two years later. Each war draws a yearly battle-death toll from wars of its kind since 1816 (Correlates of War, UCDP): a median of about 55,000 a year between two major powers and 4,000 for all others. Clashes between two nuclear-armed states escalate to war level at a sampled 0.1–0.7 times the usual rate (central 0.4). Only 1 of 5 such conflicts since 1946 did, and in the International Crisis Behavior data 4 of 39 crises between two nuclear-armed states reached full-scale war, all of it fought by others, against 40% of crises between non-nuclear states.</li>
+<li><strong>Oil.</strong> Replayed price moves, a jump when a major exporter goes to war, and a decline as wind and solar follow an S-curve fitted to 2005–2024.</li>
+<li><strong>Food.</strong> A world grain price that moves with oil and world harvests per person; country import dependency from yields on today's cropland, calories and income.</li>
+<li><strong>Refugees.</strong> A dynamic model of flight from wars and settlement where a country's refugees have gone before.</li>
+<li><strong>Climate.</strong> CMIP6 temperature and rainfall paths per country, three competing damage estimates, replayed historical harvests, drylands, tipping points and climate emigration (see Climate risk).</li>
+<li><strong>Slow variables.</strong> Debt, polarization, inequality, poverty and military spending, each following equations estimated on its history.</li>
+</ul>
+<p><strong>Rebel fragmentation by war age.</strong> War ending depends on the number of rebel groups (−1.93 log-odds per log(1 + groups)). Groups multiply as wars age: in UCDP 1950–2022 the mean log(1 + groups) is 0.77 in a war's first year and 1.20 after twenty. Each simulated war starts at 0.77 and moves toward 1.22 with a time constant of 11.7 years. Until 28 October 2026 every new simulated war kept one group for its whole life, which ended wars too quickly; with the fix the 2065 civil-conflict median is 21–22%, the level the hindcast-tested simulator without this term also gives.</p>
+<p>War and climate damage enter as level losses. The political hazards still see the damaged GDP, as they did in their training data.</p>
+<p>What happens in a year changes the next year's features, so wars, coups and recessions compound within a world while history and the assumptions feed in from outside.</p>
+<h2>Assumptions: AI, robots and autonomous weapons</h2>
+<p>Some forces that will shape 2025–2065 have no historical record to learn from. The engine treats them as stated assumptions, never as estimates, and keeps a "no AI shock" scenario beside the headline.</p>
+<ul>
+<li><strong>Near-free cognition.</strong> Each headline world draws the year intellectual work becomes nearly free from an even mix of the Metaculus community forecast, the AI Impacts 2023 survey of researchers (conditioned on no arrival by late 2026) and the Forecasting Research Institute's April–May 2026 expert panel (LEAP wave 8: non-physical work at no more than 5x human cost; 80% by 2100, median 2050 if it comes): 5% by 2027, 18% by 2030, 45% by 2040, 72% by 2065. Until 28 October 2026 it was 17% by 2027 and 77% by 2065, a near-term figure from the 2023 survey that no 2026 source supported. Adoption follows S-curves that start at frontier hubs and reach other countries later according to a readiness index. It acts through about twenty channels: a growth dividend capped by energy per person, rents for frontier hubs, job displacement, inequality, surveillance in autocracies, a chip chokepoint on Taiwan and Korea, pandemic risk and war between rivals that diverge in AI.</li>
+<li><strong>General-purpose robots.</strong> They have their own arrival year (Metaculus household-robot and AI Impacts house-wiring forecasts: 14% by 2030, 48% by 2040, 76% by 2065; slightly later since October 2026, as 56% by 2040 ran ahead of the researchers' all-tasks forecast and no survey of roboticists exists). It is correlated with the AI year (0.7) and comes at most 3–8 years after it. Robots spread more slowly than software. They add 0.5–4 points of growth (floor: first-generation industrial robots, about 0.4 points a year) to the non-cognitive part of the economy, offset ageing workforces and pull manufacturing back from middle-income exporters as the rich economies automate.</li>
+<li><strong>Military autonomy</strong> follows whichever comes first. It can raise or lower the onset of interstate wars, lengthens wars, exposes distant powers to long-range strikes and can help rebels or states in civil wars. All four ranges include zero.</li>
+</ul>
+<p>Each world draws its own value of 30-odd assumed or weakly estimated parameters from stated ranges. For each 2065 outcome, the report gives the share of its spread across worlds that each assumption explains. When two assumptions are drawn correlated, as with AI and robot arrival, the second is credited only with what it adds.</p>
+<h2>Validation</h2>
+<p>On the untouched 2015 origin, the risk models beat or match the naive baseline on every outcome except five-year civil war. The simulator reproduces which countries and pairs fought, and its uncertainty bands roughly hold their stated coverage.</p>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Design</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rolling-origin backtest</td>
+<td>Train to origin 1980, 1985 … 2015; score the next five years</td>
+<td>Interstate onset AUC 0.96; ensemble ahead of naive at 6 of 8 origins for civil war</td>
+</tr>
+<tr>
+<td>Untouched origin (2015)</td>
+<td>Never used for any tuning choice</td>
+<td>Ensemble vs naive AUC: coups 0.88 vs 0.78, collapse 0.76 vs 0.62, autocratization 0.74 vs 0.57; civil war 0.90 vs 0.93 (naive ahead)</td>
+</tr>
+<tr>
+<td>Simulator hindcasts</td>
+<td>Simulate 1975, 1985, 1995, 2004, 2015 forward with models trained before each origin</td>
+<td>Conflict ranking AUC 0.86–0.96; world conflict share inside the 90% band in 95–100% of years; GDP 90% band holds about 92% at ten years (too narrow from 1975, too wide from 2015)</td>
+</tr>
+<tr>
+<td>Out-of-sample year (2025)</td>
+<td>Models trained to 2024, scored on 2025</td>
+<td>Ranked the only new civil war, South Sudan, 3rd of 142; a monthly version beat ViEWS on its own target</td>
+</tr>
+<tr>
+<td>Crowd benchmarks</td>
+<td>Same questions as Metaculus and other crowds, same dates</td>
+<td>Crowds win: interstate Brier 0.100 vs 0.132 (63 questions), leaders 0.088 vs 0.128 (64)</td>
+</tr>
+<tr>
+<td>Testing rule</td>
+<td>Since 5 November 2026: the forecast's own configuration, 16 origins 1970–2009 at 15 years, three ensemble refits, one combined score decided by decade (docs/adopt_rule.md)</td>
+<td>Noise between refits: combined 1.1%, new civil wars 11%, world share at war 9%; growth regimes and the oil fix confirmed, mood and debt pools below the noise</td>
+</tr>
+<tr>
+<td>Independent review</td>
+<td>Seven rounds of independent code review; each finding checked in the code before acting</td>
+<td>About 85 confirmed bugs fixed; about a third of the claims were wrong and rejected; no leakage of outcomes into training</td>
+</tr>
+<tr>
+<td>Joint hindcasts</td>
+<td>39 origins 1970–2008, 15 years ahead; energy and variogram scores against the same forecasts with countries or years shuffled independently</td>
+<td>Year-to-year persistence of world conflict right at 39 of 39 origins, regional GDP co-movement at 38, country GDP co-movement at 34; which countries fight together: no skill (23 of 39); unchanged by country frailty</td>
+</tr>
+<tr>
+<td>Conflict clustering</td>
+<td>15 origins 1970–1998, 10 years ahead: spread of the world conflict level across worlds against the realised error</td>
+<td>Too wide (0.047 vs 0.027; 67% of outcomes in the middle half). Mood factor halved: CRPS −7.6%, better at 11 of 15 origins, 53% in the middle half</td>
+</tr>
+<tr>
+<td>Network checks</td>
+<td>Early stopping on a later time block; 20 or 40 members; 4 seeds</td>
+<td>No gain (time-blocked stopping worse by 0.026); unchanged</td>
+</tr>
+<tr>
+<td>Simulator settings</td>
+<td>About 30 variants of dispersion and alignment settings, each scored on 15 development origins (1970–1998) and, if better, on 7 test origins (2000–2012)</td>
+<td>Kept: global growth shock at 70%, country frailty (2000–2012: world war-level CRPS −11.7% and new-war count −17.2%, both better at 7 of 7 origins; conflict Brier −0.5%; GDP unchanged), and a coup target at 70% of the last decade's rate. Persistent coup-proneness per country added nothing once coups were aligned. Most others were noise. Aligning war onsets to long-run rates helped on development years but not on test years</td>
+</tr>
+<tr>
+<td>Simulator before and after (October 2026)</td>
+<td>Every origin 1970–2012 (43), 10 years ahead: the October 2026 settings (mood halved, global shock at 70%, frailty, coup target) against the previous ones</td>
+<td>World war level CRPS −8% (better at 32 of 43), new wars −6% (34), coup Brier −2.4% (32), world coup count −56% (37), world GDP −2% (27), democracy −1% (31); country GDP unchanged. Simulated / actual: onsets 1.04 → 0.98, endings 1.08 → 1.00, coups 1.53 → 1.01</td>
+</tr>
+</tbody>
+</table>
+<p>Two independent AI analysts also forecast a sample of questions. Their answers are shown beside the model and logged for later scoring, never blended in.</p>
+<h2>Benchmarks against the field</h2>
+<p>The monthly fatality layer was rerun under the rules of the 2023/24 VIEWS Prediction Challenge (Hegre et al. 2025), using the same windows, data vintages and metrics as the participants, and was scored on their published forecasts. Settings were tuned only on 2010–2017, years no benchmark scores. Lower is better throughout.</p>
+<table>
+<thead>
+<tr>
+<th>Benchmark</th>
+<th>Seldon</th>
+<th>Field</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Challenge, country-month, mean CRPS 2018–2023</td>
+<td>46.33: 3rd of 20, 0.04 behind 2nd, best ignorance (0.570) and interval score (773); 47.35 before the neural blend</td>
+<td>ShapeFinder 45.10, OMM 46.29, conflictology benchmark 51.82</td>
+</tr>
+<tr>
+<td>Challenge, country-month, live window (Jul 2024 – Jun 2025)</td>
+<td>28.9 / 29.6 with the data-vintage correction and the neural blend (34.2 / 33.8 before both): 10th of 18</td>
+<td>Conflictology benchmark 23.8 / 27.2, OMM 24.6 / 27.2</td>
+</tr>
+<tr>
+<td>Challenge, 55 km grid, mean CRPS 2018–2023</td>
+<td>0.445: 5th of 14, 2nd on interval score</td>
+<td>UniBW trees 0.437, zero-forecast benchmark 0.450</td>
+</tr>
+<tr>
+<td>Challenge, 55 km grid, live window</td>
+<td>0.227 / 0.318: best overall</td>
+<td>Conflictology 0.225 / 0.330, best participant 0.247 / 0.333</td>
+</tr>
+<tr>
+<td>All 48 archived ViEWS production runs (Dec 2021 – Dec 2024), 1–12 months ahead</td>
+<td>Brier 0.0241, log-fatality MSE 0.427 (0.0243 and 0.439 before the data-vintage correction and the neural blend)</td>
+<td>ViEWS 0.0249, 0.507 (Seldon better on both, also one month ahead)</td>
+</tr>
+<tr>
+<td>63 resolved crowd questions on the use of force</td>
+<td>Brier 0.132</td>
+<td>Crowd 0.100; the best blend gives the model no weight</td>
+</tr>
+</tbody>
+</table>
+<p>The weak live country result has two causes. First, the first run gave the model UCDP's preliminary monthly data after 2022, which undercounts Ukraine five- to fifteen-fold; participants had final data through 2023, so the run was redone with final data through 2023. Second, the model pulls the largest ongoing wars back toward their history: it put Ukraine at 2,400 a month against 5,100 realised. The model was not changed after seeing the live window. A later change, chosen on 2010–2017 only, makes it predict the change from each country's last three months: that helped on final data (the ViEWS archive row) but not in the live window, whose last months come from the undercounting preliminary releases. On the grid, the extreme-quantile models first put thousands of deaths in the top 1% of draws for quiet cells. A local bound (no draw above twice the largest recent month in the cell's neighbourhood, with a floor of 5), chosen on 2014–2017, halved the error. Where a prediction market or crowd covers a question, the report publishes the crowd's number.</p>
+<p><strong>Data-vintage correction (October 2026).</strong> Every UCDP preliminary monthly release from 2021 to 2025 was compared with the final data. The undercounts sit in a few large wars (Ukraine 6.1× in 2022, 3.4× in 2023, 2.1× in 2024; also Ethiopia, Sudan and Russia) and shrink as UCDP's preliminary coverage improves. Preliminary months are now scaled by each country's last observed revision, damped to a quarter of it (the damping was chosen on the 2022–2023 revisions only). The live-window CRPS fell from 34.2 / 33.8 to 32.0 / 31.9; the historical windows, which use final data, are unchanged. Almost all of the remaining gap is Ukraine and Gaza: the model expects very large wars to fade, as most did in its training years. Mixing a quarter of persistence draws into countries above 1,000 deaths a month (chosen on 2010–2017) brought the live window to 28.3 / 29.3, but worsened 2018–2023 from 47.35 to 49.51, mostly in 2023 when Ethiopia's war ended. That change was rejected.</p>
+<p><strong>Neural quantile blend (October 2026).</strong> A small neural network (two layers of 256 units, pinball loss on the same quantile grid, five seeds) is trained on the same inputs as the boosted trees, and the two predictive distributions are averaged rank by rank. The network alone is no better than the trees, but the average is: on the 2010–2017 development windows CRPS fell from 16.11 to 15.80. Out of sample it improved five of the six 2018–2023 windows (mean 47.35 to 46.33) and the live window (32.0 / 31.9 to 28.9 / 29.6). Larger or longer-trained networks, more seeds, and features for sustained high-intensity wars made no further difference on the development windows. Giving the network each country's identity helped on 2010–2017 (15.52) but overfit: 47.25 on 2018–2023 and 33.1 / 32.8 live, so it was rejected. The same blend on the grid improved 2014–2017 and 2018–2023 slightly (0.4451 to 0.4438) but worsened the live window (0.227 / 0.318 to 0.231 / 0.321), so the grid model was left unchanged.</p>
+<p>Three further changes widen or refresh the long-range simulator:</p>
+<ul>
+<li>Structural uncertainty: each world draws which version of the onset, war-ending and coup equations is right, plus a shift for each country pair. Great-power war by 2065 rises from 33% to 35%.</li>
+<li>Live news events: GDELT through yesterday, spliced to POLECAT, feed the country-pair hostility measure. The backtest ranking of pairs that fought improved (AUC 0.928 to 0.948).</li>
+<li>Real bilateral trade shares (CEPII BACI) now carry war and sanction spillovers.</li>
+</ul>
+<h2>Tested additions (October 2026)</h2>
+<p>A search for missing data and viewpoints, with an independent review, produced about thirty candidates. Each was tested on history before it could enter the simulator, with year effects, controls and errors clustered by country.</p>
+<table>
+<thead>
+<tr>
+<th>Mechanism</th>
+<th>Evidence</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Working-age share (UN projections)</td>
+<td>5-year growth 1960–2023: 1.22 per unit change in log share (s.e. 0.17); out-of-sample error 2% lower; GDP hindcasts no worse</td>
+<td>Estimate; the largest change: world GDP per person in 2065 about 30% lower than without it</td>
+</tr>
+<tr>
+<td>Leaders dying in office</td>
+<td>Archigos 1900–2015: about 2% a year at 75, 4% at 85</td>
+<td>Estimate</td>
+</tr>
+<tr>
+<td>Coups after an autocrat dies in office</td>
+<td>+0.68 log-odds (s.e. 0.25) over two years</td>
+<td>Estimate</td>
+</tr>
+<tr>
+<td>Science capacity beyond income</td>
+<td>+0.23 growth points per log unit of articles per person (s.e. 0.11); out-of-sample 1.7% better</td>
+<td>Estimate</td>
+</tr>
+<tr>
+<td>Peacekeepers</td>
+<td>war ending +0.32 per log(1 + thousand) (s.e. 0.15)</td>
+<td>Estimate; 2025 cuts sampled</td>
+</tr>
+<tr>
+<td>Rebel fragmentation</td>
+<td>war ending −1.93 per log(1 + groups) (s.e. 0.41)</td>
+<td>Estimate</td>
+</tr>
+<tr>
+<td>Short-term foreign debt / reserves</td>
+<td>banking-crisis start +0.60 (s.e. 0.11)</td>
+<td>Estimate</td>
+</tr>
+<tr>
+<td>Coups among language or colonial peers</td>
+<td>+2.6 (s.e. 0.86) beyond nearby coups</td>
+<td>Estimate</td>
+</tr>
+<tr>
+<td>Food-export price falls</td>
+<td>coups −2.8 per unit (s.e. 1.0)</td>
+<td>Estimate</td>
+</tr>
+<tr>
+<td>Banking crises through trade</td>
+<td>+4.26 (s.e. 0.56); through bank lending: none</td>
+<td>Estimate</td>
+</tr>
+<tr>
+<td>Fisheries under ocean warming, 2025 tariffs and aid cut, a fading AI dividend</td>
+<td>no usable historical estimate</td>
+<td>Sampled assumptions</td>
+</tr>
+<tr>
+<td>Fish dependence, fishery disputes, fast internet spread, aid shocks, sanctions, term-limit evasion, economic complexity, coup-proofing, ethnic kin across borders, sovereign defaults, public trust</td>
+<td>no gain out of sample</td>
+<td>Rejected</td>
+</tr>
+</tbody>
+</table>
+<p>The review also found six design errors, each confirmed in the code and fixed. War losses and pandemics were counted twice, a clean-energy gain cancelled out, and AI hub rents added to world growth instead of moving it. The workforce term double-counted its historical mean. Great powers were frozen at the 1945 five, so a China–India war was sized as a small war and did not count as a great-power war. Great powers are now the traditional majors plus any nuclear-armed state with at least 5% of world output (India today). Great-power war by 2065 is 47% under this definition, against 25% among the traditional majors (69% and 35% before the smaller nuclear-pair factor, mood shock and the dropped interstate scaling); nuclear use 14% (was 18%), China–India war 27% (was 52%).</p>
+<p>A sixth review (28 October 2026) looked for the most consequential questionable assumptions; each claim was checked in the code. Two were fixed: the coup and peacekeeping terms added after the alignment (see World simulator), and the uncorrected structural pair noise (great-power war −3 points, nuclear use −1). One was tested and rejected: the workforce coefficient comes from a 5-year regression and is applied yearly inside the growth momentum, but replacing it with the 1-year estimate (0.57 instead of 1.22) made world GDP hindcasts worse (1970–1998 +2.4%, 2000–2012 +4.8%). The rest were noted: alliance joiners are counted in the dyad model's training and again by the cascade, though the cascade rate was calibrated on hindcasts with that model; the great-power definition is reported both ways; the energy cap on the AI dividend, the democracy drift under AI and the size pool for great-power wars are stated assumptions. At the same time, a source review narrowed four assumption ranges: AI and robot arrival later, the robot growth dividend, the nuclear-pair war factor (0.1–0.55) and nuclear use by a single armed side (0.1–0.8% a year at war). Net effect on the headlines: great-power war 51% → 47%, nuclear use 14% (unchanged), 2065 world GDP per person $38k → $34k, 2065 civil-conflict median 15% → 18%.</p>
+<p>Data refreshes and further checks (28 October 2026). The World Bank climate portal now serves ERA5 to 2025. Its temperature, rainfall and dry-spell series match the earlier release to 0.01, but its hottest-day series is 5–7 °C higher throughout, apparently a new definition (year-to-year changes correlate 0.90 with the old one, anomalies are about 20% larger). The whole series is therefore taken from the new release rather than spliced, and the crop-yield response was re-estimated on it (−1.0% per °C of hottest-day anomaly, s.e. 0.25; it was −1.4% on the old series); the backtests did not change beyond noise, nor did the headlines. Protest rebuilt from machine-coded events was rejected (see Limits). Coalition wars, which the review suspected of being counted twice, are 5 of 53 interstate conflicts and 13% of pair-years, already absorbed by the hindcast-calibrated alliance rate. Two candidate sources could not be used: Crisis Group's CrisisWatch disallows automated access, and the Carnegie protest tracker starts in 2017, after every test origin.</p>
+<p>A further data search (28 October 2026) tested nine more candidates, each on the 1975–2005 origins and confirmed on the 2010 and 2015 lockbox: terrain, ethnic fractionalisation and state age (Fearon–Laitin); IMF programmes; Polity factionalism; currency and debt vulnerability (World Bank); humid heat (wet-bulb temperature from ERA5, 1960–2020); military spending cuts; US state series from Data Commons (crime, poverty, education) for the state module; and war structure (rebel groups, outside support, peacekeepers). Each moved the risk models' scores by 0.1–0.3%, within noise, except war structure, which improved war-ending AUC by 0.012–0.017 in the production ensemble. Wired into the simulator, so that rebel groups and outside support follow each simulated war and replace the hand-set terms for the same factors, war structure improved the 1970–1998 hindcasts (country conflict Brier −1.4%, simulated / actual war endings 0.92 → 1.00) but failed the 2000–2012 ones (world conflict share CRPS +17.5%, worse at 6 of 7 origins; endings 1.18 → 1.29), so it was not adopted. The yearly risk models look saturated on structural data.</p>
+<p>Two simulator rules for the 2010s interstate gap were then tested at pair level and rejected. Four onset signals the simulator could update each year (one side in civil war and the other a major power; other wars either side is fighting; either side's recent war record; wars worldwide) left the onset log-loss unchanged on both periods (0.00314 and 0.00201) or worsened it; the onset model in fact over-predicts new conflicts in both (111 predicted vs 76 observed; 68 vs 44). A continuation model with pair features did not beat the run-length table on 1970–1998 (best 0.7254 vs 0.7263). The remaining gap, mostly Iran–Israel and the strikes on Yemen, is treated as a change of regime that pre-2014 data do not reveal.</p>
+<p>Great-power rivalry spilling into other countries' wars, the one plausible cause the model had never been tested on, was rejected too. A rivalry index from UN General Assembly voting (the distance between US and Soviet or Russian positions, 1946–2025), with a measure of how contested each country is between the blocs, has no link to civil-war onset or the 5-year conflict risk; it does track coups, but that is the Cold War coup era, and the risk models gained nothing (1975–2005 score 0.9031 → 0.9030). Within civil wars, rebels had outside state backing more often when rivalry was high, but wars did not last longer. State backing of rebels fell from 70% of war-years before 1990 to 38% in 2010–2017 while wars grew more persistent, so the 2010s rise is not a return of Cold War proxy wars.</p>
+<p>Different models of how populations behave were then tested, each on the same 1975–2005 and 2010/2015 checks: generational memory (the share of today's population old enough to remember the last war, civil conflict, hyperinflation or collapse), expectations against reality (growth against the country's own past and its neighbours, educated unemployment), brittleness (less democracy than income, schooling and cities predict, held down by repression), elite overproduction (graduates beyond what income supports, the top 1% share), and rhetoric in the monthly conflict model. All stayed within noise. Several links are real (more graduates than the economy absorbs goes with civil conflict and economic collapse, as Turchin argues) but the model already captures them through its existing inputs. Personalist rule and the regime's support coalition came closest: a gain on both periods with country-bootstrap intervals above zero, shrinking to within noise in the production ensemble. Two leads remain: life satisfaction, whose record (2011–) is too short to test properly, falls before economic collapses and rises before autocratisation; and new civil wars cluster in years (1988–1990, 2015) about 1.6 times more than independent country risks allow, which the simulator's year shocks are meant to supply.</p>
+<p>Three changes were then adopted (28 October 2026, evening), each tested in the risk models or equation screens and then in whole-simulator hindcasts on both periods. Personal rule and the regime's support coalition (V-Dem: leader-cult legitimation, presidentialism, regime corruption, backing by the military, foreign governments or an ethnic group, power taken by force) became a feature family; on 2000–2012 hindcasts it improved country conflict forecasts at 6 of 7 starting years, coup forecasts at all 7 and the count of new conflicts by 11%, while on 1970–1998 the world-level counts improved and the country-level scores worsened by under 1%. Screening the simulator's two transition equations showed both were under-specified. In the growth equation, the state's fiscal capacity (+0.38 points of yearly growth per unit of the V-Dem index) improved GDP hindcasts on both periods (country −0.5% and −1.7%, world −1.8% and −3.1%); adding log income as well, which lets growth slow as countries grow richer, made world GDP hindcasts 40–45% worse and was rejected, as were territorial control, executive constraint and investment. In the democracy equation, 25 V-Dem variables improved forecasts; the five-year change in free expression (free speech erodes before elections do) and neopatrimonial rule, together, cut democracy hindcast error by 3.0% and 6.5% (better at 14 of 15 and 7 of 7 starting years). Effect on the headlines, from paired runs: fiscal capacity raises median world GDP per person in 2065 from $34k to $37k, because today's world, led by China and India, has far more of it than the 1955–2024 average (an extrapolation beyond the ten-year hindcasts); great-power war 47% → 48%; the 2065 civil-conflict share stays at 18%. The simulator's year-to-year clustering of new wars was also checked: well calibrated on 1970–1998 (13% of years in the outer 5% tails, 10% expected), too wide in the calm 2000–2012 period, an era effect left as is.</p>
+<p>A fourth change followed: the rest of the regime's coalition. V-Dem codes which of 14 groups back a regime and which oppose it. Six columns, chosen on pre-2006 years only, gave the largest risk-model gain of the whole search (1975–2005 +0.013 with a country-bootstrap interval of +0.004 to +0.021; production ensemble +0.009 and +0.014 on the two periods): the military and business elites in opposition, and religious groups, civil servants, rural workers and agrarian elites among the backers. A military in opposition is the strongest signal of a coming coup (+0.80 sd), and it is a lasting trait rather than a coding made with hindsight: before coups that follow five calm years it stands at 0.43 six years ahead and 0.47 in the coup year, against 0.25 for all country-years. Fed to every model, it sharpened coups but blurred civil conflict in the simulator hindcasts, so features can now be restricted to some outcomes: these six feed only the coup and autocratisation models (every model family blanks them for the others). Against the same code with the data switched off, simulated coup forecasts improved 2.9% and 3.7% (better at 13 of 15 and 7 of 7 starting years), with civil conflict unchanged. That comparison also measured the hindcasts' own noise: changing only the networks' random initialisation moves country conflict scores by about 1%, the world conflict share by 3–7% and the count of new conflicts by about 12%, while GDP and democracy move by 0.1% at most. Simulator comparisons are now made against same-architecture baselines. Long crisis memory since 1800 (Reinhart–Rogoff defaults, inflation and banking crises) and 19th-century living standards (Clio-Infra real wages, heights, strikes) were tested too: no forecasting gain, and falling real wages did not precede civil wars or coups in 1850–2005, though rising strike participation preceded new civil wars after 1946.</p>
+<p>The simulator's own noise was then measured by rerunning the production configuration with two more network seeds. Seed alone moves democracy scores by 0.1%, country GDP by 0.3%, world GDP by 1%, country conflict and coup scores by about 1.3%, but the world conflict share by up to 7.5%, the world coup count by 13% and the count of new conflicts by 25%. The equation changes and the coalition's coup gain are well above this; the personal-rule family's simulator gains are within it, so that adoption rests on the risk-model evidence. Simulator changes now count only beyond these thresholds or averaged over three seeds, and the two older dispersion settings chosen on the noisy world counts were re-checked that way and confirmed: the shared mood shock at 0.10 (0.20 widens world conflict-share error 4% and 11%) and each country's lasting war-proneness (without it, 2000–2012 world conflict-share error rises 11% and the new-conflict count error 22%, worse at every starting year). Two more ideas were tested and rejected: an extended screen of 224 individual V-Dem indicators against the models' errors (seven confirmed, two of them artefacts that leak the future or act as a time trend, the rest no gain as a family), and Weeks' strongmen and juntas in the war model. Military juntas and leaders who took power by force do make war likelier (+0.67 and +0.43 sd for the pair), personalist strongmen do not, but the one-year war model the simulator uses got worse on 2000–2015. Pew's religious projections change the Muslim and unaffiliated shares by under one point by 2025 and were not wired in.</p>
+<h2>Climate risk (29 October 2026)</h2>
+<p>Climate damage has no settled estimate, so each world draws one of three published damage functions, and the tails and channels that history cannot pin down enter as stated assumptions. Before this update the simulator used one damage function, its harvests could not fail as real ones do, and warming never moved conflict.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Basis</th>
+<th>Result in the headline worlds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Damage: level effect, Burke–Hsiang–Miguel growth effect, or global temperature (Bilal &amp; Känzig 2024: −0.35 log output per °C of global warming, 5-year lag), one per world, ×0.5–1.5</td>
+<td>Hindcasts cannot separate them; equal weights</td>
+<td>World GDP per person 2065: $40.9k / $34.9k / $28.5k. Against the same worlds without damage, SSP2-4.5: −14% in 2065, −27% in 2100 (90%: 0 to −52%); SSP5-8.5: −21% and −44%</td>
+</tr>
+<tr>
+<td>Climate response</td>
+<td>Student-t (4 df) draw keeping the CMIP6 10–90% range</td>
+<td>Heavier hot tail</td>
+</tr>
+<tr>
+<td>Harvests</td>
+<td>Replay the historical yield residual (FAOSTAT 1961–2024) of the same year as the growth shocks; bad years deepen 0–30% per °C of local warming. The old weather terms gave a 1% US yield spread against 7.6% observed</td>
+<td>US harvest 15%+ below trend: 6.2% of years 1961–2024, 5.6% in 2026–35, 8.4% in 2056–65. Two of the four big maize exporters together: 1.6% / 1.4% / 4.6%</td>
+</tr>
+<tr>
+<td>Drylands (estimate)</td>
+<td>42 countries under 600 mm: cereal area elasticity to decade-mean rainfall 0.71 (s.e. 0.29), 1961–2022; none in wetter countries</td>
+<td>Each dryland follows its own CMIP6 rainfall path</td>
+</tr>
+<tr>
+<td>Tipping points (assumptions)</td>
+<td>AMOC collapse effects from 2035–2065 with chance 0–10% (Sahel rain −10 to −30%, north-west Europe output −1 to −5%); fast ice-sheet loss in 10% of worlds (sea level ×1.5–3)</td>
+<td>AMOC in 4.7% of worlds by 2065</td>
+</tr>
+<tr>
+<td>Climate and civil war (assumption)</td>
+<td>Sustained warming × farm share fits onsets (+0.34 sd, p 0.018) but made the risk models' forecasts worse (dev 0.9185 → 0.9144, lockbox 1.0038 → 0.9941); sampled 0 to +0.3 log-odds per °C × farm share / 0.3</td>
+<td>2065 share at war 21.1% vs 21.7% between the low and high ends</td>
+</tr>
+<tr>
+<td>Climate emigration (assumption)</td>
+<td>Stock grows with the climate harvest loss × farm share; scaled to World Bank Groundswell</td>
+<td>19 m abroad by 2065 (95th percentile 38 m)</td>
+</tr>
+</tbody>
+</table>
+<p>In the disaster analysis, climate damage is now a fifth of the economic-collapse gap; without it, or with the smallest estimate, 94% of the worst 1% disappear. Removing the climate tails and channels shrinks the civil-war tail by 7%. The report's Method text had said damage does not reach the political models; it does, through the GDP they see.</p>
+<h2>Review fixes, five tests and an AI tail (2 November 2026)</h2>
+<p>An independent review found that the new structural draw lacked the correction that keeps low risks from being inflated by random spread (fixed; the very-safe-country tail now improves slightly), that two random draws shared a seed (separated), and that one disaster knockout let engineered pathogens through (fixed). Five ideas were tested on history and rejected: growth noise scaled by each country's recent volatility (better GDP forecasts on 2000–2012, but countries spread apart more on 1970–1998), deeper world recessions (closer to the real recession count, worse scores), a free-speech-in-democracies interaction (no gain), a cohort-based working-age share for hindcasts (too crude), and the ensemble's level for war onset, which nearly removes the very-safe-country tail but lowers world war risk in the 2000s, before the 2010s rise. An AI loss-of-control catastrophe is now drawn in the headline as an assumption: after near-free AI arrives, a chance between superforecasters' and experts' estimates (about 2.5% of worlds by 2065 with AI timing uncertain) of a catastrophe killing 1–10% of humanity. The report gained a "build your own world" tool, a flashpoint explorer and a panel of what changed since the previous version.</p>
+<h2>How far ahead it has skill (6 November 2026)</h2>
+<p>From each of the 16 starting years used to test changes (1970–2009), the forecast's own simulator ran 15 years ahead with the world layer on and AI off. At every horizon its country-level forecasts were scored against fair naive forecasts built only from data before the starting year:</p>
+<ul>
+<li><strong>Who is at war in a given year.</strong> The naive forecast is persistence with its historical decay: the chance of being at war h years later, given whether a country was at war at the start.</li>
+<li><strong>New civil wars by a given year.</strong> The naive forecast is the historical onset rate for countries at peace.</li>
+<li><strong>Income growth.</strong> The naive forecast is each country's own 20-year trend, plus the historical spread around such trends.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Years ahead</th>
+<th>Who is at war</th>
+<th>New civil wars</th>
+<th>Income</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>+12%</td>
+<td>+5%</td>
+<td>+13%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>+10%</td>
+<td>+15%</td>
+<td>+17%</td>
+</tr>
+<tr>
+<td>10</td>
+<td>+12%</td>
+<td>+19%</td>
+<td>+23%</td>
+</tr>
+<tr>
+<td>15</td>
+<td>+11%</td>
+<td>+22%</td>
+<td>+26%</td>
+</tr>
+</tbody>
+</table>
+<p>The numbers are skill scores: Brier for war and CRPS for income, against the naive forecast. Every 90% interval across starting years stays above zero. The skill does not fade by year 5, as some expected, and it lasts to the longest horizon that can be tested. These starting years also informed the simulator's settings, so the true edge is somewhat smaller.</p>
+<p>The report therefore calls country-level numbers forecasts up to about 15 years ahead. The 2065 numbers lie 40 years out, beyond anything history can test, and are presented as explorations of stated assumptions. Script: scripts/skill_horizon.py.</p>
+<h2>Long-run numbers as credences (6 November 2026)</h2>
+<p>The headline integrates over every assumption at once, so "45% great-power war" mixes what the assumptions say with chance. To separate the two, the 2025 forecast was rerun as 200 blocks of 50 worlds. The worlds in a block share one draw of every assumption, including which model family is right. Each block's share is then a probability given its assumptions, and the spread across blocks is what the assumptions alone produce (scripts/credence.py).</p>
+<table>
+<thead>
+<tr>
+<th>By 2065</th>
+<th>All worlds</th>
+<th>Range across assumption draws (5–95%)</th>
+<th>Share of the spread due to assumptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Great-power war, counting India</td>
+<td>44%</td>
+<td>18–76%</td>
+<td>11%</td>
+</tr>
+<tr>
+<td>Great-power war, traditional majors</td>
+<td>21%</td>
+<td>8–40%</td>
+<td>3%</td>
+</tr>
+<tr>
+<td>Nuclear use</td>
+<td>12%</td>
+<td>2–26%</td>
+<td>3%</td>
+</tr>
+<tr>
+<td>More than 25% of countries in civil conflict in 2065</td>
+<td>40%</td>
+<td>22–60%</td>
+<td>4%</td>
+</tr>
+</tbody>
+</table>
+<p>Chance within a block adds about ±7 points, so the ranges slightly overstate what comes from the assumptions. The share due to assumptions is measured on block probabilities, net of that chance. It is about three times what the earlier attribution showed (4%), because that method scored a yes-or-no outcome in each world. The assumptions that move great-power war most are the escalation between nuclear-armed rivals (rank correlation 0.41) and how often allies join a war (0.29). The report gives each long-run war number with its range.</p>
+<h2>The war model in another era (6 November 2026)</h2>
+<p>Every test of the simulator lives inside 1946–2024, so its great-power war numbers assume the post-1945 order persists. The pair model was refitted on one era and scored on the other, both ways. The outcome was the only one coded consistently since 1816: a militarized dispute with more than 25 deaths within five years (scripts/era_test.py).</p>
+<table>
+<thead>
+<tr>
+<th>Fitted on</th>
+<th>Scored on</th>
+<th>Observed / predicted, all pairs</th>
+<th>Major-power pairs</th>
+<th>Ranking (AUC)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1946–2005</td>
+<td>1816–1938</td>
+<td>1.03</td>
+<td>1.30</td>
+<td>0.73</td>
+</tr>
+<tr>
+<td>1816–1938</td>
+<td>1946–2005</td>
+<td>0.28</td>
+<td>0.37</td>
+<td>0.76</td>
+</tr>
+</tbody>
+</table>
+<p>The post-war model transfers back well overall: rivalries, borders and conflict history carry most of the difference between eras. But it expects 30% too few fatal disputes between two major powers. The model fitted before 1945 predicts more than three times too much fighting after it. The report adds a labelled scenario in which major-power pairs fight as often as before 1945, given their circumstances; it is not the headline. Its effect is small: great-power war among the traditional majors by 2065 rises from 21% to 22.5%, and the figure counting India does not move (45%), because a higher rate of fatal disputes between major powers adds little to wars of 1,000 deaths a year, and India's pairs and alliance joining drive that figure.</p>
+<h2>Shocks, violence against civilians and the AI assumption (6 November 2026)</h2>
+<ul>
+<li><strong>Pushing a named shock through the system does not yet work.</strong> From the year before four wars (Yom Kippur 1973, Kuwait 1990, Iraq 2003, Ukraine 2022), the simulator ran with and without the war forced. The pre-registered test required forcing the war to bring both the oil price and the affected countries' income closer to what happened in at least 3 of the 4. It did so in 1 (Kuwait). Oil reacts to a war in the simulator only when two oil exporters fight each other. It has no channel for an embargo, as in 1973, when oil rose 128% in three years, or for a war premium, as in 2003. The crisis explorer stays an illustration.</li>
+<li><strong>Violence against civilians and between militias is now forecast.</strong> The monthly layer covered only fighting involving a state, the ViEWS target. A twelve-month model of UCDP non-state and one-sided violence was backtested on issues made each December 2017–2023. It beat persistence by 27% on the Brier score, by 15% for countries with no such violence in the past year, and is well calibrated (13.6% forecast against 13.3% observed). Its forecasts are frozen in the record like the others.</li>
+<li><strong>The AI arrival assumption has a written update rule.</strong> At each quarterly release it is rebuilt mechanically from the latest value of its three sources: forecasters, a survey of researchers and an expert panel. Rebuilt from today's values, it nearly reproduces the hand-set version (5% by mid-2027, 18% versus 19% by 2030, 72% versus 68% by 2065). Four economic indicators (US productivity, AI investment, data-centre electricity, labour share) are scored each quarter against the simulator, and do not move the assumption (docs/ai_ledger.md).</li>
+<li><strong>The twelve-month conflict probability is fixed.</strong> Monthly forecasts were multiplied as if months were independent, which overstated the risk (Benin 76% instead of 39%). A model fitted on twelve-month outcomes is calibrated (13.9% forecast against 14.0% observed) and now publishes the figure.</li>
+</ul>
+<h2>How changes are tested, and alliances (5 November 2026)</h2>
+<p>Six independent reviews, three from each of two AI labs, found that the main weakness was the testing rather than the model. Their findings, each checked in the code:</p>
+<ul>
+<li><strong>The tests did not run the forecast.</strong> The 10-year test ran a smaller neural network without the forecast's draw of which model family is right. The full-system test used a 3-member ensemble where the forecast uses 10.</li>
+<li><strong>The test period was used up.</strong> About 60 variants had been scored on the 2000–2012 origins, so they had become tuning data.</li>
+<li><strong>No single objective.</strong> With a dozen scores, two periods and two seeds, almost any change was "worse on something", so adoptions depended on which comparison counted.</li>
+</ul>
+<p>Every test now builds the simulator exactly as the forecast does, records its configuration, and is checked against the forecast's. A written rule decides changes:</p>
+<ul>
+<li>16 origins from 1970 to 2009, simulated 15 years ahead, with three independent refits of the risk ensemble;</li>
+<li>one combined score with fixed weights;</li>
+<li>the change must be better in at least three of the four decades and by more than the noise between refits;</li>
+<li>no weighted score may be more than 3% worse.</li>
+</ul>
+<p><strong>Refit noise is large for the war counts.</strong> Refitting the ensemble alone moves the count of new civil wars by up to 11% and the world share at war by 9%; the combined score's noise is 1.1%. The withdrawal of the ensemble's central view on 4 November had rested on a +12% move in new wars, inside that noise. Retested under the rule, it neither helps nor hurts overall, though it removes 40% of the safest countries' excess wars.</p>
+<p><strong>Earlier choices re-checked.</strong> Undoing them showed that two were clearly right: the narrower growth regimes (combined +3.1%) and the oil fix (+1.2%). The halved mood factor (+0.9%) and the debt-split growth noise (+0.6%) are probably right but below the noise. Country war-proneness cannot be told apart from noise. Nothing was reverted.</p>
+<p><strong>Rejected.</strong> Two new ideas failed the rule:</p>
+<ul>
+<li>solving the war-ending alignment on the previous decade's own countries;</li>
+<li>replaying world growth shocks with full year-to-year swings, to get more recessions.</li>
+</ul>
+<p>A check on the cheaper data rejected the idea that the alignment's choice of countries explains the safest countries' wars.</p>
+<p><strong>Bugs fixed:</strong></p>
+<ul>
+<li>Countries that did not exist yet at a hindcast's start counted as countries at peace, which raised the year-1 war rate for everyone.</li>
+<li>US tariff exposure used purchasing-power rather than dollar GDP, which halved it for developing exporters.</li>
+<li>The yearly forecast record compared the model with a baseline that gave every peaceful country a 10% chance of war. It now uses the observed rates: 2.5% for a new war, 90% for a war continuing.</li>
+</ul>
+<p>One forecast per release is now named as the record before any of its outcomes are known.</p>
+<p><strong>Alliances follow the treaties' areas.</strong> A permanent Security Council member used to join any ally's war at the full rate wherever it was fought. A US–China war over Taiwan therefore drew France in as often as a Russian attack on Estonia, and a France–China war counted as a great-power war. Now a global power joins at the full rate only if the enemy is near the ally it defends or near itself, which covers NATO's Article 6 area and the US Pacific treaties. Outside that area it joins at a sampled 0–50% of that rate, an assumption based on the Korean War, where Britain and France fought China. History cannot test this: the hindcasts were unchanged, since 1970–2024 holds almost no such cases. Great-power war by 2065 falls from 48% to 45%, and France’s added chance of war with China in the "China–US war over Taiwan" what-if from 11 to 3 points. The report shows great-power war under both rules.</p>
+<p><strong>Two more scenarios, outside the headline.</strong> Wars between states lasting as long as they did in the 2010s (great-power war 51%), which the simulator missed two- to threefold; fitting that rise would use the very outcomes that should test it. And the old alliance rule (48%).</p>
+<p><strong>Crowd comparison rebuilt.</strong> The model in the comparison is now trained on UCDP labels through 2024 instead of militarized-dispute labels that end in 2010. Its Brier score barely moved, from 0.132 to 0.130, against the crowd's 0.100. The stale labels were not why the crowd wins. The questions ask about any use of force, which happened in 13% of them, while the model forecasts a 25-death war and gives these questions about 2% on average.</p>
+<h2>Oil prices and the safest countries (3 November 2026, evening)</h2>
+<p>Two misses in the full-system hindcasts were traced and tested. The oil price spread far too widely: at 15 years its 5–95% range ran from 0.15 to 5–13 times the starting price, yet six of seven outcomes fell in its middle half. Each world replayed oil moves from its historical decade, so a world drawn into the 1970s repeated that decade's rise ten times. The pull toward the 20-year average, 0.05 a year, was a one-year estimate, while over ten years the price has returned all the way. Oil moves now come from independent historical years, with a pull of 0.15 chosen on 1980–1995 origins. Oil forecasts improved by 43% and 32% on the two periods (11% at 30 years), and world GDP growth forecasts improved by 1–2%. Oil exporters and importers now gain or lose against the oil move already in the replayed growth. A first version charged importers on average and was corrected before adoption.</p>
+<p>Among the 20 countries the simulator rated safest, it expected two or three to start a civil conflict within 15 years from every origin from 1995 on; none did. The risk network is too flat at the low end, and the alignment to the previous decade's onset rate raises every country, including the safest. Removing the alignment, sharpening the risk ranking, recalibrating on the previous decade and weighting recent training years were each worse on the 1970–1998 origins or overall, because before 1990 the safest countries did have conflicts at the predicted rate. The recalibrations were rejected. Before 1990 the model's risks for these countries were right. A later test looked like the remedy: the forecast's full risk ensemble rates the safest countries better than the network alone at all seven origins, and shifting each country's war-onset and coup risk by the ensemble's view minus the network's (then aligning as before) improved 10-year hindcasts on both periods. An independent review then noticed those tests left out the forecast's draw of which model family is right. Run as the forecast runs it, the shift cut the safe-country tail by 30–56% but raised new civil wars by 12% and the share of countries at war by 7% on 2000–2009 origins (worse at all three), so it was withdrawn before release (4 November 2026). Recomputing the ensemble's view every five simulated years drifted the war level and was also rejected; re-solving the level at each refresh was tested next and also failed (coups +48% and the share of countries at war +29% at 30 years). Correlating each country's persistent war-proneness with its neighbours', to capture which countries fight together, changed neither the world totals nor the joint scores. Forecast rerun with the oil changes (version 53): median 2065 world GDP per person $33.4k → $34.0k (90% band $17.6k–$88k); the civil-conflict headlines are unchanged.</p>
+<h2>Slumps, debt and human behaviour beyond economics (3 November 2026)</h2>
+<p><strong>Debt-linked shocks.</strong> When the debt-linked growth shocks were first tested (2 November), they improved growth forecasts but added coups. After the 2 November change to the growth spread they pass, in a corrected form. Each country now draws its growth shocks from countries of similar debt (the most indebted third or the rest). Each group keeps the average growth of its income group, so debt changes how violent a country's shocks are, not its average growth. The first version also lowered high-debt countries' average growth, through the back door, although debt had been rejected as a driver of growth; an independent review caught it. Results, on two network seeds:
+- <strong>10-year hindcasts:</strong> the spread of countries' growth improves 4% (1970–1998) and 2.5% (2000–2012), and world income 3% and 1%.
+- <strong>30-year hindcasts:</strong> how often world income falls improves 11%.
+- <strong>Coups:</strong> unchanged on 1970–1998, 1% worse on 2000–2012 and up to 1.3% worse at 30 years. The baseline and test runs share the same networks and random draws, so this is a real if small cost, not noise.</p>
+<p>The effect on the headline is small: median world income per person in 2065 moves from $33.6k to $33.4k (shown as $33k rather than $34k), the 90% range stays at $17k–$87k, and the other headline numbers are unchanged.</p>
+<p><strong>Coups after slumps.</strong> Trained at each starting year and checked on the following years of real history, the coup model predicts too many coups after normal and good years. It underestimates how sharply coups rise after a bad one, and on 2001–2019 it expected more coups after the deepest, longest slumps than happened. Making the simulated coup risk follow last year's growth more steeply sharpened which countries have coups (0.1–0.3% on both periods). But it made the world count of coups 2–5% worse, because coups then clustered in world recessions more than they did in history. It was not adopted.</p>
+<p><strong>Behaviour beyond economic interest.</strong> The model never assumes that people act in their economic interest. It learns what countries did in situations like today's, so grievance, identity, leaders' personal rule, contagion, crisis memory and waves of unrest are inputs or mechanisms wherever history measures them. Two more such ideas were tested and rejected:
+- <strong>Revenge:</strong> whether one country lost a war or a serious dispute to the other, remembered over 20 or 50 years. It adds nothing to how recently the pair fought, whether they are rivals, and territorial threat.
+- <strong>Sudden unrest:</strong> rare regional jumps in the mood that drives wars and coups, for waves like 1989 or the Arab Spring. They made coup forecasts 1–3.5% worse and gained nothing, because the existing mood already produces such years about as often as they happened.</p>
+<h2>Countries' growth spread and the democratic recession (2 November 2026, evening)</h2>
+<p>Simulated countries drew decade-long growth spells about 1.8 times larger than history's, a setting chosen before several later changes. Countries' growth paths therefore spread apart too much: by 15% in the 1970–1998 hindcasts and by two-thirds in 2000–2012. A factor of 1.4 matches the 1970–1998 spread. It improves the spread of countries' growth by 22–29% at 10 years and 18–28% at 15 and 30 years, on both periods and both network seeds. Other scores move by about 1%. It is adopted. The world GDP range for 2065 narrows slightly, and the median moves from $35k to $34k per person.</p>
+<p>The model misses the fall in world democracy after 2000, but the miss is mostly India. Its democracy score fell by about 0.3, and that alone is most of the population-weighted fall. The average country barely changed. Several fixes were tested and none was adopted:
+- removing or shrinking the trend the democracy equation learned from the third wave;
+- adding the democracy level of the rest of the world's economy, or the autocracies' share of world GDP;
+- letting every country's democracy drift further over a decade.</p>
+<p>Each either lost on 1970–1998 or hurt the many stable countries more than it helped. A large democracy backsliding as far as India did remains a tail the model draws too rarely.</p>
+<h2>Debt and currencies (2 November 2026)</h2>
+<p>Public debt and its recent rise were already inputs to the country risk models. Sovereign-debt and currency crises were tested as events in the simulated economy, using the Global Macro Database crisis dates for 1960–2024. Their costs are real and stable across periods. A sovereign crisis costs about 1–3% of growth in its first year and 1% in the next. A currency crisis costs about 2–3%, then 1%. Debt, its rise, slow growth and inflation predict them, though weakly. Adding them to the simulation improved the world-income forecast. It worsened the growth forecasts and spread countries apart, because the historical growth shocks the simulator replays already contain the average crisis. A version that charged only each country's risk above the historical average was worse still, so crises stay off. (A first version of that test was flawed and came out neutral. An independent review caught it.) Interest rates add almost nothing to how debt moves. A hyperinflation artefact in the data first hid a link between debt and the gap between interest rates and growth. Removing it made a link appear. But almost all of it was the growth half, which the simulator's debt equation already includes. The real interest rate adds nothing measurable to that equation, so no interest-rate regime was added. A scenario where the dollar loses part or all of its reserve role by 2045 is not in the headline. At full decline, sanctions lose half their bite and US growth loses up to 0.3% a year. US income per person in 2065 is about 4% lower, or 9% lower when the decline is deep. World income falls 0.5%. War risks barely move.</p>
+<h2>Heat and cold deaths (1 November 2026)</h2>
+<p>Warming now kills in the simulation, not only costs output. Each year a country's death rate rises with its warming since 2025 times a heat/cold factor from its baseline temperature (positive where it is hot, negative where milder winters save lives) times an income factor (richer countries adapt), growing faster than linearly with warming as extreme-heat days multiply. The scale is set so the fossil-fuelled path reaches Carleton et al.'s (2022) 73 extra deaths per 100,000 a year by 2100; each world draws a multiplier from 0.25 to 1.75 for their wide range. The deaths count in excess deaths and come off the population. Middle path: about 0.9 million a year in 2065 and 1.8 million in 2100 (14 million by 2065, 63 million by 2100); fossil-fuelled path 2.2 and 8.9 million a year (218 million by 2100); strong mitigation 21 million by 2100; the middle path with breakthroughs 28 million. Headline excess deaths 2026-2065 (wars, pandemics, warming): median 29 million, up from 18 million.</p>
+<h2>Technology breakthroughs and cheap space (31 October 2026; in the headline)</h2>
+<p>Seventeen possible breakthroughs (storage, advanced fission, geothermal, fusion, green hydrogen, cheap ammonia, cheap launch, space solar, air capture, geoengineering, engineered crops, new protein, desalination, 100-day vaccines, engineered-pathogen capability, longevity, quantum code-breaking) are drawn in every headline world: which arrive and when, with chances anchored on forecaster markets, expert surveys and agency outlooks and calibrated so that their average over the model's AI timelines matches those forecasts (without AI they come later: fusion at scale by 2065 in 10% of worlds rather than 25%). Each acts only through levers the simulator already has; geoengineering can stop (1-4% a year), after which its cooling fades over five years while harvests suffer, and code-breaking triggers a wave of financial crises that cost output. Together they raise world GDP per person in 2065 by about 2.5% (headline median $34.5k to $35.8k), cut the oil price by 16% and the world grain price by 10%, and lift the Sahel and East Africa by about 8%, but leave civil conflict, coups, democracy and great-power war within noise. Forcing one technology at a time, the largest effects on output are longevity (+7%) and geoengineering (+6%, with 3 points more great-power war and dearer grain once rebounds are counted); on lives, engineered pathogens (about 15 million more deaths by 2065 on average) and fast vaccines (about 6 million fewer), while geoengineering saves about 6 million by cutting heat deaths; code-breaking costs 1.6% of output. Cheap space moves nuclear use by about 3 points depending on whether space dominance deters or destabilises, and little else.</p>
+<h2>Analog forecasts, AI rent capture, labour share (31 October 2026)</h2>
+<ul>
+<li><strong>Monthly fatalities follow similar past wars too.</strong> The leader of the 2023/24 VIEWS challenge on CRPS matches each country's recent course of deaths against similar past episodes; our whole gap to it was 2023, a year of very large wars that kept escalating. An analog model does the same: each country's last 12 months are matched to the 100 most similar 12-month stretches of any country's history known at the forecast date, and what followed them gives the forecast. Blended half and half with the production model (chosen on 2010–2017 before any test year was scored), it cut the 2018–2023 CRPS from 46.19 to 45.61, still 2nd of 21 but with the gap to first halved, and improved both live windows; ignorance and interval scores stay 1st.</li>
+<li><strong>Who captures AI rents</strong> is now an explicit assumption: the share kept by the firms that own frontier models, chips and compute (20–90%) and how fast states take it back. It moves inequality (top-1% share in 2065 17.6% to 20.2% with AI from 2030), polarization and the frontier hubs' lead, but barely world democracy or war.</li>
+<li><strong>Labour share</strong> (Penn World Table), as a trace of rents moving to capital, did not forecast crises, growth or democracy; foreign investment had already failed for growth.</li>
+</ul>
+<h2>Limits round 2 (30 October 2026)</h2>
+<p>Ideas aimed at the three remaining limits (countries drifting apart, too few world recessions, the democratic recession) were each tested as a switch against 10-year hindcasts (15 development origins 1970–1998, 7 test origins 2000–2012) and full-system hindcasts at 15 and 30 years; a hindcast score for the spread of growth across countries was added.</p>
+<ul>
+<li><strong>Adopted: free expression with its own equation, and personalist rule.</strong> Free expression used to move in fixed proportion to the democracy index, so its erosion, which comes before elections are hollowed out, could never lead in the simulation. It now has its own yearly equation (driven by the democracy change and conflict, with reversion and its own shocks, scaled by each country's own volatility so that countries near the top are not pushed down by the bound, and with regime transitions kept in the fit). V-Dem's personalist legitimation enters the democracy equation and moves with democracy. Democracy scores improved 1.2% on development and 4.8% on test over ten years (both network seeds), 32% over 15 years from 2000–2009 and 18% over 30 years, but worsened 9.7% over 15 years from 1980–1995: the change lowers simulated democratic gains everywhere. The world democracy index in 2065 falls from 0.45 to 0.40; the 2000–2015 democratic recession moves from the 7th to the 16th percentile of simulated worlds (2005: 1st to 4th).</li>
+<li><strong>Countries drifting apart is a change of era.</strong> The 10-year spread of growth across countries is right from origins before 1990 (0.85–1.2 times the actual) and too wide after (1.3–1.9 times): economies, above all developing ones, became much calmer in the 2000s, and the simulator draws its noise from all the history before the origin. Converging inflation norms, a decaying science residual and recency-weighted noise did not help, and no single setting fits both eras.</li>
+<li><strong>World recessions.</strong> Replaying world shocks weighted by GDP looked like a large gain until the shocks were centred: the gain came from a negative drift that every country inherited, and centred shocks made recessions rarer. Rejected, as were output costs for ordinary banking crises (no effect).</li>
+<li><strong>Free-expression drivers.</strong> Anti-pluralist governing parties and polarization did not forecast changes in free expression or the courts (fit 1960–1999, scored 2000–2024), so they are not drivers; giving the courts their own equation added nothing.</li>
+</ul>
+<h2>Limits round (29 October 2026, evening)</h2>
+<p>A review of the model's limits produced a ranked list of fixes, tests and data sources; each was done or tested under the usual rule (kept only if it improves the hindcasts on development origins and holds on test origins).</p>
+<ul>
+<li><strong>Full-system hindcasts.</strong> The whole simulator (wars between states, finance, oil, food, migration, pandemics, every assumption sampled; AI off) was run from seven origins (1980–2009, 15 years) and three (1975, 1985, 1994, 30 years). World growth over 30 years shows no consistent bias (the actual at the 9th, 62nd and 73rd percentiles). Emulators of ten world statistics explain only 7–12% of their spread from the sampled assumptions, and weighting worlds by their fit to history moved no assumption range by more than 0.22 sd while helping some statistics and hurting others on the test origins. History cannot narrow the assumption ranges, so they are unchanged.</li>
+<li><strong>A runaway poverty trap, fixed.</strong> The 30-year hindcasts from 1994 sent the countries then at war (Afghanistan, DR Congo, Liberia, Rwanda, Angola) down 95–99.7% in the median world; all of them grew. The growth equation's squared distance-to-frontier term was extrapolated below any observed income. Its inputs are now held to their 0.5–99.5% training range: country GDP scores improved 1.2% on development (14 of 15 origins) and 0.8% on test (7 of 7), and the 30-year spread across countries fell from 1.43 to 0.93 (actual 0.48).</li>
+<li><strong>Bugs.</strong> Storm damage used global instead of local warming; the climate-conflict, fisheries and climate-migration channels switched off whenever their assumption was fixed; harvest amplification was counted twice in climate emigration while dryland losses never reached it; world population ignored simulated migration and deaths; nuclear damage compounded every year; two great-power lists disagreed; hindcasts before 1995 failed on the oil price's anchor.</li>
+<li><strong>New data.</strong> UN probabilistic population projections give each world its own fertility and migration path (simulated spread matches the UN's). Leader ages after 2020 come from Wikidata birth years (161 of 167 leaders). AI exposure is the share of jobs in managerial, professional, technical and clerical occupations (ILO, 174 countries) instead of a guess from income. Cyclone exposure is the share of land hit by hurricane-force winds since 1980 (IBTrACS).</li>
+<li><strong>Wars between states.</strong> A force budget (states already fighting start fewer new wars) has the same sign on development and test but is not significant (p 0.15, 0.57); it enters as an assumption. Letting wars raise the event-data hostility of the pair, and letting trade weights follow simulated GDP, made no difference in hindcasts; both stay off.</li>
+<li><strong>Rejected sources.</strong> IMF private and corporate debt (strong on development, t 7.1, nothing on the lockbox, p 0.61) and the ethnicity of leaders (PLAD; t −4.3, lockbox p 0.8).</li>
+<li><strong>Benchmark.</strong> The RFF Socioeconomic Projections (no climate damage, no AI) put world GDP per person in 2065 at 1.86 times 2025 (90%: 0.87–3.97). This model gives 1.36 (0.81–2.23) without AI and with climate damage, 1.91 (0.94–5.00) with AI uncertain, and 2.25 with AI uncertain and no damage.</li>
+</ul>
+<h2>Code review (28–29 October 2026)</h2>
+<p>A seventh, full code review ran as four parallel read-only passes over the simulator, the world layer, the risk models and the test scripts. It raised about 60 findings; each was checked against the code before anything changed. It found no leakage of outcomes into risk-model training. Most "high" findings were false, documented design or unused code; about fifteen were real and are fixed:</p>
+<ul>
+<li><strong>COVID replay off by one.</strong> The rule meant to drop COVID from replayed history dropped the 2021 rebound and kept the 2020 crash (about −0.2 points of world growth a year in worlds replaying that era). Both years are now replaced by their neighbours.</li>
+<li><strong>War ending.</strong> New civil wars kept one rebel group forever (see World simulator). The structural-uncertainty noise lacked the convexity correction the mood and frailty terms have.</li>
+<li><strong>Training labels.</strong> A pre-1950 coup-data patch moved the start of statehood back for 19 countries (the Baltic states to 1918–20, Namibia to 1926), so years before independence counted as peace. After a change of government, the ousted party's stance on violence stayed attached to the new government (Poland, Brazil, the United Kingdom, Italy, Slovakia); it is now blank.</li>
+<li><strong>Model plumbing.</strong> The forest family ignored per-outcome feature restrictions; wars at war level in 2025 (Russia–Ukraine at 94,741 battle deaths a year, Iran–Israel) now keep their observed rate; a war that dips below war level and re-escalates is no longer split into two; war-site recovery scales with the sampled loss; collapses already under way are not counted twice.</li>
+<li><strong>Test harnesses.</strong> Hindcasts before 1980 had no refugee equation; one feature test was biased toward finding no gain (the coalition family passed it anyway); the world GDP score measured mean growth instead of GDP per person; crowd-question parsing mismatched four countries.</li>
+</ul>
+<p>Open findings: the 55 km grid benchmark assigns cells to countries with knowledge of later events (a benchmark leak, not a forecast one); US tariff exposure divides by purchasing-power GDP; hindcasts treat countries not yet independent as at peace; the 2010 test origin's outcomes overlap the 2005 development origin's.</p>
+<h2>Disaster worlds</h2>
+<p>The report traces the worst 1% of 8,000 headline worlds on four measures to their causes. Each disaster set is compared with all worlds three ways: which sampled assumptions differ (with a permutation test), which shocks occur more often and which came first, and how much the set shrinks when the same worlds are rerun with one of twelve mechanisms switched off.</p>
+<table>
+<thead>
+<tr>
+<th>Disaster (worst 1%)</th>
+<th>Root cause</th>
+<th>Largest knockouts (tail size, 1 = unchanged)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Economic collapse: world GDP per person in 2065 about a quarter below 2025</td>
+<td>A slow slide: 77% of the gap to a median world is weaker underlying growth (China, the United States, India) and 22% climate damage; late or no AI and the largest damage estimate</td>
+<td>No climate damage 0.06, smallest damage estimate 0.06, no pandemics 0.43; no AI 2.5</td>
+</tr>
+<tr>
+<td>Mass war deaths: median about 40 million</td>
+<td>A great-power war in every world; nuclear use in a third</td>
+<td>No alliance cascades 0.55, no AI 0.61, no interstate wars 0</td>
+</tr>
+<tr>
+<td>Age of civil war: over 40% of countries at war</td>
+<td>A wave of new wars; no single shock is over-represented</td>
+<td>No world mood 0.60, no climate tails 0.93, no country frailty 0.95</td>
+</tr>
+<tr>
+<td>Authoritarian age</td>
+<td>Early AI and the assumed autocratic drift during the transition</td>
+<td>No AI 0.23</td>
+</tr>
+</tbody>
+</table>
+<p>Two model weaknesses surfaced. The structural-uncertainty term pushes very-low-risk countries (the Nordic and Baltic states) into war together in the civil-war tail. The oil price wanders too far: by 2065 its 5–95% range runs from 0.13 to 7 times the 2025 price. (Narrowed on 3 November 2026; see Oil prices and the safest countries.)</p>
+<h2>What drives the uncertainty</h2>
+<p>To see which assumptions matter, 48,000 headline worlds were simulated with every assumption drawn from its range (rerun on 29 October 2026 after the climate update and again on 5 November with treaty scope for alliances), and a gradient-boosted surrogate of each outcome was fitted on the assumptions (cross-validated). Correlated assumptions are credited as groups: a group's share is what the surrogate loses when the whole group is left out. Together the assumptions explain 69% of the spread in world GDP per person in 2065 and 28% in 2045. The rest is luck inside the simulator: replayed shocks, wars, coups and pandemics. For wars the share is only 4–7%, but that is an artefact of scoring a yes-or-no outcome in each world: most of the variance of a single war-or-no-war draw is chance, whatever its probability. The assumptions still move the war probabilities by up to 24 points (the nuclear-pair factor alone moves great-power war from 31% to 55%), so the war outcomes depend on assumptions as well as on the model.</p>
+<table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th>All assumptions</th>
+<th>AI and robot timing</th>
+<th>Climate</th>
+<th>Nuclear</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>World GDP per person, 2065</td>
+<td>69%</td>
+<td>38%</td>
+<td>6%</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>World GDP per person, 2045</td>
+<td>28%</td>
+<td>10%</td>
+<td>12%</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>Countries in civil conflict, 2065</td>
+<td>6%</td>
+<td>2%</td>
+<td>0%</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>Great-power war by 2065</td>
+<td>4%</td>
+<td>0%</td>
+<td>0%</td>
+<td>3%</td>
+</tr>
+<tr>
+<td>India–Pakistan war</td>
+<td>7%</td>
+<td>0%</td>
+<td>0%</td>
+<td>6%</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th>Assumption</th>
+<th>Lowest fifth of its range</th>
+<th>Highest fifth</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>World GDP per person, 2065</td>
+<td>AI arrival year (early vs late)</td>
+<td>$56.9k</td>
+<td>$25.2k</td>
+</tr>
+<tr>
+<td>World GDP per person, 2065</td>
+<td>AI growth dividend</td>
+<td>$30.5k</td>
+<td>$40.3k</td>
+</tr>
+<tr>
+<td>World GDP per person, 2045</td>
+<td>Climate damage estimate (level vs global)</td>
+<td>$23.3k</td>
+<td>$20.1k</td>
+</tr>
+<tr>
+<td>Great-power war by 2065</td>
+<td>Nuclear-pair war factor</td>
+<td>31%</td>
+<td>55%</td>
+</tr>
+<tr>
+<td>Great-power war by 2065</td>
+<td>Allies joining a war (cascade)</td>
+<td>40%</td>
+<td>47%</td>
+</tr>
+<tr>
+<td>China–India war</td>
+<td>Nuclear-pair war factor</td>
+<td>13%</td>
+<td>36%</td>
+</tr>
+<tr>
+<td>India–Pakistan war</td>
+<td>Nuclear-pair war factor</td>
+<td>21%</td>
+<td>53%</td>
+</tr>
+<tr>
+<td>Nuclear use</td>
+<td>Use against a non-nuclear state</td>
+<td>7%</td>
+<td>19%</td>
+</tr>
+<tr>
+<td>Countries in civil conflict, 2065</td>
+<td>Rebel drones and war length</td>
+<td>21%</td>
+<td>25%</td>
+</tr>
+</tbody>
+</table>
+<p>The nuclear-pair factor (0.1–0.55) remains the largest driver of the war outcomes; China–Taiwan and Russia–Poland hardly depend on any assumption.</p>
+<h2>Prospective scoring</h2>
+<p>Every month a script downloads UCDP's newest preliminary release. It issues a 12-month forecast of a 25-death month for every country, and each forecast file is kept and never overwritten. It also records the model's and the market's probability for every open Polymarket and Manifold conflict question. It then scores whatever has matured: monthly forecasts against persistence and climatology baselines, and market questions against their resolution. The first ledger (issued October 2026, data to September) matures from November 2026. The AI analyst panel's questions cover 2025–2029 and resolve in 2030. Since 28 October 2026 each published simulator forecast is also frozen, its code and output hashed: per-country probabilities of conflict for each year 2026–2030, coups and new conflicts by 2030, the 40 riskiest pairs and the world fans. Each completed year is scored against a UCDP proxy with a persistence baseline. The report's scorecard lists every ledger and its score so far.</p>
+<h2>Limits</h2>
+<ul>
+<li><strong>Assumptions dominate the far future.</strong> In the headline worlds the sampled assumptions explain about two-thirds of the spread in 2065 world output (69%), the AI and robot arrival years alone 38%. For the war outcomes the share of variance is small (4–7%) only because each world's war is a yes-or-no draw; the assumptions move the war probabilities by up to 24 points. Those numbers describe the stated assumptions, not evidence.</li>
+<li><strong>Crowds still win on near-term questions.</strong> Forecasting crowds beat the model on interstate and leader questions. Part of the reason is that they react to news faster than annual data can. The larger part, a November 2026 rebuild found, is that the questions ask about any use of force (13% resolved yes) while the model forecasts a 25-death war (2% on average). On 63 resolved use-of-force questions a fixed pool giving the model 10% weight scored 0.0988 against the crowd's 0.0998, within noise. The report shows the crowd's number; the 10% pool is logged, fixed in advance, for new questions.</li>
+<li><strong>No clean test left for the simulator.</strong> Only the 2015 origin is untouched by tuning for the risk models, and every year to 2024 has been seen by simulator tests. Since November 2026 the testing rule guards against selection (decades held out, refit noise measured), but the only clean test is the forecast record, and with two to five new civil wars a year it will not tell simulator versions apart for years.</li>
+<li><strong>Stale sources.</strong> Several sources end before 2025 (elections 2021, protest 2019–2020) and are carried forward or faded. Weather observations now run to 2025. Protest counts rebuilt to 2025 from machine-coded events (ICEWS to 2022, then GDELT) added nothing in backtests: the two sources agree only moderately on which countries protest most (rank correlation 0.4–0.6), so the splice adds noise where the refresh was meant to help.</li>
+<li><strong>Recent calm.</strong> GDP bands from 2015 were too wide at ten years: the simulator replays all post-war decades, including the volatile 1970s–1990s.</li>
+<li><strong>Sudden escalations.</strong> Annual structural models are weakest on surprise escalations between pairs with no recent fighting, such as the 2025 Thailand–Cambodia war or the 2026 US–Iran strikes.</li>
+<li><strong>Which countries fight together.</strong> The simulator gets the persistence of conflict and the co-movement of economies right, but shows no skill at which countries go to war at the same time. That test ran without the interstate layer and with every pair of countries weighted alike; it now runs in the forecast's configuration with nearby pairs weighted more, and has not yet been rerun.</li>
+<li><strong>Too much churn after turbulent decades.</strong> Simulated from 2000–2012, the simulator started about 17% too many civil wars and ended about 33% too many, so the share of countries at war came out about 9% low. Country frailty cut this to 8% and 18% (share 6% low); the rest likely reflects alignment to the turbulent 1990s, and no alignment variant fixed it on both development and test years.</li>
+<li>
+<p><strong>The 2010s rise in wars between states.</strong> Simulated from 2010 and 2014, the simulator expects 0.7–0.9 active interstate conflicts a year against 1.5 and 2.3 recorded. It misses the recent rise two- to threefold, so its interstate risks may be low if that rise persists. It predicts about the right number of pairs that fight; the shortfall is mostly in how long they fight, which the recency-weighted duration table now partly captures. Recurring low-level pairs (India–Pakistan, Iran–Israel) and outside powers' strike campaigns (Yemen) remain unanticipated.</p>
+</li>
+<li>
+<p><strong>The civil-war tail for very safe countries.</strong> In the rarest worlds very peaceful countries (Finland, Sweden, Luxembourg) go to war together. Hindcasts (November 2026) showed the old structural draw, one shared shift per world scaled by how much the model families disagree, made war-onset forecasts up to 38% worse; it was replaced by a draw of which family is right, centred so it adds spread without moving the level, which is neutral on history. The tail itself comes from the neural network's central risk for the safest countries, which the other families put lower; using the ensemble's central risks in the simulator cuts the tail by 40% in hindcasts in the forecast's own configuration, but leaves the decision scores unchanged within the noise between ensemble refits, so it is not adopted (an earlier +12% in new wars that withdrew it was inside that noise). The network's low tail is also too flat for the post-1990 world: from 1995–2009 origins it expected two or three new conflicts among the 20 safest countries within 15 years, and none happened. Five recalibrations were tested in November 2026 and failed on the pre-1990 origins (see Oil prices and the safest countries).</p>
+</li>
+<li><strong>Too few world recessions; oil.</strong> In 10-year hindcasts simulated world GDP per person falls in 1.4–1.8% of years (weighting the replayed world shocks by GDP did not fix it), against 3% (1970–1998 origins) and 9.5% (2000–2012) recorded; in 15-year full-system hindcasts the median world never has a falling year. The 2065 oil price ranged from 0.13 to 7 times today's (real oil has stayed within about 0.15–1.6 times since 1861). Independent oil years and a stronger pull to the 20-year average (November 2026) cut 15-year oil forecast errors by a third or more.</li>
+<li><strong>Countries drift apart too much, since the 1990s.</strong> From origins up to 1990 the 10-year spread of growth across countries is about right (0.85–1.2 times the actual); from 1992 on it is 1.3–1.9 times, and 1.2–2 times over 15–30 years. Real economies, above all developing ones, became much calmer after the 1990s, while the simulator draws its country noise from all history before the origin; 90% GDP bands cover 77–88% of countries from 1970–1998 origins and 92–96% from 2000–2012. Making starting values converge, and weighting recent decades more, did not help (Limits round 2), so the post-2026 bands for single countries are probably too wide.</li>
+<li><strong>The democratic recession.</strong> Simulated from 2000–2009, population-weighted democracy still rises slightly (by 0.01–0.02 over 15 years since free expression got its own equation, from 0.04–0.05); it fell, at the 2nd–16th percentile of the simulated change.</li>
+</ul>
+<h2>Data sources</h2>
+<p>Every raw input is listed, with what it measures, its coverage and how it enters the models, in the <a href="https://benoitschillings.github.io/psychohistory/data_sources.html">data source tree</a>, together with a diagram of how data flows from sources to models, simulation, validation and the published report.</p>
+<h2>Credits</h2>
+<p>The study was conceived and directed by Benoit Schillings, who set its questions, scope and standards of evidence. The data are the work of the many research groups named in the data source tree, among them UCDP/PRIO, V-Dem, the Maddison Project, the World Bank, the United Nations, Correlates of War, ATOP, FAO, UNHCR and the VIEWS team.</p><footer>Study conceived and directed by Benoit Schillings.</footer></main></body></html>
