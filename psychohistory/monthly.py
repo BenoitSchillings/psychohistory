@@ -129,7 +129,31 @@ def features(D, codes, p):
         if r_ >= 0:
             rc[reg == r_] = np.nanmean(F["conf"][reg == r_], 0)
     F["reg_conf"] = rc
+    if NEWS_TOPICS:
+        F.update(news_topics(codes, M))
     return F, hit
+
+
+NEWS_TOPICS = False   # conflictforecast.org news-topic stocks as features (tested 2026-11-08; scripts/monthly_topics_test.py)
+
+
+def news_topics(codes, M):
+    """{name: [C, M]} news-topic stocks (15 topics' shares, discounted over past months) and log token stock per
+    country-month from conflictforecast.org (Mueller and Rauh 2022; free for non-commercial use with citation),
+    January 2010 onward; NaN before and where the country is not covered"""
+    f = RAW / "conflictforecast" / "conflictforecast_ons_armedconf_12.csv"
+    cols = [f"stock_topic_{k}" for k in range(15)] + ["stock_tokens"]
+    d = pd.read_csv(f, usecols=["isocode", "period"] + cols)
+    d["m"] = (d.period // 100 - M0) * 12 + d.period % 100 - 1
+    ci = {c: i for i, c in enumerate(codes)}
+    out = {}
+    for c in cols:
+        a = np.full((len(codes), M), np.nan)
+        for iso, m, v in zip(d.isocode, d.m, d[c]):
+            if iso in ci and 0 <= m < M:
+                a[ci[iso], m] = np.log1p(v) if c == "stock_tokens" else v
+        out["nt_" + c.replace("stock_", "")] = a
+    return out
 
 
 def fit(F, hit, last_obs):

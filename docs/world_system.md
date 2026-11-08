@@ -2591,3 +2591,12 @@ Month and quarter items (2026-11-06):
   unit change in log working-age share, beyond its 1960-2023 mean; output per person = output per worker x working-age
   share makes 1 the accounting value), plus climate damage. Not a bug; a difference in demographic arithmetic worth
   stating beside the 2065 fans.
+- News topics for onsets in quiet countries, ADOPTED for the February 2027 release (scripts/monthly_topics_test.py;
+  monthly.NEWS_TOPICS, off until the release): conflictforecast.org's news-topic stocks (15 topics' discounted shares
+  and the token stock, per country-month from January 2010; Mueller and Rauh 2022, data paper Mueller, Rauh and
+  Seimon 2024; free for non-commercial use with citation; file downloaded by hand on 8 November 2026 because the file
+  host's certificate had expired) as features of the direct 12-month model. Their own forecasts are not used (not
+  verifiably as issued). Pre-registered: issued each December 2017-2023, adopt if Brier and log loss both improve for
+  countries without a 25-death month in the past year. Result: Brier 0.02051 -> 0.01965 (-4.2%), log loss 0.0753 ->
+  0.0713 (-5.3%), mean forecast 2.5% against 2.8% observed; better in 4 of 7 issue years; all countries 0.03024 ->
+  0.03018. Monthly use needs the file refreshed each month (the topic file updates monthly).

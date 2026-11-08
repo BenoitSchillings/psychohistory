@@ -9,8 +9,10 @@ Between releases only data refreshes and labelled patch versions are published.
 2. **AI indicators.** Add the quarter to `data/ai_ledger/indicators.csv`: US productivity (FRED OPHNFB), labour share
    (FRED PRS85006173), the four companies' capital spending from their own releases, the newest LBNL / EIA data-centre
    electricity figure. Mark anything from a secondary source as unverified.
-3. **Changes to adopt.** Only changes that passed `scripts/adopt_score.py` (decision rule, noise floor, guardrails) since
-   the last release, each with its entry in docs/world_system.md. None are pending for February as of 7 November 2026.
+3. **Changes to adopt.** Only changes that passed their pre-registered test since the last release, each with its
+   entry in docs/world_system.md. Pending for February: `monthly.NEWS_TOPICS = True` (news topics in the 12-month
+   model; passed 8 November 2026), after refreshing `data/raw/conflictforecast/conflictforecast_ons_armedconf_12.csv`
+   from conflictforecast.org (cite Mueller and Rauh 2022).
 4. **UCDP.** Newest candidate files in `data/raw/outcomes/ucdp` (scripts/prospective.py downloads them monthly).
 
 ## Release day
