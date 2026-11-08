@@ -2578,3 +2578,16 @@ Month and quarter items (2026-11-06):
   $34.6k, 95th percentile $89k -> $146k, mean $41k -> $219k, share above $100k 3.2% -> 7.9%; great-power war, civil
   conflict and democracy unchanged. The explosive tail moves the mean, not the median, and the simulator has no channel
   from runaway growth to politics: a limit worth stating. Not the headline.
+- Rivalries after 2010, mechanical extension (scripts/rivalry_ext_test.py; pre-registered: adopt if the 1-year onset
+  model's Brier skill improves without losing AUC, origins 2011 / 2015 / 2019): event rivals = 5-year mean of threat and
+  force-posture events at or above tau, tau chosen on 1999-2010 to best reproduce the coded rivalries (tau 1.6, F1
+  0.29). Brier skill 0.0126 -> 0.0098, AUC 0.942 -> 0.947 (12 onsets): rejected. It made 100 new "rivals" in 2025,
+  including Australia-UK, Canada-US and France-UK: news volume, as with the use-of-force label. The coded data also
+  miss US-Iran and Russia-Ukraine entirely; a hand-coded 2025 update is a data decision, not testable on history.
+- Outside projections (approximate; different price bases): the OECD baseline has world income per person reaching
+  OECD 2019 levels by 2060 (roughly $43k in 2011 PPP); SSP2 rises about sixfold 2010-2100. Seldon's no-AI median 2065
+  is $24.6k (0.75% a year). Knockouts on the same 2,000 worlds (no AI): no climate damage $28.4k (1.10%); no ageing drag
+  $37.3k (1.79%); neither $42.7k (2.14%). The gap to the OECD is mostly the working-age term (WORKFORCE_BETA 1.22 per
+  unit change in log working-age share, beyond its 1960-2023 mean; output per person = output per worker x working-age
+  share makes 1 the accounting value), plus climate damage. Not a bug; a difference in demographic arithmetic worth
+  stating beside the 2065 fans.
