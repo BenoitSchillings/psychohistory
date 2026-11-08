@@ -1352,7 +1352,15 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                 rent = rent * (div * gw).sum(-1, keepdim=True) / (div * gw * rent).sum(-1, keepdim=True).clamp(min=1e-9)
                 # ideas get harder to find: the dividend fades with cumulative adoption (innovation.py)
                 WS.cum_A = WS.cum_A + A
-                g = g + WS.prm("growth_dividend") * div * rent * torch.exp(-WS.prm("dividend_fade") * WS.cum_A)
+                if WS.cfg.explosive_p > 0:
+                    # two-regime AI growth (exploration, 2026-11-07): in a share of worlds (explosive_p; FRI LEAP's
+                    # panel gives about 10% to 10%+ growth) the dividend is explosive_mult times larger and does not
+                    # fade (substitution models: Epoch GATE, Davidson, Trammell-Korinek); energy still caps it
+                    ex = WS.explosive
+                    fade = torch.where(ex, torch.ones_like(WS.cum_A), torch.exp(-WS.prm("dividend_fade") * WS.cum_A))
+                    g = g + WS.prm("growth_dividend") * torch.where(ex, WS.explosive_mult, torch.ones_like(WS.explosive_mult)) * div * rent * fade
+                else:
+                    g = g + WS.prm("growth_dividend") * div * rent * torch.exp(-WS.prm("dividend_fade") * WS.cum_A)
                 # development ladder: middle-income export manufacturers lose ground as robots reshore production;
                 # robots also offset shrinking workforces in ageing societies
                 Ar = WS.A_robot

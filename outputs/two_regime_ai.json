@@ -1,0 +1,30 @@
+{
+ "headline": {
+  "gdp_2065_q": [
+   17624,
+   25121,
+   33856,
+   49209,
+   89000
+  ],
+  "gdp_2065_mean": 40980,
+  "share_over_100k": 0.0323,
+  "great_power_war": 0.4412,
+  "civil_conflict_2065": 0.2343,
+  "democracy_2065": 0.4008
+ },
+ "two_regime": {
+  "gdp_2065_q": [
+   17591,
+   25276,
+   34592,
+   52893,
+   145888
+  ],
+  "gdp_2065_mean": 219057,
+  "share_over_100k": 0.0788,
+  "great_power_war": 0.441,
+  "civil_conflict_2065": 0.2343,
+  "democracy_2065": 0.4008
+ }
+}

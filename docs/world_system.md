@@ -2552,3 +2552,29 @@ Month and quarter items (2026-11-06):
   US data-centre electricity 4.7% in 2024 (LBNL 2025 update, 192 TWh); the secondary "7% in 2025" was dropped.
 - February release prepared: scripts/ai_ledger.py --apply writes the rebuilt ARRIVAL_CDF (dry run checked, file
   restored), scripts/quarterly_release.sh runs every step to the canonical frozen forecast, docs/release_checklist.md.
+
+## Ideas from the state-of-the-art survey (2026-11-07; 10 hours of compute)
+- Use-of-force pair model for the crowd questions (scripts/force_model_test.py; pre-registered: adopt for the benchmark
+  if Brier < 0.130): label = 20+ machine-coded fighting events in a pair-year (ICEWS / POLECAT / GDELT; the threshold
+  that matches the MID force rate on 1995-2010, precision 0.39, recall 0.42 against MID), one-year model refitted per
+  question year. Brier 0.298 (crowd 0.100, UCDP benchmark 0.130): rejected. Mean forecast 43% against 13% resolved yes:
+  the questions are about salient pairs (US-Iran, China-Taiwan, Russia-NATO), where news volume pushes fighting-event
+  counts past any threshold. The threshold was not tuned on the questions.
+- News-topic features (conflictforecast.org, free for non-commercial use with citation): blocked here; the file API
+  the site's download page documents was refused by this environment's permission check. Not attempted further.
+- Monthly coup model: no dated coup data in the repo (V-Dem coups are country-years; REIGN has no coup events); the
+  Powell-Thyne file failed on an SSL certificate error and certificate checks are not bypassed. Not built.
+- Shape-matched analogs for the monthly layer (cm_fatal.ANALOG_CENTER: each window centred on its own mean, as
+  ShapeFinder matches shape regardless of scale), dev windows 2010-2017 only, adopted settings (12 months, 100 analogs,
+  weight 0.5): CRPS 15.61 against 15.34 (the analog alone 18.40 against 14.97). Rejected on dev; off.
+- Hard onsets, scored as the field does (outputs/backtest_predictions.parquet, origins 1980-2015, one forecast per
+  country and origin, civil conflict within 5 years among countries at peace for 5+ years; 977 cases, 80 onsets):
+  ensemble AUC 0.829 against the naive model's 0.764, top-30 capture 68% against 54%, precision at 20% recall 0.33
+  against 0.20 (all countries at peace: AUC 0.843 / 0.801, top 30 68% / 55%). Not comparable one-to-one with
+  conflictforecast.org (12 months, 60+ months of peace: about 20% precision at 20% recall) or the Early Warning Project
+  (mass killings, 68% in its top 30), but the same kind of measure; to be reported with each release.
+- Two-regime AI growth, an exploration (scripts/two_regime_ai.py, WorldConfig.explosive_p 0.1: in 10% of worlds the
+  dividend x3-6 without fading, energy cap kept; 4,000 worlds, same seed): 2065 world GDP per person median $33.9k ->
+  $34.6k, 95th percentile $89k -> $146k, mean $41k -> $219k, share above $100k 3.2% -> 7.9%; great-power war, civil
+  conflict and democracy unchanged. The explosive tail moves the mean, not the median, and the simulator has no channel
+  from runaway growth to politics: a limit worth stating. Not the headline.

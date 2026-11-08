@@ -318,6 +318,7 @@ class WorldConfig:
     # area at this share of it (sampled 0-0.5; 1.0 = the earlier rule, in which France could join any US war at the
     # full rate, so a US-China war over Taiwan drew France in as often as a Russian attack on Estonia)
     ally_out_scope: float = 0.25
+    explosive_p: float = 0.0          # share of worlds in the explosive AI-growth regime (exploration only; 0 = headline)
     param_block: int = 1               # worlds per block sharing every sampled assumption (1 = each world its own)
     major_era_mult: float = 1.0       # onset odds of major-power pairs x this (1.3 = the pre-1945 era; scenario only)
     # clean-energy transition: world wind+solar share of primary energy on an S-curve fitted to 2005-2024
@@ -615,6 +616,9 @@ class World:
             self.params["ai_arrival"] = self.arrival_w.clamp(max=2070.0)         # for the attribution of uncertainty
         if self.cfg.ai.arrival:
             self._draw_robot_arrival(S, device, g, u if self.cfg.ai.arrival_cdf else None)
+        ge_ = torch.Generator(device=device).manual_seed(seed + 919)        # (own generator: other draws unchanged)
+        self.explosive = (torch.rand(S, 1, device=device, generator=ge_) < self.cfg.explosive_p)
+        self.explosive_mult = 3.0 + 3.0 * torch.rand(S, 1, device=device, generator=ge_)
         if self.cfg.param_block > 1:
             # two-level runs (second debate, 2026-11-06): worlds in blocks of param_block share every assumption, so
             # each block's share of outcomes is a probability given those assumptions, and the spread across blocks is

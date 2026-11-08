@@ -354,6 +354,7 @@ class NNQuantile(QuantileModel):
 # ignorance); challenge test 2018-2023 (seldon_v10): CRPS 46.19 -> 45.61 (2nd of 21, 0.51 behind ShapeFinder, was 1.09),
 # ignorance and interval score still 1st; live 2024 28.75 -> 27.61, 2025 29.32 -> 28.91
 ANALOG_BLEND, ANALOG_L, ANALOG_K, ANALOG_HALF = 0.5, 12, 100, 6.0
+ANALOG_CENTER = False   # match each window's shape around its own mean, not its level (tested 2026-11-07)
 
 
 def analog_draws(D, origin, months, L=None, K=None, start=mid(1990, 1), n_draws=1000, seed=0):
@@ -364,13 +365,19 @@ def analog_draws(D, origin, months, L=None, K=None, start=mid(1990, 1), n_draws=
     C = ld.shape[0]
     wl = (0.5 ** ((L - 1 - np.arange(L)) / ANALOG_HALF)).astype(np.float32)
     sw = np.sqrt(wl / wl.sum())
-    q = ld[:, origin - L + 1:origin + 1] * sw
+    q = ld[:, origin - L + 1:origin + 1]
+    if ANALOG_CENTER:                      # match the shape of the course, not its level (ShapeFinder-style)
+        q = q - (q * wl).sum(1, keepdims=True) / wl.sum()
+    q = q * sw
     m3_q = ld[:, origin - 2:origin + 1].mean(1)
     out = {}
     for tm in months:
         h = tm - origin
         ts = np.arange(start + L - 1, origin - h + 1)           # window ends whose outcome is known at the origin
-        lib = (ld[:, ts[:, None] + np.arange(-L + 1, 1)[None]] * sw).reshape(-1, L)
+        lib = ld[:, ts[:, None] + np.arange(-L + 1, 1)[None]]
+        if ANALOG_CENTER:
+            lib = lib - (lib * wl).sum(-1, keepdims=True) / wl.sum()
+        lib = (lib * sw).reshape(-1, L)
         r = (ld[:, ts + h] - ld[:, ts[:, None] + np.arange(-2, 1)[None]].mean(-1)).reshape(-1)
         d = (q ** 2).sum(1)[:, None] + (lib ** 2).sum(1)[None] - 2 * q @ lib.T
         d = d + rng.random(d.shape, dtype=np.float32) * 1e-6     # ties (all-zero histories) broken at random
