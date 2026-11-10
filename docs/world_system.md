@@ -2793,3 +2793,15 @@ run below.
   world output for a few years, small beside the exchange's own drawn loss (5-30%). Limits to state with the release:
   income per person ignores the disruption of losing a large share of the population, and the published world
   income per person must be shown next to world output in these worlds.
+The simulator's country coup risks (scripts/coup_sim_calib.py, pre-registered and committed before the variant run;
+hindcasts now store each country's simulated five-year coup chance; baseline v55c_base reproduces v55f_base exactly).
+Diagnosis, 2,528 country-origins 1970-2009 (324 with a coup attempt within five years), simulated against observed:
+under 5%: 2.2% / 3.7%; 5-10%: 7.2% / 14.2%; 10-20%: 14.6% / 20.0%; 20-35%: 26.6% / 30.3%; 35-50%: 41.6% / 32.5%;
+50%+: 60.4% / 59.7%. On the same 1,957 rows the simulator's five-year coup chances score slightly better than the raw
+five-year ensemble (Brier 0.0793 against 0.0815). A flatter slope on the coup log-odds (fitted leaving each decade
+out: 0.64-0.91) made the hindcasts worse: country Brier 0.09823 -> 0.09844, log loss 0.3379 -> 0.3394, better in 1 of 4
+decades, world coup counts -2.7%, composite -0.21% (no guardrail). Rejected. The static fit does not survive the
+simulation: with the level re-aligned each run, flattening moves coups from the 35-50% band into countries where coup
+dynamics (peers, successions) then add more. The version 55 inconsistency (Guinea 44% by 2030 in the simulator, 24% in
+the recalibrated five-year model) stays a stated limit; the hindcasts suggest the simulator is not the worse of the two
+except in its 35-50% band, where Guinea and Madagascar sit, so the truth is probably between.
