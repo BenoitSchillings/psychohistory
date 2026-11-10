@@ -2600,3 +2600,29 @@ Month and quarter items (2026-11-06):
   countries without a 25-death month in the past year. Result: Brier 0.02051 -> 0.01965 (-4.2%), log loss 0.0753 ->
   0.0713 (-5.3%), mean forecast 2.5% against 2.8% observed; better in 4 of 7 issue years; all countries 0.03024 ->
   0.03018. Monthly use needs the file refreshed each month (the topic file updates monthly).
+
+## Third debate: bet against Seldon (2026-11-09)
+Eight personas (superforecaster, nuclear-deterrence scholar, growth macroeconomist, AI-progress forecaster; West Africa
+and Sahel conflict researcher, statistics auditor, democracy scholar, demographer), two rounds (positions; rebuttal
+and a 20-item ballot), two independent judges. Facts checked in the code by the moderator:
+- The United States is coded in civil conflict 2001-2017 and 2019: data.py codes a country at war when it appears in
+  UCDP's location field ("USA vs al-Qaida"). Its published 5-year civil-conflict risk is 15.5%, new conflict by 2030
+  17.5%; both judges put it near 4-5%.
+- The 5-year coup model overpredicts in every bin of the backtest calibration (0.41 predicted vs 0.27 observed in
+  0.35-0.50). An earlier Platt recalibration made fresh forecasts worse (methodology), so the fix needs its own test.
+- Median 2030 GDP per person is below 2025 for 16 of 24 countries above $40k (USA $61.8k -> $61.2k): the working-age
+  drag (workforce_beta 1.22 on the change beyond its 1960-2023 mean) on falling working-age shares.
+- AI catastrophe: anchored to forecasts of an event killing a tenth of humanity; simulated events kill 1-10%.
+- "2nd of 21 in VIEWS" is the 2018-2023 windows after ten iterations; live about 10th. "New wars at 15 years" is onset
+  at any time within 15 years. autocratization_5y uses a tuned G/G60/logit combination (US 26%, family range 8-61%).
+- The 12-month "quiet" slate (monthly GED) and the annual panel (UCDP list) use different definitions of at war:
+  Benin and Togo are quiet in one and at war in the other.
+Ballot (mean of 8, -2..+2): unanimous +2 for coding conflict by where deaths occur (7 of 8 must-dos), recalibrating
+coups, and qualifying the VIEWS rank; +1.75 relabelling the 15-year skill and the AI catastrophe; +1.5 leading with the
+majors-only great-power figure (21%) and an ageing-drag range. Split by lab: holding the news topics (vetoed by four,
+both judges: ship as pre-registered with the year-by-year table: 4 of 7 years better, mostly 2018) and IMF anchoring of
+the first five years (vetoed by four, both judges: not in the simulator; log the IMF path as a benchmark).
+Judges' numbers: great-power war 30-35% by 2065, US autocratization 15-18%, Burundi 12-15%, Togo 16-20%, Benin 39%
+kept. Judges disagreed on the war-size pool: keying it to great-power pairs is intentional (this log, item 6 of the
+alliance review), so it is an assumption to state, not a bug.
+Files: the session scratchpad (debate3/). Actions are tracked in the next sections as they land.
