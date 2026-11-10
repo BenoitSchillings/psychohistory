@@ -201,6 +201,12 @@ def tldr():
     gp = cr["great_power_war"]
     s15 = sk["by_horizon"]["15"]
     D = lambda o, d: rng[o]["drivers"][d]
+    # the second assumption that moves great-power war most (the strongest is the nuclear-pair factor); which one it is
+    # changes between versions (alliance joining until version 55, military drones in version 56)
+    gp_dr = [d_ for d_ in rng["great_power_war"]["drivers"] if d_ != "nuclear_war_factor"]
+    gp2 = max(gp_dr, key=lambda d_: abs(D("great_power_war", d_)["high_fifth"] - D("great_power_war", d_)["low_fifth"]))
+    GP2_LABEL = {"cascade_q": "How often allies join a war", "drone_onset": "Whether cheap military drones make wars likelier",
+                 "nuc_escalate": "How often nuclear use escalates", "ally_out_scope": "Whether allies fight outside their treaty area"}
     ver = [v["headline"]["gpw"] for _, v in sorted(hist.items(), key=lambda kv: tuple(int(x) for x in kv[0].split(".")))]
     oc = crowd.get("open", {})
     body = f"""
@@ -227,7 +233,7 @@ def tldr():
 <tr><td>When near-free AI arrives</td><td>World output per person, 2065</td><td>{k(D("log_world_gdp_2065", "ai_arrival")["low_fifth"])} (early) to {k(D("log_world_gdp_2065", "ai_arrival")["high_fifth"])} (late)</td></tr>
 <tr><td>Which estimate of climate damage is right</td><td>World output per person, 2045</td><td>{k(D("log_world_gdp_2045", "dmg_family")["low_fifth"])} to {k(D("log_world_gdp_2045", "dmg_family")["high_fifth"])}</td></tr>
 <tr><td>How readily nuclear-armed rivals fight</td><td>Great-power war by 2065</td><td>{pc(D("great_power_war", "nuclear_war_factor")["low_fifth"])} to {pc(D("great_power_war", "nuclear_war_factor")["high_fifth"])}</td></tr>
-<tr><td>How often allies join a war</td><td>Great-power war by 2065</td><td>{pc(D("great_power_war", "cascade_q")["low_fifth"])} to {pc(D("great_power_war", "cascade_q")["high_fifth"])}</td></tr></table>
+<tr><td>{GP2_LABEL.get(gp2, gp2)}</td><td>Great-power war by 2065</td><td>{pc(D("great_power_war", gp2)["low_fifth"])} to {pc(D("great_power_war", gp2)["high_fifth"])}</td></tr></table>
 
 <h2>Known biases, and which way they push</h2>
 <ul>
