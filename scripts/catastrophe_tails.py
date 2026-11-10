@@ -28,8 +28,8 @@ def main():
     dy = INTER.sim_inputs(INTER.run(verbose=False))
     q = lambda a, qs=(0.5, 0.9, 0.99): [round(float(x), 4) for x in np.quantile(a, qs)]
     res = {"n_worlds": n}
-    for on in (False, True):
-        SIM.CATASTROPHE_TAILS = on
+    for name, on, hv in (("off", False, None), ("on", True, None), ("on_harvest_gdp", True, (0.0144, 0.1534))):
+        SIM.CATASTROPHE_TAILS, SIM.HARVEST_GDP = on, hv
         o = SIM.simulate(p, base, net, growth, ddem, O, E, n_scen=n, clim=clim["ssp245"]["inputs"], climate_damage=1.0,
                          world=WorldConfig(ai=AI_SCENARIOS["uncertain"], sample_params=True), dyads=dy, seed=2, record_paths=0)
         W = o["world"]
@@ -43,6 +43,12 @@ def main():
              "pop_dev_2065_q01_50": [round(float(x), 4) for x in np.quantile(pop[:, -1], [0.01, 0.5])],
              "excess_deaths_m_q50_90_99": q(ed), "worlds_shrinking_40y": round(float((g40 < 0).mean()), 4),
              "large_nuclear_exchange": round(float(large.mean()), 4)}
+        if large.any():
+            g_l = np.log(w[large, -1] / w[large, 0])
+            r["world_gdp_pc_change_given_large_median"] = round(float(np.median(np.expm1(g_l))), 4)
+            wo = np.asarray(o["world_output"])
+            r["world_output_change_given_large_median"] = round(float(np.median(wo[large, -1] / wo[large, 0] - 1)), 4)
+            r["world_output_change_others_median"] = round(float(np.median(wo[~large, -1] / wo[~large, 0] - 1)), 4)
         if on:
             fam = np.asarray(W["famine_deaths"]).reshape(n, -1).sum(-1) / 1e6
             v7 = np.asarray(W["vei7"]).reshape(n, -1).max(-1) > 0
@@ -50,9 +56,9 @@ def main():
             r["famine_deaths_m_given_large_q10_50_90"] = q(fam[large], (0.1, 0.5, 0.9)) if large.any() else None
             r["famine_deaths_m_all_q50_95_99"] = q(fam, (0.5, 0.95, 0.99))
             r["peak_winter_harvest_loss_given_large_q10_50_90"] = q(np.asarray(W["winter_loss"]).reshape(n, -1).max(-1)[large], (0.1, 0.5, 0.9)) if large.any() else None
-        res["on" if on else "off"] = r
-        print("tails", on, json.dumps(r), flush=True)
-    SIM.CATASTROPHE_TAILS = False
+        res[name] = r
+        print(name, json.dumps(r), flush=True)
+    SIM.CATASTROPHE_TAILS, SIM.HARVEST_GDP = False, None
     json.dump(res, open(os.path.join(os.path.dirname(__file__), "..", "outputs", "catastrophe_tails.json"), "w"), indent=1)
 
 

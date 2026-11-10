@@ -2773,3 +2773,23 @@ eruption in 6.6% of worlds. Excess deaths to 2065: median unchanged (34 million)
 99th 635 -> 777 million. World income per person barely moves (median and 1st percentile unchanged): the large exchange's
 output loss was already drawn (nuc_gdp_large), and harvest losses reach output only through food prices. With 13
 worlds the conditional figures are rough; the tail is set by the large-exchange chance, not by these channels.
+Harvests and output (scripts/harvest_gdp.py, specification and use rule committed before the run). Growth of GDP per
+person on the cereal-yield residual, 1961-2024, 6,424 country-years, country and year effects: 0.014 (s.e. 0.009) plus
+0.153 (0.055, p = 0.005) x farm share per unit log harvest shortfall; a 10% shortfall at a 25% farm share costs about
+0.55 points of growth, and the year after about three-quarters returns (lagged residual -0.021, s.e. 0.009). Supported
+by the pre-registered mark. simulate.HARVEST_GDP applies it as a level loss that lasts while the harvest does, only to
+event harvest losses (eruptions of both sizes, nuclear winter), a year after the harvest; warming's and AMOC's harvest
+losses stay out, since the damage functions already count agriculture. Off; adopt-rule hindcast and paired forecast
+run below.
+- Adopt-rule hindcast of HARVEST_GDP alone (v55f_harv, 3 seeds): composite -0.00%, statistics within 0.02%, no
+  guardrail. It runs, but history's eruptions are too small for it to matter: no harm, no evidence. Staged with the
+  tails as an estimate applied beyond history's range.
+- Paired forecast run (2,000 worlds; now also recording world total output, simulate rec "world_output"). In the 13
+  large-exchange worlds, world income per person rises more with the tails on (40-year median change +35% -> +58%):
+  a composition effect, because famine deaths fall on the poorest countries. World total output shows the loss
+  (+68% -> +51%; other worlds +144%). The harvest channel's paired comparison is noise at 13 worlds (output +72%, and
+  famine deaths moved although the famine code did not): changed output changes later wars and coups, so the worlds
+  diverge. Its direct size, worked by hand: a 47% harvest loss at a world farm share near 10% costs about 2-3% of
+  world output for a few years, small beside the exchange's own drawn loss (5-30%). Limits to state with the release:
+  income per person ignores the disruption of losing a large share of the population, and the published world
+  income per person must be shown next to world output in these worlds.

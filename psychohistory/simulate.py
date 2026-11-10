@@ -513,6 +513,13 @@ CATASTROPHE_TAILS = False
 TAIL_RANGES = {"soot_log": (0.0, math.log(150.0)), "winter_real": (0.1, 1.0), "vei7_p": (0.0008, 0.0025),
                "vei7_yield": (0.08, 0.25)}
 
+# Harvest losses from events (eruptions of both sizes, nuclear winter) cost output: d log GDP = (b0 + b1 x farm share)
+# x log harvest level lost, a level loss that lasts while the harvest does (scripts/harvest_gdp.py, 1961-2024, country
+# and year effects: b0 0.014 (s.e. 0.009), b1 0.153 (0.055); three-quarters of the growth loss returns the next year).
+# Warming's and AMOC's harvest losses stay out: the climate damage functions already count agriculture. Applied the
+# year after the harvest (the growth step runs first). None = off (staged for February 2027).
+HARVEST_GDP = None
+
 PRESTON = None            # (life expectancy, log child mortality) per unit log income above trend; (1.13, -0.11) under test
 ABSENT_MASK = True        # countries not yet existing at a hindcast origin: out of the alignment, no wars or coups
 ONSET_SLOPE = 1.0         # onset log-odds x this before alignment (1.15-1.5 rejected 2026-11-03: worse on 1970-1998)
@@ -894,6 +901,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     excess_deaths = torch.zeros(S, device=device)
     coast_prev = torch.zeros(S, C, device=device)
     volc_t = torch.full((S,), -99, device=device)
+    harv_ev = torch.zeros(S, 1, device=device)          # log harvest level lost to events last year (HARVEST_GDP)
     tail = None
     if CATASTROPHE_TAILS and WS is not None:
         g_t = torch.Generator(device=device).manual_seed(int(seed) + 717)
@@ -1136,7 +1144,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     lg0 = h["lg"][..., -1].clone()
 
     rec = {"conflict": [], "ever_onset": [], "ever_collapse": [], "ever_autoc": [], "gdp_q": [], "dem_q": [],
-           "world_conflict": [], "world_gdp": [], "world_dem": [], "onsets": [], "region_conflict": [],
+           "world_conflict": [], "world_gdp": [], "world_output": [], "world_dem": [], "onsets": [], "region_conflict": [],
            "ever_coup": [], "coups": [], **({"displaced": []} if migration else {})}
     paths = {"gdp": [], "dem": [], "conflict": [], "coup": [], "pop": [], "war_dmg": [], "clim_dmg": []}   # (pop, damages: scripts/disaster_rca.py)
     sel = slice(0, record_paths)
@@ -1525,6 +1533,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             # wartime attacks on infrastructure in this year's great-power wars. Solar storms and cyber attacks are
             # level losses that last while they do (repairs restore output): applied to the damage factor, not growth
             trans_now = trans_now + WS.prm("cyber_loss") * WS.cyber
+            if HARVEST_GDP:
+                trans_now = trans_now + (HARVEST_GDP[0] + HARVEST_GDP[1] * WS.agri[None]) * harv_ev
             war_cum = war_cum - trans_now + trans_prev
             trans_prev = trans_now
             WS.rec["ai_adoption_world"].append((A * pop[:, k]).sum(-1) / pop[:, k].sum())
@@ -1877,6 +1887,9 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                 dly = dly - v_dly
                 WS.rec["volcano"].append((volc_t == year).float())
                 volc_t = torch.where(year - volc_t >= 2, torch.full_like(volc_t, -99), volc_t)   # (recovered)
+                if HARVEST_GDP:
+                    harv_ev = (WS.prm("volc_yield") * (volc_t >= 0).float()[:, None] if not torch.is_tensor(WS.prm("volc_yield"))
+                               else WS.prm("volc_yield").reshape(S, 1) * (volc_t >= 0).float()[:, None])
                 if tail is not None:
                     # nuclear winter after this year's large exchange (the first one counts) and VEI 7 eruptions
                     nl_ = WS.rec["nuclear_large"][-1].flatten() > 0
@@ -1891,6 +1904,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                     L_ = -torch.log1p(-loss_)
                     dly = dly - (L_ - tail["L_prev"])[:, None]
                     tail["L_prev"] = L_
+                    if HARVEST_GDP:
+                        harv_ev = harv_ev + L_[:, None]
                     WS.rec.setdefault("winter_loss", []).append(-torch.expm1(-tail["soot"] / 65) * prof_n)
                     WS.rec.setdefault("vei7", []).append((tail["v7_t"] == year).float())
                 if WS.cfg.water:
@@ -2121,6 +2136,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         rec["world_conflict"].append(conf_next.mean(-1))
         rec["region_conflict"].append((conf_next @ onehot) / onehot.sum(0))
         rec["world_gdp"].append(world_gdp)
+        rec["world_output"].append((torch.where(okg, gdp, 0) * torch.where(okg, popk, 0)).sum(-1))   # (total, not per person)
         rec["world_dem"].append(world_dem)
         rec["onsets"].append(onset_next.sum(-1))
         rec["coups"].append(coup_next.sum(-1))
