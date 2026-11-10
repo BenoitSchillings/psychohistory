@@ -32,7 +32,9 @@ Between releases only data refreshes and labelled patch versions are published.
    `simulate.PRESTON`: its adopt-rule rerun was neutral (-0.00%); switch it on only as a stated consistency judgement.
    `simulate.CATASTROPHE_TAILS = True` (nuclear winter after a large exchange, eruptions larger than Pinatubo): stated
    assumptions with published ranges, not test results; label them in the assumptions list and publish
-   scripts/catastrophe_tails.py's off/on table with the release.
+   scripts/catastrophe_tails.py's off/on table with the release, showing world output next to income per person
+   (income per person rises in nuclear-winter worlds because famine falls on the poorest).
+   `simulate.HARVEST_GDP = (0.0144, 0.1534)` with the tails (estimated, scripts/harvest_gdp.py; hindcast neutral).
    `pipeline.COUP1Y_RECAL = True` (12-month coup risks, Platt scaling; scripts/coup1y_recal_test.py passed 10 November
    2026; needs outputs/backtest_predictions.parquet from the release's backtest).
 4. **UCDP.** Newest candidate files in `data/raw/outcomes/ucdp` (scripts/prospective.py downloads them monthly).
