@@ -2730,3 +2730,14 @@ Adopt-rule variants on the fixed baseline (v55f_base: v55 with the three bug fix
   nothing the hindcast scores. The case for it is consistency (the audit's 24% of country-decades where health ignores a
   collapse or a long war), not accuracy; it costs nothing measurable, so adopting it on those grounds is a judgement for
   the February release, to be stated as such. Off.
+Dated coups (scripts/coup_dated_test.py, pre-registered and committed before its run). The Cline Center file could not
+be downloaded by script or by browser; REIGN's country-month Powell-Thyne attempts (to August 2021) were used instead.
+Coup recency in months (months since the last attempt, attempts in the last 12 and 60 months, a success in the last
+12) stacked on the 12-month coup ensemble, fitted rolling; scored 2001-2020 (3,444 country-years, 42 attempts).
+Brier: ensemble 0.01168, recalibration alone 0.01155, with dating 0.01159; log loss 0.0563 / 0.0530 / 0.0533. Dating
+beats the ensemble pooled and in 3 of 4 blocks but not recalibration alone (criterion 3): the ensemble's annual coup
+history and REIGN's months since an irregular leader change already carry what the dates add. Rejected. Two side
+results: on the same rows the ensemble (0.01179) beats REIGN's own CoupCast risks (0.01194, which may be in-sample);
+and the 12-month coup forecast is over-confident in the same way as the 5-year one (recalibration alone: log loss
+-5.9%, Brier -1.1%). A rolling recalibration of the 12-month coup forecast, like pipeline.COUP_RECAL for 5 years,
+needs its own pre-registered test; with 42 events the margin is small.
