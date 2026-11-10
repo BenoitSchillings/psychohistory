@@ -13,6 +13,16 @@ Between releases only data refreshes and labelled patch versions are published.
    entry in docs/world_system.md. Pending for February: `monthly.NEWS_TOPICS = True` (news topics in the 12-month
    model; passed 8 November 2026), after refreshing `data/raw/conflictforecast/conflictforecast_ons_armedconf_12.csv`
    from conflictforecast.org (cite Mueller and Rauh 2022).
+   From the third debate (9 November 2026), each passed its pre-registered test:
+   - `data.CONFLICT_CODING = "deaths"` (civil conflict where the deaths occur; scripts/conflict_coding_test.py). The
+     panel cache keeps the location coding; the switch recodes on load. Re-baseline the adopt-rule hindcast tags after
+     it, since the hindcast outcomes change with it.
+   - `pipeline.COUP_RECAL = True` (5-year coup risks shifted by the backtests' calibration; scripts/coup_recal_test.py;
+     needs outputs/backtest_predictions.parquet from the release's backtest).
+   - `monthly.ANNUAL_MIN_CHILD = 2400` (12-month model leaves in country-years; scripts/monthly_cluster_test.py).
+     Rerun scripts/monthly_topics_test.py with it before switching NEWS_TOPICS on, and publish its year-by-year table.
+   - `simulate.WORKFORCE_FALL = (0.57, 1.22)`: an assumption, not a test result (scripts/workforce_fall_test.py shows
+     its effect); label it in the assumptions list.
 4. **UCDP.** Newest candidate files in `data/raw/outcomes/ucdp` (scripts/prospective.py downloads them monthly).
 
 ## Release day

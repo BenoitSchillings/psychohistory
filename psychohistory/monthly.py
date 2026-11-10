@@ -185,14 +185,20 @@ def annual_probability(pred):
     return 1 - np.prod([1 - pred[h] for h in sorted(pred)], 0)
 
 
-def fit_annual(F, hit, last_obs):
+# leaf size of the direct 12-month model, in country-months. Each country contributes 12 overlapping rows per year
+# (their 12-month targets share 11 months), so 200 rows is about 17 country-years (third debate, 9 November 2026);
+# 2400 = 200 country-years. scripts/monthly_cluster_test.py decides.
+ANNUAL_MIN_CHILD = 200
+
+
+def fit_annual(F, hit, last_obs, min_child=None):
     """direct 12-month model: P(any 25-death month in t+1..t+12), trained on every t whose 12 months are observed"""
     names = list(F)
     Xs, ys = [], []
     for t in range(12, last_obs - 12 + 1):
         Xs.append(np.stack([F[f][:, t] for f in names], 1))
         ys.append(hit[:, t + 1:t + 13].max(1))
-    model = lgb.LGBMClassifier(n_estimators=400, learning_rate=0.03, num_leaves=15, min_child_samples=200,
+    model = lgb.LGBMClassifier(n_estimators=400, learning_rate=0.03, num_leaves=15, min_child_samples=min_child or ANNUAL_MIN_CHILD,
                                subsample=0.8, subsample_freq=1, colsample_bytree=0.8, reg_lambda=10, verbose=-1)
     model.fit(np.concatenate(Xs), np.concatenate(ys))
     model.names_ = names

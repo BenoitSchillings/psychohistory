@@ -280,6 +280,40 @@ def build_sim_env(p, X, Xf, Yf, ci, year, origin, members=None, seed=0, cache=Tr
     return net
 
 
+# Five-year coup risks shifted by one log-odds intercept fitted on the backtests whose outcomes were known by the origin
+# (origins <= origin - 10). scripts/coup_recal_test.py, pre-registered: rolling over origins 1990-2015, Brier
+# 0.05998 -> 0.05709 (-4.8%), log loss -6.1%, better at 5 of 6 origins (third debate, 9 November 2026). For the
+# February 2027 release; off until then (release policy).
+COUP_RECAL = False
+
+
+def _coup_recal(risk, parts, origin):
+    import pandas as pd
+    f = OUT / "backtest_predictions.parquet"
+    if not f.exists():
+        return risk, parts
+    d = pd.read_parquet(f)
+    d = d[(d.task == "coup_5y") & (d.model == "Seldon ensemble") & (d.origin <= origin - 10)].dropna(subset=["p", "y"])
+    if not len(d):
+        return risk, parts
+    lg = lambda q: np.log(np.clip(q, 1e-4, 1 - 1e-4) / (1 - np.clip(q, 1e-4, 1 - 1e-4)))
+    z, target = lg(d.p.to_numpy(float)), float(d.y.mean())
+    lo, hi = -4.0, 4.0
+    for _ in range(60):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if (1 / (1 + np.exp(-(z + mid)))).mean() < target else (lo, mid)
+    c = (lo + hi) / 2
+    k = TASKS.index("coup_5y")
+    sh = lambda v: 1 / (1 + np.exp(-(lg(v) + c)))
+    risk = risk.copy()
+    risk[:, k] = sh(risk[:, k])
+    parts = {f: v.copy() for f, v in parts.items()}
+    for f in parts:
+        parts[f][:, k] = sh(parts[f][:, k])
+    _log(f"coup risks recalibrated: log-odds shift {c:+.3f} from {len(d)} backtest forecasts")
+    return risk, parts
+
+
 def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, members=10,
                   scenario="ssp245", climate_damage=1.0, scen_n=4000):
     _log(f"training on all history up to {origin}")
@@ -291,6 +325,8 @@ def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, 
     X_now = X[:, p.yi(origin)]
     parts = ens.predict_families(X_now)
     risk = ens.predict(X_now)
+    if COUP_RECAL:
+        risk, parts = _coup_recal(risk, parts, origin)
     # uncertainty = disagreement between the model families (bracketing the combined estimate)
     fam = np.stack(list(parts.values()) + [risk])
     lo, hi = np.nanmin(fam, 0), np.nanmax(fam, 0)

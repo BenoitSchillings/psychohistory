@@ -512,6 +512,11 @@ DEMOG_COHORT = False
 MACRO_CRISIS = False      # E: hindcasts age the origin's 0-14 and 15-64 stocks forward instead of extending trends      # noise pools resampled with weight 0.5 ** (years before origin / this): widened the spread
 SUPPORT_Q = 0.005          # Transition features are clamped to their 0.5-99.5% training range when simulating (None: +/-6 sd)
 WORKFORCE_BETA = 1.22     # growth per unit change in log working-age share (scripts/workforce_test.py; s.e. 0.17)
+# working-age drag on FALLING shares (third debate, 9 November 2026; an assumption, not testable on 1970-2009 where
+# shares rose): None = the sampled workforce_beta for both signs; (lo, hi) = for falls, each world draws beta_fall
+# uniformly in [lo, hi] (0.57 is the 1-year estimate, 1.22 the 5-year one; 1 is the accounting value). For the
+# February 2027 release; off until then. Rich countries' median income per person fell 2025-2030 under 1.22.
+WORKFORCE_FALL = None
 WORKFORCE_MEAN = 0.0019   # mean yearly change 1960-2023, already absorbed by the fitted growth equation
 
 
@@ -1328,7 +1333,14 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             dlw = dlw + WS.tech.lever("work_gain")              # healthy years added (longevity, tech.py)
         if WS is not None:
             off = WS.prm("robot_aging") * WS.A_robot if WS.cfg.ai.arrival else 0.0
-            g = g + WS.prm("workforce_beta") * torch.where(dlw < 0, dlw * (1 - off), dlw) + fish_g \
+            if WORKFORCE_FALL:
+                if k == 1:
+                    g_wf = torch.Generator(device=device).manual_seed(seed + 919)
+                    beta_fall = WORKFORCE_FALL[0] + (WORKFORCE_FALL[1] - WORKFORCE_FALL[0]) * torch.rand(S, 1, device=device, generator=g_wf)
+                wf = torch.where(dlw < 0, beta_fall * dlw * (1 - off), WS.prm("workforce_beta") * dlw)
+            else:
+                wf = WS.prm("workforce_beta") * torch.where(dlw < 0, dlw * (1 - off), dlw)
+            g = g + wf + fish_g \
                 + WS.prm("articles_beta") * WS.science * SCIENCE_DECAY ** (k - 1)   # science capacity beyond income (innovation.py)
         else:
             g = g + WORKFORCE_BETA * dlw

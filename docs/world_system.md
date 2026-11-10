@@ -2626,3 +2626,38 @@ Judges' numbers: great-power war 30-35% by 2065, US autocratization 15-18%, Buru
 kept. Judges disagreed on the war-size pool: keying it to great-power pairs is intentional (this log, item 6 of the
 alliance review), so it is an assumption to state, not a bug.
 Files: the session scratchpad (debate3/). Actions are tracked in the next sections as they land.
+
+### Third-debate actions (2026-11-09)
+Version 54.3 (text only, published): the VIEWS rank qualified (2nd of 21 on the 2018-2023 windows after ten versions;
+10th of 18 live), the 15-year skill relabelled (any new war within 15 years), great-power war led by the majors-only
+figure, "near-free cognition" relabelled human-level AI, the AI catastrophe labelled as a 1-10% event with a
+larger-event anchor, the quiet-country definition stated, the narrative's US numbers synced (26%).
+Tested, each with its rule written before the run; adopted ones are switches for the February 2027 release
+(docs/release_checklist.md), off until then:
+- Civil conflict where the deaths occur (data.CONFLICT_CODING "deaths"; scripts/conflict_coding_test.py): from 1989 a
+  listed country keeps a conflict-year only with >= 25 of its GED deaths, or half of them, on its soil. Removes 53 of
+  1,127 conflict-years (USA 2002-2019, Rwanda 14, Uganda 9, Israel 5, Burundi 3; none added). Backtests 1990-2015,
+  scored on the deaths-located outcomes: civil conflict 5y Brier -0.05%, log loss -0.17%; onset 1y -0.14 / -0.44%;
+  economic collapse -0.27%; no task worse. ADOPTED.
+- Coup recalibration (pipeline.COUP_RECAL; scripts/coup_recal_test.py): one log-odds shift fitted on backtests with
+  outcomes known by the origin (origins <= O - 10). Rolling 1990-2015: Brier 0.05998 -> 0.05709 (-4.8%), log loss -6.1%,
+  better at 5 of 6 origins (2015 worse); Platt and isotonic no better. ADOPTED. At the 2025 origin the shift is -0.56:
+  Niger 38% -> 26%, Guinea 37% -> 25%, Madagascar 36% -> 24%.
+- 12-month model leaves in country-years (monthly.ANNUAL_MIN_CHILD 2400; scripts/monthly_cluster_test.py), December
+  issues 2017-2023: quiet countries Brier 0.02051 -> 0.01979 (-3.5%), log loss -1.8%; all countries Brier -0.8%; the
+  top band 0.51 forecast vs 0.55 observed (n = 20). ADOPTED. The news-topic test is rerun with it before February.
+- Autocratization: the tuned G 0.5 / G60 0.3 / logit 0.2 combination against the four-family default, on backtest
+  origins 2010-2015 (outside its tuning): Brier 0.1005 vs 0.1011, AUC 0.772 vs 0.759. KEPT (the reviewers' point fails).
+- Chad's 2025 status: UCDP's conflict list covers 2025 and lists no conflict in Chad after 2023, so the panel's 0 is
+  UCDP's coding; no refresh needed (2026 events enter the simulator as fact).
+- Nuclear escalation factor: the pair-level UCDP posterior (q05 / q50 / q95 0.03 / 0.30 / 1.02) has its median at the
+  current range's midpoint (u(0.1, 0.55)); the proposed u(0.03, 0.40) is a judgement, not an estimate. Unchanged; the
+  headline now leads with the majors-only figure.
+- Working-age drag on falling shares (simulate.WORKFORCE_FALL (0.57, 1.22), an assumption; scripts/workforce_fall_test.py,
+  2,000 worlds): 2065 world GDP per person median $33.3k -> $36.8k (no AI $24.6k -> $27.3k); rich countries shrinking
+  2025-2030 16 -> 11 of 24; US 2030 $61.2k -> $61.9k. Decomposition (no AI, 2030): without any falling-share drag the
+  US grows 0.85% a year (actual 2015-2025: 1.57%), Germany 1.3%, 5 of 24 shrink; climate damage costs about 0.2 points.
+  The drag is the main cause, and the growth equation itself gives frontier economies under 1%. STAGED as a labelled
+  assumption for February.
+- Not done: AI ledger indicator scoring (the simulator has no counterpart series yet), a crowd-blend column, AI
+  catastrophe deaths consistent with its anchor (relabelled instead).

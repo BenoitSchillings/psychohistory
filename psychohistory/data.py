@@ -208,8 +208,33 @@ def _to_wide(df: pd.DataFrame, codes: list[str]) -> np.ndarray:
     return piv.to_numpy(dtype=np.float64)
 
 
-def _conflict_arrays(ucdp: pd.DataFrame, name_to_code: dict[str, str], codes: list[str]):
+# How a country-year counts as in civil conflict. "location" (to February 2027): every country in UCDP's location field.
+# "deaths" (third debate, 9 November 2026; under test): from 1989, where UCDP GED records the conflict's deaths, a listed
+# country keeps it only if at least 25 of that conflict-year's deaths, or half of them, fall on its soil (the United
+# States was coded at war 2001-2019 for the conflict with al-Qaida, and troop contributors for wars abroad).
+# Conflict-years without GED events keep the location coding; before 1989 nothing changes.
+CONFLICT_CODING = "location"
+
+
+def _ged_located():
+    """{(conflict_id, year): {iso3: deaths}} from UCDP GED (state-based violence), country of the event"""
+    from .monthly import gw_map
+    gw2iso, _ = gw_map()
+    f = RAW / "outcomes" / "ucdp" / "ged261-csv" / "GEDEvent_v26_1.csv"
+    e = pd.read_csv(f, usecols=["type_of_violence", "conflict_new_id", "year", "country_id", "best"])
+    e = e[e.type_of_violence == 1]
+    e["iso3"] = e.country_id.map(gw2iso)
+    g = e.dropna(subset=["iso3"]).groupby(["conflict_new_id", "year", "iso3"]).best.sum()
+    out = {}
+    for (cid, y, iso), d in g.items():
+        out.setdefault((int(cid), int(y)), {})[iso] = float(d)
+    return out
+
+
+def _conflict_arrays(ucdp: pd.DataFrame, name_to_code: dict[str, str], codes: list[str], coding=None):
     """Intrastate conflict (UCDP types 3,4) active / war-level, and interstate involvement."""
+    coding = coding or CONFLICT_CODING
+    ged = _ged_located() if coding == "deaths" else None
     idx = {c: i for i, c in enumerate(codes)}
     C, Y = len(codes), len(YEARS)
     intra, war, inter = (np.zeros((C, Y)) for _ in range(3))
@@ -223,6 +248,12 @@ def _conflict_arrays(ucdp: pd.DataFrame, name_to_code: dict[str, str], codes: li
             if ci is None:
                 continue
             if row.type_of_conflict in (3, 4):
+                if ged is not None and row.year >= 1989:
+                    dd = ged.get((int(row.conflict_id), int(row.year)))
+                    if dd:
+                        mine = dd.get(codes[ci], 0.0)
+                        if mine < 25 and mine < 0.5 * sum(dd.values()):
+                            continue
                 intra[ci, yi] = 1
                 if row.intensity_level == 2:
                     war[ci, yi] = 1
@@ -538,6 +569,11 @@ def get_panel(refresh: bool = False) -> Panel:
     else:
         p = build_panel(refresh)
         p.save(cache)
+    if CONFLICT_CODING != "location":
+        # (recoded from the raw UCDP files on top of the cached panel; the cache keeps the location coding)
+        n2c = {n: c for c, n in zip(p.codes, p.names)}
+        intra, war, inter = _conflict_arrays(load_ucdp(False), n2c, list(p.codes), CONFLICT_CODING)
+        p.x["conflict"], p.x["war"] = intra, war
     return add_extras(p, refresh)
 
 
