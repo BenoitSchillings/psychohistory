@@ -509,7 +509,7 @@ ALIGN_MATCHED = ""
 # - Eruptions larger than Pinatubo (VEI 7, Tambora 1815): a yearly chance 0.08-0.25% (Cassidy and Mani 2022: about 1 in
 #   6 this century), world harvests down 8-25% for two years and half that in the third (on top of the VEI 6 draw).
 # The tails draw from their own generator, so with the switch off every other draw is unchanged.
-CATASTROPHE_TAILS = False
+CATASTROPHE_TAILS = True
 TAIL_RANGES = {"soot_log": (0.0, math.log(150.0)), "winter_real": (0.1, 1.0), "vei7_p": (0.0008, 0.0025),
                "vei7_yield": (0.08, 0.25)}
 
@@ -518,9 +518,9 @@ TAIL_RANGES = {"soot_log": (0.0, math.log(150.0)), "winter_real": (0.1, 1.0), "v
 # and year effects: b0 0.014 (s.e. 0.009), b1 0.153 (0.055); three-quarters of the growth loss returns the next year).
 # Warming's and AMOC's harvest losses stay out: the climate damage functions already count agriculture. Applied the
 # year after the harvest (the growth step runs first). None = off (staged for February 2027).
-HARVEST_GDP = None
+HARVEST_GDP = (0.0144, 0.1534)
 
-PRESTON = None            # (life expectancy, log child mortality) per unit log income above trend; (1.13, -0.11) under test
+PRESTON = (1.13, -0.11)            # (life expectancy, log child mortality) per unit log income above trend; (1.13, -0.11) under test
 ABSENT_MASK = True        # countries not yet existing at a hindcast origin: out of the alignment, no wars or coups
 ONSET_SLOPE = 1.0         # onset log-odds x this before alignment (1.15-1.5 rejected 2026-11-03: worse on 1970-1998)
 # sharper or flatter country coup risk: the coup log-odds times a slope before the year-1 alignment re-solves the level

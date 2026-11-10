@@ -319,7 +319,7 @@ def _coup_recal(risk, parts, origin):
 # pre-registered 10 November 2026: rolling over origins 1990-2015, Brier 0.01765 -> 0.01755, log loss 0.0776 -> 0.0749
 # (-3.5%), the shift better at 4 of 6 origins and Platt better than the shift on both pooled scores. Affects the
 # published 12-month coup risks, not the simulator's hazards. For the February 2027 release; off until then.
-COUP1Y_RECAL = False
+COUP1Y_RECAL = True
 
 
 def _coup1y_recal(risk, parts, origin):

@@ -1,6 +1,6 @@
 # Quarterly release checklist
 
-Model versions are released quarterly (docs/adopt_rule.md). The next is planned for **February 2027** (version 55).
+Since 10 November 2026 a model version is released whenever something better is ready (docs/adopt_rule.md); this checklist applies to every release.
 Between releases only data refreshes and labelled patch versions are published.
 
 ## Before the release day

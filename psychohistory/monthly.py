@@ -134,7 +134,7 @@ def features(D, codes, p):
     return F, hit
 
 
-NEWS_TOPICS = False   # conflictforecast.org news-topic stocks as features (tested 2026-11-08; scripts/monthly_topics_test.py)
+NEWS_TOPICS = True    # conflictforecast.org news-topic stocks as features (tested 2026-11-08; scripts/monthly_topics_test.py)
 
 
 def news_topics(codes, M):
