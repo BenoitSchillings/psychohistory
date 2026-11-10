@@ -2724,3 +2724,9 @@ Adopt-rule variants on the fixed baseline (v55f_base: v55 with the three bug fix
   trends after the Preston term is added, discarding it. Fixed (the term is now carried through that rebuild), and the
   run's config record now keeps list-valued switches (it had recorded PRESTON as absent). The invalid runs are kept in
   outputs/world_hindcast_invalid.
+- Preston (rerun with the fix; the run's config record shows PRESTON [1.13, -0.11]): composite -0.00% (decades +0.01,
+  -0.01, -0.01, -0.02%; every statistic within 0.05%; safe20 -0.05%, no guardrail touched). Rejected under the adopt rule:
+  life expectancy and child mortality carry little weight in the risk models, so tying them to income changes almost
+  nothing the hindcast scores. The case for it is consistency (the audit's 24% of country-decades where health ignores a
+  collapse or a long war), not accuracy; it costs nothing measurable, so adopting it on those grounds is a judgement for
+  the February release, to be stated as such. Off.
