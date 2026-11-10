@@ -616,7 +616,7 @@ class World:
             self.params["ai_arrival"] = self.arrival_w.clamp(max=2070.0)         # for the attribution of uncertainty
         if self.cfg.ai.arrival:
             self._draw_robot_arrival(S, device, g, u if self.cfg.ai.arrival_cdf else None)
-        ge_ = torch.Generator(device=device).manual_seed(seed + 919)        # (own generator: other draws unchanged)
+        ge_ = torch.Generator(device=device).manual_seed(seed + 929)        # (own generator; 919 is the workforce draw)
         self.explosive = (torch.rand(S, 1, device=device, generator=ge_) < self.cfg.explosive_p)
         self.explosive_mult = 3.0 + 3.0 * torch.rand(S, 1, device=device, generator=ge_)
         if self.cfg.param_block > 1:

@@ -1,0 +1,57 @@
+{
+ "n_worlds": 1000,
+ "envelopes": {
+  "growth10_log": [
+   -0.98,
+   1.124
+  ],
+  "level_log": [
+   5.241,
+   12.576
+  ]
+ },
+ "1_growth_outside": {
+  "share": 0.0166,
+  "below": 0.006,
+  "above": 0.0106,
+  "pass": true
+ },
+ "2_level_outside": {
+  "share": 0.00379,
+  "above_2x_record": 0.00366,
+  "pass": true
+ },
+ "3_population": {
+  "world_dev_2065_q": [
+   -0.0537,
+   0.0211,
+   0.111
+  ]
+ },
+ "4_health_inconsistent": {
+  "share_collapse_decades": 0.0563,
+  "share_war5_decades": 0.2037,
+  "share_either": 0.2444,
+  "note": "life expectancy keeps its pre-origin trend in all of these"
+ },
+ "5_world_totals": {
+  "worst_year_q": [
+   -0.2131,
+   -0.0263
+  ],
+  "growth_per_year_q": [
+   -0.0044,
+   0.0176,
+   0.052
+  ],
+  "share_outside": 0.027,
+  "pass": false,
+  "failing_worlds": {
+   "nuclear_large": 0.0,
+   "ai_catastrophe": 0.037,
+   "great_power_war": 0.556,
+   "pandemic": 0.704
+  },
+  "share_outside_excluding_large_nuclear_or_ai_catastrophe": 0.026
+ }
+}

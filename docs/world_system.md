@@ -2669,3 +2669,42 @@ forecast, uncertainty, disaster and climate reruns; canonical forecast 209e8222a
 topics stay for February (their quarter's data are not in). Open: the adopt-rule hindcast tags must be re-baselined
 under the new conflict coding; the simulator's 2030 coup chances are not recalibrated (Guinea 44%, Madagascar 48%
 against 24% and 23% from the five-year model).
+
+## Data-debate actions (2026-11-10)
+A debate on new data and first-principles cross-checks (remote sensing, national accounts and conflict-data personas
+against a physicist, an OSINT analyst and a demographer; ballot near-unanimous) ranked: a consistency audit of the
+simulated worlds; dated coups; cohort-based working-age shares; civil-war deaths in population; a night-lights and
+electricity correction of autocracies' GDP; then health tied to the economy, the 2020 rivalry update, a displacement and
+mortality audit, IMF WEO vintages. CDS spreads, credit gaps, SIPRI as a feature and PortWatch were rejected.
+
+Bug fixes (rule 7; staged with the February release):
+- Working-age term (v55): the falling-share split used the change already centred on its 1960-2023 mean, so slower
+  rises counted as falls, and the centring was scaled by the sampled falling-share elasticity. Now the split is on the
+  raw change and workforce_beta x the historical mean is removed once.
+- Civil-war deaths now come off the population (battle deaths per million x (1 + civ_mult)); only interstate, nuclear
+  and pandemic deaths did. Smoke test, 300 worlds to 2045: median excess deaths 5.6 million.
+- The explosive-growth exploration and the falling-share draw shared generator seed + 919; the exploration now uses 929.
+Consistency audit (scripts/world_audit.py; pass marks fixed before the run; 1,000 headline worlds 2026-2065):
+- Country 10-year growth outside history's 0.5-99.5% range: 1.7% of country-decades (pass, limit 2%).
+- Income levels outside half the lowest to twice the highest recorded: 0.4% (pass, limit 0.5%).
+- World population against the UN path by 2065: -5% to +11% (1st-99th percentile of worlds).
+- Health against the economy: 24% of country-decades have a 30%+ income fall or 5+ years at war while life expectancy
+  keeps its pre-origin trend (5.6% collapses, 20% long wars).
+- World totals: 2.7% of worlds outside (fail, limit 1%): world income per person falling over the whole 40 years in
+  2.6% of worlds without a large nuclear exchange or an AI catastrophe (none since about 1820). The pessimistic tail
+  is probably too heavy (late AI, the working-age drag and climate damage together).
+News topics rerun under v55's 12-month settings (scripts/monthly_topics_test.py): quiet countries Brier 0.01967 ->
+0.01813 (-7.8%), log loss 0.0738 -> 0.0671 (-9.0%), all countries 0.03027 -> 0.02901; by issue year (base / topics)
+2017 0.0224 / 0.0213, 2018 0.0193 / 0.0125, 2019 0.0199 / 0.0200, 2020 0.0162 / 0.0164, 2021 0.0235 / 0.0238, 2022
+0.0221 / 0.0200, 2023 0.0143 / 0.0130. Passes again; switched on at the February release.
+Cohort working-age share from UN WPP five-year age groups (simulate.DEMOG_COHORT "age5"; data/raw/demography/wpp2024_age5,
+UN WPP 2024 population by age, downloaded 10 November 2026), checked on the share itself before any simulation: mean
+absolute error 15 years ahead, origins 1975 / 1985 / 1995 / 2005: trend extrapolation 2.8 / 2.9 / 3.7 / 3.3 points,
+cohorts 5.1 / 4.8 / 5.2 / 4.6 (with total population from the same cohorts plus births at the origin's rate; with the
+extrapolated total, 8.1 / 6.8 / 6.8 / 7.0). Without mortality, migration and falling births it is worse than the trend;
+a full cohort-component projection is needed. Rejected in this form; off.
+Health and income (Preston), estimated: 10-year changes 1960-2024, country-clustered, previous decade's own change held
+fixed: life expectancy +1.13 years (s.e. 0.30) and log child mortality -0.11 (0.02) per unit log income above the
+country's own trend; years at war wrong-signed, left out. simulate.PRESTON (1.13, -0.11) under the adopt rule.
+Dated coups (Cline Center v2.2.2, Illinois Data Bank IDB-7095878): the repository refuses automated downloads (403);
+needs a browser download.

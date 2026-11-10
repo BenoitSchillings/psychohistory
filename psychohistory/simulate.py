@@ -14,11 +14,13 @@ Per simulated year:
 """
 from __future__ import annotations
 
+import functools
 import math
 import warnings
 from dataclasses import dataclass
 
 import numpy as np
+import pandas as pd
 import torch
 from sklearn.linear_model import Ridge
 
@@ -496,6 +498,7 @@ FRAILTY_SPATIAL = 0.0
 # onsets, "t" endings): scripts/align_oracle.py found it closer to the next decade's right shift for endings in 3 of
 # 4 decades, for onsets in 1 of 4 (2026-11-05); "" = the origin's risk sets, as before
 ALIGN_MATCHED = ""
+PRESTON = None            # (life expectancy, log child mortality) per unit log income above trend; (1.13, -0.11) under test
 ABSENT_MASK = True        # countries not yet existing at a hindcast origin: out of the alignment, no wars or coups
 ONSET_SLOPE = 1.0         # onset log-odds x this before alignment (1.15-1.5 rejected 2026-11-03: worse on 1970-1998)
 # 2026-11-02 tests (off = the adopted model):
@@ -537,6 +540,20 @@ def working_age_share(p):
     return out
 
 
+@functools.lru_cache(maxsize=1)
+def _wpp_age5():
+    """{(iso3, year): (age-group starts, population in thousands)} from data/raw/demography/wpp2024_age5"""
+    from .data import RAW
+    f = RAW / "demography" / "wpp2024_age5" / "WPP2024_PopulationByAge5GroupSex_Medium.csv.gz"
+    d = pd.read_csv(f, usecols=["ISO3_code", "Time", "AgeGrpStart", "PopTotal"], low_memory=False)
+    d = d[d.ISO3_code.notna() & (d.Time <= 2025)]
+    out = {}
+    for (c, y), g in d.groupby(["ISO3_code", "Time"]):
+        g = g.sort_values("AgeGrpStart")
+        out[(c, int(y))] = (g.AgeGrpStart.to_numpy(float), g.PopTotal.to_numpy(float))
+    return out
+
+
 def exogenous_demography(p, base, origin, T, mode="un"):
     """population and age structure for origin..origin+T.
     'un': the panel's series (UN WPP estimates, then medium-variant projections) - used for forecasts.
@@ -550,14 +567,43 @@ def exogenous_demography(p, base, origin, T, mode="un"):
            "lwork": (np.log(0.45), np.log(0.75))}
     out = {}
     for k in keys:
-        if k == "lwork" and DEMOG_COHORT:
+        if k == "lwork" and DEMOG_COHORT is True:
             continue
         rate = np.nan_to_num(_trend_rate(base[k], t0, 5 if k == "lpop" else 10))
         path = [base[k][:, t0]]
         for j in range(1, T + 1):
             path.append(np.clip(path[-1] + rate * (0.98 if k == "lpop" else 0.95) ** j, *lim[k]))
         out[k] = np.stack(path, 1)
-    if DEMOG_COHORT:
+    if DEMOG_COHORT == "age5":
+        # (data debate, 2026-11-10) the working-age share from the origin's five-year age groups (UN WPP 2024 estimates):
+        # at origin + j, a group aged [a, a + 5) is aged [a + j, a + j + 5), and the part of it inside 15-64 counts.
+        # Everyone of working age up to 15 years ahead is already born; mortality before 65 is ignored. Over the
+        # extrapolated total population path. Countries without WPP rows keep the extrapolated path.
+        A5 = _wpp_age5()
+        lp = out["lpop"]
+        cohort = np.full((len(p.codes), T + 1), np.nan)
+        for i, c in enumerate(p.codes):
+            g = A5.get((c, int(origin)))
+            if g is None:
+                continue
+            starts, popg = g
+            for j in range(0, min(T, 15) + 1):
+                lo_, hi_ = starts + j, starts + j + 5
+                share = np.clip(np.minimum(hi_, 65) - np.maximum(lo_, 15), 0, 5) / 5
+                # total population from the same cohorts plus births at the origin's rate (the 0-4 group / 5 a
+                # year), not the extrapolated total, which overshoots where fertility fell
+                total = popg.sum() + popg[0] / 5.0 * j
+                cohort[i, j] = np.log(max((share * popg).sum(), 1e-6)) - np.log(max(total, 1e-6))
+        keep = np.isfinite(cohort[:, 0]) & np.isfinite(out["lwork"][:, 0])
+        path = out["lwork"].copy()
+        for j in range(0, min(T, 15) + 1):
+            # anchored on the panel's own origin value (the panel's working-age share and WPP's differ slightly)
+            path[keep, j] = np.clip(base["lwork"][keep, t0] + cohort[keep, j] - cohort[keep, 0], np.log(0.45), np.log(0.75))
+        for j in range(16, T + 1):
+            path[keep, j] = np.clip(path[keep, j - 1] + (path[keep, 15] - path[keep, 10]) / 5 * 0.95 ** (j - 15),
+                                    np.log(0.45), np.log(0.75))
+        out["lwork"] = path
+    elif DEMOG_COHORT:
         # the working-age share from people already born at the origin: each year a fifteenth of the 0-14 stock
         # enters working age and a fiftieth of the 15-64 stock leaves it (uniform ages within each group), over the
         # total population path; after 15 years the share continues its own last-five-year change, damped
@@ -1328,18 +1374,24 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         # workforce: a shrinking (growing) working-age share drags (lifts) output per person
         # (only the change beyond the 1960-2023 mean, which the growth equation already carries; robots offset part
         #  of a shrinking workforce at full adoption, robot_aging = the share offset, assumption)
-        dlw = torch.nan_to_num(exo["lwork"][:, k] - exo["lwork"][:, k - 1]) - WORKFORCE_MEAN
+        dlw_raw = torch.nan_to_num(exo["lwork"][:, k] - exo["lwork"][:, k - 1])
         if WS is not None and WS.tech is not None:
-            dlw = dlw + WS.tech.lever("work_gain")              # healthy years added (longevity, tech.py)
+            dlw_raw = dlw_raw + WS.tech.lever("work_gain")      # healthy years added (longevity, tech.py)
+        dlw = dlw_raw - WORKFORCE_MEAN
         if WS is not None:
             off = WS.prm("robot_aging") * WS.A_robot if WS.cfg.ai.arrival else 0.0
+            # the fitted growth equation already carries workforce_beta x the 1960-2023 mean change, so that amount is
+            # taken off once, at that coefficient; rises and falls are split on the raw change (fixed 2026-11-10: the
+            # split was on the centred change, so slower rises counted as falls, and the centring was scaled by
+            # beta_fall, leaving up to 0.65 x 0.0019 a year too much growth where shares fall)
+            dedup = WS.prm("workforce_beta") * WORKFORCE_MEAN
             if WORKFORCE_FALL:
                 if k == 1:
                     g_wf = torch.Generator(device=device).manual_seed(seed + 919)
                     beta_fall = WORKFORCE_FALL[0] + (WORKFORCE_FALL[1] - WORKFORCE_FALL[0]) * torch.rand(S, 1, device=device, generator=g_wf)
-                wf = torch.where(dlw < 0, beta_fall * dlw * (1 - off), WS.prm("workforce_beta") * dlw)
+                wf = torch.where(dlw_raw < 0, beta_fall * dlw_raw * (1 - off), WS.prm("workforce_beta") * dlw_raw) - dedup
             else:
-                wf = WS.prm("workforce_beta") * torch.where(dlw < 0, dlw * (1 - off), dlw)
+                wf = WS.prm("workforce_beta") * torch.where(dlw_raw < 0, dlw_raw * (1 - off), dlw_raw) - dedup
             g = g + wf + fish_g \
                 + WS.prm("articles_beta") * WS.science * SCIENCE_DECAY ** (k - 1)   # science capacity beyond income (innovation.py)
         else:
@@ -1664,7 +1716,10 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             # the UN path; fertility responds to income beyond what the projection assumes (-0.035 per unit change in
             # log GDP per person against the median world, 1970-2023 estimate); births follow fertility
             pop_now = torch.exp(exo["lpop"][:, k]) * torch.exp(pop_off)
-            dshare = ((WS.deaths_year / pop_now.clamp(min=1)) + pand_mort[:, None]).clamp(0, 0.5)
+            # civil wars too (fixed 2026-11-10: only wars between states were subtracted): battle deaths per million,
+            # with the same civilian and indirect multiplier
+            civ_d = cur["battle_deaths_pc"].nan_to_num(0.0) / 1e6 * (1 + WS.prm("civ_mult"))
+            dshare = ((WS.deaths_year / pop_now.clamp(min=1)) + civ_d + pand_mort[:, None]).clamp(0, 0.5)
             if WS.cfg.heat_mortality and climate_damage:
                 # heat and cold deaths from warming since the origin (Carleton et al. 2022), adapting with income
                 inc = torch.exp(lg_next + dmg_cum).nan_to_num(HEAT_MORT_INCOME[0])
@@ -1712,6 +1767,14 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         le_trend = (le_trend + le_rate * 0.97 ** k).clamp(max=92)
         cur["log_cm"] = cm_trend + 0.1 * conf_next
         cur["life_exp"] = le_trend - 2.0 * conf_next
+        if PRESTON:
+            # health follows the economy as well as its trend (data debate, 2026-11-10): 10-year changes 1960-2024,
+            # country-clustered, with the previous decade's own change held fixed: life expectancy +1.13 years (s.e.
+            # 0.30) and log child mortality -0.11 (0.02) per unit of log income above the country's pre-origin trend
+            # path; years at war entered with the wrong sign and are left out (the -2 years at war above stays)
+            dev_inc = torch.nan_to_num(lg_next - (lg_ref0 + g_ref * k)).clamp(-2.0, 2.0)
+            cur["life_exp"] = cur["life_exp"] + PRESTON[0] * dev_inc
+            cur["log_cm"] = cur["log_cm"] + PRESTON[1] * dev_inc
         # transitory macro conditions revert toward the country's recent norm
         if INFL_CONV:
             infl_target = infl_target + INFL_CONV * (infl_med - infl_target)
