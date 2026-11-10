@@ -17,15 +17,15 @@
   "pass": true
  },
  "2_level_outside": {
-  "share": 0.00379,
-  "above_2x_record": 0.00366,
+  "share": 0.00378,
+  "above_2x_record": 0.00364,
   "pass": true
  },
  "3_population": {
   "world_dev_2065_q": [
-   -0.0537,
+   -0.053,
    0.0211,
-   0.111
+   0.1106
   ]
  },
  "4_health_inconsistent": {
@@ -36,22 +36,22 @@
  },
  "5_world_totals": {
   "worst_year_q": [
-   -0.2131,
+   -0.213,
    -0.0263
   ],
   "growth_per_year_q": [
-   -0.0044,
-   0.0176,
+   -0.004,
+   0.0172,
    0.052
   ],
-  "share_outside": 0.027,
+  "share_outside": 0.025,
   "pass": false,
   "failing_worlds": {
    "nuclear_large": 0.0,
-   "ai_catastrophe": 0.037,
-   "great_power_war": 0.556,
-   "pandemic": 0.704
+   "ai_catastrophe": 0.04,
+   "great_power_war": 0.52,
+   "pandemic": 0.68
   },
-  "share_outside_excluding_large_nuclear_or_ai_catastrophe": 0.026
+  "share_outside_excluding_large_nuclear_or_ai_catastrophe": 0.024
  }
 }

@@ -104,8 +104,7 @@ class AIScenario:
 # FRI's 2022 tournament both experts and superforecasters underestimated AI progress.
 # Mix: 5% by 2027, 18% by 2030, 24% by 2032, 33% by 2035, 47% by 2041, 56% by 2047, 64% by 2055, 72% by 2065;
 # 28% no shock before 2065. (Previous: 17.5 / - / 37.5 / - / 57.5 / 66 / - / 77.5%.)
-ARRIVAL_CDF = ((2026.75, 0.0), (2027.5, 0.05), (2030.5, 0.18), (2032.5, 0.24), (2035.5, 0.33), (2041.5, 0.47), (2047.5, 0.56),
-               (2055.5, 0.64), (2065.5, 0.72))
+ARRIVAL_CDF = ((2026.85, 0.0), (2027.5, 0.048), (2030.5, 0.19), (2032.5, 0.254), (2035.5, 0.33), (2041.5, 0.443), (2047.5, 0.525), (2055.5, 0.605), (2065.5, 0.676))
 
 # Arrival-year distribution for general-purpose robotics (robots technically able to do most manual work; cost
 # parity comes with deployment, robot_years; assumption, 2026-10-26): an equal mix of

@@ -1899,7 +1899,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                                else WS.prm("volc_yield").reshape(S, 1) * (volc_t >= 0).float()[:, None])
                 if tail is not None:
                     # nuclear winter after this year's large exchange (the first one counts) and VEI 7 eruptions
-                    nl_ = WS.rec["nuclear_large"][-1].flatten() > 0
+                    # (runs without the interstate layer record no exchanges)
+                    nl_ = (WS.rec["nuclear_large"][-1].flatten() > 0) if WS.rec.get("nuclear_large") else torch.zeros(S, dtype=torch.bool, device=device)
                     tail["nw_t"] = torch.where(nl_ & (tail["nw_t"] < 0), torch.full_like(tail["nw_t"], year), tail["nw_t"])
                     v7_ = (torch.rand(S, device=device, generator=tail["gen"]) < tail["vei7_p"]) & (tail["v7_t"] < 0)
                     tail["v7_t"] = torch.where(v7_, torch.full_like(tail["v7_t"], year), tail["v7_t"])
