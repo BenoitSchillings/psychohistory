@@ -15,7 +15,7 @@ from .data import RAW, ROOT
 OUT = ROOT / "outputs"
 TEMPLATE = ROOT / "psychohistory" / "report_template.html"
 # the report's release number: bump on every published change (the private copy's own revision counter can run ahead)
-VERSION = ("54.2", "6 November 2026")
+VERSION = ("54.3", "9 November 2026")
 
 
 def _world_topology():
@@ -123,7 +123,7 @@ def _summary_vars():
         pos = [int(h) for h, r in S.items() if r.get("conflict", {}).get("ci90", [0])[0] > 0]
         v["skill_note"] = (f" In hindcasts from 16 starting years (1970–2009), its country-level forecasts of war and income "
                            f"beat fair naive forecasts at every horizon tested, up to {max(pos)} years (by 11% for who is at war "
-                           f"and 22% for new wars at {max(pos)} years; those years also informed its settings, so the true "
+                           f"and 22% for any new war within {max(pos)} years; those years also informed its settings, so the true "
                            f"edge is somewhat smaller). Beyond {max(pos)} years nothing can be tested." if pos else "")
     c21 = OUT / "climate_2100.json"
     if c21.exists():

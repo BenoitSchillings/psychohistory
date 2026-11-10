@@ -30,7 +30,7 @@ def paragraph():
             nf = (f"the nuclear-pair war factor, whose range alone moves great-power war from "
                   f"{100 * g['low_fifth']:.0f}% to {100 * g['high_fifth']:.0f}%")
     gpw_any = fc["ai"].get("alliances_any_scope", {}).get("great_power_war_by", [None])[-1]
-    any_s = f"; {100 * gpw_any:.0f}% if allies joined any war wherever it was fought, the rule before November 2026" if gpw_any else ""
+    any_s = f" ({100 * gpw_any:.0f}% if allies joined any war wherever it was fought, the rule before November 2026)" if gpw_any else ""
     return (f"The current headline (version {ver}, {date}): median world GDP per person in 2065 is {v['gdp_med']} "
             f"(90% band {v['gdp_lo']}–{v['gdp_hi']}; {v['gdp_noai']} with no AI shock). In hindcasts its 90% bands held "
             f"about 92% of the time at ten years, but countries' growth drifts apart 1.3–1.9 times too much since the "
@@ -38,8 +38,9 @@ def paragraph():
             f"conflict in 2065 (band {c_lo}–{c_hi}), against {v['conf_now']} in 2025, and the 1990 record is broken in "
             f"{v['p_record']} of worlds; simulated from 2000–2012 the share at war came out about 6% low, while the safest "
             f"countries got too many new wars (two or three expected in 15 years from 1995–2009 origins, none happened). "
-            f"A war between great powers of at least 1,000 battle deaths a year happens by 2065 in {v['gpw']} of worlds "
-            f"({v['gpw_cow']} among the traditional majors alone{any_s}), and nuclear weapons are used in {v['nuke']}. These depend "
+            f"A war between the traditional great powers of at least 1,000 battle deaths a year happens by 2065 in "
+            f"{v['gpw_cow']} of worlds; counting India as a great power raises it to {v['gpw']}, mostly through a "
+            f"China–India war{any_s}, and nuclear weapons are used in {v['nuke']}. These depend "
             f"heavily on assumptions, above all {nf}, and on a war model fitted to 1946–2024; the simulator missed the 2010s rise in wars between states two- to "
             f"threefold. The worst 1% of worlds on each measure are traced to their causes (see Disaster worlds).")
 
