@@ -135,6 +135,12 @@ def main():
             ca = base["coup_attempts"][:, i0 + 1:i1 + 1]
             okp = np.isfinite(ca).all(1)
             sim["coups"], obs["coups"] = o["paths"]["coup"][:, okp].sum((1, 2)).astype(float), float((ca[okp] > 0).sum())
+            # country level: each country's simulated chance of a coup attempt within five years, and the outcome
+            # (for the simulator's coup calibration, 10 November 2026)
+            h5 = min(5, ca.shape[1])
+            coup_p5 = (o["paths"]["coup"][:, okp, :h5] > 0.5).any(-1).mean(0)
+            coup_y5 = (ca[okp, :h5] > 0).any(1).astype(float)
+            coup_codes = np.array(p.codes)[okp]
             # democracy: population-weighted change
             wd = np.where(okd, pop0, 0.0)
             wd = wd / wd.sum()
@@ -171,7 +177,8 @@ def main():
             np.savez_compressed(f, origin=O, end=E, T=T, names=np.array(sorted(sim)),
                                 sim=np.stack([sim[k] for k in sorted(sim)], 1), obs=np.array([obs[k] for k in sorted(sim)]),
                                 pnames=np.array(sorted(params)), params=np.stack([params[k] for k in sorted(params)], 1),
-                                country=json.dumps(country), config=json.dumps(o["config"], default=str))
+                                country=json.dumps(country), config=json.dumps(o["config"], default=str),
+                                coup_codes=coup_codes, coup_p5=coup_p5, coup_y5=coup_y5)
             print(O, E, {k: (round(float(np.median(sim[k])), 4), round(float(obs[k]), 4),
                              round(float((sim[k] < obs[k]).mean()), 2)) for k in sorted(sim)}, country, flush=True)
 

@@ -523,6 +523,10 @@ HARVEST_GDP = None
 PRESTON = None            # (life expectancy, log child mortality) per unit log income above trend; (1.13, -0.11) under test
 ABSENT_MASK = True        # countries not yet existing at a hindcast origin: out of the alignment, no wars or coups
 ONSET_SLOPE = 1.0         # onset log-odds x this before alignment (1.15-1.5 rejected 2026-11-03: worse on 1970-1998)
+# sharper or flatter country coup risk: the coup log-odds times a slope before the year-1 alignment re-solves the level
+# (10 November 2026: the simulator's 2030 coup chances sit above the recalibrated five-year model's; scripts/
+# coup_sim_calib.py). A float, or {"1970": b, ...} by decade of the origin for leave-one-decade-out hindcasts.
+COUP_SLOPE = 1.0
 # 2026-11-02 tests (off = the adopted model):
 VOL_NOISE = False         # B: growth noise scaled by the country's own 10-year growth volatility (slope estimated in fit)
 # replayed world growth shocks split into the decade's mean and the year's deviation from it, scaled (era, year) in
@@ -728,7 +732,7 @@ def _config_record(net, WS, struct_ran, offset_ran, call):
     """what this run actually simulated, for scripts/config_parity.py: the network's provenance (pipeline.build_sim_env),
     whether the structural draw and the ensemble offset ran, every module switch, the world layer's settings"""
     import dataclasses
-    mod = {k: v for k, v in globals().items() if k.isupper() and isinstance(v, (int, float, str, bool, tuple, list, type(None)))}
+    mod = {k: v for k, v in globals().items() if k.isupper() and isinstance(v, (int, float, str, bool, tuple, list, dict, type(None)))}
     cfg = None
     if WS is not None:
         cfg = {}
@@ -1279,6 +1283,9 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         if ONSET_SLOPE != 1.0:
             # sharper onset risk: the network's log-odds times a slope, before the alignment re-solves the level
             haz[..., 0] = ONSET_SLOPE * haz[..., 0]
+        cs_ = COUP_SLOPE.get(str(origin // 10 * 10), 1.0) if isinstance(COUP_SLOPE, dict) else COUP_SLOPE
+        if cs_ != 1.0:
+            haz[..., 2] = cs_ * haz[..., 2]
         if SHIFTERS_BEFORE_ALIGN:
             haz = _shifters(haz)
         if k == 1 and align:
