@@ -188,7 +188,7 @@ def annual_probability(pred):
 # leaf size of the direct 12-month model, in country-months. Each country contributes 12 overlapping rows per year
 # (their 12-month targets share 11 months), so 200 rows is about 17 country-years (third debate, 9 November 2026);
 # 2400 = 200 country-years. scripts/monthly_cluster_test.py decides.
-ANNUAL_MIN_CHILD = 200
+ANNUAL_MIN_CHILD = 2400        # (version 55, 9 November 2026: scripts/monthly_cluster_test.py)
 
 
 def fit_annual(F, hit, last_obs, min_child=None):

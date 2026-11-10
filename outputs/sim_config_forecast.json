@@ -123,6 +123,7 @@
   "expeditionary": "('USA', 'GBR', 'FRA', 'RUS', 'AUS', 'CAN', 'CHN')",
   "ally_reach_km": 2500.0,
   "ally_out_scope": 0.25,
+  "explosive_p": 0.0,
   "param_block": 1,
   "major_era_mult": 1.0,
   "transition": true,
@@ -224,6 +225,7 @@
   "ALIGN_ONSET": true,
   "OIL_INDEP": true,
   "ENS_OFFSET": "",
+  "ENS_OFFSET_DOWN": false,
   "ENS_REFRESH": 0,
   "ENS_REFRESH_LEVEL": true,
   "FRAILTY_SPATIAL": 0.0,
@@ -238,6 +240,10 @@
   "MACRO_CRISIS": false,
   "SUPPORT_Q": 0.005,
   "WORKFORCE_BETA": 1.22,
+  "WORKFORCE_FALL": [
+   0.57,
+   1.22
+  ],
   "WORKFORCE_MEAN": 0.0019,
   "BHM": [
    0.0127,

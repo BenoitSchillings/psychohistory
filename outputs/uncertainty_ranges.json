@@ -1,235 +1,227 @@
 {
  "log_world_gdp_2065": {
-  "overall": 34122.9041,
+  "overall": 38751.6098,
   "p10_p90_given_assumptions": [
-   22790.6157,
-   62708.5655
+   26028.6202,
+   70939.8791
   ],
   "drivers": {
    "growth_dividend": {
-    "low_fifth": 30502.8776,
-    "high_fifth": 40313.0564
+    "low_fifth": 34581.5655,
+    "high_fifth": 46128.6992
    },
    "ai_arrival": {
-    "low_fifth": 56915.2935,
-    "high_fifth": 25163.1713
+    "low_fifth": 64092.6948,
+    "high_fifth": 28612.8167
    },
    "dmg_family": {
-    "low_fifth": 37991.9577,
-    "high_fifth": 30089.9035
+    "low_fifth": 43248.297,
+    "high_fifth": 34284.5157
    },
    "robot_arrival": {
-    "low_fifth": 53445.6606,
-    "high_fifth": 24646.2497
+    "low_fifth": 60139.9329,
+    "high_fifth": 28071.8942
    }
   }
  },
  "log_world_gdp_2045": {
-  "overall": 21957.7259,
+  "overall": 23360.7852,
   "p10_p90_given_assumptions": [
-   19269.3071,
-   24991.0141
+   20484.5715,
+   26528.1655
   ],
   "drivers": {
    "dmg_family": {
-    "low_fifth": 23295.1557,
-    "high_fifth": 20079.0176
+    "low_fifth": 24776.1949,
+    "high_fifth": 21383.4122
    },
    "ai_arrival": {
-    "low_fifth": 24792.563,
-    "high_fifth": 21159.9308
+    "low_fifth": 26363.246,
+    "high_fifth": 22508.3523
    },
    "growth_dividend": {
-    "low_fifth": 21495.9493,
-    "high_fifth": 22517.1549
+    "low_fifth": 22832.8142,
+    "high_fifth": 23946.5043
    },
    "articles_beta": {
-    "low_fifth": 21164.5525,
-    "high_fifth": 22793.4788
+    "low_fifth": 22516.5966,
+    "high_fifth": 24230.4418
    }
   }
  },
  "world_conflict_2065": {
-  "overall": 0.2329,
+  "overall": 0.1979,
   "p10_p90_given_assumptions": [
-   0.2138,
-   0.2544
+   0.1815,
+   0.2164
   ],
   "drivers": {
    "drone_civil": {
-    "low_fifth": 0.2114,
-    "high_fifth": 0.2457
+    "low_fifth": 0.1771,
+    "high_fifth": 0.2114
    },
    "robot_arrival": {
-    "low_fifth": 0.2286,
-    "high_fifth": 0.2229
+    "low_fifth": 0.1943,
+    "high_fifth": 0.1886
    },
    "clim_conflict": {
-    "low_fifth": 0.2229,
-    "high_fifth": 0.2343
-   },
-   "ai_arrival": {
-    "low_fifth": 0.2286,
-    "high_fifth": 0.2229
+    "low_fifth": 0.1886,
+    "high_fifth": 0.2
    }
   }
  },
  "world_democracy_2065": {
-  "overall": 0.4053,
+  "overall": 0.4054,
   "p10_p90_given_assumptions": [
-   0.3761,
-   0.423
+   0.3766,
+   0.4228
   ],
   "drivers": {
    "autocracy_drift": {
-    "low_fifth": 0.4134,
-    "high_fifth": 0.3909
+    "low_fifth": 0.4135,
+    "high_fifth": 0.3911
    },
    "ai_arrival": {
-    "low_fifth": 0.3805,
+    "low_fifth": 0.3803,
     "high_fifth": 0.4193
    }
   }
  },
  "great_power_war": {
-  "overall": 0.4402,
+  "overall": 0.4387,
   "p10_p90_given_assumptions": [
-   0.3118,
-   0.5613
+   0.3136,
+   0.5586
   ],
   "drivers": {
    "nuclear_war_factor": {
-    "low_fifth": 0.3136,
-    "high_fifth": 0.5485
+    "low_fifth": 0.3179,
+    "high_fifth": 0.5444
    },
    "drone_onset": {
-    "low_fifth": 0.4005,
-    "high_fifth": 0.4867
+    "low_fifth": 0.4001,
+    "high_fifth": 0.4788
    },
    "cascade_q": {
-    "low_fifth": 0.3968,
-    "high_fifth": 0.4724
-   },
-   "water_dispute": {
-    "low_fifth": 0.4269,
-    "high_fifth": 0.469
+    "low_fifth": 0.4003,
+    "high_fifth": 0.4788
    }
   }
  },
  "great_power_war_cow": {
-  "overall": 0.2142,
+  "overall": 0.2129,
   "p10_p90_given_assumptions": [
-   0.1657,
-   0.2693
+   0.1651,
+   0.2653
   ],
   "drivers": {
-   "drone_onset": {
-    "low_fifth": 0.1865,
-    "high_fifth": 0.2503
-   },
-   "nuclear_war_factor": {
-    "low_fifth": 0.1861,
-    "high_fifth": 0.2429
-   },
    "cascade_q": {
-    "low_fifth": 0.1815,
-    "high_fifth": 0.2477
+    "low_fifth": 0.1822,
+    "high_fifth": 0.2489
+   },
+   "drone_onset": {
+    "low_fifth": 0.1856,
+    "high_fifth": 0.2419
    }
   }
  },
  "nuclear_use": {
-  "overall": 0.1303,
+  "overall": 0.1318,
   "p10_p90_given_assumptions": [
-   0.0712,
-   0.1921
+   0.0727,
+   0.1934
   ],
   "drivers": {
    "nuc_use_one": {
-    "low_fifth": 0.072,
-    "high_fifth": 0.1869
+    "low_fifth": 0.0723,
+    "high_fifth": 0.1881
    },
    "nuc_use_both": {
-    "low_fifth": 0.1065,
-    "high_fifth": 0.155
+    "low_fifth": 0.1068,
+    "high_fifth": 0.1544
    }
   }
  },
  "log_battle_deaths": {
-  "overall": 13.715,
+  "overall": 13.7152,
   "p10_p90_given_assumptions": [
-   13.5212,
-   13.9384
+   13.5233,
+   13.9408
   ],
   "drivers": {
    "drone_onset": {
-    "low_fifth": 13.5222,
-    "high_fifth": 13.7702
+    "low_fifth": 13.5324,
+    "high_fifth": 13.765
    },
    "cascade_q": {
-    "low_fifth": 13.5374,
-    "high_fifth": 13.7366
+    "low_fifth": 13.5407,
+    "high_fifth": 13.7465
    },
    "nuclear_war_factor": {
-    "low_fifth": 13.5745,
-    "high_fifth": 13.7258
+    "low_fifth": 13.5711,
+    "high_fifth": 13.7254
+   },
+   "ai_arrival": {
+    "low_fifth": 13.7309,
+    "high_fifth": 13.529
    }
   }
  },
  "war_China-India": {
-  "overall": 0.2512,
+  "overall": 0.251,
   "p10_p90_given_assumptions": [
-   0.1313,
-   0.366
+   0.1331,
+   0.3647
   ],
   "drivers": {
    "nuclear_war_factor": {
-    "low_fifth": 0.1288,
-    "high_fifth": 0.3576
+    "low_fifth": 0.1311,
+    "high_fifth": 0.3574
    },
-   "water_dispute": {
-    "low_fifth": 0.2259,
-    "high_fifth": 0.285
+   "drone_onset": {
+    "low_fifth": 0.2277,
+    "high_fifth": 0.2786
    }
   }
  },
  "war_China-Taiwan": {
-  "overall": 0.094,
+  "overall": 0.0937,
   "p10_p90_given_assumptions": [
-   0.0756,
-   0.1161
+   0.0755,
+   0.1156
   ],
   "drivers": {}
  },
  "war_Russia-Poland": {
   "overall": 0.0285,
   "p10_p90_given_assumptions": [
-   0.0177,
-   0.0414
+   0.0167,
+   0.0426
   ],
   "drivers": {}
  },
  "war_India-Pakistan": {
-  "overall": 0.3782,
+  "overall": 0.3822,
   "p10_p90_given_assumptions": [
-   0.2074,
-   0.538
+   0.2092,
+   0.5435
   ],
   "drivers": {
    "nuclear_war_factor": {
-    "low_fifth": 0.2056,
-    "high_fifth": 0.5253
+    "low_fifth": 0.2083,
+    "high_fifth": 0.5299
    },
    "water_dispute": {
-    "low_fifth": 0.3354,
-    "high_fifth": 0.424
+    "low_fifth": 0.3386,
+    "high_fifth": 0.429
    },
    "drone_onset": {
-    "low_fifth": 0.35,
-    "high_fifth": 0.4094
+    "low_fifth": 0.354,
+    "high_fifth": 0.4134
    },
    "busy_beta": {
-    "low_fifth": 0.4116,
-    "high_fifth": 0.354
+    "low_fifth": 0.4158,
+    "high_fifth": 0.3559
    }
   }
  }

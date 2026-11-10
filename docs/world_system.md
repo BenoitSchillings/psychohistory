@@ -2661,3 +2661,11 @@ Tested, each with its rule written before the run; adopted ones are switches for
   assumption for February.
 - Not done: AI ledger indicator scoring (the simulator has no counterpart series yet), a crowd-blend column, AI
   catastrophe deaths consistent with its anchor (relabelled instead).
+
+### Version 55 released early (2026-11-09)
+At the director's request the four third-debate changes were switched on and released ahead of February
+(data.CONFLICT_CODING "deaths", pipeline.COUP_RECAL, monthly.ANNUAL_MIN_CHILD 2400, simulate.WORKFORCE_FALL); backtest,
+forecast, uncertainty, disaster and climate reruns; canonical forecast 209e8222a047. The AI arrival rebuild and the news
+topics stay for February (their quarter's data are not in). Open: the adopt-rule hindcast tags must be re-baselined
+under the new conflict coding; the simulator's 2030 coup chances are not recalibrated (Guinea 44%, Madagascar 48%
+against 24% and 23% from the five-year model).

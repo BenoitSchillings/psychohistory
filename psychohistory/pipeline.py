@@ -284,7 +284,7 @@ def build_sim_env(p, X, Xf, Yf, ci, year, origin, members=None, seed=0, cache=Tr
 # (origins <= origin - 10). scripts/coup_recal_test.py, pre-registered: rolling over origins 1990-2015, Brier
 # 0.05998 -> 0.05709 (-4.8%), log loss -6.1%, better at 5 of 6 origins (third debate, 9 November 2026). For the
 # February 2027 release; off until then (release policy).
-COUP_RECAL = False
+COUP_RECAL = True              # (version 55, 9 November 2026)
 
 
 def _coup_recal(risk, parts, origin):

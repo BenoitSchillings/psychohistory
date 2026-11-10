@@ -92,6 +92,7 @@ confirm on 2000–2012, two network seeds"):
 
 ## Changes to this rule (continued)
 
+- 9 November 2026: version 55 released ahead of the quarterly schedule at the director's request (third debate).
 - 6 November 2026: release policy added (second debate). The tail diagnostics (safe-country wars) become a
   non-regression guardrail: a change may not raise the 15-year expected count of new wars among the 20 safest
   countries by more than its noise floor. Recession frequency stays a diagnostic: raising shock amplitude to hit it

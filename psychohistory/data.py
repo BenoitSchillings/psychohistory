@@ -213,7 +213,7 @@ def _to_wide(df: pd.DataFrame, codes: list[str]) -> np.ndarray:
 # country keeps it only if at least 25 of that conflict-year's deaths, or half of them, fall on its soil (the United
 # States was coded at war 2001-2019 for the conflict with al-Qaida, and troop contributors for wars abroad).
 # Conflict-years without GED events keep the location coding; before 1989 nothing changes.
-CONFLICT_CODING = "location"
+CONFLICT_CODING = "deaths"     # (version 55, 9 November 2026: scripts/conflict_coding_test.py)
 
 
 def _ged_located():

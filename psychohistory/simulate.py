@@ -516,7 +516,7 @@ WORKFORCE_BETA = 1.22     # growth per unit change in log working-age share (scr
 # shares rose): None = the sampled workforce_beta for both signs; (lo, hi) = for falls, each world draws beta_fall
 # uniformly in [lo, hi] (0.57 is the 1-year estimate, 1.22 the 5-year one; 1 is the accounting value). For the
 # February 2027 release; off until then. Rich countries' median income per person fell 2025-2030 under 1.22.
-WORKFORCE_FALL = None
+WORKFORCE_FALL = (0.57, 1.22)  # (version 55, 9 November 2026; assumption)
 WORKFORCE_MEAN = 0.0019   # mean yearly change 1960-2023, already absorbed by the fitted growth equation
 
 
