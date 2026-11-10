@@ -314,6 +314,37 @@ def _coup_recal(risk, parts, origin):
     return risk, parts
 
 
+# One-year coup risks recalibrated the same way, with Platt scaling (log-odds intercept and slope) fitted on the
+# backtests whose one-year outcomes were known by the origin (origins <= origin - 5). scripts/coup1y_recal_test.py,
+# pre-registered 10 November 2026: rolling over origins 1990-2015, Brier 0.01765 -> 0.01755, log loss 0.0776 -> 0.0749
+# (-3.5%), the shift better at 4 of 6 origins and Platt better than the shift on both pooled scores. Affects the
+# published 12-month coup risks, not the simulator's hazards. For the February 2027 release; off until then.
+COUP1Y_RECAL = False
+
+
+def _coup1y_recal(risk, parts, origin):
+    import pandas as pd
+    from sklearn.linear_model import LogisticRegression
+    f = OUT / "backtest_predictions.parquet"
+    if not f.exists():
+        return risk, parts
+    d = pd.read_parquet(f)
+    d = d[(d.task == "coup_1y") & (d.model == "Seldon ensemble") & (d.origin <= origin - 5)].dropna(subset=["p", "y"])
+    if not len(d) or d.y.nunique() < 2:
+        return risk, parts
+    lg = lambda q: np.log(np.clip(q, 1e-4, 1 - 1e-4) / (1 - np.clip(q, 1e-4, 1 - 1e-4)))
+    m = LogisticRegression(C=1e6).fit(lg(d.p.to_numpy(float))[:, None], d.y.to_numpy(float))
+    k = TASKS.index("coup_1y")
+    pl = lambda v: np.where(np.isfinite(v), m.predict_proba(lg(np.nan_to_num(v))[:, None])[:, 1], np.nan)
+    risk = risk.copy()
+    risk[:, k] = pl(risk[:, k])
+    parts = {f: v.copy() for f, v in parts.items()}
+    for f in parts:
+        parts[f][:, k] = pl(parts[f][:, k])
+    _log(f"1-year coup risks recalibrated: Platt a {m.intercept_[0]:+.3f}, b {m.coef_[0][0]:.3f} from {len(d)} forecasts")
+    return risk, parts
+
+
 def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, members=10,
                   scenario="ssp245", climate_damage=1.0, scen_n=4000):
     _log(f"training on all history up to {origin}")
@@ -327,6 +358,8 @@ def step_forecast(p, base, X, Yl, origin=LAST_OBS_YEAR, end=2065, n_scen=10000, 
     risk = ens.predict(X_now)
     if COUP_RECAL:
         risk, parts = _coup_recal(risk, parts, origin)
+    if COUP1Y_RECAL:
+        risk, parts = _coup1y_recal(risk, parts, origin)
     # uncertainty = disagreement between the model families (bracketing the combined estimate)
     fam = np.stack(list(parts.values()) + [risk])
     lo, hi = np.nanmin(fam, 0), np.nanmax(fam, 0)
