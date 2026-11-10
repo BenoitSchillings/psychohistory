@@ -2761,3 +2761,15 @@ to reported data, so they carry any inflation forward. Nothing changes now: a co
 against more than the national accounts it corrects (IMF WEO vintages, when the file can be obtained).
 Not obtained: the IMF historical WEO forecasts file returns 404 to scripts at the link on the IMF's own FAQ page;
 IDMC displacement data has no open bulk file (its API needs registration).
+Catastrophe tails (simulate.CATASTROPHE_TAILS; assumptions, staged for February, off). Nuclear winter after a large
+exchange (soot log-uniform 1-150 Tg; harvests -(1 - e^(-Tg/65)) at the peak for three years, fading; famine deaths
+(1 - e^(-Tg/125)) x world population x a realisation share 0.1-1.0 over the two following years, by population, import
+dependence and poverty; from Xia et al. 2022 with Reisner et al. 2018 as the low end) and VEI 7 eruptions (0.08-0.25%
+a year, Cassidy and Mani 2022; harvests -8 to -25% for two years, half in the third). Own generator: off, every draw is
+unchanged. Paired run, 2,000 headline worlds in the forecast's configuration with the staged bug fixes
+(scripts/catastrophe_tails.py): a large exchange in 0.65% of worlds (13); given one, peak harvest loss 47% (10th-90th
+percentile 11-77%) and famine deaths 680 million (190 million to 2.4 billion), several times the blast deaths. A VEI 7
+eruption in 6.6% of worlds. Excess deaths to 2065: median unchanged (34 million), 90th percentile 165 -> 173 million,
+99th 635 -> 777 million. World income per person barely moves (median and 1st percentile unchanged): the large exchange's
+output loss was already drawn (nuc_gdp_large), and harvest losses reach output only through food prices. With 13
+worlds the conditional figures are rough; the tail is set by the large-exchange chance, not by these channels.

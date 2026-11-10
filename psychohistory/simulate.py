@@ -498,6 +498,21 @@ FRAILTY_SPATIAL = 0.0
 # onsets, "t" endings): scripts/align_oracle.py found it closer to the next decade's right shift for endings in 3 of
 # 4 decades, for onsets in 1 of 4 (2026-11-05); "" = the origin's risk sets, as before
 ALIGN_MATCHED = ""
+# Catastrophe tails (10 November 2026; assumptions, not estimates: too rare to test on history). Staged for February 2027.
+# - Nuclear winter: a large exchange (world.py) lofts soot, drawn per world log-uniform 1-150 Tg (Reisner et al. 2018
+#   find little lofted soot; Xia et al. 2022 take 5-47 Tg for India-Pakistan, 150 Tg for US-Russia). World harvests fall
+#   by 1 - exp(-Tg/65) at the peak (Xia et al.'s calorie losses: 5 Tg ~7%, 47 Tg ~50%, 150 Tg ~90%), 30% of that in the
+#   exchange year, full for three years, then fading (e-folding 3 years). Famine deaths in the two years after it: a
+#   share 1 - exp(-Tg/125) of world population (Xia et al.: 255 million at 5 Tg, 2 billion at 47 Tg, 5 billion at 150 Tg,
+#   with no trade and no adaptation) times a drawn realisation share 0.1-1.0 (trade, rationing, feed turned into food),
+#   falling on countries by population, import dependence and poverty.
+# - Eruptions larger than Pinatubo (VEI 7, Tambora 1815): a yearly chance 0.08-0.25% (Cassidy and Mani 2022: about 1 in
+#   6 this century), world harvests down 8-25% for two years and half that in the third (on top of the VEI 6 draw).
+# The tails draw from their own generator, so with the switch off every other draw is unchanged.
+CATASTROPHE_TAILS = False
+TAIL_RANGES = {"soot_log": (0.0, math.log(150.0)), "winter_real": (0.1, 1.0), "vei7_p": (0.0008, 0.0025),
+               "vei7_yield": (0.08, 0.25)}
+
 PRESTON = None            # (life expectancy, log child mortality) per unit log income above trend; (1.13, -0.11) under test
 ABSENT_MASK = True        # countries not yet existing at a hindcast origin: out of the alignment, no wars or coups
 ONSET_SLOPE = 1.0         # onset log-odds x this before alignment (1.15-1.5 rejected 2026-11-03: worse on 1970-1998)
@@ -879,6 +894,13 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     excess_deaths = torch.zeros(S, device=device)
     coast_prev = torch.zeros(S, C, device=device)
     volc_t = torch.full((S,), -99, device=device)
+    tail = None
+    if CATASTROPHE_TAILS and WS is not None:
+        g_t = torch.Generator(device=device).manual_seed(int(seed) + 717)
+        tail = {k_: lo_ + (hi_ - lo_) * torch.rand(S, device=device, generator=g_t) for k_, (lo_, hi_) in TAIL_RANGES.items()}
+        tail.update({"gen": g_t, "soot": torch.exp(tail["soot_log"]), "nw_t": torch.full((S,), -99, device=device),
+                     "v7_t": torch.full((S,), -99, device=device), "L_prev": torch.zeros(S, device=device),
+                     "famine": torch.zeros(S, C, device=device)})
     pand_mort = torch.zeros(S, device=device)
     trans_prev = torch.zeros(S, C, device=device)
     struct_sd = struct_shift = None
@@ -1720,6 +1742,11 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             # with the same civilian and indirect multiplier
             civ_d = cur["battle_deaths_pc"].nan_to_num(0.0) / 1e6 * (1 + WS.prm("civ_mult"))
             dshare = ((WS.deaths_year / pop_now.clamp(min=1)) + civ_d + pand_mort[:, None]).clamp(0, 0.5)
+            if tail is not None:
+                # famine after a nuclear winter (computed in last year's harvest step)
+                dshare = (dshare + tail["famine"] / pop_now.clamp(min=1)).clamp(0, 0.9)
+                WS.rec.setdefault("famine_deaths", []).append(tail["famine"].sum(-1))
+                tail["famine"] = torch.zeros_like(tail["famine"])
             if WS.cfg.heat_mortality and climate_damage:
                 # heat and cold deaths from warming since the origin (Carleton et al. 2022), adapting with income
                 inc = torch.exp(lg_next + dmg_cum).nan_to_num(HEAT_MORT_INCOME[0])
@@ -1850,6 +1877,22 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                 dly = dly - v_dly
                 WS.rec["volcano"].append((volc_t == year).float())
                 volc_t = torch.where(year - volc_t >= 2, torch.full_like(volc_t, -99), volc_t)   # (recovered)
+                if tail is not None:
+                    # nuclear winter after this year's large exchange (the first one counts) and VEI 7 eruptions
+                    nl_ = WS.rec["nuclear_large"][-1].flatten() > 0
+                    tail["nw_t"] = torch.where(nl_ & (tail["nw_t"] < 0), torch.full_like(tail["nw_t"], year), tail["nw_t"])
+                    v7_ = (torch.rand(S, device=device, generator=tail["gen"]) < tail["vei7_p"]) & (tail["v7_t"] < 0)
+                    tail["v7_t"] = torch.where(v7_, torch.full_like(tail["v7_t"], year), tail["v7_t"])
+                    tn_ = (year - tail["nw_t"]).float()
+                    prof_n = torch.where(tn_ == 0, 0.3, torch.where(tn_ <= 3, 1.0, torch.exp(-(tn_ - 3) / 3))) * (tail["nw_t"] >= 0)
+                    tv_ = (year - tail["v7_t"]).float()
+                    prof_v = torch.where(tv_ <= 1, 1.0, torch.where(tv_ == 2, 0.5, 0.0)) * (tail["v7_t"] >= 0)
+                    loss_ = (-torch.expm1(-tail["soot"] / 65) * prof_n + tail["vei7_yield"] * prof_v).clamp(max=0.95)
+                    L_ = -torch.log1p(-loss_)
+                    dly = dly - (L_ - tail["L_prev"])[:, None]
+                    tail["L_prev"] = L_
+                    WS.rec.setdefault("winter_loss", []).append(-torch.expm1(-tail["soot"] / 65) * prof_n)
+                    WS.rec.setdefault("vei7", []).append((tail["v7_t"] == year).float())
                 if WS.cfg.water:
                     # water supply (glacier runoff, precipitation) moves yields where water is binding (assumption)
                     dW = WS.water_step(year, torch.nan_to_num(smooth["pr"] / cl["pr"]["base"], nan=1.0))
@@ -1898,6 +1941,14 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                     e_inc = (fd["dm"]["e0"] + fd["dm"]["e1"] * (h["lg"][..., -2].nan_to_num(9.0) - 9)).clamp(min=0)
                     fd["s"] = fd["s"] * torch.exp(torch.nan_to_num(dly) + dla - dlpop - e_inc * g)
                     depp = (1 - fd["s"]).clamp(0, 1)
+                    if tail is not None:
+                        tn_ = year - tail["nw_t"]
+                        on_ = ((tn_ == 0) | (tn_ == 1)) & (tail["nw_t"] >= 0)     # deaths land in the two following years
+                        share_ = -torch.expm1(-tail["soot"] / 125) * tail["winter_real"] * 0.5 * on_.float()
+                        popc = torch.exp(exo["lpop"][:, k]).nan_to_num()[None] * torch.exp(pop_off)
+                        w_ = popc * (0.2 + depp) * torch.exp(-0.5 * (torch.nan_to_num(lg_next, nan=9.0) - 9)).clamp(0.2, 3.0)
+                        d_ = share_[:, None] * popc.sum(-1, keepdim=True) * w_ / w_.sum(-1, keepdim=True).clamp(min=1)
+                        tail["famine"] = torch.minimum(d_, 0.45 * popc)
                     cur["calories"] = (cur["calories"] * torch.exp(kc["g"] * g + kc["own"] * (1 - depp) * (torch.nan_to_num(dly) + dla - dlpop)
                                                                    + kc["price"] * depp * dlp)).clamp(1400, 3900)
                     WS.rec["food_price"].append(fd["lp"][:, 0])

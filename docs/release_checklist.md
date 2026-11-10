@@ -30,6 +30,9 @@ Between releases only data refreshes and labelled patch versions are published.
    Run `python -P scripts/world_audit.py` on the release's forecast and publish its five checks (world totals failed
    at 2.7% in November: no near-free AI with the largest climate-damage family).
    `simulate.PRESTON`: its adopt-rule rerun was neutral (-0.00%); switch it on only as a stated consistency judgement.
+   `simulate.CATASTROPHE_TAILS = True` (nuclear winter after a large exchange, eruptions larger than Pinatubo): stated
+   assumptions with published ranges, not test results; label them in the assumptions list and publish
+   scripts/catastrophe_tails.py's off/on table with the release.
    `pipeline.COUP1Y_RECAL = True` (12-month coup risks, Platt scaling; scripts/coup1y_recal_test.py passed 10 November
    2026; needs outputs/backtest_predictions.parquet from the release's backtest).
 4. **UCDP.** Newest candidate files in `data/raw/outcomes/ucdp` (scripts/prospective.py downloads them monthly).
