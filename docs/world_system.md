@@ -2741,3 +2741,23 @@ results: on the same rows the ensemble (0.01179) beats REIGN's own CoupCast risk
 and the 12-month coup forecast is over-confident in the same way as the 5-year one (recalibration alone: log loss
 -5.9%, Brier -1.1%). A rolling recalibration of the 12-month coup forecast, like pipeline.COUP_RECAL for 5 years,
 needs its own pre-registered test; with 42 events the margin is small.
+12-month coup recalibration (scripts/coup1y_recal_test.py, pre-registered and committed before its run; the design of
+the 5-year test): rolling over origins 1990-2015, Brier 0.01765 -> 0.01755 (shift and Platt), log loss 0.0776 -> 0.0759
+(shift) and 0.0749 (Platt, -3.5%); the shift better at 4 of 6 origins; Platt better than the shift on both pooled
+scores, so Platt is adopted by the pre-registered rule (the Brier difference between them is in the sixth decimal).
+Fitted on all backtests to 2020, a raw 3% becomes 1.6%. pipeline.COUP1Y_RECAL, staged for February, off. It changes the
+published 12-month coup risks, not the simulator's hazards.
+Electricity cross-check of autocracies' reported growth (scripts/electricity_audit.py; Ember yearly electricity, CC BY
+4.0, downloaded 10 November 2026; the criterion was written before the run, but its commit followed the run because
+the first commit attempt failed). Martinez's specification with electricity demand in place of lights, 2001-2024, 153
+countries, 3,604 country-years: GDP rises with electricity 0.072 (s.e. 0.017) in democracies and 0.077 (0.035, p =
+0.027) more in autocracies (V-Dem electoral democracy below 0.4), about twice as steeply; no autocracy intercept
+(-0.002). Lights under the same coding: +20%, not significant (p = 0.45); Martinez's own estimate is about 35%.
+Supported by the pre-registered mark (electricity positive at p < 0.05, lights the same sign). The size is not
+settled: 20% to 100% depending on the physical measure, and electricity's elasticity also reflects energy-intensive
+industrialisation, desalination and subsidised power. Autocracies' reported growth averaged 2.6% a year per person in
+these rows; with a 35% overstatement the physical rate would be about 1.9%. The simulator's growth equations are fitted
+to reported data, so they carry any inflation forward. Nothing changes now: a correction needs its own design, scored
+against more than the national accounts it corrects (IMF WEO vintages, when the file can be obtained).
+Not obtained: the IMF historical WEO forecasts file returns 404 to scripts at the link on the IMF's own FAQ page;
+IDMC displacement data has no open bulk file (its API needs registration).

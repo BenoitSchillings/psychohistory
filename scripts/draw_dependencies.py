@@ -49,6 +49,7 @@ N = {
     "crowd": (0, "Crowd forecasts", "Metaculus / GJOpen / INFER archive; Polymarket & Manifold live"),
     # added after the 29 October 2026 release
     "wpp": (0, "UN WPP 2024 probabilistic projections", "fertility and population uncertainty by country (80% intervals, PPgp/wpp2024)"),
+    "ember": (0, "Ember yearly electricity (CC BY 4.0)", "electricity demand by country 2000-2024: cross-check of autocracies' reported growth"),
     "wpp5": (0, "UN WPP 2024 population by five-year age group", "cohort test of the working-age share (rejected on accuracy; consistency checks)"),
     "wikid": (0, "Wikidata leaders", "birth years of national leaders after 2020 (ages and deaths in office)"),
     "ilo": (0, "ILO occupation shares (DBnomics)", "managers, professionals, technicians, clerks: exposure to near-free AI"),
@@ -108,7 +109,7 @@ N = {
 }
 
 E = [  # (source, target, label or "", dashed)
-    ("wpp", "sim"), ("wpp5", "sim"), ("wikid", "panel"), ("ilo", "sim"), ("ibtracs", "sim"), ("natearth", "cmdata"), ("mort", "sim"),
+    ("wpp", "sim"), ("wpp5", "sim"), ("ember", "sim"), ("wikid", "panel"), ("ilo", "sim"), ("ibtracs", "sim"), ("natearth", "cmdata"), ("mort", "sim"),
     ("anchors", "assume"), ("rff", "hind"), ("rejected", "newtests"), ("gmd", "extra"), ("gmd", "newtests"), ("cowwar", "newtests"), ("cow", "newtests"),
     ("owid", "panel"), ("vdem", "panel"), ("gmd", "panel"), ("epr", "panel"), ("pol", "panel"), ("ucdp", "panel"),
     ("events", "panel"), ("energy", "panel"), ("food", "panel"), ("mig", "panel"), ("clim", "panel"),
