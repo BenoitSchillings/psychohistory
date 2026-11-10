@@ -23,6 +23,13 @@ Between releases only data refreshes and labelled patch versions are published.
      Rerun scripts/monthly_topics_test.py with it before switching NEWS_TOPICS on, and publish its year-by-year table.
    - `simulate.WORKFORCE_FALL = (0.57, 1.22)`: an assumption, not a test result (scripts/workforce_fall_test.py shows
      its effect); label it in the assumptions list.
+   From the data debate (10 November 2026), bug fixes under rule 7, already in the code (re-baseline tags v55f_base):
+   - the working-age term splits on the raw change and removes workforce_beta x WORKFORCE_MEAN once;
+   - civil-war deaths come off the population;
+   - the explosive-growth exploration seeds its generator with seed + 929 (was 919, shared with the falling-share draw).
+   Run `python -P scripts/world_audit.py` on the release's forecast and publish its five checks (world totals failed
+   at 2.7% in November: no near-free AI with the largest climate-damage family).
+   `simulate.PRESTON`: only if its adopt-rule rerun passes (docs/world_system.md, data-debate actions).
 4. **UCDP.** Newest candidate files in `data/raw/outcomes/ucdp` (scripts/prospective.py downloads them monthly).
 
 ## Release day

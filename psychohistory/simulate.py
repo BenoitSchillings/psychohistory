@@ -706,7 +706,7 @@ def _config_record(net, WS, struct_ran, offset_ran, call):
     """what this run actually simulated, for scripts/config_parity.py: the network's provenance (pipeline.build_sim_env),
     whether the structural draw and the ensemble offset ran, every module switch, the world layer's settings"""
     import dataclasses
-    mod = {k: v for k, v in globals().items() if k.isupper() and isinstance(v, (int, float, str, bool, tuple, type(None)))}
+    mod = {k: v for k, v in globals().items() if k.isupper() and isinstance(v, (int, float, str, bool, tuple, list, type(None)))}
     cfg = None
     if WS is not None:
         cfg = {}
@@ -745,7 +745,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     (the risk-model ensemble's view at the origin minus the network's). None: `net.haz_offset` if the caller attached one
     (pipeline.attach_ensemble), restricted to the hazards in ENS_OFFSET.
     `coup_align_mult`: None = 0.66 with the ensemble's coup offset, 0.7 without (both chosen on 1970-1998 hindcasts)."""
-    _call = {k: v for k, v in locals().items() if isinstance(v, (int, float, str, bool, tuple, type(None)))}
+    _call = {k: v for k, v in locals().items() if isinstance(v, (int, float, str, bool, tuple, list, type(None)))}
     gen = torch.Generator(device=device).manual_seed(seed)
     C = len(p.codes)
     if haz_offset is None and getattr(net, "haz_offset", None) is not None:
@@ -1773,8 +1773,11 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             # 0.30) and log child mortality -0.11 (0.02) per unit of log income above the country's pre-origin trend
             # path; years at war entered with the wrong sign and are left out (the -2 years at war above stays)
             dev_inc = torch.nan_to_num(lg_next - (lg_ref0 + g_ref * k)).clamp(-2.0, 2.0)
-            cur["life_exp"] = cur["life_exp"] + PRESTON[0] * dev_inc
-            cur["log_cm"] = cur["log_cm"] + PRESTON[1] * dev_inc
+            pr_le, pr_cm = PRESTON[0] * dev_inc, PRESTON[1] * dev_inc
+        else:
+            pr_le = pr_cm = 0.0
+        cur["life_exp"] = cur["life_exp"] + pr_le
+        cur["log_cm"] = cur["log_cm"] + pr_cm
         # transitory macro conditions revert toward the country's recent norm
         if INFL_CONV:
             infl_target = infl_target + INFL_CONV * (infl_med - infl_target)
@@ -1800,8 +1803,9 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                 cur[key] = cur[key] + ai.capacity_gain * A * (bounds[key][1] - cur[key]).clamp(min=0) * 0.5
             cm_trend = cm_trend - ai.health_gain * A
             le_trend = (le_trend + 0.1 * A).clamp(max=95)
-            cur["log_cm"] = cm_trend + 0.1 * conf_next
-            cur["life_exp"] = le_trend - 2.0 * conf_next - 0.5 * pandemic[:, None]
+            # (the Preston term must survive this rebuild: v55f_preston scored exactly 0.0 because it did not)
+            cur["log_cm"] = cm_trend + 0.1 * conf_next + pr_cm
+            cur["life_exp"] = le_trend - 2.0 * conf_next - 0.5 * pandemic[:, None] + pr_le
             if WS.cfg.food:
                 # yields: country trend (damped) + warming damage + AI agronomy; calories follow income and yields
                 dT = smooth["tas"] - prev_tas

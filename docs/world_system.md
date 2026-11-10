@@ -2708,3 +2708,19 @@ fixed: life expectancy +1.13 years (s.e. 0.30) and log child mortality -0.11 (0.
 country's own trend; years at war wrong-signed, left out. simulate.PRESTON (1.13, -0.11) under the adopt rule.
 Dated coups (Cline Center v2.2.2, Illinois Data Bank IDB-7095878): the repository refuses automated downloads (403);
 needs a browser download.
+- The audit's failing worlds (world income per person shrinking over 2026-2065 without a large nuclear exchange or AI
+  catastrophe; 3.9% of 2,000 worlds in a second run), against the other worlds (difference in standard deviations of
+  each sampled assumption): AI arrival 2063 vs 2048 on average (+0.92 sd), climate-damage family 1.65 vs 0.94 (+0.87;
+  family 2 is the Bilal-Kaenzig global estimate), robot arrival later (+0.73), the damage multiplier higher (+0.40);
+  great-power war in 40% vs 43%. Not a bug: the combination of no near-free AI and the largest climate-damage estimate.
+  Whether that estimate deserves its third of the weight is a judgement to state, not a test result.
+Adopt-rule variants on the fixed baseline (v55f_base: v55 with the three bug fixes; noise floor 0.88% composite, safe20
+0.267, onsets 9.5%):
+- Coup-only ensemble offset (simulate.ENS_OFFSET "c", the rolling coup recalibration carried into the simulator):
+  composite -0.07% (1970s -0.05%, 1980s +0.78%, 1990s -1.06%, 2000s -1.33%; coups -1.2%, conflict share +0.3%).
+  Rejected: inside the noise floor and better in only one decade of four.
+- Preston (first run): composite exactly 0.0 with every statistic unchanged. A bug in the variant, not a result: the
+  world layer (on in every hindcast and in the forecast) rebuilds life expectancy and child mortality from their
+  trends after the Preston term is added, discarding it. Fixed (the term is now carried through that rebuild), and the
+  run's config record now keeps list-valued switches (it had recorded PRESTON as absent). The invalid runs are kept in
+  outputs/world_hindcast_invalid.
