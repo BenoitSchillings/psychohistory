@@ -121,3 +121,20 @@ def test_civil_war_deaths_match_the_record_in_size(sim_env):
     d = np.asarray(_run(sim_env, years=10, n=200, seed=6)["world"]["civil_battle_deaths"])
     per_year = d.mean(axis=tuple(i for i, n in enumerate(d.shape) if n == 200))      # mean over worlds, by year
     assert 20_000 < per_year[1:].mean() < 150_000, per_year
+
+
+def test_random_channels_are_isolated():
+    """11 November 2026: named channels (psychohistory/rng.py). Extra draws in one channel, or a channel never used,
+    change nothing in another; a year's draws do not depend on how many were taken the year before"""
+    import torch
+    from psychohistory.rng import Channels
+    a, b = Channels(7, "cpu"), Channels(7, "cpu")
+    for k in (1, 2):
+        a.at(k); b.at(k)
+        torch.rand(1000, generator=b("pandemic"))                     # b draws far more here, and from one more channel
+        torch.rand(k * 17, generator=b("coup"))
+        ya = torch.rand(5, generator=a("growth"))
+        assert torch.equal(ya, torch.rand(5, generator=b("growth")))
+    a.at(2)
+    assert torch.equal(ya, torch.rand(5, generator=a("growth")))      # the same key gives the same numbers again
+    assert not torch.equal(ya, torch.rand(5, generator=Channels(8, "cpu")("growth")))

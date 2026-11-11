@@ -654,9 +654,11 @@ class World:
     def __init__(self, cfg: WorldConfig, p, base, origin, S, device, gen, dyads=None):
         self.cfg, self.S, self.dev, self.gen = cfg, S, device, gen
         # the yearly pair draws have their own generator, so a run without the interstate layer stays paired
-        self.gen_pair = torch.Generator(device=device).manual_seed((int(gen.initial_seed()) if gen is not None else 0) + 1423)
-        self.gen_cascade = torch.Generator(device=device)
-        self.gen_cascade.manual_seed(int(gen.initial_seed()) + 7919 if gen is not None else 7919)
+        # (in-loop draws: named channels, re-keyed every simulated year; psychohistory/rng.py)
+        if not callable(gen):
+            from .rng import Channels
+            gen = self.gen = Channels(int(gen.initial_seed()) if gen is not None else 0, device)
+        self.gen_pair, self.gen_cascade = gen("pairs"), gen("cascade")
         self._draw_params(S, device, int(gen.initial_seed()) if hasattr(gen, "initial_seed") else 0)
         self.ai_cat_done = torch.zeros(S, device=device)         # AI catastrophe already happened in this world
         self.ai_cat_back = torch.zeros(S, device=device)         # output still to recover from it
@@ -759,8 +761,7 @@ class World:
         # --- missing factors (risks.py): nuclear status per world, weapons programs, trade links, the West, minerals,
         # low-lying coasts, upstream rain
         from . import risks as R_
-        self.gen_risk = torch.Generator(device=device)
-        self.gen_risk.manual_seed(int(gen.initial_seed()) + 7777 if gen is not None else 7777)
+        self.gen_risk = gen("nuclear")
         warh = np.nan_to_num(np.asarray(p.x["warheads"], float)[:, t0]) if "warheads" in p.x else np.zeros(C)
         self.nuclear = (torch.as_tensor(warh > 0, device=device)[None].repeat(S, 1))
         self.nuclear0 = self.nuclear.clone()
@@ -934,8 +935,7 @@ class World:
         P_ = pools(self.origin)
         self.ws_major, self.ws_other = torch.log10(f(P_["major"])), torch.log10(f(P_["other"]))
         self.ws_minor, self.ws_bw, self.ws_cap, self.ws_floor = f(P_["minor"]), BW, CAP, FLOOR
-        self.gen_size = torch.Generator(device=self.dev)
-        self.gen_size.manual_seed(int(self.gen.initial_seed()) + 104729 if self.gen is not None else 104729)
+        self.gen_size = self.gen("war_size")
         self.war_rate = torch.where(self.war > 0.5, self._draw_rate(), torch.zeros(S, P, device=self.dev))
         for (a_, b_), v_ in P_["known"].items():          # wars under way at the origin keep their observed rate
             if a_ in ci and b_ in ci and int(self.pair_index[ci[a_], ci[b_]]) >= 0:
