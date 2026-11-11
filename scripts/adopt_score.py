@@ -71,26 +71,33 @@ def composite(A, B, origins, weights):
     return rel, sum(w * rel[k] for k, w in weights.items()) / tot
 
 
-def active_weights():
-    f = os.path.join(OUT, "noise_floor.json")
+def active_weights(base=None):
+    """the weights and the noise floor of this baseline (audit 2026-11-10: one shared noise_floor.json was used for every
+    baseline, whichever it had been measured on); the shared file is read only if it was measured on `base`"""
+    f = os.path.join(OUT, f"noise_floor_{base}.json")
+    if not os.path.exists(f):
+        f = os.path.join(OUT, "noise_floor.json")
     if not os.path.exists(f):
         return dict(WEIGHTS), None
     nf = json.load(open(f))
+    if base is not None and nf.get("base") != base:
+        return dict(WEIGHTS), None
     w = {k: v for k, v in WEIGHTS.items() if k not in nf.get("dropped", [])}
     return w, nf
 
 
 def decide(base, var, seeds, origins):
-    w, nf = active_weights()
+    w, nf = active_weights(base)
     A, B = table(base, seeds, origins), table(var, seeds, origins)
     rel, comp = composite(A, B, origins, w)
+    rel_all = composite(A, B, origins, WEIGHTS)[0]      # the guardrail covers every statistic, weighted or dropped
     by_dec = {}
     for d in sorted({decade(o) for o in origins}):
         os_ = [o for o in origins if decade(o) == d]
         by_dec[d] = composite(A, B, os_, w)[1]
     better_dec = sum(v < 0 for v in by_dec.values())
     floor = nf["composite_floor"] if nf else None
-    guard = {k: v for k, v in rel.items() if v > GUARD}
+    guard = {k: v for k, v in rel_all.items() if v > GUARD}
     # non-regression guardrail on the safe-country tail (second debate, 6 November 2026): the 15-year score of new
     # wars among the 20 safest countries may not get worse by more than its noise between refits
     if "safe20_wars" in A[origins[0]]:
@@ -103,7 +110,7 @@ def decide(base, var, seeds, origins):
            "relative_change": {k: round(v, 4) for k, v in rel.items()}, "composite": round(comp, 4),
            "composite_by_decade": {k: round(v, 4) for k, v in by_dec.items()}, "decades_better": better_dec,
            "noise_floor": floor, "guardrail_breaches": guard, "adopt": bool(ok),
-           "verdict": "adopt" if ok else ("no noise floor measured yet" if floor is None else "reject")}
+           "verdict": "adopt" if ok else ("no noise floor measured on this baseline: run --floor " + base if floor is None else "reject")}
     # diagnostics, outside the decision
     diag = {}
     for k in ("safe20_wars", "gdp_falls"):
@@ -144,7 +151,8 @@ def floor(base, seeds, origins):
            "composite_floor": round(2 * float(np.std(comps_w, ddof=1)), 4),
            "note": "floor = 2 x sd between ensemble refits of the baseline (each against the mean of the others)"}
     os.makedirs(OUT, exist_ok=True)
-    json.dump(res, open(os.path.join(OUT, "noise_floor.json"), "w"), indent=1)
+    json.dump(res, open(os.path.join(OUT, f"noise_floor_{base}.json"), "w"), indent=1)
+    json.dump(res, open(os.path.join(OUT, "noise_floor.json"), "w"), indent=1)        # (the latest, for reference)
     return res
 
 

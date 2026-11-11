@@ -91,3 +91,4 @@ us_history/brightline_annual.csv
 us_history/anes_annual.csv
 oil-prices.csv
 political_economy/imf_dsa
+conflictforecast

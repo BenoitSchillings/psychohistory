@@ -520,6 +520,21 @@ TAIL_RANGES = {"soot_log": (0.0, math.log(150.0)), "winter_real": (0.1, 1.0), "v
 # year after the harvest (the growth step runs first). None = off (staged for February 2027).
 HARVEST_GDP = (0.0144, 0.1534)
 
+# Deaths in civil conflicts, for the population only (the risk models keep their own battle-death feature): battle deaths
+# per million follow log d' = 0.433 + 0.828 log d + 1.12 e while a conflict lasts and a new conflict draws
+# lognormal(median 6.7, log sd 2.13) (scripts/civil_deaths_fit.py, UCDP 1990-2024, 846 and 162 country-years). Before
+# version 57 an ongoing conflict kept its origin-year rate for ever (Israel 2,781 per million a year from the Gaza war)
+# and every new conflict had 2 per million. None switches back to that.
+CIVIL_DEATHS = (0.433, 0.828, 1.12, 6.7, 2.13)
+# UCDP places Gaza and the West Bank in Israel: deaths recorded there fall on Palestine's population
+DEATHS_FALL_ON = {"ISR": "PSE"}
+# False (version 57): the output loss of a nuclear winter's failed harvests is not added, because the world loss after a
+# large exchange (world.nuc_gdp_large, 5-30%) is already defined to include its climate effects; in version 56 both
+# applied (up to another 18% in farm economies). The harvest loss itself, the famine and VEI 7 eruptions are unchanged.
+WINTER_HARVEST_GDP = False
+# True: the income that moves health is income after war and climate damage, as recorded GDP is (the estimate used
+# recorded GDP, and fertility already responds to income after damage). Under test (scripts/preston_net_test.py).
+PRESTON_NET = False
 PRESTON = (1.13, -0.11)            # (life expectancy, log child mortality) per unit log income above trend; (1.13, -0.11) under test
 ABSENT_MASK = True        # countries not yet existing at a hindcast origin: out of the alignment, no wars or coups
 ONSET_SLOPE = 1.0         # onset log-odds x this before alignment (1.15-1.5 rejected 2026-11-03: worse on 1970-1998)
@@ -812,6 +827,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         torch.zeros(len(p.codes), dtype=torch.bool, device=device)
     h["conflict"] = torch.nan_to_num(h["conflict"])
     cur = {k: tt(base[k][:, t0])[None].repeat(S, 1) for k in CURRENT_VARS}
+    bd0_pop = cur["battle_deaths_pc"].nan_to_num(0.0).clone()      # origin-year deaths per million (CIVIL_DEATHS)
     # trends (country-level, deterministic)
     urban_rate = tt(_logistic_rate(base["urban"], t0))
     cm_rate = tt(np.clip(np.nan_to_num(_trend_rate(base["log_cm"], t0)), -0.1, 0.0))
@@ -1156,14 +1172,16 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
     var_w = var_r = 0.0
     # country frailty (frailty_sd > 0): a persistent per-world, per-country log-odds shift, + on onsets, - on endings,
     # so war-prone countries stay war-prone (less churn than independent yearly draws)
-    frail = frailty_sd * torch.randn(S, C, device=device, generator=gen) if frailty_sd else 0.0
+    # (both frailty fields are drawn whatever the settings, so a run with a frailty switched off stays paired)
+    _fr0, _fr1 = torch.randn(S, C, device=device, generator=gen), torch.randn(S, C, device=device, generator=gen)
+    frail = frailty_sd * _fr0 if frailty_sd else 0.0
     if frailty_sd and FRAILTY_SPATIAL:
         from .features import SPATIAL as _SP
         Wn = _SP["W"].to(device)
         Wn = Wn / Wn.sum(1, keepdim=True).clamp(min=1e-12)
         rho_ = float(FRAILTY_SPATIAL)
         frail = ((1 - rho_) * frail + rho_ * frail @ Wn.T) / torch.sqrt((1 - rho_) ** 2 + rho_ ** 2 * (Wn ** 2).sum(1))[None]
-    frail_c = coup_frailty_sd * torch.randn(S, C, device=device, generator=gen) if coup_frailty_sd else 0.0
+    frail_c = coup_frailty_sd * _fr1 if coup_frailty_sd else 0.0
 
     # observed rates over the `align_window` years before the origin (alignment targets), optionally blended with the
     # long-run rate since 1946 (weight align_longrun_w): a turbulent recent decade need not persist
@@ -1489,22 +1507,23 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             WS.rec["bubble"].append(hit_b[:, 0])
             # financial crises added by AI-correlated finance cost output (1952-2024 estimate), the year after
             g = g - WS.cfg.fin_crisis_cost[0] * fin_extra - WS.cfg.fin_crisis_cost[1] * fin_extra_prev
-            # pandemics: a common shock to every country in that world
+            # pandemics: a common shock to every country in that world (the four draws are taken whatever the
+            # switches, so runs with a channel off stay paired)
+            u_p1, u_p2 = torch.rand(S, device=device, generator=gen), torch.rand(S, device=device, generator=gen)
+            u_eng, u3 = torch.rand(S, device=device, generator=gen), torch.rand(S, device=device, generator=gen) ** 3
             if WS.cfg.pandemics:
                 # natural pandemics, made rarer and milder by AI surveillance and countermeasures; plus, with AI, a
                 # heavy tail of engineered ones, likelier in a more violent world
                 frf = fr.flatten()
                 p_nat = WS.prm("pandemic_p") * (1 - (WS.prm("natural_cut") if ai.arrival else 0.0) * fr)
                 p_nat = p_nat.flatten() if torch.is_tensor(p_nat) else p_nat
-                pandemic = (torch.rand(S, device=device, generator=gen) < p_nat).float()
+                pandemic = (u_p1 < p_nat).float()
                 lo_p, hi_p = WS.cfg.pandemic_gdp
-                hit = lo_p + (hi_p - lo_p) * torch.rand(S, device=device, generator=gen)
+                hit = lo_p + (hi_p - lo_p) * u_p2
                 pcut = (1 - WS.tech.lever("pandemic_cut").clamp(max=1)).flatten() if WS is not None and WS.tech is not None else 1.0   # fast vaccines
                 g = g + (pandemic * hit * pcut * (1 - (1 - ai.bio_response) * frf))[:, None]
                 pm_ = WS.prm("pandemic_mort")
                 pand_mort = pandemic * (pm_.flatten() if torch.is_tensor(pm_) else pm_) * pcut * (1 - (1 - ai.bio_response) * frf)
-                u_eng = torch.rand(S, device=device, generator=gen)       # drawn in every world: paired runs stay paired
-                u3 = torch.rand(S, device=device, generator=gen) ** 3
                 eng_t = WS.tech.lever("eng_pandemic").flatten() if WS is not None and WS.tech is not None else 0.0       # pathogen tools (tech.py)
                 if ai.arrival or WS is not None and WS.tech is not None:
                     p_eng = ((WS.prm("eng_pandemic") * fr).flatten() if ai.arrival else 0.0) + eng_t
@@ -1514,9 +1533,11 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                     pand_mort = torch.maximum(pand_mort, eng * (0.002 + 0.05 * u3))     # deaths scale with severity (assumption)
                     pandemic = torch.maximum(pandemic, eng)
                     WS.rec["eng_pandemic"].append(eng)
+            if not WS.cfg.pandemics:
+                pand_mort = torch.zeros(S, device=device)      # this year's deaths only (was carried over without pandemics)
+            u_c = torch.rand(S, device=device, generator=gen)   # drawn in every world and configuration: paired runs stay paired
             if WS.cfg.ai_catastrophe and ai.arrival:
                 # AI loss of control (assumption, world.WorldConfig.ai_catastrophe): once per world at most
-                u_c = torch.rand(S, device=device, generator=gen)
                 p_c = (WS.prm("ai_cat_rate") * fr).flatten()
                 cat = ((u_c < p_c) & (WS.ai_cat_done < 0.5)).float()
                 WS.ai_cat_done = torch.maximum(WS.ai_cat_done, cat)
@@ -1561,7 +1582,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             # (a historical year of its own each year, not the world's replayed decade: a decade block repeats one
             #  era's direction of the oil price ten times; own generator so the other draws stay paired)
             if k == 1:
-                gen_oil = torch.Generator(device=device).manual_seed(seed + 7777)
+                gen_oil = torch.Generator(device=device).manual_seed(seed + 6007)     # (was + 7777, shared with the nuclear-risk generator in world.py)
             oil_hist = oil_change_t[torch.randint(len(oil_change_t), (S,), device=device, generator=gen_oil)][:, None]
         else:
             oil_hist = oil_change_t[shock_idx][:, None]
@@ -1757,7 +1778,24 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             pop_now = torch.exp(exo["lpop"][:, k]) * torch.exp(pop_off)
             # civil wars too (fixed 2026-11-10: only wars between states were subtracted): battle deaths per million,
             # with the same civilian and indirect multiplier
-            civ_d = cur["battle_deaths_pc"].nan_to_num(0.0) / 1e6 * (1 + WS.prm("civ_mult"))
+            if CIVIL_DEATHS:
+                if k == 1:
+                    gen_civ = torch.Generator(device=device).manual_seed(seed + 1783)      # own generator: runs stay paired
+                    bd_pop = bd0_pop        # the origin year's rate (taken before the first step)
+                e_civ = torch.randn(S, C, device=device, generator=gen_civ)
+                a_, b_, sd_, m0_, sd0_ = CIVIL_DEATHS
+                cont_ = torch.exp(a_ + b_ * torch.log(bd_pop.clamp(min=0.1)) + sd_ * e_civ)
+                new_ = m0_ * torch.exp(sd0_ * e_civ)
+                bd_pop = torch.where(conf_next > 0.5, torch.where((onset_next > 0) | (bd_pop <= 0), new_, cont_),
+                                     torch.zeros_like(conf_next)).clamp(max=1e4)
+                civ_d = bd_pop / 1e6 * (1 + WS.prm("civ_mult"))
+                for src_, dst_ in DEATHS_FALL_ON.items():
+                    if src_ in p.codes and dst_ in p.codes:
+                        i_, j_ = p.codes.index(src_), p.codes.index(dst_)
+                        civ_d[:, j_] = civ_d[:, j_] + civ_d[:, i_] * pop_now[:, i_] / pop_now[:, j_].clamp(min=1)
+                        civ_d[:, i_] = 0.0
+            else:
+                civ_d = cur["battle_deaths_pc"].nan_to_num(0.0) / 1e6 * (1 + WS.prm("civ_mult"))
             dshare = ((WS.deaths_year / pop_now.clamp(min=1)) + civ_d + pand_mort[:, None]).clamp(0, 0.5)
             if tail is not None:
                 # famine after a nuclear winter (computed in last year's harvest step)
@@ -1816,7 +1854,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             # country-clustered, with the previous decade's own change held fixed: life expectancy +1.13 years (s.e.
             # 0.30) and log child mortality -0.11 (0.02) per unit of log income above the country's pre-origin trend
             # path; years at war entered with the wrong sign and are left out (the -2 years at war above stays)
-            dev_inc = torch.nan_to_num(lg_next - (lg_ref0 + g_ref * k)).clamp(-2.0, 2.0)
+            dev_inc = torch.nan_to_num(lg_next + ((dmg_cum + war_cum) if PRESTON_NET else 0.0) - (lg_ref0 + g_ref * k)).clamp(-2.0, 2.0)
             pr_le, pr_cm = PRESTON[0] * dev_inc, PRESTON[1] * dev_inc
         else:
             pr_le = pr_cm = 0.0
@@ -1913,7 +1951,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                     dly = dly - (L_ - tail["L_prev"])[:, None]
                     tail["L_prev"] = L_
                     if HARVEST_GDP:
-                        harv_ev = harv_ev + L_[:, None]
+                        # the eruption's harvest loss costs output; the nuclear winter's does only if WINTER_HARVEST_GDP
+                        harv_ev = harv_ev + (L_ if WINTER_HARVEST_GDP else -torch.log1p(-(tail["vei7_yield"] * prof_v).clamp(max=0.95)))[:, None]
                     WS.rec.setdefault("winter_loss", []).append(-torch.expm1(-tail["soot"] / 65) * prof_n)
                     WS.rec.setdefault("vei7", []).append((tail["v7_t"] == year).float())
                 if WS.cfg.water:

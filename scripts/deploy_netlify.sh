@@ -13,6 +13,8 @@ cp docs/data_dependencies.svg outputs/netlify_site/
 python3 -P scripts/build_site_pages.py   # methodology.html, data_sources.html
 cp site/notes.js outputs/netlify_site/
 for f in index methodology data_sources ethics tldr; do
+  # links between the pages stay on this site
+  sed -i 's#https://benoitschillings.github.io/psychohistory/\(methodology\|data_sources\|ethics\|tldr\)\.html#\1.html#g' outputs/netlify_site/$f.html
   grep -q 'src="/notes.js"' outputs/netlify_site/$f.html || \
     sed -i 's#</html>\s*$#<script src="/notes.js" defer></script>\n</html>#' outputs/netlify_site/$f.html
   grep -q 'src="/notes.js"' outputs/netlify_site/$f.html || echo '<script src="/notes.js" defer></script>' >> outputs/netlify_site/$f.html

@@ -121,3 +121,30 @@ No licence could be verified (free to download, citation requested; excluded to 
 | `tech/chat*`, `tech/robots_cy.csv`, `tech/way2022_parameters.csv` | CHAT (Comin–Hobijn); IFR robots (derived, CC BY-ND upstream); Way et al. 2022 parameters | https://data.nber.org/data-appendix/w15319/ ; https://ourworldindata.org/ ; Joule 2022 SI |
 | `us/motherjones_mass_shootings.csv` | Mother Jones mass shootings | https://www.motherjones.com/politics/2012/12/mass-shootings-mother-jones-full-data/ |
 | `us_history/voteview*`, `us_history/grumbach*`, `us_history/brightline*`, `us_history/anes_annual.csv` | Voteview; State Democracy Index; Bright Line Watch; trust series | https://voteview.com/data ; https://democracypolicylab.berkeley.edu/state-democracy-index/ ; https://brightlinewatch.org/ |
+
+## Added or re-examined since the October review (code audit, 10 November 2026)
+
+The data release `data-2026-10-29` predates these sources; none of them is in it. A newer release will include only
+those marked "may be redistributed".
+
+| Source | Used for | Terms as read | In the next data release |
+|---|---|---|---|
+| Ember yearly electricity data (`energy/ember/`) | cross-check of reported growth | CC BY 4.0 (attribution: Ember) | may be redistributed |
+| UN DESA WPP 2024 by five-year age group (`demography/wpp2024_age5/`) | working-age test | CC BY 3.0 IGO | may be redistributed |
+| conflictforecast.org news topics, Mueller & Rauh (`conflictforecast/`) | the 12-month model since version 56 | free for non-commercial use with citation; no redistribution clause | not redistributed: https://conflictforecast.org |
+| Polymarket and Manifold market snapshots (`outputs/ledger/crowd_snapshots.jsonl`: question titles and prices) | the forward comparison with crowds | Manifold publishes its data for reuse; Polymarket's terms on republishing prices could not be verified | tracked in the repository as short factual records; will be removed on request |
+| Carleton et al. 2022 mortality estimates | heat and cold deaths | replication data, citation requested; licence not verified | not redistributed until verified |
+| Integrated Values Survey / World Values Survey trust series | tested, not in the forecast | WVS forbids redistribution of its files; the series here come through Our World in Data | to be removed from the release unless OWID's licence is confirmed to cover them |
+| AI Impacts survey, FRI (XPT, LEAP), Metaculus quartiles (`data/ai_ledger/sources.csv`) | the AI arrival assumption | a handful of published summary numbers with their source and date, not the datasets | summary numbers only |
+| IEA, CEPI, GRI quantum timeline | technology and catastrophe anchors | published headline figures, cited | summary numbers only |
+
+Open points from the same audit, not yet resolved:
+- Series that reach this project through Our World in Data but belong to a third party (SIPRI military spending,
+  the Energy Institute review, the World Happiness Report, IFR robot counts): OWID's CC BY covers its own work, not
+  necessarily the underlying data. SIPRI's own file is already excluded; these indirect copies should be checked
+  before the next data release.
+- The Martinez (2022) replication package contains Freedom House data, which has its own terms.
+- The processed files in `data/` are built from sources that include share-alike and non-commercial licences
+  (V-Dem CC BY-SA; Global Macro Database, EPR, JST and Seshat CC BY-NC-SA). Treat them as CC BY-NC-SA.
+- The code carries no licence file yet: until the director chooses one, all rights are reserved.
+

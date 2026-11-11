@@ -42,12 +42,12 @@ def issue():
                          "target_year": MO.M0 + y, "target_month": m + 1, "horizon": h, "p_ge25": round(float(v), 5)})
     path = os.path.join(LEDGER, f"monthly_{LAST[0]}-{LAST[1]:02d}.csv")
     if os.path.exists(path):
-        print("already issued:", path)
+        print("already issued:", os.path.relpath(path, ROOT))
         return
     pd.DataFrame(rows).to_csv(path, index=False)
     ann = MO.predict_annual(MO.fit_annual(F, hit, t), F, t)       # (the product of monthly forecasts overstated it)
     top = sorted(zip(codes, ann, hit[:, t - 11:t + 1].max(1)), key=lambda r: -r[1])
-    print("issued", path)
+    print("issued", os.path.relpath(path, ROOT))
     print("highest chance of a 25-death month, Oct 2026 - Sep 2027, among countries without one in the past year:",
           [(c, round(float(a), 3)) for c, a, h in top if h == 0][:10])
 
@@ -66,7 +66,12 @@ def summary(year, month):
     f = os.path.join(ROOT, "outputs", "ledger_summary.json")
     old = json.load(open(f)) if os.path.exists(f) else {}
     rank = lambda v, m: dict(sorted(((c, round(float(a), 4)) for c, a, k in zip(codes, v, m) if k), key=lambda r: -r[1]))
-    out = {"issued": old.get("issued", dt.date.today().isoformat()), "data_to": f"{year}-{month:02d}",
+    # "issued" is the date these numbers were computed (audit 2026-11-10: it kept the first date while the numbers
+    # were recomputed with later code); the date of the first summary for this data month is kept beside it
+    same = old.get("data_to") == f"{year}-{month:02d}"
+    out = {"issued": dt.date.today().isoformat(),
+           "first_issued": (old.get("first_issued") or old.get("issued")) if same else dt.date.today().isoformat(),
+           "data_to": f"{year}-{month:02d}",
            "months": old.get("months"),
            "n_rows": old.get("n_rows"), "n_active": int(active.sum()),
            "annual_method": "direct 12-month model (monthly.fit_annual), since 2026-11-06",

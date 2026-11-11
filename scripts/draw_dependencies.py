@@ -24,7 +24,7 @@ N = {
     "ucdp": (0, "UCDP ACD 26.1 · BRD / NS / OS 25.1", "armed-conflict years, battle deaths, non-state & one-sided violence"),
     "ged": (0, "UCDP GED 26.1 + Candidate monthly", "geolocated events; data vintages as forecasters had them"),
     "events": (0, "Event data: ICEWS, POLECAT, GDELT", "country-year, country-month and dyad event counts (GDELT through 2025)"),
-    "cfnews": (0, "conflictforecast.org news topics", "news-topic stocks per country-month from 2010 (Mueller & Rauh); for the February 2027 release"),
+    "cfnews": (0, "conflictforecast.org news topics", "news-topic stocks per country-month from 2010 (Mueller & Rauh); in the 12-month model since version 56"),
     "cow": (0, "COW, ATOP, MID, rivalries, NMC, ICB, UNGA", "states, majors, contiguity, alliances, disputes, capabilities, crises, UN voting alignment"),
     "cowwar": (0, "COW Inter-State War v4", "battle deaths per war; war winners and losers (revenge test)"),
     "energy": (0, "Energy & geopolitical risk", "WDI fuel trade, Caldara-Iacoviello GPR, EI oil, WB Pink Sheet prices"),

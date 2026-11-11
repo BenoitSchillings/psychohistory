@@ -62,3 +62,52 @@ def test_release_scripts_stay_inside_the_repository():
     for f in glob.glob(os.path.join(root, "scripts", "*.sh")):
         src = open(f).read()
         assert "psycho_scratch" not in src and "/home/" not in src, f
+
+
+@pytest.mark.slow
+def test_switches_keep_runs_paired(sim_env):
+    """10 November 2026 audit: draws taken from the main generator only when a switch was on (the AI catastrophe, country
+    frailty, the interstate layer, pandemics) shifted every later draw, so knockouts and the AI / no-AI comparison were
+    not paired with the baseline"""
+    from psychohistory.world import WorldConfig, AI_SCENARIOS
+    base = _run(sim_env, seed=5)["world"]
+    variants = {"frailty": dict(frailty_sd=0.0),
+                "interstate": dict(world=WorldConfig(sample_params=True, interstate=False)),
+                "ai_catastrophe": dict(world=WorldConfig(sample_params=True, ai_catastrophe=False)),
+                "ai_none": dict(world=WorldConfig(sample_params=True, ai=AI_SCENARIOS["none"])),
+                "pandemics": dict(world=WorldConfig(sample_params=True, pandemics=False))}
+    for name, kw in variants.items():
+        w = _run(sim_env, seed=5, **kw)["world"]
+        for k in ("volcano", "bubble") + (() if name == "pandemics" else ("pandemic",)):
+            assert np.array_equal(np.asarray(base[k]), np.asarray(w[k])), (name, k)
+
+
+def test_seed_offsets_are_unique():
+    """10 November 2026 audit: seed + 7777 seeded both the oil draws and the nuclear-risk generator (and seed + 919 two
+    draws before that): every generator needs its own offset"""
+    import os, re
+    root = os.path.join(os.path.dirname(__file__), "..", "psychohistory")
+    found = []
+    for f in ("simulate.py", "world.py", "tech.py"):
+        for line in open(os.path.join(root, f)):
+            code = line.split("#")[0]
+            if "manual_seed" in code:
+                found += [(int(n), f) for n in re.findall(r"\+ (\d{1,6})\b", code)]
+    offsets = [n for n, _ in found]
+    exclusive = {4242}          # the structural draw: two branches of one if / elif, never both
+    dup = sorted({n for n in offsets if offsets.count(n) > 1} - exclusive)
+    assert len(offsets) >= 15 and not dup, dup
+
+
+@pytest.mark.slow
+def test_gaza_deaths_do_not_fall_on_israel(sim_env, monkeypatch):
+    """10 November 2026 audit: Israel lost about 0.8% of its population a year, because UCDP places the Gaza war's
+    deaths in Israel and an ongoing conflict kept its origin-year death rate for ever"""
+    from psychohistory import simulate as SIM
+    p = sim_env[0]
+    i, j = p.codes.index("ISR"), p.codes.index("PSE")
+    new = _run(sim_env, years=5, seed=2)["paths"]["pop"]
+    monkeypatch.setattr(SIM, "CIVIL_DEATHS", None)
+    old = _run(sim_env, years=5, seed=2)["paths"]["pop"]
+    assert (new[:, i, -1] / old[:, i, -1]).mean() > 1.01          # Israel no longer loses them
+    assert (new[:, j, -1] / old[:, j, -1]).mean() < 1.0           # they fall on Palestine

@@ -65,7 +65,10 @@ confirm on 2000–2012, two network seeds"):
 
 ## Prospective ledgers
 
-- One canonical frozen forecast per published release, named before any of its outcomes is known
+- One canonical frozen forecast per published release, named before any of its outcomes is known. Exception found by
+  the audit of 10 November 2026: versions 53 to 57 were issued in November 2026 from the 2025 origin, with conflict
+  data to September 2026 already in hand and that year's wars between states entered as observed. Their score for
+  2026 is therefore not a forecast; the first blind year is 2027, and the ledger reports 2026 separately.
   (`scripts/annual_ledger.py canonical VERSION "release"`; `outputs/ledger/canonical.jsonl`). Other frozen versions are
   scored but are not the release's record.
 - Annual ledger: each country's yearly P(in conflict) in Brier score against persistence whose two rates (staying
@@ -91,6 +94,18 @@ confirm on 2000–2012, two network seeds"):
   current results.
 
 ## Changes to this rule (continued)
+
+- 10 November 2026 (code audit; no test pending): three corrections to how the rule is applied, none to the rule.
+  (i) The noise floor is stored per baseline (`outputs/adopt/noise_floor_BASE.json`) and a decision uses only the
+  floor measured on its own baseline; before, one shared file was used whichever baseline it came from. (ii) The 3%
+  guardrail covers every statistic, including one that lost its weight because its own floor is above 10%; before, a
+  dropped statistic escaped the guardrail. (iii) Variants are run with `scripts/hindcast_tag.sh`, in the repository.
+  Known weaknesses, stated rather than changed: the floor is the spread of only three refits, so it is itself
+  uncertain (0.0113 and 0.0088 on two baselines); the 15-year windows of neighbouring origins overlap, so the four
+  decades are not independent; and a do-nothing refit moves one decade's composite by up to about 4%, so "three of
+  four decades" has little power for small effects. The rule therefore errs towards rejection: all fifteen decisions
+  recorded under it were rejections, and what went into versions 55 and 56 went in as bug fixes, stated assumptions
+  or tests on the country models, not through this rule.
 
 - 10 November 2026: releases are no longer quarterly. At the director's request a new model version is released
   whenever something better is ready: changes that passed their pre-registered tests, bug fixes, and stated assumptions

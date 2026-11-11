@@ -77,6 +77,8 @@ def readme_summary(folder):
     text = open(path, encoding="utf-8", errors="replace").read()
     for para in re.split(r"\n\s*\n", text):
         para = para.strip()
+        para = re.sub(r"<[^>]+>", " ", para).strip()                          # third-party READMEs carry HTML
+        para = re.sub(r"(mailto:)?[\w.+-]+@[\w-]+(\.[\w-]+)+", "", para)        # and e-mail addresses: neither is published
         if para and not para.startswith(("#", "|", "```", "*", "-")):
             para = re.sub(r"`([^`]*)`", r"\1", re.sub(r"\*\*([^*]*)\*\*", r"\1", " ".join(para.split())))
             para = para.replace(ROOT + "/", "").replace(os.path.expanduser("~"), "~")

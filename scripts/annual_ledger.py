@@ -128,7 +128,9 @@ def score():
             pers_fixed = np.array([0.9 if prev[ci[c]] >= 25 else 0.1 for c, _ in rows])
             share = float(yv.mean())
             q = L["world"]["world_conflict_q"][j]
-            res[str(y)] = {"n": len(rows), "in_conflict": int(yv.sum()), "brier_model": round(float(np.mean((p - yv) ** 2)), 5),
+            # a year is blind only if the forecast was issued before it began (audit 2026-11-10: the versions issued in
+            # November 2026 had 2026 data to September in hand, so their 2026 score is not a forecast)
+            res[str(y)] = {"blind": bool(y > int(L["issued"][:4])), "n": len(rows), "in_conflict": int(yv.sum()), "brier_model": round(float(np.mean((p - yv) ** 2)), 5),
                            "brier_persistence": round(float(np.mean((pers - yv) ** 2)), 5),
                            "persistence_rates": [round(p_stay, 4), round(p_new, 4)],
                            "brier_persistence_fixed": round(float(np.mean((pers_fixed - yv) ** 2)), 5),
@@ -137,6 +139,7 @@ def score():
         res = res or None
         out["versions"][L["version"]] = {"canonical": canon.get(L["version"]), "years": res} if res else \
             {"canonical": canon.get(L["version"]), "years": f"first year ({L['years'][0]}) not complete yet (data through {last_full})"}
+        out["versions"][L["version"]]["first_blind_year"] = int(L["issued"][:4]) + 1
     return out
 
 

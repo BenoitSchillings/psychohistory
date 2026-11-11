@@ -1056,7 +1056,7 @@ great_power_war_cow_by, the COW majors only); the report shows both.
   (data/raw/outcomes/ucdp/candidate_live; `monthly.candidate_files()` / `last_observed()` now pick it up), issue of a
   12-month ledger, crowd snapshot (outputs/ledger/crowd_snapshots.jsonl), scoring vs persistence and climatology and of
   resolved markets -> outputs/prospective_scorecard.json, outputs/ledger/score_history.jsonl. Cron entry to add by hand:
-  `0 7 24 * * cd /home/benoit/tmp/psycho && /home/benoit/anaconda3/bin/python -P scripts/prospective.py >> outputs/ledger/cron.log 2>&1`.
+  `0 7 24 * * cd <repository> && python -P scripts/prospective.py >> outputs/ledger/cron.log 2>&1`.
   A new final GED release needs a manual switch (monthly.FINAL_THROUGH, cm_fatal._final); the script reports when one exists.
 
 ## Round 2026-10-27 (e): eval-driven tuning on the GPU (12-hour run)

@@ -24,4 +24,4 @@ the monthly ledgers, the version, headline and prose-number checks, the report, 
 1. `docs/methodology.md`: a dated section on what changed, and the changes table.
 2. Commit (including the new files in outputs/ledger) and push; `bash scripts/publish.sh` deploys both sites (GitHub
    Pages and Netlify) and checks that each shows the new version; republish the report artifact.
-3. Update the shared methodology document (claude.ai/artifact/1XZXktLR7M6sH1bd5Pof4J): headline, changes table, limits.
+3. Update the shared methodology document (its link is in the director's notes): headline, changes table, limits.

@@ -1,0 +1,24 @@
+{
+ "continuing": {
+  "n": 846,
+  "a": 0.433,
+  "b": 0.828,
+  "resid_sd": 1.12,
+  "stationary_mean": 91.0
+ },
+ "first_year": {
+  "n": 162,
+  "median": 6.7,
+  "log_sd": 2.13,
+  "implied_mean": 64.6,
+  "observed_mean": 157.4
+ },
+ "observed_mean_all_conflict_years": 106.7,
+ "CIVIL_DEATHS": [
+  0.433,
+  0.828,
+  1.12,
+  6.7,
+  2.13
+ ]
+}

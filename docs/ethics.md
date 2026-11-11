@@ -25,7 +25,7 @@ Seldon publishes probabilities of war, coups, democratic decline and economic co
 
 ## Reflexivity
 
-A published forecast can change what it predicts. A coup warning could, in principle, prompt pre-emptive repression, and a high collapse risk could raise borrowing costs. The project cannot measure these effects. It limits them in three ways: it publishes structural drivers rather than tactical signals, it updates the model quarterly rather than reacting to events, and it never presents a probability as a certainty. If a credible case is made that a specific published number is causing harm, the number will be reviewed and the decision logged.
+A published forecast can change what it predicts. A coup warning could, in principle, prompt pre-emptive repression, and a high collapse risk could raise borrowing costs. The project cannot measure these effects. It limits them in three ways: it publishes structural drivers rather than tactical signals, it changes the model only when a tested improvement is ready, never in reaction to an event, and it never presents a probability as a certainty. If a credible case is made that a specific published number is causing harm, the number will be reviewed and the decision logged.
 
 ## Who to contact
 

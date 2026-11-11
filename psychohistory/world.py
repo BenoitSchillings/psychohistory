@@ -653,6 +653,8 @@ class World:
 
     def __init__(self, cfg: WorldConfig, p, base, origin, S, device, gen, dyads=None):
         self.cfg, self.S, self.dev, self.gen = cfg, S, device, gen
+        # the yearly pair draws have their own generator, so a run without the interstate layer stays paired
+        self.gen_pair = torch.Generator(device=device).manual_seed((int(gen.initial_seed()) if gen is not None else 0) + 1423)
         self.gen_cascade = torch.Generator(device=device)
         self.gen_cascade.manual_seed(int(gen.initial_seed()) + 7919 if gen is not None else 7919)
         self._draw_params(S, device, int(gen.initial_seed()) if hasattr(gen, "initial_seed") else 0)
@@ -1277,7 +1279,7 @@ class World:
         if self.cfg.ai.arrival:
             # drones and autonomy favour the defence: war-level conflicts last longer
             p_cont = torch.where(self.war > 0.5, torch.sigmoid(lgt(p_cont) + self.prm("drone_persist") * M), p_cont)
-        u = torch.rand(S, P, device=dev, generator=self.gen)
+        u = torch.rand(S, P, device=dev, generator=self.gen_pair)
         active = torch.where(self.ongoing > 0.5, u < p_cont, u < p_on)
         forced_now = [int(self.pair_index[self.ci[a_], self.ci[b_]]) for a_, b_, y_ in self.cfg.forced
                       if y_ == self.origin + k and a_ in self.ci and b_ in self.ci and int(self.pair_index[self.ci[a_], self.ci[b_]]) >= 0]
@@ -1299,10 +1301,10 @@ class World:
         new = active & (self.ongoing < 0.5)
         nf_ = self.prm("nuclear_war_factor")
         nuc = 1 + (nf_ - 1) * both_n                                                        # [S, P]
-        new_war = new & (torch.rand(S, P, device=dev, generator=self.gen) < self.cfg.war_share * nuc)
+        new_war = new & (torch.rand(S, P, device=dev, generator=self.gen_pair) < self.cfg.war_share * nuc)
         # intensity of continuing conflicts (UCDP 1946-2024): war-level stays war-level with p = 0.71 (n = 24),
         # a minor conflict escalates to war level with p = 0.073 (n = 41)
-        u_w = torch.rand(S, P, device=dev, generator=self.gen)
+        u_w = torch.rand(S, P, device=dev, generator=self.gen_pair)
         cont_war = torch.where(self.war > 0.5, u_w < self.cfg.war_persist, u_w < self.cfg.war_escalate * nuc)
         war = torch.where(new, new_war, cont_war) & active
         # a minor conflict escalating to war level is also a war onset (allies may join; markets react)

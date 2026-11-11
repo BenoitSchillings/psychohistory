@@ -3,12 +3,18 @@
 // POST   /api/notes            {text, type, anchor, x, y, name, page} -> {note}
 // DELETE /api/notes?id=ID      header x-admin-key: NOTES_ADMIN_KEY (site environment variable) -> {ok: true}
 // Notes are stored and returned as plain data; the page renders them as text only. Per visitor (hashed IP, never stored
-// raw) at most DAILY_LIMIT notes a day.
+// raw) at most DAILY_LIMIT notes a day, and at most GLOBAL_DAILY from all visitors together. Posts must be JSON sent by
+// the site's own pages (content type and origin are checked), for one of the five known pages. GET returns the newest
+// MAX_SHOWN notes. (Hardened after the audit of 10 November 2026: there was no global cap, any page name was accepted,
+// and another site could post through its visitors with a plain form.)
 import { getStore } from "@netlify/blobs";
 
 const TYPES = ["doubt", "missing", "comment"];
 const MAX_TEXT = 1000;
-const DAILY_LIMIT = 30;
+const DAILY_LIMIT = 10;
+const GLOBAL_DAILY = 150;
+const MAX_SHOWN = 500;
+const PAGES = ["index", "methodology", "data_sources", "ethics", "tldr"];
 
 const json = (o, status = 200) =>
   new Response(JSON.stringify(o), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
@@ -25,11 +31,17 @@ export default async (req, context) => {
   const store = getStore({ name: prod ? "reader-notes" : "reader-notes-preview", consistency: "strong" });
   if (req.method === "GET") {
     const { blobs } = await store.list({ prefix: "n/" });
-    const notes = (await Promise.all(blobs.map((b) => store.get(b.key, { type: "json" })))).filter(Boolean);
+    // (keys start with a base-36 timestamp, so the last keys are the newest notes)
+    const keys = blobs.map((b) => b.key).sort().slice(-MAX_SHOWN);
+    const notes = (await Promise.all(keys.map((k) => store.get(k, { type: "json" })))).filter(Boolean);
     notes.sort((a, b) => (a.ts < b.ts ? -1 : 1));
     return json({ notes });
   }
   if (req.method === "POST") {
+    if (!(req.headers.get("content-type") || "").toLowerCase().startsWith("application/json"))
+      return json({ error: "bad request" }, 415);
+    const origin = req.headers.get("origin");
+    if (origin && new URL(origin).host !== new URL(req.url).host) return json({ error: "forbidden" }, 403);
     let b;
     try {
       b = await req.json();
@@ -38,11 +50,17 @@ export default async (req, context) => {
     }
     const text = String(b.text ?? "").trim().slice(0, MAX_TEXT);
     if (!text) return json({ error: "empty note" }, 400);
+    const page = String(b.page ?? "index");
+    if (!PAGES.includes(page)) return json({ error: "unknown page" }, 400);
     const day = new Date().toISOString().slice(0, 10);
     const rk = `r/${day}/${await hash(context.ip || "unknown")}`;
     const n = (await store.get(rk, { type: "json" }))?.n ?? 0;
     if (n >= DAILY_LIMIT) return json({ error: "daily limit reached" }, 429);
+    const gk = `r/${day}/_all`;
+    const g = (await store.get(gk, { type: "json" }))?.n ?? 0;
+    if (g >= GLOBAL_DAILY) return json({ error: "the notes are closed for today" }, 429);
     await store.setJSON(rk, { n: n + 1 });
+    await store.setJSON(gk, { n: g + 1 });
     const id = `${Date.now().toString(36)}-${crypto.randomUUID().slice(0, 8)}`;
     const note = {
       id,
@@ -52,7 +70,7 @@ export default async (req, context) => {
       x: clamp01(Number(b.x)),
       y: clamp01(Number(b.y)),
       name: String(b.name ?? "").trim().slice(0, 60),
-      page: String(b.page ?? "index").replace(/[^a-z_]/g, "").slice(0, 40) || "index",
+      page,
       ts: new Date().toISOString(),
     };
     await store.setJSON(`n/${id}`, note);

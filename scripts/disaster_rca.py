@@ -162,7 +162,7 @@ KNOCKOUTS = {
     "no_financial_contagion": dict(cfg=dict(fin_contagion=0.0)),
     "no_country_frailty": dict(kw=dict(frailty_sd=0.0)),
     "no_world_mood": dict(kw=dict(mood_sd=(0.0, 0.0))),
-    "no_tail_catastrophes": dict(cfg=dict(solar_p=0.0, volc_p=0.0)),
+    "no_tail_catastrophes": dict(cfg=dict(solar_p=0.0, volc_p=0.0), mod=dict(CATASTROPHE_TAILS=False)),   # (and no nuclear winter or VEI 7)
     # climate (2026-10-29): tails and channels off (a parameter set to its default would still be sampled, hence 1e-9)
     "no_climate_tails": dict(cfg=dict(amoc_p=1e-9, slr_ice_p=0.0, clim_tail_df=0.0, harvest_amp=1e-9, clim_conflict=1e-9,
                                       clim_migr=1e-9)),
@@ -195,11 +195,17 @@ def cmd_knock():
         if name in out["runs"]:
             continue
         sc = {k: [] for k in sc0}
+        from psychohistory import simulate as _SIM
+        keep = {k: getattr(_SIM, k) for k in spec.get("mod", {})}        # module switches, restored after the knockout
+        for k, v in spec.get("mod", {}).items():
+            setattr(_SIM, k, v)
         for seed in SEEDS:
             o = run(env, seed, cfg=knock_cfg(spec), record=False, **spec.get("kw", {}))
             for k, v in scores(per_world(o)).items():
                 sc[k].append(v)
             del o
+        for k, v in keep.items():
+            setattr(_SIM, k, v)
         sc = {k: np.concatenate(v) for k, v in sc.items()}
         out["runs"][name] = {k: {"tail_share": float((sc[k] > thr[k]).mean()), "median": float(np.median(sc[k])),
                                  "q99": float(np.quantile(sc[k], 0.99))} for k in sc}

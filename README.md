@@ -7,7 +7,7 @@ large populations; it cannot foresee individual events or leaders (the "Mule").
 
 A study conceived and directed by Benoit Schillings.
 
-- Interactive report: https://benoitschillings.github.io/psychohistory
+- Interactive report: https://benoitschillings.github.io/psychohistory (a second copy, with reader notes: https://seldon-psychohistory.netlify.app)
 - Methodology: https://benoitschillings.github.io/psychohistory/methodology.html (source: `docs/methodology.md`)
 - Data sources: https://benoitschillings.github.io/psychohistory/data_sources.html
 - Engineering log of every test, change and rejected idea: `docs/world_system.md`
@@ -24,6 +24,10 @@ bash scripts/fetch_data.sh          # everything, into data/raw/
 bash scripts/fetch_data.sh events   # one folder only
 ```
 
+The release predates the sources added in November 2026 (Ember electricity, the UN age-group file and the
+conflictforecast.org news topics that the 12-month model uses since version 56): until a newer data release is
+made, rebuilding the current version needs those downloaded by hand (`DATA_LICENSES.md`, last section).
+
 Some sources do not allow redistribution, or publish no licence; they are not in the release.
 `DATA_LICENSES.md` gives each source's licence and attribution, and the download page of every
 source left out. `python run.py data` re-downloads what it can automatically.
@@ -31,7 +35,7 @@ source left out. `python run.py data` re-downloads what it can automatically.
 ## Quick start
 
 ```bash
-pip install --user numpy pandas scikit-learn lightgbm torch pyreadr pyarrow requests
+pip install --user -r requirements.txt   # the versions the published forecast was built with
 python run.py all          # download data, backtest, hindcast, forecast, build the report
 xdg-open outputs/seldon_report.html
 ```
@@ -44,8 +48,8 @@ simulation takes ~10 s on an RTX 5060 Ti); CPU works but is slower.
 |---|---|---|
 | `run.py data` | download sources, build the country-year panel | `data/panel.npz` |
 | `run.py backtest` | rolling-origin backtest of the crisis models | `outputs/backtest_summary.csv`, `calibration.csv` |
-| `run.py hindcast` | run the simulator from 1975/1985/1995/2004 and score it | `outputs/hindcast_summary.csv` |
-| `run.py forecast` | backtest + hindcast + interstate module + 2024→2065 world simulation (climate, AI and alliance scenarios) | `outputs/forecast.json`, `country_forecasts.csv` |
+| `run.py hindcast` | run the simulator from past origins and score it (the testing rule uses `scripts/hindcast_tag.sh`: 16 origins 1970–2009, three refits; `docs/adopt_rule.md`) | `outputs/hindcast_summary.csv` |
+| `run.py forecast` | backtest + hindcast + interstate module + 2025→2065 world simulation (climate, AI and alliance scenarios) | `outputs/forecast.json`, `country_forecasts.csv` |
 | `run.py states` | US state module (backtest, 2025–29 risks, stress index, climate) | `outputs/us_states.json` |
 | `scripts/run_panel.py` | ask two AI analysts to review the five-year forecasts (needs their command-line tools; see psychohistory/llm_panel.py) | `outputs/llm_panel.json`, appends to `outputs/llm_ledger.jsonl` |
 | `scripts/score_2025.py` | score the 2024-origin models on 2025 outcomes (UCDP 26.1, V-Dem v16) | `outputs/score_2025.json` |
@@ -58,6 +62,17 @@ simulation takes ~10 s on an RTX 5060 Ti); CPU works but is slower.
 
 The report inlines `outputs/narrative.md` (written commentary) and `outputs/review_response.md`
 (the independent review and what was done about it) when present.
+
+## Tests and releases
+
+```bash
+python -P -m pytest -q tests                     # smoke tests and a regression test for every bug found (about 2 minutes)
+bash scripts/release.sh 57 "11 November 2026"    # AI rebuild, tests, forecast chain, ledgers, number checks, report
+bash scripts/publish.sh                          # after reading the report and pushing: both sites, checked live
+```
+
+A new version is released whenever a tested improvement or a bug fix is ready (`docs/adopt_rule.md`,
+`docs/release_checklist.md`). Every release freezes its forecast in `outputs/ledger/` for later scoring.
 
 ## What it predicts
 
