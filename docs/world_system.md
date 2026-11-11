@@ -2828,3 +2828,29 @@ Three audits (simulator, leakage, site); fixes in commits 329264b, 9df2d02, a990
 - The release chain resumes after an outside failure (CHAIN_FROM=step): the rebuild's uncertainty runs died once on a
   CUDA launch timeout.
 - Not changed, stated: paths["war_dmg"] also holds non-war output losses; rec "excess_deaths" is cumulative.
+
+## Named channels, leakage tests, and four checks from the literature (2026-11-11)
+
+From reading an independent rebuild of the project and about thirty papers behind a "state of the art" summary
+(cliodynamics, language-model agent societies, reinforcement-learning economics, integrated assessment models). None of
+the four literatures has a passed out-of-sample test against country crises; what was taken is method and benchmarks.
+- psychohistory/rng.py: every draw site in the yearly loop has its own stream keyed by (seed, channel, year); the
+  shared main stream and the hand-offset in-loop generators are gone. All draws change. Baseline v58_base.
+- tests/test_leakage.py: all values after 1995 replaced by another country's; features, training rows and labels, and
+  the simulator's fitted equations at that origin do not change. (A first mutation that also changed which cells were
+  missing moved Hong Kong's and Palestine's state-entry year: an artefact, noted in the test.)
+- World growth spread against Christensen, Gillingham & Nordhaus (2018; expert survey, 2010-2100: mean 2.06% a year,
+  sd 1.12, interquartile 1.4-2.9; their statistical method 1.7-2.7; figures from the working-paper abstract and the
+  press release, the article itself was behind a bot check). Version 57, 2026-2065: 5% 0.10, quartiles 1.00 and 2.68,
+  median 1.74, 95% 4.14. A normal with their mean and sd gives 0.22 / 1.31 / 2.81 / 3.90 and 3.3% below zero. Our
+  spread is as wide as the experts' and wider than the statistical method's; our centre is about 0.3 points lower. The
+  3% of worlds that get poorer without a catastrophe is what the experts' spread implies, not evidence of a defect.
+- scripts/crisis_consequences_test.py (pre-registered, 68160bc): 263 civil-war onsets 1950-2018; rank correlations
+  between deaths, output loss, regime change and coups over the next five years are all below 0.2 in size (deaths and
+  output -0.01 [-0.18, +0.15]). Verdict "independent": the simulator's separate draws stand. The median onset shows no
+  five-year output loss against the country's previous trend.
+- scripts/coef_stability_test.py (pre-registered, 68160bc): onset, ending, coup and growth equations fitted on
+  1950-1989 and 1990-2024 with twelve fixed predictors. No slope of 48 moved by more than 2 standard errors. One level
+  did: coups, -3.73 to -4.69 in log-odds at average predictors (z = -3.1), about 0.4 times the earlier odds. Verdict:
+  coup equation unstable in level, the others stable. Consistent with the coup risks having needed recalibration
+  downward in versions 55 and 56.
