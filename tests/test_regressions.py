@@ -111,3 +111,13 @@ def test_gaza_deaths_do_not_fall_on_israel(sim_env, monkeypatch):
     old = _run(sim_env, years=5, seed=2)["paths"]["pop"]
     assert (new[:, i, -1] / old[:, i, -1]).mean() > 1.01          # Israel no longer loses them
     assert (new[:, j, -1] / old[:, j, -1]).mean() < 1.0           # they fall on Palestine
+
+
+@pytest.mark.slow
+def test_civil_war_deaths_match_the_record_in_size(sim_env):
+    """10 November 2026, first version 57 build: every country at war had the average country's death rate per person,
+    whatever its size, and the world's civil-war deaths came out about 4.5 times the record (61,000 a year in
+    1990-2024, at most 231,000 in one year)"""
+    d = np.asarray(_run(sim_env, years=10, n=200, seed=6)["world"]["civil_battle_deaths"])
+    per_year = d.mean(axis=tuple(i for i, n in enumerate(d.shape) if n == 200))      # mean over worlds, by year
+    assert 20_000 < per_year[1:].mean() < 150_000, per_year

@@ -521,11 +521,16 @@ TAIL_RANGES = {"soot_log": (0.0, math.log(150.0)), "winter_real": (0.1, 1.0), "v
 HARVEST_GDP = (0.0144, 0.1534)
 
 # Deaths in civil conflicts, for the population only (the risk models keep their own battle-death feature): battle deaths
-# per million follow log d' = 0.433 + 0.828 log d + 1.12 e while a conflict lasts and a new conflict draws
-# lognormal(median 6.7, log sd 2.13) (scripts/civil_deaths_fit.py, UCDP 1990-2024, 846 and 162 country-years). Before
-# version 57 an ongoing conflict kept its origin-year rate for ever (Israel 2,781 per million a year from the Gaza war)
-# and every new conflict had 2 per million. None switches back to that.
-CIVIL_DEATHS = (0.433, 0.828, 1.12, 6.7, 2.13)
+# per million follow log d' = a + b log d + c log population + e while a conflict lasts, and a new conflict draws
+# log d = a0 + c0 log population + e0; e and e0 are drawn from the equations' own residuals, which are skewed and
+# fat-tailed (scripts/civil_deaths_fit.py, UCDP 1990-2024, 846 and 162 country-years; replayed on 1990-2024 the world
+# total is 47,000 a year, 90% band 29,000-77,000, against 61,000 recorded). Population is in both because the rate per
+# person falls almost one-for-one with it: without it the world total came out about 4.5 times the record.
+# Before version 57 an ongoing conflict kept its origin-year rate for ever (Israel 2,781 per million a year from the
+# Gaza war) and every new conflict had 2 per million. None switches back to that.
+import json as _json
+import pathlib as _pathlib
+CIVIL_DEATHS = _json.loads((_pathlib.Path(__file__).parent / "civil_deaths.json").read_text())
 # UCDP places Gaza and the West Bank in Israel: deaths recorded there fall on Palestine's population
 DEATHS_FALL_ON = {"ISR": "PSE"}
 # False (version 57): the output loss of a nuclear winter's failed harvests is not added, because the world loss after a
@@ -1789,12 +1794,18 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                 if k == 1:
                     gen_civ = torch.Generator(device=device).manual_seed(seed + 1783)      # own generator: runs stay paired
                     bd_pop = bd0_pop        # the origin year's rate (taken before the first step)
-                e_civ = torch.randn(S, C, device=device, generator=gen_civ)
-                a_, b_, sd_, m0_, sd0_ = CIVIL_DEATHS
-                cont_ = torch.exp(a_ + b_ * torch.log(bd_pop.clamp(min=0.1)) + sd_ * e_civ)
-                new_ = m0_ * torch.exp(sd0_ * e_civ)
+                    cd_c, cd_f = CIVIL_DEATHS["continuing"], CIVIL_DEATHS["first_year"]
+                    cd_rc = torch.tensor(cd_c["resid"], device=device)
+                    cd_rf = torch.tensor(cd_f["resid"], device=device)
+                u_civ = torch.rand(S, C, device=device, generator=gen_civ)
+                lp_ = torch.log(pop_now.clamp(min=1.0))
+                cont_ = torch.exp(cd_c["a"] + cd_c["b"] * torch.log(bd_pop.clamp(min=0.1)) + cd_c["c_log_pop"] * lp_
+                                  + cd_rc[(u_civ * len(cd_rc)).long().clamp(max=len(cd_rc) - 1)])
+                new_ = torch.exp(cd_f["a0"] + cd_f["c0_log_pop"] * lp_
+                                 + cd_rf[(u_civ * len(cd_rf)).long().clamp(max=len(cd_rf) - 1)])
                 bd_pop = torch.where(conf_next > 0.5, torch.where((onset_next > 0) | (bd_pop <= 0), new_, cont_),
                                      torch.zeros_like(conf_next)).clamp(max=1e4)
+                WS.rec.setdefault("civil_battle_deaths", []).append((bd_pop / 1e6 * pop_now).sum(-1))
                 civ_d = bd_pop / 1e6 * (1 + WS.prm("civ_mult"))
                 for src_, dst_ in DEATHS_FALL_ON.items():
                     if src_ in p.codes and dst_ in p.codes:
