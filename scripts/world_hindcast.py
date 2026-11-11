@@ -178,7 +178,11 @@ def main():
                                 sim=np.stack([sim[k] for k in sorted(sim)], 1), obs=np.array([obs[k] for k in sorted(sim)]),
                                 pnames=np.array(sorted(params)), params=np.stack([params[k] for k in sorted(params)], 1),
                                 country=json.dumps(country), config=json.dumps(o["config"], default=str),
-                                coup_codes=coup_codes, coup_p5=coup_p5, coup_y5=coup_y5)
+                                coup_codes=coup_codes, coup_p5=coup_p5, coup_y5=coup_y5,
+                                # each country's simulated and realised log growth of GDP per person over the window and
+                                # its origin level (scripts/convergence_bias_test.py, 11 November 2026)
+                                gdp_codes=np.array(p.codes)[okg], gdp_q=q, gdp_act=cg_act, gdp_lg0=lga[okg, 0],
+                                gdp_pop0=pop0[okg])
             print(O, E, {k: (round(float(np.median(sim[k])), 4), round(float(obs[k]), 4),
                              round(float((sim[k] < obs[k]).mean()), 2)) for k in sorted(sim)}, country, flush=True)
 
