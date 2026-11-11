@@ -2805,3 +2805,26 @@ simulation: with the level re-aligned each run, flattening moves coups from the 
 dynamics (peers, successions) then add more. The version 55 inconsistency (Guinea 44% by 2030 in the simulator, 24% in
 the recalibrated five-year model) stays a stated limit; the hindcasts suggest the simulator is not the worse of the two
 except in its 35-50% band, where Guinea and Madagascar sit, so the truth is probably between.
+
+## Code audit and version 57 (2026-11-10)
+
+Three audits (simulator, leakage, site); fixes in commits 329264b, 9df2d02, a9900c1, a3a25bc.
+- Pairing: draws that depended on a switch (AI catastrophe u_c, frailty, interstate pair draws, pandemic draws) are
+  taken always or from their own generator (world.gen_pair, seed + 1423); the oil generator moved to seed + 6007 (it
+  shared 7777 with nuclear risk). Tests: test_switches_keep_runs_paired, test_seed_offsets_are_unique.
+- Deaths: pand_mort reset each year when pandemics are off (AI-catastrophe deaths repeated); civil-conflict deaths per
+  million from psychohistory/civil_deaths.json (scripts/civil_deaths_fit.py): continuing log d' = 4.743 + 0.742 log d
+  - 0.235 log pop + e, first year log d = 19.83 - 1.071 log pop + e0, residuals resampled. The first fit had no
+  population term (stationary mean 91 per million whatever the country's size): the first version 57 build gave median
+  excess deaths 62 million against 34 million in version 56, and a check against the record showed 275,000 deaths a
+  year where 61,000 were recorded. With population and normal residuals the replay gave 34,000; with the fit's own
+  residuals 47,000 (29,000-77,000). Rebuilt: median excess deaths 38 million. The first build's forecast
+  (a1cf21ba832f) stays in model_versions.jsonl as a logged, unpublished build; it was never canonical.
+  DEATHS_FALL_ON = {"ISR": "PSE"}. Test: test_civil_war_deaths_match_the_record_in_size.
+- WINTER_HARVEST_GDP = False; PRESTON_NET = True (scripts/preston_net_test.py, pre-registered: composite 0.00%, floor
+  0.61%).
+- Baseline v57_base against v55c_base: +0.05%; floor 0.61% (outputs/adopt/noise_floor_v57_base.json). Scored before the
+  population term in civil deaths; rerun queued after the release.
+- The release chain resumes after an outside failure (CHAIN_FROM=step): the rebuild's uncertainty runs died once on a
+  CUDA launch timeout.
+- Not changed, stated: paths["war_dmg"] also holds non-war output losses; rec "excess_deaths" is cumulative.

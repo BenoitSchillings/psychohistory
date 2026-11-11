@@ -7,10 +7,12 @@
 set -euo pipefail
 V=$1; D=$2
 export PYTHONPATH=. PYTORCH_ALLOC_CONF=expandable_segments:True
+if [ -z "${CHAIN_FROM:-}" ]; then      # CHAIN_FROM=step resumes a chain that failed for an outside reason
 echo "== 1. AI arrival assumption rebuilt from data/ai_ledger/sources.csv (enter any new source rows first)"
 python3 -P scripts/ai_ledger.py --apply
 echo "== 2. tests"
 python3 -P -m pytest -q tests
+fi
 echo "== 3. forecast and analyses (about 1.5 hours of GPU)"
 bash scripts/release_chain.sh
 grep -q CHAIN_DONE <(tail -1 outputs/lim2_chain.log)

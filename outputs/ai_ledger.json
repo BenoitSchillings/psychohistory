@@ -82,15 +82,15 @@
  "current": [
   [
    2027.5,
-   0.05
+   0.048
   ],
   [
    2030.5,
-   0.18
+   0.19
   ],
   [
    2032.5,
-   0.24
+   0.254
   ],
   [
    2035.5,
@@ -98,19 +98,19 @@
   ],
   [
    2041.5,
-   0.47
+   0.443
   ],
   [
    2047.5,
-   0.56
+   0.525
   ],
   [
    2055.5,
-   0.64
+   0.605
   ],
   [
    2065.5,
-   0.72
+   0.676
   ]
  ],
  "note": "a proposal for the next quarterly release; ARRIVAL_CDF changes only at a release (docs/ai_ledger.md)",
