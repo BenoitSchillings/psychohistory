@@ -1,5 +1,5 @@
 {
- "base": "v55f_base",
+ "base": "v57_base",
  "seeds": [
   0,
   1,
@@ -23,20 +23,20 @@
   2006,
   2009
  ],
- "safe20_floor": 0.2672,
+ "safe20_floor": 0.3739,
  "stat_floor": {
-  "country_brier": 0.0101,
-  "conflict_share": 0.0896,
-  "onsets": 0.0954,
-  "coups": 0.0236,
-  "gdp_growth": 0.0098,
-  "gdp_dispersion": 0.0066,
-  "dem_change": 0.0062,
-  "interstate": 0.0044,
-  "oil_change": 0.0013,
-  "gdp_vol": 0.0009
+  "country_brier": 0.0104,
+  "conflict_share": 0.0902,
+  "onsets": 0.093,
+  "coups": 0.0275,
+  "gdp_growth": 0.0093,
+  "gdp_dispersion": 0.0083,
+  "dem_change": 0.007,
+  "interstate": 0.0076,
+  "oil_change": 0.001,
+  "gdp_vol": 0.0037
  },
  "dropped": [],
- "composite_floor": 0.0088,
+ "composite_floor": 0.0061,
  "note": "floor = 2 x sd between ensemble refits of the baseline (each against the mean of the others)"
 }

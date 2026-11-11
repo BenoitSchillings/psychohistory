@@ -259,13 +259,24 @@ def build_sim_env(p, X, Xf, Yf, ci, year, origin, members=None, seed=0, cache=Tr
     d = OUT / "sim_env"
     d.mkdir(parents=True, exist_ok=True)
     f = d / f"{origin}_m{members}_s{seed}.pkl"
+    # the cache is valid only for the data and settings it was fitted on (audit 2026-11-10: the file name alone was the
+    # key, so a rebuilt panel or a new feature list would have silently reused old networks)
+    Ytr, tr = train_mask(Yf, year, origin, first_year=SIM_ENV["first_year"])
+    import hashlib
+    fp = hashlib.sha256(repr((Xf.shape, int(tr.sum()), round(float(np.nansum(Xf[tr])), 3), round(float(np.nansum(Ytr[tr])), 3),
+                              sorted(SIM_ENV["families"]), SIM_ENV["first_year"])).encode()).hexdigest()[:16]
+    fpf = f.with_suffix(".fp")
+    if cache and f.exists() and not fpf.exists():
+        fpf.write_text(fp)          # caches made before the fingerprint existed are taken as current, once
+    if cache and f.exists() and fpf.read_text().strip() != fp:
+        print(f"  sim_env cache {f.name} was fitted on other data or settings: refitting")
+        f.unlink()
     if cache and f.exists():
         with open(f, "rb") as fh:
             net = pickle.load(fh)
         if base is not None and getattr(net, "align_delta", None) is None:
             net.align_delta = align_delta(net, p, X, base, origin)
         return net
-    Ytr, tr = train_mask(Yf, year, origin, first_year=SIM_ENV["first_year"])
     ens = SeldonEnsemble(load_combine(), members=members, families=list(SIM_ENV["families"]), seed=seed).fit(
         Xf[tr], Ytr[tr], ci[tr], year[tr])
     net = sim_net(ens, X[:, p.yi(origin)])
@@ -276,6 +287,7 @@ def build_sim_env(p, X, Xf, Yf, ci, year, origin, members=None, seed=0, cache=Tr
         refresh, net.ens_models = net.ens_models, None        # the tree families are large; ENS_REFRESH is off
         with open(f, "wb") as fh:
             pickle.dump(net, fh)
+        fpf.write_text(fp)
         net.ens_models = refresh
     return net
 

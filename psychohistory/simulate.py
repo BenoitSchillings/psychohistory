@@ -1314,6 +1314,10 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                 if target is None or not bool(risk.any()) or not (0 < target < 1):
                     continue
                 z = haz[..., j][risk]
+                # (audit 2026-11-10: a NaN hazard made the search below settle silently on the bound, and the
+                #  alignment then hid it)
+                if not bool(torch.isfinite(z).all()):
+                    raise FloatingPointError(f"non-finite hazard before alignment (task {j}, origin {origin})")
                 lo_, hi_ = -4.0, 4.0
                 for _ in range(40):
                     mid = (lo_ + hi_) / 2
@@ -1322,6 +1326,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
                     else:
                         hi_ = mid
                 shift[j] = (lo_ + hi_) / 2
+                if abs(shift[j]) > 3.99:
+                    warnings.warn(f"alignment shift at its bound (task {j}, origin {origin}, target {target:.4f})")
                 if "otc"[j] in ALIGN_MATCHED and getattr(net, "align_delta", None) is not None:
                     shift[j] = shift[j] + float(net.align_delta[j])
         haz = haz + shift
