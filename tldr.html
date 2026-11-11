@@ -1,0 +1,67 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Seldon in two minutes</title><meta name="description" content="The short version of the Seldon report: forecasts, explorations by AI timing, track record and known biases."><style>
+:root{--bg:#f7f7f5;--card:#ffffff;--ink:#1f2328;--ink2:#57606a;--muted:#6e7781;--line:#d8dee4;--accent:#1d5fbf;--code:#eef1f4}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1115;--card:#171a21;--ink:#e6e8eb;--ink2:#b0b7c0;--muted:#8b949e;--line:#2d333b;--accent:#6ea8fe;--code:#22272e}}
+:root[data-theme="dark"]{--bg:#0f1115;--card:#171a21;--ink:#e6e8eb;--ink2:#b0b7c0;--muted:#8b949e;--line:#2d333b;--accent:#6ea8fe;--code:#22272e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,"Segoe UI",Helvetica,Arial,sans-serif}
+main{max-width:920px;margin:0 auto;padding:32px 16px 80px}
+a{color:var(--accent)}
+nav.top{font-size:14px;color:var(--muted);margin-bottom:24px}
+nav.top a{margin-right:16px}
+h1{font-size:30px;line-height:1.2;margin:0 0 8px}
+h2{font-size:21px;margin:40px 0 10px;padding-top:8px;border-top:1px solid var(--line)}
+h3{font-size:17px;margin:24px 0 6px}
+p,li{color:var(--ink)}
+.muted{color:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0;display:block;overflow-x:auto}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{color:var(--ink2);font-weight:600}
+code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:.88em}
+details{background:var(--card);border:1px solid var(--line);border-radius:8px;margin:8px 0;padding:8px 14px}
+details details{margin:6px 0;border-radius:6px}
+summary{cursor:pointer;font-weight:600}
+summary .meta{font-weight:400;color:var(--muted);font-size:14px;margin-left:8px}
+ul.files{list-style:none;padding-left:4px;margin:6px 0;font-size:14px}
+ul.files li{padding:1px 0}
+ul.files .sz{color:var(--muted);margin-left:8px}
+.feeds{font-size:14px;color:var(--ink2)}
+.figure{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px;overflow-x:auto}
+.figure img{display:block;max-width:none;width:1400px}
+footer{margin-top:48px;font-size:14px;color:var(--muted)}
+</style></head><body><main><nav class="top"><a href="tldr.html">In two minutes</a><a href="index.html">Report</a><a href="methodology.html">Methodology</a><a href="data_sources.html">Data source tree</a><a href="ethics.html">Purpose and ethics</a></nav>
+<h1>Seldon in two minutes</h1>
+<p class="muted">Version 58, 11 November 2026. The short version of the <a href="index.html">full report</a>; how it works and how it is tested is in the <a href="methodology.html">methodology</a>.</p>
+<p>Seldon simulates the next forty years for 175 countries, ten thousand times, from eighty years of history. Read it less as an oracle than as an instrument: near the present it makes forecasts that are scored as reality arrives; far out it shows which beliefs about AI, climate and nuclear escalation actually move the outcome.</p>
+
+<h2>Forecasts: scored as reality arrives</h2>
+<p><b>Where fighting could start in the next twelve months</b> (countries with none in the past year): Burundi 49%, Libya 47%, Benin 46%, Kuwait 22%, Kenya 16%. Violence against civilians or between militias: Papua New Guinea 74%, Central African Republic 59%, India 59%, Afghanistan 54%, Bangladesh 54%.</p>
+<h3>New civil war, 2026–2030</h3>
+<p class="muted">Ranked, with the range across the model families; the single estimate is shown last and small, because for small states it is the least certain part.</p>
+<table><tr><th>#</th><th>Country</th><th>Range</th><th>Estimate</th></tr><tr><td>1</td><td>Chad</td><td>62%–97%</td><td class='muted'>66%</td></tr><tr><td>2</td><td>Libya</td><td>51%–72%</td><td class='muted'>61%</td></tr><tr><td>3</td><td>Turkey</td><td>45%–71%</td><td class='muted'>50%</td></tr><tr><td>4</td><td>Lebanon</td><td>34%–64%</td><td class='muted'>44%</td></tr><tr><td>5</td><td>Uganda</td><td>14%–57%</td><td class='muted'>44%</td></tr><tr><td>6</td><td>Bangladesh</td><td>19%–50%</td><td class='muted'>40%</td></tr></table>
+<h3>Coup attempt, 2026–2030</h3>
+<table><tr><th>#</th><th>Country</th><th>Range</th><th>Estimate</th></tr><tr><td>1</td><td>Niger</td><td>23%–42%</td><td class='muted'>26%</td></tr><tr><td>2</td><td>Guinea</td><td>18%–63%</td><td class='muted'>24%</td></tr><tr><td>3</td><td>Madagascar</td><td>14%–84%</td><td class='muted'>23%</td></tr><tr><td>4</td><td>Chad</td><td>12%–47%</td><td class='muted'>21%</td></tr><tr><td>5</td><td>Guinea-Bissau</td><td>15%–54%</td><td class='muted'>21%</td></tr><tr><td>6</td><td>Mali</td><td>13%–28%</td><td class='muted'>19%</td></tr></table>
+<p><b>Track record.</b> Trained on data to 2024, it ranked 2025's one new civil war (South Sudan) 3rd of 142 countries. Its monthly fatality layer ranks 2nd of 21 in the 2023/24 ViEWS challenge. In hindcasts its country forecasts beat fair naive forecasts at every horizon up to 15 years (+11% on who is at war, +22% on new wars at 15 years). Forecasting crowds beat it on near-term questions about wars between states (Brier 0.100 against 0.130); where a crowd covers a question, trust the crowd. Every forecast is frozen and scored as UCDP publishes.</p>
+
+<h2>Explorations to 2065: what follows from stated assumptions</h2>
+<p>The long run hinges on when AI makes intellectual work nearly free. The worlds split by that, so the pooled median ($36k) describes few actual worlds. World output per person in 2065 (median, 90% band):</p>
+<table><tr><th>If…</th><th>Median</th><th>90% band</th></tr><tr><td>Near-free AI never arrives</td><td><b>$27k</b></td><td>$16k–$43k</td></tr><tr><td>It arrives in 2035</td><td><b>$47k</b></td><td>$24k–$88k</td></tr><tr><td>It arrives in 2030</td><td><b>$57k</b></td><td>$28k–$119k</td></tr><tr><td>It arrives in 2027</td><td><b>$66k</b></td><td>$30k–$149k</td></tr></table>
+<p><b>A war between great powers by 2065</b> happens in 43% of the headline worlds, but read it as <b>somewhere between 18% and 76%</b>: that is the spread across draws of the assumptions. The number has also moved between model versions, from 69% in October to 43% today, through bug fixes and design choices; model choices are part of the uncertainty. Counting only the traditional great powers, 21%. Nuclear weapons are used in 12% of worlds (2%–26%).</p>
+
+<h2>The four assumptions that decide the long run</h2>
+<table><tr><th>Assumption (history cannot test it)</th><th>Moves</th><th>From lowest to highest fifth of its range</th></tr>
+<tr><td>When near-free AI arrives</td><td>World output per person, 2065</td><td>$59k (early) to $28k (late)</td></tr>
+<tr><td>Which estimate of climate damage is right</td><td>World output per person, 2045</td><td>$24k to $21k</td></tr>
+<tr><td>How readily nuclear-armed rivals fight</td><td>Great-power war by 2065</td><td>31% to 55%</td></tr>
+<tr><td>Whether cheap military drones make wars likelier</td><td>Great-power war by 2065</td><td>39% to 48%</td></tr></table>
+
+<h2>Known biases, and which way they push</h2>
+<ul>
+<li><b>Wars between states: too low.</b> It missed the 2010s rise two- to threefold, and it gave the 2025 Thailand–Cambodia war under 1% and the 2026 US–Iran war 0.1%. Its rivalry data end in 2010, so recent rivalries are partly invisible.</li>
+<li><b>The safest countries: too high.</b> It expected two or three new civil wars among the 20 safest countries in 15-year windows since 1995; none happened.</li>
+<li><b>World recessions: too rare.</b> Simulated world output falls in under 2% of years, against 3–10% recorded.</li>
+<li><b>Single countries' income: bands too wide.</b> Countries drift apart 1.3–1.9 times too much since the 1990s.</li>
+<li><b>World growth: no stable direction.</b> In 15-year hindcasts it ran 11–18% high from 1970s starts and 3–17% low from 1990s starts, so the headline is not corrected.</li>
+</ul>
+
+<p class="muted">Purpose and use of the country numbers: <a href="ethics.html">purpose and ethics</a>. Full version history and every test: <a href="methodology.html">methodology</a>.</p>
+<footer>Study conceived and directed by Benoit Schillings.</footer></main></body></html>
