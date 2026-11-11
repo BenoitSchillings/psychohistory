@@ -1847,6 +1847,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
             youth_off = youth_off * (14 / 15) + births * (1 - exo["youth"][:, k][None].nan_to_num(0.3))
             pop_un = torch.exp(exo["lpop"][:, k]).nan_to_num()[None]
             WS.rec["pop_dev"].append((pop_un * torch.expm1(pop_off)).nan_to_num().sum(-1) / pop_un.sum(-1))
+            # (cumulative since the origin, not this year's deaths)
             WS.rec["excess_deaths"].append(excess_deaths.clone())
         new = {"lg": lg_next, "dem": dem_next, "conflict": conf_next, "urban": urban_next,
                "lpop": exo["lpop"][:, k].expand(S, C) if mig is None else
@@ -2227,6 +2228,8 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         paths["conflict"].append(conf_next[sel].clone())
         paths["coup"].append(coup_next[sel].clone())
         paths["pop"].append(popk[sel].clone())
+        # (name kept for the saved files: war_cum is the cumulative log output loss from wars and from the other
+        #  level losses booked on it: sanctions, solar storms, cyber attacks and event harvest losses)
         paths["war_dmg"].append(war_cum[sel].clone())
         paths["clim_dmg"].append(dmg_cum[sel].clone())
 
