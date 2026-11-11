@@ -2868,3 +2868,10 @@ the four literatures has a passed out-of-sample test against country crises; wha
   (-1.1, -1.4, -1.9, -1.5). The growth equation has learned the divergence of 1960-1995 and carries it on. This fits
   two known limits (countries drift apart too much; the world median sits 0.3 points below the experts') and is the
   next candidate: the growth equation's income term, under the adopt rule.
+  Where it comes from (exploratory, 8 origins, CPU): the growth equation alone, fed the realised features and events,
+  already errs by -0.8 poor minus rich over the next 15 years (+0.2 from 1970, -1.0 from 1983, -1.4 from 1993, -0.6
+  from 2009): about 60% of the gap is the equation, the rest builds up in simulation. Weighting recent years more in
+  the equation's fit (half-life 40 / 20 / 10 years) moves the gap only to -0.74 / -0.70 / -0.63 and the mean absolute
+  error by 1%: not worth a hindcast. Poor countries' relative growth changed around 1990 and an equation fitted on
+  what came before cannot know it; left as a stated limit, with the direction: the forecast probably understates
+  growth in today's poor countries relative to rich ones.
