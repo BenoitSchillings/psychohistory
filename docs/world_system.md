@@ -2823,8 +2823,8 @@ Three audits (simulator, leakage, site); fixes in commits 329264b, 9df2d02, a990
   DEATHS_FALL_ON = {"ISR": "PSE"}. Test: test_civil_war_deaths_match_the_record_in_size.
 - WINTER_HARVEST_GDP = False; PRESTON_NET = True (scripts/preston_net_test.py, pre-registered: composite 0.00%, floor
   0.61%).
-- Baseline v57_base against v55c_base: +0.05%; floor 0.61% (outputs/adopt/noise_floor_v57_base.json). Scored before the
-  population term in civil deaths; rerun queued after the release.
+- Baseline v57_base against v55c_base: +0.05%; floor 0.61% (outputs/adopt/noise_floor_v57_base.json). Rerun on the
+  released code (v57r_base, the baseline from now on): composite 0.00% against v57_base, floor 0.60%.
 - The release chain resumes after an outside failure (CHAIN_FROM=step): the rebuild's uncertainty runs died once on a
   CUDA launch timeout.
 - Not changed, stated: paths["war_dmg"] also holds non-war output losses; rec "excess_deaths" is cumulative.

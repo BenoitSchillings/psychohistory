@@ -202,11 +202,11 @@
 <text x="54" y="763.0" font-size="11" fill="#4b5563">country-year, country-month and dyad event</text>
 <text x="54" y="776.0" font-size="11" fill="#4b5563">counts (GDELT through 2025)</text>
 </g>
-<g><title>conflictforecast.org news topics: news-topic stocks per country-month from 2010 (Mueller &amp; Rauh); for the February 2027 release</title><rect x="40" y="800.0" width="262" height="74" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="800.0" width="5" height="74" rx="2.5" fill="#5b6b82"/>
+<g><title>conflictforecast.org news topics: news-topic stocks per country-month from 2010 (Mueller &amp; Rauh); in the 12-month model since version 56</title><rect x="40" y="800.0" width="262" height="74" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="800.0" width="5" height="74" rx="2.5" fill="#5b6b82"/>
 <text x="54" y="819.0" font-size="13" font-weight="650" fill="#111827">conflictforecast.org news topics</text>
 <text x="54" y="836.0" font-size="11" fill="#4b5563">news-topic stocks per country-month from</text>
-<text x="54" y="849.0" font-size="11" fill="#4b5563">2010 (Mueller &amp; Rauh); for the February 2027</text>
-<text x="54" y="862.0" font-size="11" fill="#4b5563">release</text>
+<text x="54" y="849.0" font-size="11" fill="#4b5563">2010 (Mueller &amp; Rauh); in the 12-month model</text>
+<text x="54" y="862.0" font-size="11" fill="#4b5563">since version 56</text>
 </g>
 <g><title>COW, ATOP, MID, rivalries, NMC, ICB, UNGA: states, majors, contiguity, alliances, disputes, capabilities, crises, UN voting alignment</title><rect x="40" y="886.0" width="262" height="89" rx="7" fill="#ffffff" stroke="#5b6b82" stroke-width="1.4"/><rect x="40" y="886.0" width="5" height="89" rx="2.5" fill="#5b6b82"/>
 <text x="54" y="905.0" font-size="13" font-weight="650" fill="#111827">COW, ATOP, MID, rivalries, NMC,</text>
