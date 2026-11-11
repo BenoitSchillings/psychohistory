@@ -2185,6 +2185,7 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         out["macro_crises"] = {k: torch.stack(v, -1).cpu().numpy() for k, v in mc_rec.items()}     # [S, T] countries hit
     out["slow_end"] = {k: torch.quantile(cur[k], torch.tensor([.05, .25, .5, .75, .95], device=device), 0).T.cpu().numpy()
                        for k in _SLOW_SPEC if k in cur}
+    out["health_end"] = {k: cur[k].mean(0).cpu().numpy() for k in ("life_exp", "log_cm")}       # [C] mean over worlds
     if WS is not None:
         wr = {k: torch.stack(v, -1).cpu().numpy() for k, v in WS.rec.items() if v}
         if WS.dy is not None:

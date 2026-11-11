@@ -95,7 +95,7 @@ confirm on 2000–2012, two network seeds"):
 - 10 November 2026: releases are no longer quarterly. At the director's request a new model version is released
   whenever something better is ready: changes that passed their pre-registered tests, bug fixes, and stated assumptions
   that make the model more complete. Each release still needs scripts/number_parity.py to pass, names its canonical
-  frozen forecast and lists what changed; scripts/quarterly_release.sh is the release script whatever the timing.
+  frozen forecast and lists what changed; scripts/release.sh is the release script whatever the timing.
 
 - 9 November 2026: version 55 released ahead of the quarterly schedule at the director's request (third debate).
 - 6 November 2026: release policy added (second debate). The tail diagnostics (safe-country wars) become a

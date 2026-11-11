@@ -1,6 +1,6 @@
 #!/bin/bash
 # Publish the report to https://benoitschillings.github.io/psychohistory (public, GitHub Pages from the gh-pages
-# branch). Run after `python run.py report`. Netlify (deploy_netlify.sh) was retired when its free credits ran out.
+# branch). Run after `python run.py report`. The Netlify copy is deployed by deploy_netlify.sh; scripts/publish.sh runs both.
 set -e
 cd "$(dirname "$0")/.."
 SITE=outputs/netlify_site

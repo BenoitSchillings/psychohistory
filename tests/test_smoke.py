@@ -57,18 +57,10 @@ def test_monthly_annual_probability():
 
 
 @pytest.mark.slow
-def test_short_simulation_with_world_layer(panel):
-    from psychohistory.pipeline import prepare
-    from psychohistory.backtest import flatten, train_mask
-    from psychohistory.models import PsychoNet
-    from psychohistory import simulate as SIM, interstate as I
+def test_short_simulation_with_world_layer(sim_env):
+    from psychohistory import simulate as SIM
     from psychohistory.world import WorldConfig
-    p, base, X, Yl = prepare()
-    Xf, Yf, ci, year = flatten(p, X, Yl)
-    Ytr, tr = train_mask(Yf, year, LAST_OBS_YEAR)
-    net = PsychoNet(members=1, epochs=2).fit(Xf[tr], Ytr[tr], ci[tr])
-    gr, dd = SIM.fit_transitions(p, X, base, LAST_OBS_YEAR)
-    dy = I.sim_inputs(I.run(verbose=False, backtests=False))
+    p, base, net, gr, dd, dy = sim_env
     o = SIM.simulate(p, base, net, gr, dd, LAST_OBS_YEAR, LAST_OBS_YEAR + 5, n_scen=64, dyads=dy,
                      world=WorldConfig(sample_params=True, forced=(("CHN", "TWN", LAST_OBS_YEAR + 2),)), chronicle=2)
     w = o["world"]
