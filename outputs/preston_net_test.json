@@ -1,0 +1,8 @@
+{
+ "composite": 0.0,
+ "noise_floor": 0.0061,
+ "guardrail_breaches": {},
+ "i_no_breach": true,
+ "ii_non_inferior": true,
+ "switch_on": true
+}

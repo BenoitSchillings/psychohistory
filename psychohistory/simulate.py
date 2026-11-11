@@ -533,8 +533,9 @@ DEATHS_FALL_ON = {"ISR": "PSE"}
 # applied (up to another 18% in farm economies). The harvest loss itself, the famine and VEI 7 eruptions are unchanged.
 WINTER_HARVEST_GDP = False
 # True: the income that moves health is income after war and climate damage, as recorded GDP is (the estimate used
-# recorded GDP, and fertility already responds to income after damage). Under test (scripts/preston_net_test.py).
-PRESTON_NET = False
+# recorded GDP, and fertility already responds to income after damage). Passed its pre-registered non-inferiority test
+# (scripts/preston_net_test.py, 10 November 2026: composite 0.00%, no guardrail breach); on since version 57.
+PRESTON_NET = True
 PRESTON = (1.13, -0.11)            # (life expectancy, log child mortality) per unit log income above trend; (1.13, -0.11) under test
 ABSENT_MASK = True        # countries not yet existing at a hindcast origin: out of the alignment, no wars or coups
 ONSET_SLOPE = 1.0         # onset log-odds x this before alignment (1.15-1.5 rejected 2026-11-03: worse on 1970-1998)
