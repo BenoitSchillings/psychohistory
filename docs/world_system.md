@@ -2854,3 +2854,17 @@ the four literatures has a passed out-of-sample test against country crises; wha
   did: coups, -3.73 to -4.69 in log-odds at average predictors (z = -3.1), about 0.4 times the earlier odds. Verdict:
   coup equation unstable in level, the others stable. Consistent with the coup risks having needed recalibration
   downward in versions 55 and 56.
+- Baseline with named channels (v58_base against v57r_base): composite -0.02%, statistics within 1.1%, no guardrail;
+  floor 0.78% (a new set of draws, nothing more).
+- scripts/convergence_bias_test.py (pre-registered, 68160bc; one refit, v58c_s0, because the three baseline refits
+  were written before the script stored country growth; 2,406 country-windows, 16 origins). Error of the simulated
+  median growth, points a year: poorest third -0.69 [-1.25, -0.13], middle +0.48 [-0.17, +1.13], richest +0.64
+  [+0.17, +1.10]; poor minus rich -1.33 [-1.62, -1.04]. Verdict by the pre-registered wording "in between": not the
+  SSPs' bias but its opposite. The simulator makes poor countries grow too slowly relative to rich ones. Mean absolute
+  error 2.09 against 2.75 (own past growth) and 2.44 (convergence line): it beats both.
+  Exploratory, by decade of origin (poor / middle / rich error): 1970s +0.81 / +2.15 / +1.95; 1980s -0.27 / +1.56 /
+  +1.10; 1990s -2.41 / -1.53 / -0.49; 2000s -0.72 / +0.58 / +0.75. The level of the error is the era's (everyone
+  over-forecast after 1973, under-forecast in the 1990s), but the poor-minus-rich gap is negative in all four decades
+  (-1.1, -1.4, -1.9, -1.5). The growth equation has learned the divergence of 1960-1995 and carries it on. This fits
+  two known limits (countries drift apart too much; the world median sits 0.3 points below the experts') and is the
+  next candidate: the growth equation's income term, under the adopt rule.
