@@ -15,7 +15,8 @@ rc=0
 for u in https://benoitschillings.github.io/psychohistory/ https://seldon-psychohistory.netlify.app/; do
   ok=no
   for i in $(seq 1 12); do          # GitHub Pages takes a minute or two to rebuild
-    if curl -fsS "$u" | grep -q "$V"; then ok=yes; break; fi
+    # (count, not grep -q: grep -q closes the pipe at the first match, curl fails on it and pipefail fails the check)
+    if [ "$(curl -fsS "$u" | grep -c "$V")" -gt 0 ]; then ok=yes; break; fi
     sleep 15
   done
   echo "$u: $([ $ok = yes ] && echo "$V" || echo "NOT showing $V")"
