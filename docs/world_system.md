@@ -2909,3 +2909,23 @@ the four literatures has a passed out-of-sample test against country crises; wha
   the gap (-0.84 to -0.50) and the error (1.69 to 1.65); dropping the drawdown term lowers the error most (1.57) but
   widens the gap; no income term at all, or more shrinkage, changes little. Pre-registered (5a22126): the squared
   term under the adopt rule.
+- **Baseline after the fix** (v58b_base against v58_base): coups score -57% (all of it in the 1970s origins), every
+  other statistic within 1.1%. Floor 1.13%. With coups now simulated from every origin, the coup statistic's own
+  spread between refits is 12%, above the 10% limit, so it carries no weight under the rule (the guardrail still
+  covers it). No NaN risk was raised in the 96 runs. The convergence test on all three refits (7,218
+  country-windows): poor minus rich -1.35 [-1.64, -1.06], as before.
+- **Squared income gap: not adopted** (v58b_nosq against v58b_base; the baseline changed between the pre-registration
+  and the run because of the bug fix, the criteria did not). Composite -0.05% (floor 1.13%), better in 2 decades of
+  4. Spread of countries' growth -9.7%, poor-minus-rich error -1.35 to -0.96, country growth error 2.09 to 2.05:
+  what the screen promised. But world growth +8.8% worse, a guardrail breach: without the squared term the large
+  poor countries are forecast to grow faster from the 1970s and 1980s origins, when the world then slowed (median
+  error of 15-year world growth +0.16 to +0.18 and +0.06 to +0.09 log points). By the pre-registered reading a
+  broken guardrail ends it. The squared term stays; GROWTH_SQUARES remains as a setting.
+  What this says: the poor-rich error and the world-growth error are the same error seen two ways. Each origin's
+  equation expects the next 15 years to look like the average of the past; the 1970s-80s origins were followed by a
+  slowdown, the 1990s by catch-up. A specification fix moves one against the other. Consistent with Kremer, Willis
+  and You (2021): divergence of 0.5% a year in 1985-95, convergence of 0.7% a year in 2005-15, from faster catch-up
+  and a slower frontier. Stays a stated limit.
+- **Coup level after 1990** (the instability found on 11 November): not a simulator defect. The simulator sets the
+  coup level from the ten years before each origin (times 0.66); from 1976 on the recorded count sits between the
+  20th and 73rd percentile of the simulated ones at every origin.

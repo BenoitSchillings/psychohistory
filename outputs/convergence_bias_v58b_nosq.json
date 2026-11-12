@@ -1,0 +1,58 @@
+{
+ "tag": "v58b_nosq",
+ "country_windows": 7218,
+ "origins": [
+  1970,
+  1973,
+  1976,
+  1979,
+  1980,
+  1983,
+  1986,
+  1989,
+  1990,
+  1993,
+  1996,
+  1999,
+  2000,
+  2003,
+  2006,
+  2009
+ ],
+ "poor third error": {
+  "est": -0.384,
+  "lo": -0.921,
+  "hi": 0.152
+ },
+ "middle third error": {
+  "est": 0.421,
+  "lo": -0.247,
+  "hi": 1.08
+ },
+ "rich third error": {
+  "est": 0.573,
+  "lo": 0.113,
+  "hi": 1.037
+ },
+ "poor minus rich": {
+  "est": -0.958,
+  "lo": -1.225,
+  "hi": -0.702
+ },
+ "simulator MAE": {
+  "est": 2.047,
+  "lo": 1.903,
+  "hi": 2.193
+ },
+ "own past growth MAE": {
+  "est": 2.746,
+  "lo": 2.566,
+  "hi": 2.943
+ },
+ "convergence line MAE": {
+  "est": 2.44,
+  "lo": 2.25,
+  "hi": 2.651
+ },
+ "verdict": "in between: stated as found"
+}
