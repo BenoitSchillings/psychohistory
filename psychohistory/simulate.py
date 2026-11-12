@@ -39,6 +39,9 @@ QS = torch.tensor([0.05, 0.25, 0.5, 0.75, 0.95])
 GROWTH_FEATURES = ["gdp_gap_frontier", "growth_1y", "growth_5y", "gdp_drawdown", "growth_vol_10y",
                    "conflict_now", "democracy", "democracy_sq", "democracy_change_5y",
                    "region_conflict", "inflation_log", "pop_growth_5y", "fiscal_capacity"]
+# squared terms of the growth equation. The squared income gap is under test (scripts/growth_square_test.py,
+# 11 November 2026): it carries the divergence of 1960-1995 forward
+GROWTH_SQUARES = ["gdp_gap_frontier"]
 # free-expression erosion (5-year change) and neopatrimonial rule added 2026-10-28 (scripts/dem_screen.py: 25 V-Dem
 # variables improved democracy-change forecasts on dev and test, this pair the most; hindcasts sim_eval dm_fn:
 # democracy CRPS -3.0% dev (14/15), -6.5% test (7/7), other scores within 1.4%)
@@ -331,7 +334,7 @@ def fit_transitions(p, X, base, origin, halflife=None):
     args = (Xf, events)
     growth = Transition.fit(*args, flat(lg[:, 1:] - lg[:, :-1]), flat(years), flat(codes), flat(regions),
                             GROWTH_FEATURES, -0.4, 0.3, bin_col="gdp_gap_frontier", grid=grid,
-                            squares=["gdp_gap_frontier"], halflife=halflife, size=SIZE_NOISE, vol=VOL_NOISE, pool_state=POOL_STATE,
+                            squares=list(GROWTH_SQUARES), halflife=halflife, size=SIZE_NOISE, vol=VOL_NOISE, pool_state=POOL_STATE,
                             shock_w=flat(np.exp(YEAR_SHOCK_POW * (lg[:, :-1] + base["lpop"][:, :-1] - 25)))
                             if YEAR_SHOCK_POW else None)
     ddem = Transition.fit(*args, flat(dem[:, 1:] - dem[:, :-1]), flat(years), flat(codes), flat(regions),
