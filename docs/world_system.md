@@ -2875,3 +2875,37 @@ the four literatures has a passed out-of-sample test against country crises; wha
   error by 1%: not worth a hindcast. Poor countries' relative growth changed around 1990 and an equation fitted on
   what came before cannot know it; left as a stated limit, with the direction: the forecast probably understates
   growth in today's poor countries relative to rich ones.
+
+### 11 November 2026 (night): a hindcast bug, the adopt rule's noise, and the squared income gap
+
+- **Bug: no coups after year 1 in the 1970 and 1973 hindcasts.** Looking at the baseline origin by origin: 7 simulated
+  coups in 15 years against 113 recorded from 1970, 6 against 106 from 1973, about right from 1976 on. Cause: the
+  grain-price equation (food.py) is estimated from 1975; an origin before 1975 has no year in that window, the
+  long-run average was NaN, the simulated price change was NaN from year 1, and food exporters' terms of trade carried
+  it into every country's coup risk from year 2 (a NaN risk never fires). From 1976 and 1979 the equation was fitted
+  on 1 and 4 years. Present in every hindcast set since the adopt rule began (5 November), in baseline and variant
+  alike, so the paired decisions stand; but the coup statistic of the 1970s decade was mostly this bug. The forecast
+  is not affected (the full-record fit is unchanged to the last digit).
+  Fix (ab52461): origins before 1990 estimate on the 15 years before them (as the refugee equation does), with sign
+  and size limits on the three slopes; every risk is checked for NaN in every simulated year, not only at the
+  year-1 alignment (the audit of 10 November had added the check there only). Test:
+  test_grain_price_equation_is_finite_at_early_origins. After the fix: 1970 gives 6.8 to 9.8 coups a year against 4
+  to 13 recorded. New baseline v58b_base.
+- **What the adopt rule's noise is made of** (scripts/adopt_noise_check.py, 18 pairs of tags on disk). The composite
+  of a variant against its baseline barely moves between ensemble refits: median spread 0.03 points, against a floor
+  of 0.6 to 1.1 points (twice the spread of the *baseline's own level* between refits, which a paired comparison
+  removes). What does move it is which origins are scored: resampling the 16 origins gives 90% intervals from +/-0.3
+  to +/-2 points, and single decades move by several points in opposite directions. So three refits buy almost
+  nothing, and the floor is the right size only by accident. A rule that follows from this: one refit (or two), more
+  origins (every year 1970-2009 instead of 16), and "the 90% interval of the composite over resampled origins, in
+  blocks of a decade, lies below zero" instead of the floor. Not changed now: a test is pending, and the rule says a
+  change may not come while one is. Proposed to the director.
+- **Growth equation, 16 specifications screened** (scripts/growth_square_test.py holds the one-step check): the
+  equation fitted at each origin and fed the realised features and events over-forecasts rich and middle countries
+  by +1.0 and +0.8 points a year and poor ones by +0.1: the "poor minus rich" gap of -0.84 is mostly the rich world's
+  slowdown after each origin, which an equation averaging past eras cannot know. By term, the gap comes from the
+  income gap (+0.70, convergence), democracy and its square (-0.31 together), fiscal capacity (-0.44), population
+  growth (-0.27) and the squared income gap (-0.28). Dropping single terms: only the squared income gap helps both
+  the gap (-0.84 to -0.50) and the error (1.69 to 1.65); dropping the drawdown term lowers the error most (1.57) but
+  widens the gap; no income term at all, or more shrinkage, changes little. Pre-registered (5a22126): the squared
+  term under the adopt rule.
