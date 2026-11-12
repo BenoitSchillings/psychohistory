@@ -300,6 +300,8 @@ Every test now builds the simulator exactly as the forecast does, records its co
 - the change must be better in at least three of the four decades and by more than the noise between refits;
 - no weighted score may be more than 3% worse.
 
+*Since 12 November 2026 the rule uses one refit and an origin for every year from 1970 to 2009, and a change must be better with a 90% interval below zero when the origins are resampled in ten-year blocks. Measured on 18 earlier comparisons, a change's score differed between refits by 0.03 points but by 0.3 to 2 points depending on which origins were scored: the refits were buying almost nothing. The 3% guardrail is unchanged.*
+
 **Refit noise is large for the war counts.** Refitting the ensemble alone moves the count of new civil wars by up to 11% and the world share at war by 9%; the combined score's noise is 1.1%. The withdrawal of the ensemble's central view on 4 November had rested on a +12% move in new wars, inside that noise. Retested under the rule, it neither helps nor hurts overall, though it removes 40% of the safest countries' excess wars.
 
 **Earlier choices re-checked.** Undoing them showed that two were clearly right: the narrower growth regimes (combined +3.1%) and the oil fix (+1.2%). The halved mood factor (+0.9%) and the debt-split growth noise (+0.6%) are probably right but below the noise. Country war-proneness cannot be told apart from noise. Nothing was reverted.

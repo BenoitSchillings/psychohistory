@@ -22,6 +22,8 @@ confirm on 2000–2012, two network seeds"):
 
 ## The rule
 
+*(Points 2 and 4 were replaced on 12 November 2026: one refit, 40 origins, an interval over resampled origins. See "Changes to this rule" at the end.)*
+
 1. **Configuration.** Every test builds the simulator with `pipeline.build_sim_env`, the forecast's own construction
    (the risk ensemble from 1860, 10 members, both network seeds pooled, the family draw). `scripts/config_parity.py`
    must show no difference from the forecast other than those a hindcast needs (origin, horizon, number of worlds,
@@ -117,3 +119,27 @@ confirm on 2000–2012, two network seeds"):
   non-regression guardrail: a change may not raise the 15-year expected count of new wars among the 20 safest
   countries by more than its noise floor. Recession frequency stays a diagnostic: raising shock amplitude to hit it
   would widen the spread between countries, which is already too wide.
+
+- 12 November 2026 (decided by the director; no test pending: the squared income gap was closed on 11 November under
+  the old form). **The harness and the decision change; the configuration, the objective, its weights and the 3%
+  guardrail do not.**
+  Reason (scripts/adopt_noise_check.py, 18 baseline / variant pairs on disk, none of them pending): a variant's
+  composite against its baseline differs between ensemble refits by 0.03 points (median), because baseline and
+  variant share the refit. The floor, 0.6 to 1.1 points, measured the spread of the baseline's own level between
+  refits, which the pairing removes. What the composite does depend on is which origins are scored: resampling the
+  16 origins moved it by 0.3 to 2 points. Three refits bought almost nothing; more origins buy what matters.
+  New form, replacing points 2 and 4 above:
+  - **Harness.** One ensemble refit (`--ens-seed 0`), an origin for every year 1970 to 2009 (40 origins), 15 years,
+    2,000 worlds. `bash scripts/hindcast_tag.sh TAG` (40 runs instead of 48).
+  - **Decision.** A change is adopted only if (a) the 90% interval of the pooled composite lies below zero, the
+    interval coming from 2,000 resamples of the origins in moving blocks of ten consecutive years (neighbouring
+    origins share most of their window and are not independent), and (b) no weighted statistic is worse by more than
+    3% pooled, and the safe-country war score is not worse with a 90% interval above zero.
+  - Every statistic keeps its weight (none is dropped for its spread between refits any more). The composite by
+    decade is reported, not decided on.
+  Known weaknesses of the new form: the four decades still hold only about three independent 15-year windows, so the
+  interval is itself rough; one refit means a result is conditional on that refit (the measured spread of the paired
+  composite between refits, 0.03 points, is the evidence that this matters little; a variant that changes how the
+  ensemble is fitted should be run on three, `SEEDS="0 1 2"`); the rate at which the new form adopts a do-nothing
+  change has not been measured. All past decisions were taken under the old form and stand; applied to six of them
+  on their 16 origins, the new form gives the same verdicts.

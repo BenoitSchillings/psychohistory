@@ -1,23 +1,24 @@
-"""The adopt rule (docs/adopt_rule.md, fixed 5 November 2026): score a simulator change against the baseline on the
-full-system hindcasts in the forecast's configuration, with leave-one-decade-out decisions and the measured noise.
+"""The adopt rule (docs/adopt_rule.md; this form since 12 November 2026): score a simulator change against the baseline
+on the full-system hindcasts in the forecast's configuration.
 
-Inputs: scripts/world_hindcast.py runs of the baseline and the variant, tags BASE_s<seed> and VAR_s<seed> (one per
-ensemble refit, world_hindcast --ens-seed), at the same origins. For each statistic the score is the CRPS of the
-simulated worlds against what happened (the per-country conflict Brier score for "country_brier"), averaged over the
-seeds. The composite is the weighted mean of the variant's relative change per statistic (negative = better).
+Inputs: scripts/world_hindcast.py runs of the baseline and the variant on the same ensemble refit (tags BASE_s0 and
+VAR_s0), one origin for every year 1970-2009, 15 years each. For each statistic the score is the CRPS of the simulated
+worlds against what happened (the per-country conflict Brier score for "country_brier"). The composite is the weighted
+mean of the variant's relative change per statistic (negative = better).
 
 Decision (all must hold):
- 1. the composite improves in at least 3 of the 4 decades of origins (1970s, 1980s, 1990s, 2000s);
- 2. the pooled composite improves by more than the noise floor (twice the standard deviation of the composite
-    between ensemble refits of the baseline itself, outputs/adopt/noise_floor.json; scripts/adopt_score.py --floor);
- 3. no statistic with weight is worse by more than 3% pooled (guardrail), and the safe-country war score is not worse
-    by more than its own noise floor (non-regression guardrail, added 6 November 2026);
- 4. the configuration matches the forecast's (scripts/config_parity.py; the variant's own change aside).
-Statistics whose noise floor exceeds 10% carry no weight (listed in the noise-floor file).
+ 1. the 90% interval of the composite lies below zero. The interval comes from resampling the origins in blocks of ten
+    consecutive years (moving blocks, wrapped; 2,000 resamples, fixed seed): neighbouring origins share most of their
+    15-year window, so single origins are not independent draws;
+ 2. no weighted statistic is worse by more than 3% pooled (guardrail), and the safe-country war score is not worse
+    with a 90% interval above zero;
+ 3. the configuration matches the forecast's (scripts/config_parity.py; the variant's own change aside).
+The composite by decade and on any further refits given with --seeds are reported, not decided on.
+Until 11 November 2026 the rule used three refits, 16 origins, a noise floor (twice the spread of the baseline between
+refits) and "better in 3 of 4 decades"; why it changed is in docs/adopt_rule.md. --floor still measures that spread.
 
-python -P scripts/adopt_score.py BASE VAR [--seeds 0 1 2] [--origins ...]
-python -P scripts/adopt_score.py --floor BASE [--seeds 0 1 2] [--origins ...]
-   (the noise floor: each refit of BASE scored against the mean of the others, as if it were a variant)"""
+python -P scripts/adopt_score.py BASE VAR [--seeds 0] [--origins ...]
+python -P scripts/adopt_score.py --floor BASE [--seeds 0 1 2] [--origins ...]"""
 import json
 import os
 import sys
@@ -34,7 +35,9 @@ OUT = os.path.join(ROOT, "outputs", "adopt")
 WEIGHTS = {"country_brier": 0.25, "conflict_share": 0.15, "onsets": 0.10, "coups": 0.10, "gdp_growth": 0.10,
            "gdp_dispersion": 0.10, "dem_change": 0.05, "interstate": 0.05, "oil_change": 0.05, "gdp_vol": 0.05}
 GUARD = 0.03
-ORIGINS = [1970, 1973, 1976, 1979, 1980, 1983, 1986, 1989, 1990, 1993, 1996, 1999, 2000, 2003, 2006, 2009]
+ORIGINS = list(range(1970, 2010))
+ORIGINS_OLD = [1970, 1973, 1976, 1979, 1980, 1983, 1986, 1989, 1990, 1993, 1996, 1999, 2000, 2003, 2006, 2009]   # until 11 November 2026
+BLOCK, N_BOOT = 10, 2000
 
 
 def crps(x, y):
@@ -86,36 +89,45 @@ def active_weights(base=None):
     return w, nf
 
 
+def block_resamples(origins, rng, n=N_BOOT, block=BLOCK):
+    """moving-block resamples of the origins (sorted, wrapped): blocks of `block` consecutive origins"""
+    o = sorted(origins)
+    m = len(o)
+    step = max(1, round(block * m / (o[-1] - o[0] + 1)))        # origins per `block` years
+    for _ in range(n):
+        starts = rng.integers(0, m, int(np.ceil(m / step)))
+        yield [o[(s_ + k) % m] for s_ in starts for k in range(step)][:m]
+
+
 def decide(base, var, seeds, origins):
-    w, nf = active_weights(base)
+    w = dict(WEIGHTS)
     A, B = table(base, seeds, origins), table(var, seeds, origins)
     rel, comp = composite(A, B, origins, w)
-    rel_all = composite(A, B, origins, WEIGHTS)[0]      # the guardrail covers every statistic, weighted or dropped
     by_dec = {}
     for d in sorted({decade(o) for o in origins}):
         os_ = [o for o in origins if decade(o) == d]
         by_dec[d] = composite(A, B, os_, w)[1]
-    better_dec = sum(v < 0 for v in by_dec.values())
-    floor = nf["composite_floor"] if nf else None
-    guard = {k: v for k, v in rel_all.items() if v > GUARD}
-    # non-regression guardrail on the safe-country tail (second debate, 6 November 2026): the 15-year score of new
-    # wars among the 20 safest countries may not get worse by more than its noise between refits
-    if "safe20_wars" in A[origins[0]]:
-        s20 = float(np.mean([B[o]["safe20_wars"] for o in origins]) / max(np.mean([A[o]["safe20_wars"] for o in origins]), 1e-12) - 1)
-        s20_floor = (nf or {}).get("safe20_floor")
-        if s20_floor is not None and s20 > s20_floor:
-            guard["safe20_wars"] = s20
-    ok = better_dec >= 3 and (floor is not None and comp < -floor) and not guard
+    s20 = lambda oo: float(np.mean([B[o]["safe20_wars"] for o in oo]) / max(np.mean([A[o]["safe20_wars"] for o in oo]), 1e-12) - 1)
+    rng = np.random.default_rng(20261112)
+    boot, boot20 = [], []
+    for oo in block_resamples(origins, rng):
+        boot.append(composite(A, B, oo, w)[1])
+        boot20.append(s20(oo))
+    lo, hi = (float(x) for x in np.percentile(boot, [5, 95]))
+    guard = {k: v for k, v in rel.items() if v > GUARD}
+    if float(np.percentile(boot20, 5)) > 0:
+        guard["safe20_wars"] = s20(origins)
+    ok = hi < 0 and not guard
     res = {"base": base, "variant": var, "seeds": seeds, "origins": origins, "weights": w,
            "relative_change": {k: round(v, 4) for k, v in rel.items()}, "composite": round(comp, 4),
-           "composite_by_decade": {k: round(v, 4) for k, v in by_dec.items()}, "decades_better": better_dec,
-           "noise_floor": floor, "guardrail_breaches": guard, "adopt": bool(ok),
-           "verdict": "adopt" if ok else ("no noise floor measured on this baseline: run --floor " + base if floor is None else "reject")}
-    # diagnostics, outside the decision
-    diag = {}
-    for k in ("safe20_wars", "gdp_falls"):
-        if k in A[origins[0]]:
-            diag[k] = round(float(np.mean([B[o][k] for o in origins]) / max(np.mean([A[o][k] for o in origins]), 1e-12) - 1), 4)
+           "composite_interval_90": [round(lo, 4), round(hi, 4)],
+           "composite_by_decade": {k: round(v, 4) for k, v in by_dec.items()},
+           "guardrail_breaches": guard, "adopt": bool(ok), "verdict": "adopt" if ok else "reject"}
+    if len(seeds) > 1:
+        res["composite_by_refit"] = {s_: round(composite(table(base, [s_], origins), table(var, [s_], origins), origins, w)[1], 4) for s_ in seeds}
+    diag = {"safe20_wars": round(s20(origins), 4)}
+    if "gdp_falls" in A[origins[0]]:
+        diag["gdp_falls"] = round(float(np.mean([B[o]["gdp_falls"] for o in origins]) / max(np.mean([A[o]["gdp_falls"] for o in origins]), 1e-12) - 1), 4)
     res["diagnostics"] = diag
     return res
 
@@ -158,8 +170,8 @@ def floor(base, seeds, origins):
 
 def main():
     a = sys.argv[1:]
-    seeds = [0, 1, 2]
-    origins = ORIGINS
+    seeds = [0, 1, 2] if a and a[0] == "--floor" else [0]
+    origins = ORIGINS_OLD if a and a[0] == "--floor" else ORIGINS
     if "--seeds" in a:
         i = a.index("--seeds")
         j = next((k for k in range(i + 1, len(a)) if a[k].startswith("--")), len(a))
