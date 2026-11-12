@@ -1369,6 +1369,10 @@ def simulate(p, base, net: PsychoNet, growth: Transition, ddem: Transition, orig
         if MOOD_JUMP:
             corr = corr + torch.tensor([jcorr[0], jcorr[1], jcorr[0]], device=device)
         haz = torch.sigmoid(haz + torch.stack([mood + frail, -mood - frailty_end * frail, mood_coup[:, regions] + frail_c], -1) - corr)
+        # (11 November 2026: a NaN risk draws no event, silently. One from the grain-price equation had silenced every
+        #  coup after year 1 in the 1970 and 1973 hindcasts; checked every year now, not only at the alignment)
+        if not bool(torch.isfinite(haz[:, ~absent]).all()):
+            raise FloatingPointError(f"non-finite hazard in year {origin + k} (origin {origin})")
         if (k - 1) % regime_years == 0:
             g_regime = (GROWTH_REGIME_SCALE if growth_regime_scale is None else growth_regime_scale) * (growth.draw_regime(X, gen("g_regime")) + growth.draw_region_era(S, R, gen("g_region_era"))[:, regions])
             d_regime = (DEM_REGIME_SCALE if dem_regime_scale is None else dem_regime_scale) * (ddem.draw_regime(X, gen("d_regime")) + ddem.draw_region_era(S, R, gen("d_region_era"))[:, regions])

@@ -52,10 +52,15 @@ def _world(origin):
            - np.log(g.cereal_production_qcl_t_l / g.population_fbs_l)).loc[:origin]
     sup_mean = float(sup.mean())
     lg = np.log(w.wb_grains_index_real)
-    anchor = float(lg.loc[ANCHOR_START:origin].mean())
+    # (a hindcast origin before 1990 has fewer than 15 years since 1975, and none before 1975: the average was NaN
+    #  there and the equation was fitted on 1 to 4 years. The NaN reached the coup risk through food exporters'
+    #  terms of trade and silenced every coup after the first simulated year from the 1970 and 1973 origins.
+    #  Found 11 November 2026; such origins use the 15 years before them, as the refugee equation does)
+    start = min(ANCHOR_START, origin - 15)
+    anchor = float(lg.loc[start:origin].mean())
     d = pd.DataFrame({"dg": lg.diff(), "doil": np.log(oil).diff(), "dsup_l": (sup - sup_mean).shift(1),
                       "gap_l": (lg - anchor).shift(1)})
-    return d.loc[ANCHOR_START + 1:origin].dropna(), sup_mean, w, anchor
+    return d.loc[start + 1:origin].dropna(), sup_mean, w, anchor
 
 
 def fit_world_price(origin):
@@ -67,6 +72,10 @@ def fit_world_price(origin):
     d, sup_mean, w, anchor = _world(origin)
     X = np.c_[np.ones(len(d)), d.doil, d.dsup_l, d.gap_l]
     b = np.linalg.lstsq(X, d.dg, rcond=None)[0]
+    # sign and size limits for the short samples of early hindcast origins (8 years from 1970 gave an oil pass-through
+    # of 2.3); the estimates on the full record (0.16, -1.4, 0.12) are well inside, so the forecast is unchanged
+    b = np.array([b[0], np.clip(b[1], 0.0, 0.5), np.clip(b[2], -3.0, 0.0), np.clip(b[3], -0.7, 0.0)])
+    b[0] = float(np.clip((d.dg - X[:, 1:] @ b[1:]).mean(), -0.07, 0.03)) if len(d) else 0.0
     res = d.dg - X @ b
     lg = np.log(w.wb_grains_index_real)
     return {"const": float(b[0]), "oil": float(b[1]), "supply": float(b[2]), "revert": float(-b[3]),

@@ -138,3 +138,15 @@ def test_random_channels_are_isolated():
     a.at(2)
     assert torch.equal(ya, torch.rand(5, generator=a("growth")))      # the same key gives the same numbers again
     assert not torch.equal(ya, torch.rand(5, generator=Channels(8, "cpu")("growth")))
+
+
+def test_grain_price_equation_is_finite_at_early_origins():
+    """11 November 2026: origins before 1975 had no year in the estimation window; the NaN average reached the coup
+    risk and silenced every coup after the first simulated year of the 1970 and 1973 hindcasts."""
+    import math
+    from psychohistory.food import fit_world_price
+    for origin in (1970, 1973, 1976, 1990, 2025):
+        w = fit_world_price(origin)
+        assert all(math.isfinite(v) for k, v in w.items() if k not in ("resid", "resid_sd")), (origin, w)
+        assert len(w["resid"]) >= 8, origin
+        assert 0 <= w["oil"] <= 0.5 and -3 <= w["supply"] <= 0 and 0 <= w["revert"] <= 0.7, (origin, w)
