@@ -2929,3 +2929,7 @@ the four literatures has a passed out-of-sample test against country crises; wha
 - **Coup level after 1990** (the instability found on 11 November): not a simulator defect. The simulator sets the
   coup level from the ten years before each origin (times 0.66); from 1976 on the recorded count sits between the
   20th and 73rd percentile of the simulated ones at every origin.
+- **12 November: the adopt rule's new form** (docs/adopt_rule.md, decided by the director): one refit, an origin for
+  every year 1970-2009, adopt if the 90% interval of the composite over origins resampled in ten-year blocks lies
+  below zero, guardrail unchanged. Applied to six earlier pairs on their 16 origins it gives the same verdicts.
+  Baseline v58b_base extended to the 40 origins (refit 0); no NaN risk raised in any run.
